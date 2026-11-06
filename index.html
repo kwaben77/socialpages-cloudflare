@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SocialPages</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#3B82F6"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="referrer" content="strict-origin-when-cross-origin">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:#F0F2F5;color:#1a1a1a;min-height:100vh;padding-bottom:70px}
+.hidden{display:none!important}
+button{font-size:14px;cursor:pointer}
+.header{background:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
+.logo{width:40px;height:40px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:22px}
+.logo-text{font-weight:bold;color:#3B82F6;font-size:18px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e5e7eb;display:flex;padding:10px 0;z-index:100}
+nav div{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:#6B7280;font-size:12px;flex:1}
+nav div.active{color:#3B82F6;font-weight:600}
+nav span{font-size:22px}
+.landing,.auth{min-height:100vh;background:linear-gradient(135deg,#3B82F6,#8B5CF6);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;color:#fff;text-align:center}
+.landing h1{font-size:32px;margin:16px 0 10px}
+.landing p{opacity:.9;margin-bottom:30px;max-width:300px}
+.btn1,.btn2{padding:14px;border-radius:12px;font-size:16px;font-weight:600;width:100%;max-width:300px;margin-bottom:12px}
+.btn1{background:#fff;color:#3B82F6;border:none}
+.btn2{background:none;color:#fff;border:2px solid #fff}
+.card{background:#fff;color:#1a1a1a;border-radius:16px;padding:30px;width:100%;max-width:400px;text-align:left}
+.card h2{margin-bottom:20px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:14px;font-weight:600;margin-bottom:6px;color:#374151}
+input,textarea,select{width:100%;padding:12px;border:1px solid #e5e7eb;border-radius:10px;font-size:15px;background:#fff}
+textarea{resize:none}
+.err{color:#EF4444;font-size:13px;margin:6px 0;min-height:16px}
+.ok{color:#059669}
+.submit{width:100%;background:#3B82F6;color:#fff;padding:14px;border:none;border-radius:12px;font-size:16px;font-weight:600;margin-top:6px}
+.submit:disabled{opacity:.5}
+.alt{text-align:center;margin-top:14px;font-size:14px;color:#6B7280}
+.alt a{color:#3B82F6;cursor:pointer;font-weight:600}
+.page{padding:16px;max-width:600px;margin:0 auto}
+.title{font-size:24px;font-weight:bold}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.pill{background:#3B82F6;color:#fff;border:none;padding:10px 16px;border-radius:12px;font-weight:600}
+.soft{background:#fff;color:#3B82F6;border:none;padding:14px;border-radius:12px;font-weight:600}
+.box{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px}
+.banner{height:180px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:16px;position:relative;overflow:hidden}
+.banner img{width:100%;height:100%;object-fit:cover}
+.banner button{position:absolute;top:12px;right:12px;background:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:600}
+.big{width:110px;height:110px;border-radius:50%;border:4px solid #fff;margin:-55px auto 0;position:relative;cursor:pointer;overflow:hidden}
+.pinfo{text-align:center;padding:16px;background:#fff;border-radius:16px;margin-top:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.av{border-radius:50%;background:linear-gradient(135deg,#3B82F6,#8B5CF6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;overflow:hidden;flex-shrink:0}
+.av img{width:100%;height:100%;object-fit:cover}
+.ph{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.mt{font-size:12px;color:#6B7280}
+.pc{margin-bottom:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.pm{width:100%;border-radius:12px;margin-bottom:12px;max-height:400px;object-fit:cover}
+.cnt{font-size:13px;color:#6B7280;padding:8px 0;border-top:1px solid #e5e7eb}
+.pa{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding-top:4px;align-items:stretch}
+.pa button{min-width:0;min-height:48px;background:#F3F4F6;border:none;color:#4B5563;padding:9px 3px;border-radius:12px;font-size:clamp(8px,2.35vw,13px);font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:clip;text-align:center;display:flex;align-items:center;justify-content:center;gap:3px}
+.pa .on-l{background:#DBEAFE;color:#2563EB}
+.pa .on-d{background:#D1D5DB;color:#111827}
+.cin2{display:flex;gap:8px}.cin2 button{background:#3B82F6;color:#fff;border:none;padding:10px 16px;border-radius:12px}
+.bigfollow{width:100%;padding:16px;border:none;border-radius:14px;font-size:18px;font-weight:700;background:#3B82F6;color:#fff;margin-top:14px}
+.bigfollow.on{background:#9CA3AF}
+.pshare{display:flex;gap:6px;margin-top:8px}.pshare button{flex:1;border:none;border-radius:8px;padding:8px 0;font-size:16px;color:#fff}
+.wa{background:#25D366;color:#fff}.lk{background:#3B82F6;color:#fff}.pay{background:#F59E0B;color:#fff}
+.opt{padding:14px;border:none;border-radius:12px;font-size:16px;font-weight:600;color:#fff;width:100%}
+.del{margin-left:auto;background:#FEE2E2;color:#DC2626;border:none;padding:8px 14px;border-radius:8px;font-size:13px}
+.filters{display:flex;gap:10px;overflow-x:auto;margin-bottom:16px}
+.filters button{background:#fff;border:1px solid #e5e7eb;padding:10px 20px;border-radius:20px;white-space:nowrap}
+.filters .on{background:#3B82F6;color:#fff;border-color:#3B82F6}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pcard{background:#fff;border-radius:12px;overflow:hidden;cursor:pointer}
+.pimg{height:150px;background:#f3f4f6;position:relative;display:flex;align-items:center;justify-content:center;font-size:50px}
+.pimg img{width:100%;height:100%;object-fit:cover}
+.bd{position:absolute;top:8px;right:8px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;color:#fff}
+.bd.v{background:#10B981}.bd.s{background:#9CA3AF}.bd.g{background:#3B82F6}
+.pi{padding:10px}
+.pi b{display:block;font-size:14px}
+.price{color:#3B82F6;font-weight:bold}
+.item{background:#fff;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer}
+.item .info{flex:1;min-width:0}
+.item .pre{font-size:13px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{background:#EF4444;color:#fff;border-radius:10px;padding:2px 8px;font-size:12px}
+.follow{background:#3B82F6;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:600}
+.follow.on{background:#F3F4F6;color:#1a1a1a}
+.chead{background:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #e5e7eb;position:sticky;top:65px}
+.msgs{padding:16px 16px 130px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:75%;padding:10px 14px;border-radius:16px;font-size:14px;overflow-wrap:anywhere}
+.msg.s{background:#3B82F6;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.msg.r{background:#fff;align-self:flex-start;border-bottom-left-radius:4px}
+.cin{position:fixed;bottom:60px;left:0;right:0;background:#fff;padding:10px;display:flex;gap:8px;border-top:1px solid #e5e7eb}
+.cin input{border-radius:20px}
+.cinw{position:relative;flex:1;min-width:0;display:flex}.cinw input[type=text],.cinw input:not([type]){width:100%;padding-right:90px}
+.cin button#img-btn{position:absolute;right:44px;top:50%;transform:translateY(-50%);background:transparent;color:inherit;padding:4px 8px;font-size:21px;line-height:1;border-radius:50%}
+.cin button#voice-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:transparent;color:inherit;padding:4px 8px;font-size:22px;line-height:1;border-radius:50%}
+.cin button{background:#3B82F6;color:#fff;border:none;padding:10px 18px;border-radius:20px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+.modal h3{margin-bottom:16px}
+.acts{display:flex;gap:10px;margin-top:16px}
+.acts button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:600}
+.c1{background:#F3F4F6}.c2{background:#3B82F6;color:#fff}.c3{background:#EF4444;color:#fff}
+.empty{text-align:center;padding:40px 20px;color:#6B7280;grid-column:1/-1}
+.empty div{font-size:60px}
+.search{margin-bottom:16px;border-radius:12px}
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#10B981;color:#fff;padding:12px 24px;border-radius:12px;z-index:300;animation:sl .3s;max-width:90%;text-align:center}
+@keyframes sl{from{top:60px;opacity:0}to{top:80px;opacity:1}}
+@keyframes pulse{50%{transform:scale(1.5)}}
+@keyframes sp{to{transform:rotate(360deg)}}
+.hl.on span{display:inline-block;animation:pulse .4s}
+.spin{width:36px;height:36px;border:4px solid #e5e7eb;border-top-color:#3B82F6;border-radius:50%;animation:sp .8s linear infinite;margin:40px auto}
+.pimgmain{width:100%;height:400px;object-fit:cover;border-radius:16px;background:#f3f4f6}
+.thumbs{display:flex;gap:8px;overflow-x:auto;margin:8px 0}.thumbs img{height:80px;width:80px;object-fit:cover;border-radius:8px;cursor:pointer;flex-shrink:0}
+.pbtn{display:block;width:100%;height:50px;border:none;border-radius:12px;font-size:16px;font-weight:600;margin-top:10px;color:#fff}
+.pbtn.g{background:#10B981}.pbtn.b{background:#3B82F6}.pbtn.gray{background:#E5E7EB;color:#1F2937}.pbtn.r{background:#EF4444}
+.vcar{display:flex;overflow-x:auto;gap:12px;scroll-snap-type:x mandatory;margin:8px 0}
+.vitem{flex:0 0 85%;scroll-snap-align:start;background:#000;border-radius:12px;overflow:hidden}
+.vitem iframe{width:100%;border:0;display:block}.vitem.yt iframe{aspect-ratio:16/9}.vitem.vt iframe{height:480px}
+.vitem a{display:block;color:#fff;padding:20px;text-align:center}
+.sgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.sgrid div{background:#F3F4F6;border-radius:12px;padding:10px;text-align:center;font-size:12px}.sgrid b{display:block;font-size:20px}
+.npanel{position:fixed;top:64px;right:8px;left:8px;max-width:420px;margin-left:auto;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-height:70vh;overflow-y:auto;z-index:150;padding:12px}
+.ni{display:flex;gap:10px;padding:10px 6px;border-bottom:1px solid #f3f4f6;align-items:center}.ni.unread{background:#EFF6FF}
+.pubban{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e5e7eb;padding:12px 16px;text-align:center;z-index:100;font-size:14px}
+.pubban button{margin-top:8px}
+.chk{display:flex;gap:8px;align-items:center;margin:8px 0;font-size:15px;font-weight:400!important}.chk input{width:auto!important;margin:0!important}
+.vrow{display:flex;gap:8px;align-items:center;margin-bottom:8px}.vrow span{font-size:20px}
+.vcar:has(.vitem:only-child){justify-content:center}
+.vitem{flex:0 0 100%;max-width:100%}
+.vitem.yt{flex:0 0 min(100%,640px)}
+.vitem.vt{flex:0 0 min(100%,340px);margin:0 auto}
+.vitem.yt iframe{height:auto;aspect-ratio:16/9}
+.vitem.vt iframe{height:auto;aspect-ratio:9/16;max-height:620px}
+.vitem.tt iframe{aspect-ratio:9/16;max-height:640px;background:#000}.vitem a.vlink[hidden]{display:none}
+.vitem a.vlink{padding:10px;font-size:13px;background:#111}
+.ytmsg{position:absolute;inset:0;background:rgba(0,0,0,.6);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;text-align:center;font-size:14px}.ytmsg button{border:none;border-radius:999px;background:#fff;color:#111;padding:9px 20px;font-size:15px;font-weight:600}.ytmsg a{color:#D1D5DB!important;font-size:12px;text-decoration:underline;padding:0!important;display:inline!important}
+div.ytfb{position:relative;aspect-ratio:16/9;background:#000 center/cover no-repeat}
+.vitem a.ytfb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;aspect-ratio:16/9;padding:0;background:#000 center/cover no-repeat;color:#fff;text-decoration:none}.vitem a.ytfb span{width:64px;height:44px;border-radius:12px;background:#f00;display:flex;align-items:center;justify-content:center;font-size:22px}.vitem a.ytfb small{background:rgba(0,0,0,.65);padding:4px 10px;border-radius:999px;font-size:13px}
+.buybtn{display:block;width:100%;margin:10px 0 0;padding:13px;border:none;border-radius:12px;background:#10B981;color:#fff;font-size:16px;font-weight:600}
+.icorow{display:flex;gap:8px;margin-top:12px}.icorow .ico{flex:1;padding:10px 4px;border:none;border-radius:12px;background:#F3F4F6;color:#1F2937;font-size:14px}.icorow .ico.on{background:#FEE2E2}
+.soldbox{margin-top:10px;padding:14px;border-radius:12px;background:#F3F4F6;text-align:center;font-weight:600;color:#6B7280}
+.moreopt{margin-top:16px}.moreopt summary{cursor:pointer;color:#6B7280;padding:8px 0;font-size:14px}
+.promo{background:#FEE2E2;color:#DC2626;font-weight:700;border-radius:8px;padding:2px 8px;font-size:14px}
+.urg{margin-top:6px;color:#DC2626;font-weight:600;font-size:14px}
+.optrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.optchip{padding:8px 16px;border-radius:999px;border:2px solid #E5E7EB;background:#fff;font-size:15px}.optchip.on{border-color:#3B82F6;background:#EFF6FF;color:#1D4ED8;font-weight:600}
+.hl2{list-style:none;margin-top:8px;display:grid;gap:6px;font-size:15px}
+.trust{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.trust span{background:#F3F4F6;border-radius:999px;padding:6px 12px;font-size:13px;color:#374151}
+.minirow{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}.mini{flex:0 0 130px;background:#fff;border-radius:12px;padding:8px;cursor:pointer;font-size:14px}.mini b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mimg{height:100px;border-radius:8px;overflow:hidden;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:6px}.mimg img{width:100%;height:100%;object-fit:cover}
+.stickybuy{position:fixed;left:0;right:0;z-index:90;background:#fff;border-top:1px solid #e5e7eb;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}.stickybuy button{flex:1;max-width:220px;height:46px;border:none;border-radius:12px;background:#3B82F6;color:#fff;font-size:16px;font-weight:600}
+.pimg{height:auto!important;aspect-ratio:4/5}
+.cb{position:absolute;top:8px;left:8px;background:#EF4444;color:#fff;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px}.cb.n{background:#D1FAE5;color:#047857}.cb.w{background:#FEF3C7;color:#B45309}
+.chrt{position:absolute;top:6px;right:6px;width:30px;height:30px;border:none;border-radius:50%;background:rgba(255,255,255,.92);font-size:15px;padding:0;line-height:1}
+.cvd{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:2px 8px;border-radius:999px}
+.cvf{position:absolute;bottom:8px;right:8px;width:24px;height:24px;border-radius:50%;background:#fff;color:#3B82F6;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.csold{position:absolute;inset:0;background:rgba(0,0,0,.45);color:#fff;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.pi{padding:8px 10px 10px!important}.cn{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cold{color:#9CA3AF;font-size:11px;font-weight:400;margin-left:5px}
+.cs{font-size:11px;color:#6B7280;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cedit{margin-left:4px}
+.galw{position:relative}.gal2{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:1/1;border-radius:16px;background:#F3F4F6;scrollbar-width:none}.gal2::-webkit-scrollbar{display:none}
+.gal2 img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:center}.gal2.g0{align-items:center;justify-content:center;font-size:80px}
+.rb2{position:absolute;top:10px;width:38px;height:38px;border:none;border-radius:50%;background:rgba(255,255,255,.92);font-size:18px;padding:0}
+.gbadge{position:absolute;bottom:10px;left:10px;background:#EF4444;color:#fff;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px}.gbadge.g{background:#3B82F6}.gbadge.s{background:#6B7280}
+.gcnt{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:3px 10px;border-radius:999px}
+.selc{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #E5E7EB;border-radius:12px;background:#fff;cursor:pointer}
+.tg{display:inline-block;background:#F3F4F6;border-radius:999px;padding:5px 12px;font-size:13px;margin:0 6px 6px 0;color:#374151}
+.srow{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid #F3F4F6;font-size:14px}.srow span:first-child{color:#6B7280}.srow span:last-child{text-align:right}
+.acc2{border-top:1px solid #E5E7EB}.acc2 summary{padding:13px 0;font-size:15px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between}.acc2 summary::after{content:'⌄';color:#9CA3AF}.acc2[open] summary::after{content:'⌃'}
+.accb{padding:0 0 14px;font-size:15px;color:#374151}.accb .pbtn{margin-top:8px}
+.stickybuy{display:block!important;padding:8px 14px 10px!important}.sbtop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.sbbtn{display:flex;gap:8px}.stickybuy button.sb1{flex:1;max-width:none;height:46px;border:none;border-radius:12px;font-size:15px;font-weight:600;color:#fff;background:#3B82F6}
+.stickybuy button.sb1.wa{background:#10B981;flex:1}.stickybuy button.sb1.main:not(.wa){flex:1.6;background:#3B82F6}.sbnote{text-align:center;font-size:11px;color:#9CA3AF;margin-top:5px}
+.shprev{display:flex;gap:10px;align-items:center;padding:8px;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:12px}.shprev img,.th0{width:56px;height:56px;border-radius:8px;object-fit:cover;background:#F3F4F6;flex:none;display:flex;align-items:center;justify-content:center;font-size:26px}
+.shgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 4px}.shb{background:none;border:none;font-size:11px;color:#4B5563;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0}.shb span{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:21px;color:#fff}
+.shlink{display:flex;align-items:center;gap:8px;margin-top:14px;padding:9px 11px;border-radius:10px;background:#F3F4F6;font-size:12px;color:#6B7280}.shlink span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.shlink button{border:none;background:none;color:#3B82F6;font-weight:600}
+#newbar{margin-bottom:12px}
+.msg{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.callbtn{border:none;background:#EEF2FF;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;flex:none}
+.callbox{position:fixed;inset:0;z-index:300;background:#0B1220;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 48px) 20px calc(env(safe-area-inset-bottom,0px) + 36px)}
+.callbox #call-rv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;display:none}.callbox.vid #call-rv{display:block}
+.callbox #call-lv{position:absolute;right:14px;top:calc(env(safe-area-inset-top,0px) + 14px);width:96px;height:136px;object-fit:cover;border-radius:12px;background:#222;display:none;z-index:2;transform:scaleX(-1)}.callbox.vid #call-lv{display:block}
+.ctop{position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}.ctop b{font-size:22px}#call-st{opacity:.8;font-size:15px}
+.callbox.vid.on .ctop{opacity:0;pointer-events:none}
+.cbtns{position:relative;z-index:1;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.cbtns button{width:62px;height:62px;border-radius:50%;border:none;font-size:24px;background:rgba(255,255,255,.16);color:#fff;cursor:pointer}
+.cbtns button.off{background:#fff;color:#111}.cbtns .hang{background:#EF4444}.cbtns .pick{background:#10B981}
+.cbtns small{display:block;font-size:12px;margin-top:6px;opacity:.85;text-align:center}
+.livepop{position:fixed;left:10px;right:10px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:305;display:flex;align-items:center;gap:10px;background:#111827;color:#fff;border:2px solid #EF4444;border-radius:16px;padding:10px;box-shadow:0 8px 24px rgba(0,0,0,.35);max-width:520px;margin:0 auto}
+.livepop .lpt{flex:1;min-width:0;display:flex;flex-direction:column}.livepop small{opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.livepop .lpj{border:none;background:#EF4444;color:#fff;font-weight:700;border-radius:999px;padding:9px 14px;cursor:pointer}.livepop .lpx{border:none;background:transparent;color:#fff;font-size:16px;cursor:pointer}
+#livebar{display:flex;gap:10px;overflow-x:auto;margin-bottom:12px;padding:2px}
+.liveitem{flex:none;display:flex;align-items:center;gap:10px;border:2px solid #EF4444;background:#fff;border-radius:999px;padding:6px 14px 6px 6px;cursor:pointer;max-width:260px}
+.liveitem .lt{display:flex;flex-direction:column;align-items:flex-start;min-width:0;text-align:left}.liveitem small{color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
+.lvred{background:#EF4444;color:#fff;font-size:11px;font-weight:700;border-radius:6px;padding:3px 7px;white-space:nowrap}
+.livebox{position:fixed;inset:0;z-index:310;background:#000;color:#fff}
+.livebox #lv-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}.livebox.host #lv-v{transform:scaleX(-1)}.livebox.host.back #lv-v{transform:none}
+.lvtop{position:absolute;left:0;right:0;top:0;z-index:2;display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 12px) 12px 24px;background:linear-gradient(rgba(0,0,0,.55),transparent)}
+.lvwho{display:flex;align-items:center;gap:8px;flex:1;min-width:0}.lvwho div{min-width:0}.lvwho b{display:block;font-size:15px}.lvwho small{display:block;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvtop #lv-n{font-size:13px;background:rgba(0,0,0,.4);border-radius:6px;padding:3px 7px;white-space:nowrap}.lvtop button{border:none;background:rgba(0,0,0,.4);color:#fff;border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer}
+.lvst{position:absolute;left:0;right:0;top:45%;z-index:2;text-align:center;font-size:16px;text-shadow:0 1px 4px #000;padding:0 20px}
+.lvbottom{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:30px 12px calc(env(safe-area-inset-bottom,0px) + 12px);background:linear-gradient(transparent,rgba(0,0,0,.6))}
+.lvcom{max-height:32vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:10px;-webkit-mask-image:linear-gradient(transparent,#000 25%)}
+.lvcom div{background:rgba(0,0,0,.35);border-radius:12px;padding:6px 10px;max-width:85%;align-self:flex-start;font-size:14px;word-break:break-word}.lvcom b{margin-right:6px}
+.lvin{display:flex;gap:8px;align-items:center}.lvin input{flex:1;min-width:0;border:none;border-radius:999px;padding:11px 14px;background:rgba(255,255,255,.18);color:#fff;font-size:15px}.lvin input::placeholder{color:#ddd}
+.lvin button{flex:none;border:none;border-radius:50%;width:42px;height:42px;background:rgba(255,255,255,.18);color:#fff;font-size:18px;cursor:pointer}.lvin button.off{background:#fff;color:#111}
+#lv-hearts{position:absolute;right:16px;bottom:90px;width:50px;height:300px;z-index:3;pointer-events:none}
+#lv-hearts span{position:absolute;bottom:0;left:10px;font-size:26px;animation:lvh 2.2s ease-out forwards}
+@keyframes lvh{0%{transform:translateY(0) scale(.6);opacity:1}100%{transform:translateY(-260px) translateX(var(--x,0)) scale(1.2);opacity:0}}
+.vitem.tt{position:relative}.ttcov{position:absolute;inset:0;z-index:2;border:none;padding:0;background:#111 center/cover no-repeat;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.ttcov span{width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;padding-left:4px}.vitem.ttok .ttcov{display:none}
+</style>
+</head>
+<body>
+
+<div id="v-landing" class="view landing hidden">
+  <div class="logo" style="width:100px;height:100px;font-size:56px;border-radius:28px">S</div>
+  <h1>SocialPages</h1>
+  <p>Votre identité digitale, simplifiée. Connectez votre réseau.</p>
+  <button class="btn1" onclick="go('register')">Créer un compte</button>
+  <button class="btn2" onclick="go('login')">Se connecter</button>
+</div>
+
+<div id="v-register" class="view auth hidden"><div class="card">
+  <h2>Créer votre compte</h2>
+  <div class="fg"><label>Nom complet</label><input id="r-name" placeholder="Ex : Peter Martin"></div>
+  <div class="fg"><label>Nom d'utilisateur</label><input id="r-user" placeholder="Ex : peter" autocapitalize="none"></div>
+  <div class="fg"><label>Email</label><input id="r-email" type="email" placeholder="votre@email.com"></div>
+  <div class="fg"><label>Mot de passe</label><input id="r-pass" type="password" placeholder="6 caractères minimum"></div>
+  <div class="fg"><label>Confirmer le mot de passe</label><input id="r-pass2" type="password"></div>
+  <label style="font-size:14px"><input type="checkbox" id="r-terms" style="width:auto"> J'accepte les <a onclick="event.preventDefault();legal('cgu')" style="color:#3B82F6">conditions d'utilisation</a> et la <a onclick="event.preventDefault();legal('priv')" style="color:#3B82F6">confidentialité</a></label>
+  <div id="r-err" class="err"></div>
+  <button class="submit" id="r-btn" onclick="register()">S'inscrire</button>
+  <div class="alt">Déjà un compte ? <a onclick="go('login')">Se connecter</a></div>
+</div></div>
+
+<div id="v-login" class="view auth hidden"><div class="card">
+  <h2>Bon retour !</h2>
+  <div class="fg"><label>Email</label><input id="l-email" type="email" placeholder="votre@email.com"></div>
+  <div class="fg"><label>Mot de passe</label><input id="l-pass" type="password" onkeypress="if(event.key==='Enter')login()"></div>
+  <div id="l-err" class="err"></div>
+  <button class="submit" onclick="login()">Se connecter</button>
+  <div class="alt"><a onclick="forgot()">Mot de passe oublié ?</a></div>
+  <div class="alt">Pas de compte ? <a onclick="go('register')">Créer un compte</a></div>
+</div></div>
+
+<div id="v-pub" class="view hidden" style="padding-bottom:150px">
+  <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span><button class="pill" style="margin-left:auto" onclick="go('login')">Se connecter</button></div>
+  <div class="page"><div id="pub-body"></div></div>
+  <div class="pubban"><div id="pub-msg"></div><button class="pill" onclick="go('register')">S'inscrire gratuitement</button></div>
+</div>
+
+<div id="shell" class="hidden">
+  <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span>
+    <span onclick="toggleNotif()" style="margin-left:auto;position:relative;font-size:24px;cursor:pointer">🔔<b id="nbadge" class="badge hidden" style="position:absolute;top:-6px;right:-8px;font-size:10px;background:#EF4444;color:#fff;margin:0;padding:2px 6px">0</b></span></div>
+  <div id="npanel" class="npanel hidden"></div>
+
+  <div id="v-accueil" class="view page hidden">
+    <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1" onclick="postModal(1)">📷 Photo</button><button class="soft" style="flex:1" onclick="postModal(0,1)">🎥 Lien vidéo</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div></div>
+    <div id="livebar" class="hidden"></div>
+    <div class="filters" id="feed-f">
+      <button class="on" onclick="feedFilter('pourvous',this)">Pour vous</button>
+      <button onclick="feedFilter('abonnements',this)">Abonnements</button>
+      <button onclick="feedFilter('populaires',this)">Populaires</button>
+      <button onclick="feedFilter('recentes',this)">Récentes</button>
+    </div>
+    <button id="newbar" class="pbtn b hidden" onclick="feedN=10;renderFeed()">🔄 Nouvelles publications — appuyer pour afficher</button>
+    <div id="feed"></div>
+  </div>
+
+  <div id="v-decouvrir" class="view page hidden">
+    <h2 class="title" style="margin-bottom:16px">Découvrir</h2>
+    <input class="search" id="d-search" placeholder="Rechercher des pages..." oninput="renderDiscover()">
+    <div id="discover"></div>
+  </div>
+
+  <div id="v-produits" class="view page hidden">
+    <div class="row"><h2 class="title">Produits</h2><button class="pill" id="addp" onclick="prodModal()">+ Ajouter</button></div>
+    <div id="dash"></div>
+    <input class="search" id="p-search" placeholder="Rechercher un produit..." oninput="renderProducts()">
+    <div style="display:flex;gap:8px;margin-bottom:12px"><input id="p-city" placeholder="📍 Ville" oninput="renderProducts()" style="flex:1;min-width:0"><select id="p-cat" onchange="renderProducts()" style="flex:1;min-width:0"></select><input id="p-max" type="number" placeholder="Prix max $" oninput="renderProducts()" style="flex:1;min-width:0"></div>
+    <div class="filters" id="prod-f">
+      <button class="on" onclick="prodFilter('tous',this)">Tous</button>
+      <button onclick="prodFilter('ebooks',this)">📚 Ebooks</button>
+      <button onclick="prodFilter('promo',this)">Promo</button>
+      <button onclick="prodFilter('nouveau',this)">Nouveau</button>
+      <button onclick="prodFilter('proche',this)">Près de moi</button>
+      <button onclick="prodFilter('verifies',this)">Vérifiés</button>
+      <button onclick="prodFilter('mes',this)">Les miens</button>
+      <button onclick="prodFilter('Gratuit',this)">Gratuit</button>
+    </div>
+    <div class="pg" id="products"></div>
+  </div>
+
+  <div id="v-messages" class="view page hidden">
+    <div class="row"><h2 class="title">Messages <span class="badge" id="unread">0</span></h2><button class="pill" onclick="newMsg()">+ Nouveau</button></div>
+    <input class="search" id="m-search" placeholder="Rechercher une conversation..." oninput="renderMsgs()">
+    <div id="convs"></div>
+  </div>
+
+  <div id="v-mapage" class="view page hidden">
+    <div class="banner" id="banner"></div>
+    <div class="big av" id="big-av" onclick="pickImage('avatar')" title="Changer la photo"></div>
+    <div class="pinfo"><div class="title" id="p-name"></div><div class="mt" id="p-user"></div>
+      <button class="soft" style="margin-top:12px;background:#EFF6FF" onclick="go('settings')">Modifier ma page</button></div>
+    <div class="grid2"><button class="pill" onclick="postModal()">+ Créer une publication</button><button class="soft" onclick="prodModal()">📦 Ajouter un produit</button><button class="soft" style="grid-column:1/-1" onclick="shopModal()">🏪 Ma boutique : lien et QR code</button><button class="soft" style="grid-column:1/-1" onclick="inviteModal()">🎁 Inviter des amis</button></div>
+    <h3 style="margin-bottom:12px">Publications récentes</h3>
+    <div id="my-posts"></div>
+  </div>
+
+  <div id="v-settings" class="view page hidden">
+    <h2 class="title" style="margin-bottom:16px">Paramètres du compte</h2>
+    <div class="box">
+      <div class="fg"><label>Nom affiché</label><input id="s-name"></div>
+      <div class="fg"><label>Nom d'utilisateur</label><input id="s-user" autocapitalize="none"></div>
+      <div class="fg"><label>Adresse e-mail</label><input id="s-email" disabled></div>
+      <div class="fg"><label>Ville</label><input id="s-city" placeholder="Ex : Kinshasa"></div>
+      <div class="fg"><label>Numéro WhatsApp (format international, sans +)</label><input id="s-phone" inputmode="numeric" placeholder="243812345678"></div>
+      <div class="fg"><label>Email de contact (affiché aux acheteurs)</label><input id="s-cmail" type="email"></div>
+      <div style="margin:6px 0 10px"><b>🔔 Notifications</b><button class="pbtn b" type="button" onclick="enablePush()">Activer les notifications sur cet appareil</button>
+        <label class="chk"><input type="checkbox" id="pf-push"> Notifications push</label>
+        <label class="chk"><input type="checkbox" id="pf-sales"> Alertes de ventes</label>
+        <label class="chk"><input type="checkbox" id="pf-messages"> Alertes de messages</label>
+        <label class="chk"><input type="checkbox" id="pf-likes"> Alertes de likes et favoris</label>
+        <label class="chk"><input type="checkbox" id="pf-stats"> Alertes de statistiques (paliers de vues)</label>
+        <label class="chk"><input type="checkbox" id="pf-auto" onchange="localStorage.setItem('sp_autoplay', this.checked ? '1' : '0')"> Lecture automatique des vidéos (sans le son)</label></div>
+      <button class="pbtn gray" onclick="installApp()">📲 Installer sur l'écran d'accueil</button>
+      <div class="alt"><a onclick="legal('cgu')">Conditions d'utilisation</a> · <a onclick="legal('priv')">Confidentialité</a></div>
+      <div id="s-err" class="err"></div>
+      <div class="acts"><button class="c2" onclick="saveSettings()">Enregistrer</button><button class="c3" onclick="logout()">Déconnexion</button></div>
+    </div>
+  </div>
+
+  <div id="v-user" class="view page hidden">
+    <div style="margin-bottom:10px;cursor:pointer;color:#3B82F6;font-weight:600" onclick="go(prevView)">← Retour</div>
+    <div class="banner" id="u-banner"></div>
+    <div class="big av" id="u-av" style="cursor:default"></div>
+    <div class="pinfo"><div class="title" id="u-name"></div><div class="mt" id="u-user"></div>
+      <div id="u-follow"></div><button class="soft" style="margin-top:10px;width:100%;background:#EFF6FF" id="u-msg">✉️ Message</button></div>
+    <h3 style="margin:16px 0 12px">Publications</h3><div id="u-posts"></div>
+  </div>
+
+  <div id="v-product" class="view page hidden">
+    <div style="margin-bottom:10px;cursor:pointer;color:#3B82F6;font-weight:600" onclick="go(lastView)">← Retour</div>
+    <div id="prod-body"></div>
+  </div>
+
+  <div id="v-chat" class="view hidden">
+    <div class="chead"><span style="cursor:pointer;font-size:20px" onclick="go('messages')">←</span><div id="c-av"></div><b id="c-name" style="flex:1;min-width:0"></b><button class="callbtn" type="button" onclick="startCall(false)" title="Appel vocal">📞</button><button class="callbtn" type="button" onclick="startCall(true)" title="Appel vidéo">🎥</button></div>
+    <div class="msgs" id="msgs"></div>
+    <div class="cin"><div class="cinw"><input id="c-text" placeholder="Écrivez un message..." onkeypress="if(event.key==='Enter')sendMsg()"><button id="img-btn" type="button" onclick="$('img-file').click()" title="Envoyer une photo">📷</button><input id="img-file" type="file" accept="image/*" hidden onchange="sendChatImage(this)"><button id="voice-btn" type="button" onclick="toggleVoice()" title="Message vocal">🎙️</button></div><button onclick="sendMsg()">Envoyer</button></div>
+  </div>
+
+  <nav>
+    <div data-p="accueil" onclick="go('accueil')"><span>🏠</span>Accueil</div>
+    <div data-p="mapage" onclick="go('mapage')"><span>👤</span>Ma page</div>
+    <div data-p="produits" onclick="go('produits')"><span>📦</span>Produits</div>
+    <div data-p="messages" onclick="go('messages')"><span style="position:relative">✉️<b id="mbadge" class="badge hidden" style="position:absolute;top:-4px;right:-12px;font-size:10px;background:#EF4444;color:#fff;margin:0;padding:2px 6px">0</b></span>Messages</div>
+    <div data-p="decouvrir" onclick="go('decouvrir')"><span>🔍</span>Découvrir</div>
+  </nav>
+</div>
+
+<div id="modal" class="ov hidden" onclick="if(event.target===this)closeM()"><div class="modal" id="modal-box"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+// ====== CONFIG : colle ici les valeurs de Supabase > Project Settings > API ======
+window.SOCIALPAGES_VAPID_PUBLIC_KEY = 'BOVwFTIREggYCCf8-3ij7cdvM6Ebb45Os0nA3I-9EY5dnlOE-Bzoyr2ajFFr8lem2E1ygCB2930wsrE3oXMGUHQ';
+const SUPABASE_URL = 'https://ynmbzivljnyaovdppsrz.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_N2mmzxODT7V09XFmdP2ZBA_IpX0Z-9j';
+// =================================================================================
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const APP = ['accueil','decouvrir','produits','messages','mapage','settings','chat','user','product'];
+try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('sp_ref', r.toLowerCase().replace(/[^a-z0-9_.]/g, '').slice(0, 30)); } catch (e) {}
+let me = null, cur = 'landing', chatWith = null, feedF = 'pourvous', prodF = 'tous', prods = [], chan = null;
+
+// ---------- Navigation ----------
+function go(p) {
+  if (!['product', 'pub', 'register', 'login'].includes(p) && route()) history.replaceState(null, '', location.pathname + location.search);
+  if (APP.includes(p) && p !== 'product') lastView = p;
+  if (!['product', 'pub'].includes(p)) document.title = 'SocialPages';
+  if (me) updBadges();
+  document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+  $('v-' + p).classList.remove('hidden');
+  $('shell').classList.toggle('hidden', !APP.includes(p));
+  document.querySelectorAll('nav div').forEach(n => n.classList.toggle('active', n.dataset.p === p));
+  cur = p;
+  refresh();
+}
+function refresh() {
+  ({accueil: renderFeed, decouvrir: renderDiscover, produits: renderProducts, messages: renderMsgs,
+    mapage: renderMyPage, settings: loadSettings, chat: renderChat, user: renderUser, product: renderRoute, pub: renderRoute})[cur]?.();
+}
+function closeM() { $('modal').classList.add('hidden'); }
+function openM(html) { $('modal-box').innerHTML = html; $('modal').classList.remove('hidden'); }
+
+// ---------- Helpers ----------
+function av(u, size = 44) {
+  const s = `width:${size}px;height:${size}px`;
+  return `<div class="av" style="${s}">${u?.avatar_url ? `<img src="${esc(u.avatar_url)}">` : esc((u?.name || 'S')[0].toUpperCase())}</div>`;
+}
+function ago(ts) {
+  const m = Math.floor((Date.now() - new Date(ts)) / 60000);
+  if (m < 1) return "à l'instant";
+  if (m < 60) return m + ' min';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + ' h';
+  return h < 48 ? 'Hier' : Math.floor(h / 24) + ' j';
+}
+const empty = (i, t, s = '') => `<div class="empty"><div>${i}</div><h3>${t}</h3><p>${s}</p></div>`;
+async function upload(file, kind) {
+  try {
+    file = await compress(file);
+    const path = `${me.id}/${kind}-${Date.now()}.${file.name.split('.').pop()}`;
+    const { error } = await sb.storage.from('media').upload(path, file, { contentType: file.type });
+    if (error) throw error;
+    return sb.storage.from('media').getPublicUrl(path).data.publicUrl;
+  } catch (e) { alert("Échec de l'envoi du fichier : " + (e.message || JSON.stringify(e))); return null; }
+}
+function pickImage(field) {
+  const i = document.createElement('input');
+  i.type = 'file'; i.accept = 'image/*';
+  i.onchange = async () => {
+    if (!i.files[0]) return;
+    const url = await upload(i.files[0], field);
+    if (!url) return;
+    await sb.from('profiles').update({ [field + '_url']: url }).eq('id', me.id);
+    me[field + '_url'] = url;
+    renderMyPage();
+  };
+  i.click();
+}
+
+// ---------- Auth ----------
+async function register() {
+  const name = $('r-name').value.trim(), username = $('r-user').value.trim().replace('@', '').toLowerCase();
+  const email = $('r-email').value.trim(), pass = $('r-pass').value, err = $('r-err');
+  err.className = 'err'; err.textContent = '';
+  if (name.length < 2) return err.textContent = 'Nom trop court';
+  if (!/^[a-z0-9_.]{3,}$/.test(username)) return err.textContent = "Nom d'utilisateur : 3 caractères minimum (lettres, chiffres, _ et .)";
+  if (!email.includes('@')) return err.textContent = 'Email invalide';
+  if (pass.length < 6) return err.textContent = 'Mot de passe trop court (6 minimum)';
+  if (pass !== $('r-pass2').value) return err.textContent = 'Les mots de passe ne correspondent pas';
+  if (!$('r-terms').checked) return err.textContent = "Acceptez les conditions d'utilisation";
+  $('r-btn').disabled = true;
+  let res;
+  try { res = await sb.auth.signUp({ email, password: pass, options: { data: { name, username } } }); } catch (e) { res = { error: e }; }
+  $('r-btn').disabled = false;
+  const { data, error } = res;
+  if (error) return err.textContent = /database/i.test(error.message) ? "Ce nom d'utilisateur est déjà pris" : await netErr(error);
+  if (!data.session) { err.className = 'err ok'; return err.textContent = 'Compte créé. Confirmez votre email, puis connectez-vous.'; }
+  boot();
+}
+async function login() {
+  const err = $('l-err'); err.textContent = '';
+  let res;
+  try { res = await sb.auth.signInWithPassword({ email: $('l-email').value.trim(), password: $('l-pass').value }); } catch (e) { res = { error: e }; }
+  const { error } = res;
+  if (error) return err.textContent = (error.status === 400 || /invalid login/i.test(error.message)) ? 'Email ou mot de passe incorrect' : await netErr(error);
+  boot();
+}
+// Diagnostic précis des erreurs réseau (au lieu d'un simple « Failed to fetch »)
+async function netErr(e) {
+  const m = (e && e.message) || String(e);
+  if (!/fetch|network|load failed|timeout/i.test(m)) return m;
+  const host = new URL(SUPABASE_URL).host;
+  if (location.protocol === 'file:' || location.origin === 'null') return "Ce fichier est ouvert hors d'un site web (fichier local ou aperçu) : le navigateur bloque la connexion à Supabase. Ouvrez l'adresse https://… de votre site Netlify.";
+  if (/claude|anthropic/i.test(location.hostname)) return "Vous êtes dans l'aperçu de Claude, qui bloque les connexions vers d'autres sites (Supabase). Ouvrez plutôt l'adresse https://… de votre site Netlify.";
+  if (navigator.onLine === false) return 'Pas de connexion Internet. Réessayez quand le réseau est revenu.';
+  try {
+    const r = await fetch(SUPABASE_URL + '/auth/v1/health', { headers: { apikey: SUPABASE_KEY } });
+    return r.ok ? `Supabase (${host}) répond, mais cette requête a été bloquée : extension, VPN, pare-feu ou aperçu restreint. Essayez en navigation privée.`
+      : `Supabase (${host}) répond avec l'erreur ${r.status} : projet en pause ou clé invalide. Vérifiez le tableau de bord Supabase.`;
+  } catch (e2) { return `Impossible de joindre ${host} (réseau, DNS, bloqueur de contenu ou aperçu restreint).`; }
+}
+async function logout() {
+  if (chan) sb.removeChannel(chan);
+  await sb.auth.signOut(); me = null; go('landing');
+}
+async function boot() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return go(route() ? 'pub' : 'landing');
+  const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+  if (!data) { await sb.auth.signOut(); return go('landing'); }
+  me = { ...data, email: session.user.email };
+  claimRef();
+  syncPush(); setTimeout(pushBanner, 4000);
+  await loadBlocks();
+  if (chan) sb.removeChannel(chan);
+  chan = sb.channel('inbox').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `to_id=eq.${me.id}` },
+    ev => { updBadges(); alertMsg(ev.new); if (cur === 'chat' || cur === 'messages') refresh(); })
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => { updBadges(); if (cur === 'chat' || cur === 'messages') refresh(); })
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.id}` }, ev => onNotif(ev.new))
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ev => { handleRealtimePost(ev.new); }).subscribe();
+  sigListen(); liveDirListen();
+  go(route() ? 'product' : 'accueil');
+  setTimeout(welcome, 1500);
+}
+
+// ---------- Feed ----------
+function postsHTML(ps) {
+  ps.forEach(p => postCache[p.id] = p);
+  if (!ps.length) return empty('📭', 'Aucune publication', 'Créez votre premier post !');
+  return ps.map(p => {
+    const a = p.profiles, u = esc(p.media_url), mine = p.likes.find(l => l.user_id === me.id)?.kind;
+    const nl = p.likes.filter(l => l.kind === 'like').length, nd = p.likes.length - nl, nc = p.comments?.[0]?.count || 0;
+    const media = !p.media_url ? '' : p.media_type === 'video' ? `<video src="${u}" controls class="pm"></video>` : `<img src="${u}" class="pm">`;
+    return `<div class="box" data-post-id="${p.id}"><div class="ph"><div onclick="openUser('${a.id}')" style="display:flex;align-items:center;gap:12px;cursor:pointer">${av(a)}<div><b>${esc(a.name)}</b><div class="mt">${ago(p.created_at)}</div></div></div>
+      ${p.user_id === me.id ? `<button class="del" onclick="delPost('${p.id}')">Supprimer</button>` : `<button class="del" style="background:#F3F4F6;color:#6B7280" onclick="reportModal('post','${p.id}','${p.user_id}')">⚠️</button>`}</div>
+      <div class="pc">${esc(cleanTxt(p.text))}</div>${media}${p.video_url ? `<div class="vcar">${vidHTML(p.video_url)}</div>` : ''}${postProd(p.text) ? `<button type="button" class="buybtn" onclick="openProd('${postProd(p.text)}')">🛒 Acheter</button>` : ''}
+      <div class="cnt" data-cnt="${p.id}">${nl} J'aime · ${nd} Je n'aime pas · ${nc} commentaire${nc > 1 ? 's' : ''}</div>
+      <div class="pa"><button data-l="${p.id}" class="${mine === 'like' ? 'on-l' : ''}" type="button" onclick="event.preventDefault();event.stopPropagation();react('${p.id}','like')">👍 J'aime</button>
+      <button data-d="${p.id}" class="${mine === 'dislike' ? 'on-d' : ''}" type="button" onclick="event.preventDefault();event.stopPropagation();react('${p.id}','dislike')">👎 Je n'aime pas</button>
+      <button onclick="toggleC('${p.id}')">💬 Commenter</button><button onclick="shareModal('${p.id}')">↗️ Partager</button></div>
+      <div id="cm-${p.id}"></div></div>`;
+  }).join('');
+}
+const POSTQ = '*,profiles!user_id(id,name,avatar_url),likes(user_id,kind),comments(count)';
+const vis = sel => document.querySelector('.view:not(.hidden) ' + sel);
+
+// Ajoute une nouvelle publication sans reconstruire le fil : les vidéos déjà
+// chargées restent en place et la position de lecture/défilement est conservée.
+let realtimePostIds = new Set();
+async function handleRealtimePost(row) {
+  if (!me || !row || row.user_id === me.id || blocked.has(row.user_id) || cur !== 'accueil') return;
+  if (realtimePostIds.has(row.id) || document.querySelector(`#feed [data-post-id="${row.id}"]`)) return;
+  if (feedF === 'populaires') return; // le classement dépend du nombre de réactions
+  if (feedF === 'abonnements') {
+    const { data: followed } = await sb.from('follows').select('followee_id')
+      .eq('follower_id', me.id).eq('followee_id', row.user_id).maybeSingle();
+    if (!followed) return;
+  }
+  const { data: post, error } = await sb.from('posts').select(POSTQ).eq('id', row.id).maybeSingle();
+  if (error || !post || blocked.has(post.user_id)) return;
+  realtimePostIds.add(row.id);
+  const feed = $('feed');
+  const beforeHeight = document.documentElement.scrollHeight;
+  const beforeY = window.scrollY;
+  const emptyState = feed.querySelector('.empty');
+  if (emptyState) emptyState.remove();
+  feed.insertAdjacentHTML('afterbegin', postsHTML([post]));
+  const heightDelta = document.documentElement.scrollHeight - beforeHeight;
+  if (beforeY > 0 && heightDelta > 0) window.scrollTo(0, beforeY + heightDelta);
+  toast('Nouvelle publication ajoutée au fil');
+}
+let openC = null, viewUser = null, prevView = 'accueil';
+const reactingPosts = new Set();
+async function react(id, kind) {
+  // Une seule requête de réaction par publication à la fois.
+  // Cette fonction ne reconstruit jamais le fil : les iframes vidéo restent en place.
+  if (!me || reactingPosts.has(id)) return;
+  reactingPosts.add(id);
+  const buttons = document.querySelectorAll(`[data-post-id="${id}"] [data-l], [data-post-id="${id}"] [data-d]`);
+  buttons.forEach(b => b.disabled = true);
+  try {
+    const k = { post_id: id, user_id: me.id };
+    const { data, error: readError } = await sb.from('likes').select('kind').match(k).maybeSingle();
+    if (readError) throw readError;
+    const q = sb.from('likes');
+    const result = !data
+      ? await q.insert({ ...k, kind })
+      : data.kind === kind
+        ? await q.delete().match(k)
+        : await q.update({ kind }).match(k);
+    if (result.error) throw result.error;
+    const { data: ls, error: listError } = await sb.from('likes').select('user_id,kind').eq('post_id', id);
+    if (listError) throw listError;
+    if (postCache[id]) postCache[id].likes = ls || [];
+    updPostUI(id);
+  } catch (e) {
+    toast(e.message || 'Impossible d’enregistrer la réaction');
+  } finally {
+    reactingPosts.delete(id);
+    buttons.forEach(b => b.disabled = false);
+  }
+}
+function updPostUI(id) {
+  const p = postCache[id]; if (!p) return;
+  const mine = p.likes.find(l => l.user_id === me.id)?.kind, nl = p.likes.filter(l => l.kind === 'like').length, nc = p.comments?.[0]?.count || 0;
+  document.querySelectorAll(`[data-cnt="${id}"]`).forEach(e => e.textContent = `${nl} J'aime · ${p.likes.length - nl} Je n'aime pas · ${nc} commentaire${nc > 1 ? 's' : ''}`);
+  document.querySelectorAll(`[data-l="${id}"]`).forEach(e => e.classList.toggle('on-l', mine === 'like'));
+  document.querySelectorAll(`[data-d="${id}"]`).forEach(e => e.classList.toggle('on-d', mine === 'dislike'));
+}
+function toggleC(id) {
+  const o = openC && vis('#cm-' + openC); if (o) o.innerHTML = '';
+  openC = openC === id ? null : id; afterPosts();
+}
+async function afterPosts() {
+  const box = openC && vis('#cm-' + openC); if (!box) return;
+  const { data } = await sb.from('comments').select('*,profiles!user_id(name,avatar_url)').eq('post_id', openC).order('created_at');
+  box.innerHTML = `<div style="margin-top:12px">${(data || []).map(c => `<div class="ph" style="align-items:flex-start;margin-bottom:10px">${av(c.profiles, 34)}<div style="background:#F3F4F6;border-radius:12px;padding:8px 12px"><b style="font-size:13px">${esc(c.profiles.name)}</b> <span class="mt">${ago(c.created_at)}</span><div style="font-size:14px;overflow-wrap:anywhere">${esc(c.text)}</div></div></div>`).join('') || '<div class="mt" style="margin-bottom:8px">Aucun commentaire</div>'}
+    <div class="cin2"><input id="ci-${openC}" placeholder="Écrire un commentaire..." onkeypress="if(event.key==='Enter')sendC('${openC}')"><button onclick="sendC('${openC}')">Envoyer</button></div></div>`;
+}
+async function sendC(id) {
+  const i = vis('#ci-' + id), text = i.value.trim(); if (!text) return;
+  const { error } = await sb.from('comments').insert({ post_id: id, user_id: me.id, text });
+  if (error) return alert(error.message);
+  i.value = ''; const c = postCache[id]; if (c) c.comments = [{ count: (c.comments?.[0]?.count || 0) + 1 }];
+  updPostUI(id); afterPosts();
+}
+
+// ---------- Partage ----------
+const base = () => location.href.split('#')[0];
+const wa = t => window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
+function copyTxt(t) {
+  (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast('Lien copié !'), () => prompt('Copiez ce lien :', t));
+}
+function shareModal(id) {
+  const p = postCache[id];
+  shareMenu({ url: base(), title: 'SocialPages', text: (cleanTxt(p.text) ? cleanTxt(p.text).slice(0, 100) + ' — ' : '') + 'sur SocialPages', img: p.media_type === 'image' ? p.media_url : null });
+}
+
+// ---------- Profil d'un autre utilisateur ----------
+function openUser(id) {
+  if (id === me.id) return go('mapage');
+  viewUser = id; if (cur !== 'user') prevView = cur; openC = null; go('user');
+}
+async function renderUser() {
+  const [{ data: u }, { count }, { data: f }, { data: ps, error }] = await Promise.all([
+    sb.from('profiles').select('*').eq('id', viewUser).single(),
+    sb.from('follows').select('*', { count: 'exact', head: true }).eq('followee_id', viewUser),
+    sb.from('follows').select('followee_id').match({ follower_id: me.id, followee_id: viewUser }),
+    sb.from('posts').select(POSTQ).eq('user_id', viewUser).order('created_at', { ascending: false })]);
+  if (!u) return go(prevView);
+  const on = (f || []).length > 0;
+  $('u-name').textContent = u.name; $('u-user').textContent = `@${u.username} · ${count || 0} abonné${count > 1 ? 's' : ''}`;
+  $('u-banner').innerHTML = u.banner_url ? `<img src="${esc(u.banner_url)}">` : '';
+  $('u-av').innerHTML = u.avatar_url ? `<img src="${esc(u.avatar_url)}" style="width:100%;height:100%;object-fit:cover">` : `<div style="color:#fff;font-size:50px;font-weight:bold;height:100%;display:flex;align-items:center;justify-content:center">${esc(u.name[0].toUpperCase())}</div>`;
+  $('u-follow').innerHTML = `<button class="bigfollow ${on ? 'on' : ''}" onclick="followUser('${u.id}',${on})">${on ? 'Abonné ✓' : "S'abonner"}</button>`;
+  $('u-msg').onclick = () => openChat(u.id);
+  $('u-posts').innerHTML = error ? empty('⚠️', 'Erreur de chargement', esc(error.message)) : postsHTML(ps || []);
+  afterPosts();
+}
+async function followUser(id, on) {
+  const q = sb.from('follows');
+  await (on ? q.delete().match({ follower_id: me.id, followee_id: id }) : q.insert({ follower_id: me.id, followee_id: id }));
+  renderUser();
+}
+let feedN = 10, blocked = new Set();
+async function loadBlocks() { const { data } = await sb.from('blocks').select('blocked_id'); blocked = new Set((data || []).map(b => b.blocked_id)); }
+async function renderFeed() {
+  $('newbar').classList.add('hidden');
+  let q = sb.from('posts').select(POSTQ).order('created_at', { ascending: false }).limit(feedN + 1);
+  if (feedF === 'abonnements') {
+    const { data: f } = await sb.from('follows').select('followee_id').eq('follower_id', me.id);
+    q = q.in('user_id', (f || []).map(x => x.followee_id).concat(me.id));
+  }
+  let { data: ps, error } = await q;
+  if (error) { $('feed').innerHTML = empty('⚠️', 'Erreur de chargement', esc(error.message)); return; }
+  ps = (ps || []).filter(p => !blocked.has(p.user_id));
+  const more = ps.length > feedN; ps = ps.slice(0, feedN);
+  if (feedF === 'populaires') ps.sort((a, b) => b.likes.length - a.likes.length);
+  $('feed').innerHTML = postsHTML(ps) + (more ? '<button class="pbtn gray" onclick="feedN+=10;renderFeed()">Voir plus</button>' : '');
+  afterPosts();
+}
+function feedFilter(f, btn) {
+  feedF = f; feedN = 10;
+  document.querySelectorAll('#feed-f button').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on'); renderFeed();
+}
+async function like(id, liked) {
+  const q = sb.from('likes');
+  await (liked ? q.delete().match({ post_id: id, user_id: me.id }) : q.insert({ post_id: id, user_id: me.id }));
+  refresh();
+}
+async function delPost(id) {
+  if (!confirm('Supprimer cette publication ?')) return;
+  await sb.from('posts').delete().eq('id', id); refresh();
+}
+// ---------- Lien produit dans une publication (bouton Acheter) ----------
+const PTAG = /\s*\[\[p:([0-9a-fA-F-]{36})\]\]/;
+const cleanTxt = t => String(t ?? '').replace(PTAG, '');
+const postProd = t => (String(t ?? '').match(PTAG) || [])[1] || null;
+function openProd(id) { location.hash = '#/p/' + id; }
+// Liens courts TikTok : on les convertit en lien complet avant l'enregistrement
+// Résolution d'un lien court TikTok (vt.tiktok.com / vm.tiktok.com) : essai direct puis via relais CORS
+async function ttResolve(u) {
+  const api = 'https://www.tiktok.com/oembed?url=' + encodeURIComponent(u);
+  for (const t of [api, 'https://corsproxy.io/?url=' + encodeURIComponent(api), 'https://api.allorigins.win/raw?url=' + encodeURIComponent(api)]) {
+    try {
+      const c = new AbortController(), to = setTimeout(() => c.abort(), 7000);
+      const r = await fetch(t, { signal: c.signal }); clearTimeout(to);
+      const j = await r.json(), id = j.embed_product_id || (j.html || '').match(/data-video-id="(\d+)"/)?.[1];
+      if (id) return { id, url: j.author_url ? j.author_url.replace(/\/$/, '') + '/video/' + id : 'https://www.tiktok.com/v/' + id };
+    } catch (err) {}
+  }
+  // 2e méthode : on lit la page TikTok (la redirection du lien court est suivie) et on y cherche l'identifiant de la vidéo
+  for (const t of ['https://corsproxy.io/?url=' + encodeURIComponent(u), 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u), 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u)]) {
+    try {
+      const c = new AbortController(), to = setTimeout(() => c.abort(), 8000);
+      const r = await fetch(t, { signal: c.signal }); clearTimeout(to);
+      const txt = await r.text(), m = txt.match(/tiktok\.com\/(@[\w.-]+)\/video\/(\d{10,})/) || txt.match(/"(?:videoId|itemId)":"(\d{10,})"/);
+      if (m) return m.length > 2 ? { id: m[2], url: 'https://www.tiktok.com/' + m[1] + '/video/' + m[2] } : { id: m[1], url: 'https://www.tiktok.com/v/' + m[1] };
+    } catch (err) {}
+  }
+  return null;
+}
+async function normVid(u) {
+  const e = embed(u);
+  if (!e || !e.tt) return u;
+  const r = await ttResolve(u);
+  if (r) return r.url;
+  throw new Error("Ce lien court TikTok n'a pas pu être converti. Ouvrez-le dans votre navigateur, copiez l'adresse complète (tiktok.com/@nom/video/…) puis collez-la ici.");
+}
+// Vérification du lien pendant la saisie
+let vcT;
+function vCheck(i, out) {
+  const el = document.getElementById(out), u = i.value.trim(); clearTimeout(vcT); if (!el) return;
+  if (!u) { el.innerHTML = ''; return; }
+  const e = embed(u);
+  if (!e) { el.innerHTML = '<span style="color:#DC2626">⚠️ Lien non reconnu. Utilisez un lien YouTube, TikTok, Facebook ou Instagram.</span>'; return; }
+  if (e.tt) { el.innerHTML = '<span style="color:#6B7280">ℹ️ Lien court TikTok : il sera converti automatiquement à la publication.</span>'; return; }
+  el.innerHTML = `<span style="color:#059669">✅ ${e.n} reconnu</span>`;
+  if (e.yt) vcT = setTimeout(async () => {
+    try {
+      const r = await fetch('https://www.youtube.com/oembed?format=json&url=' + encodeURIComponent('https://www.youtube.com/watch?v=' + e.yt));
+      if (r.status === 401 || r.status === 403) el.innerHTML = "<span style=\"color:#DC2626\">⚠️ YouTube : l'auteur a interdit la lecture hors de YouTube. Choisissez une autre vidéo.</span>";
+      else if (r.status === 404) el.innerHTML = '<span style="color:#DC2626">⚠️ Vidéo introuvable ou privée.</span>';
+    } catch (x) {}
+  }, 500);
+}
+async function loadMyProdsInto(id) {
+  try {
+    const { data } = await sb.from('products').select('id,name,price,status').eq('user_id', me.id).order('created_at', { ascending: false });
+    const el = $(id); if (!el || !data?.length) return;
+    el.innerHTML = '<option value="">🛒 Aucun produit lié (pas de bouton Acheter)</option>' + data.map(p => `<option value="${p.id}">🛒 ${esc(p.name)} · ${p.status === 'Gratuit' ? 'Gratuit' : esc(p.price) + ' $'}</option>`).join('');
+  } catch (err) {}
+}
+function postModal(pick, vid) {
+  openM(`<h3>Créer une publication</h3><textarea id="pm-text" rows="4" placeholder="Exprimez-vous..."></textarea>
+    <input type="file" id="pm-file" accept="image/*" style="margin-top:12px" onchange="previewFile(this)">
+    <input id="pm-vid" placeholder="🎥 Lien vidéo (YouTube, TikTok, Facebook, Instagram)" style="margin-top:10px" oninput="vCheck(this,'pm-vst')">
+    <div id="pm-vst" style="font-size:12px;margin:4px 2px 0"></div>
+    <div class="mt" style="font-size:12px;margin:4px 2px 0">💡 Pour que la vidéo se lise dans SocialPages : publiez-la d'abord sur le réseau en <b>public</b>, laissez l'<b>intégration autorisée</b>, puis collez le <b>lien complet</b>.</div>
+    <select id="pm-prod" style="margin-top:10px;width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;background:#fff"><option value="">🛒 Aucun produit lié (pas de bouton Acheter)</option></select>
+    <div id="pm-prev" style="margin-top:12px"></div><div id="pm-err" class="err"></div>
+    <div class="acts"><button class="c1" onclick="closeM()">Annuler</button><button class="c2" id="pm-btn" onclick="publish()">Publier</button></div>`);
+  loadMyProdsInto('pm-prod');
+  if (pick) setTimeout(() => $('pm-file').click(), 100);
+  if (vid) setTimeout(() => $('pm-vid').focus(), 100);
+}
+function previewFile(i) {
+  const f = i.files[0]; if (!f) return;
+  const u = URL.createObjectURL(f);
+  $('pm-prev').innerHTML = f.type.startsWith('video') ? `<video src="${u}" controls style="width:100%;border-radius:12px;max-height:300px"></video>` : `<img src="${u}" style="width:100%;border-radius:12px;max-height:300px;object-fit:cover">`;
+}
+async function publish() {
+  const text = $('pm-text').value.trim(), f = $('pm-file').files[0], err = $('pm-err'), btn = $('pm-btn');
+  err.textContent = '';
+  if (f && !f.type.startsWith('image/')) return err.textContent = '⚠️ Vidéos : collez un lien (YouTube, TikTok, Facebook, Instagram).';
+  if (!text && !f && !$('pm-vid').value.trim()) return err.textContent = 'Ajoutez du texte, une photo ou un lien vidéo';
+  btn.disabled = true; btn.textContent = 'Publication en cours...';
+  try {
+    let media_url = null, media_type = null;
+    if (f) {
+      media_url = await upload(f, 'post');
+      if (!media_url) throw new Error("L'envoi du média a échoué");
+      media_type = 'image';
+    }
+    let vu = $('pm-vid').value.trim(); if (vu && !embed(vu)) throw new Error('⚠️ Lien vidéo non valide');
+    if (vu) vu = await normVid(vu);
+    const pid = $('pm-prod')?.value;
+    const fullText = pid ? (text + '\n[[p:' + pid + ']]').trim() : text;
+    const { error } = await sb.from('posts').insert({ user_id: me.id, text: fullText, media_url, media_type, video_url: vu || null });
+    if (error) throw error;
+    closeM(); refresh();
+  } catch (e) {
+    err.textContent = 'Erreur : ' + (e.message || JSON.stringify(e));
+    alert('Publication impossible : ' + (e.message || JSON.stringify(e)));
+  } finally { btn.disabled = false; btn.textContent = 'Publier'; }
+}
+
+// ---------- Ma page / réglages ----------
+async function renderMyPage() {
+  $('p-name').textContent = me.name;
+  $('big-av').innerHTML = me.avatar_url ? `<img src="${esc(me.avatar_url)}" style="width:100%;height:100%;object-fit:cover">` : `<div style="color:#fff;font-size:50px;font-weight:bold;height:100%;display:flex;align-items:center;justify-content:center">${esc(me.name[0].toUpperCase())}</div>`;
+  $('banner').innerHTML = (me.banner_url ? `<img src="${esc(me.banner_url)}">` : '') + `<button onclick="pickImage('banner')">✏️ Modifier</button>`;
+  const [{ count }, { data: ps, error }] = await Promise.all([
+    sb.from('follows').select('*', { count: 'exact', head: true }).eq('followee_id', me.id),
+    sb.from('posts').select(POSTQ).eq('user_id', me.id).order('created_at', { ascending: false })]);
+  $('p-user').textContent = `@${me.username} · ${count || 0} abonnés`;
+  $('my-posts').innerHTML = error ? empty('⚠️', 'Erreur de chargement', esc(error.message)) : postsHTML(ps || []);
+  afterPosts();
+}
+const PREFS = ['push', 'sales', 'messages', 'likes', 'stats'];
+function loadSettings() {
+  if ($('pf-auto')) $('pf-auto').checked = localStorage.getItem('sp_autoplay') !== '0';
+  $('s-name').value = me.name; $('s-user').value = me.username; $('s-email').value = me.email;
+  $('s-phone').value = me.phone || ''; $('s-city').value = me.city || ''; $('s-cmail').value = me.contact_email || '';
+  PREFS.forEach(k => $('pf-' + k).checked = !!(me.prefs || {})[k]); $('s-err').textContent = '';
+}
+async function saveSettings() {
+  const name = $('s-name').value.trim(), username = $('s-user').value.trim().replace('@', '').toLowerCase();
+  const phone = $('s-phone').value.replace(/\D/g, ''), cm = $('s-cmail').value.trim(), err = $('s-err');
+  if (name.length < 2 || !/^[a-z0-9_.]{3,}$/.test(username)) return err.textContent = "Nom ou nom d'utilisateur invalide";
+  if (phone && (phone.length < 8 || phone.length > 15)) return err.textContent = 'Numéro WhatsApp invalide (ex : 243812345678)';
+  if (cm && !/^[^\s@'"<>]+@[^\s@'"<>]+\.[^\s@'"<>]+$/.test(cm)) return err.textContent = 'Email de contact invalide';
+  const prefs = {}; PREFS.forEach(k => prefs[k] = $('pf-' + k).checked);
+  if (prefs.push && 'Notification' in window && Notification.permission === 'default') await Notification.requestPermission();
+  const row = { name, username, phone: phone || null, contact_email: cm || null, prefs, city: $('s-city').value.trim() || null };
+  const { error } = await sb.from('profiles').update(row).eq('id', me.id);
+  if (error) return err.textContent = error.code === '23505' ? "Ce nom d'utilisateur est déjà pris" : error.message;
+  Object.assign(me, row); toast('✅ Enregistré'); go('mapage');
+}
+
+// ---------- Découvrir ----------
+async function renderDiscover() {
+  const s = $('d-search').value.trim().replace(/[%,()]/g, '');
+  let q = sb.from('profiles').select('*').neq('id', me.id).limit(50);
+  if (s) q = q.or(`name.ilike.%${s}%,username.ilike.%${s}%`);
+  const [{ data: us }, { data: f }] = await Promise.all([q, sb.from('follows').select('followee_id').eq('follower_id', me.id)]);
+  const ids = (f || []).map(x => x.followee_id);
+  $('discover').innerHTML = (us || []).length ? us.map(u => `<div class="item" style="cursor:default">${av(u, 50)}
+    <div class="info" onclick="openUser('${u.id}')" style="cursor:pointer"><b>${esc(u.name)}</b><div class="mt">@${esc(u.username)}</div></div>
+    <button class="follow ${ids.includes(u.id) ? 'on' : ''}" onclick="follow('${u.id}',${ids.includes(u.id)})">${ids.includes(u.id) ? 'Abonné' : 'Suivre'}</button></div>`).join('') : empty('🔍', 'Aucun résultat');
+}
+async function follow(id, on) {
+  const q = sb.from('follows');
+  await (on ? q.delete().match({ follower_id: me.id, followee_id: id }) : q.insert({ follower_id: me.id, followee_id: id }));
+  renderDiscover();
+}
+
+// ---------- Produits ----------
+// Comptes sans limite de publication ni de modification (auteurs de la plateforme).
+// ⚠️ Remplacez par votre nom d'utilisateur SocialPages, sans @, en minuscules.
+const OWNERS = ['ton_nom_utilisateur'];
+const noLimit = () => !!me && OWNERS.includes((me.username || '').toLowerCase());
+const MAXP = 3, MAXE = 10, d30 = () => new Date(Date.now() - 30 * 864e5).toISOString();
+const CATS = ['📚 Ebooks', '📱 Électronique', '👗 Mode', '🏠 Maison', '🍕 Food', '🚗 Véhicules', '🛠 Services', '🎁 Autres'];
+const PQ = '*,profiles!user_id(id,name,username,phone,contact_email,avatar_url),product_likes(user_id)';
+let quota = { used: 0, next: '', edits: {} }, lastView = 'accueil';
+const priceTxt = p => p.status === 'Gratuit' ? 'Gratuit' : p.price + ' $';
+const editsLeft = id => noLimit() ? Infinity : MAXE - (quota.edits[id] || 0);
+const toast = (t, ms = 3000) => { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), ms); };
+const track = (pid, act) => sb.rpc('track', { pid, act }).then(() => {});
+const needAuth = () => { toast('Créez un compte gratuit pour continuer'); go('register'); };
+const okUrl = u => /^https?:\/\/\S+$/i.test(u || '');
+const isBook = p => okUrl(getMeta(p?.description).f) || /Ebooks/.test(p?.category || '');
+const freeBook = p => okUrl(getMeta(p?.description).f) && (p.status === 'Gratuit' || !p.price);
+const route = () => { const m = location.hash.match(/^#\/(p|vendeur)\/([^\/?]+)/); return m ? { t: m[1], id: decodeURIComponent(m[2]) } : null; };
+
+// ---------- YouTube : correction de l'erreur 153 ----------
+// L'erreur 153 = YouTube ne reçoit pas d'origine/referer valide. On transmet donc origin + widget_referrer,
+// on active l'API JS pour détecter l'erreur, et on bascule sur une carte « Lire sur YouTube » si besoin.
+const ORI = /^https?:$/.test(location.protocol) ? location.origin : '';
+function ytSrc(id, mode = 0, auto = false) {
+  // mode 0 : youtube.com + origine ; 1 : youtube-nocookie.com + origine ; 2 : lecteur simple, sans paramètres
+  const host = mode === 1 ? 'www.youtube-nocookie.com' : 'www.youtube.com';
+  let q = 'playsinline=1&rel=0' + (auto ? '&autoplay=1' : '');
+  q += '&enablejsapi=1'; if (mode < 2 && ORI) q += '&origin=' + encodeURIComponent(ORI);
+  if (mode === 0 && ORI) q += '&widget_referrer=' + encodeURIComponent(location.href.split('#')[0]);
+  return 'https://' + host + '/embed/' + id + '?' + q;
+}
+let ytApiP;
+function loadYT() {
+  if (ytApiP) return ytApiP;
+  return ytApiP = new Promise(res => {
+    if (window.YT && YT.Player) return res();
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { prev && prev(); res(); };
+    const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s);
+  });
+}
+// Android : ouvre directement l'application YouTube (le site mobile affiche parfois « Vidéo non disponible »)
+function ytOpenUrl(id) {
+  const web = 'https://www.youtube.com/watch?v=' + id;
+  return /Android/i.test(navigator.userAgent)
+    ? 'intent://www.youtube.com/watch?v=' + id + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent(web) + ';end'
+    : web;
+}
+const YT_FRAME = 'loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"';
+function ytMount(el, id, mode) {
+  el.querySelector('iframe')?.remove(); el.querySelector('.ytfb')?.remove();
+  el.insertAdjacentHTML('afterbegin', `<iframe src="${ytSrc(id, mode)}" title="YouTube" ${YT_FRAME}></iframe>`);
+  el._mode = mode;
+  loadYT().then(() => { try { new YT.Player(el.querySelector('iframe'), { events: { onError: e => ytError(el, id, e.data) } }); } catch (x) {} });
+}
+// En cas d'erreur : on essaie d'autres versions du lecteur DANS SocialPages avant d'abandonner
+function ytError(el, id, code) {
+  const hard = [100, 101, 150].includes(code); // vidéo supprimée/privée ou intégration interdite par l'auteur : inutile de réessayer
+  if (!hard && (el._mode ?? 0) < 2) return ytMount(el, id, (el._mode ?? 0) + 1);
+  ytFallback(el, id, code);
+}
+function ytFallback(el, id, code) {
+  el.querySelector('iframe')?.remove(); el.querySelector('.ytfb')?.remove();
+  const msg = [100, 101, 150].includes(code) ? "L'auteur a interdit la lecture de cette vidéo en dehors de YouTube." : 'Cette vidéo ne peut pas être lue ici pour le moment.';
+  el.insertAdjacentHTML('afterbegin', `<div class="ytfb" style="background-image:url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)"><div class="ytmsg"><div>${msg}</div><button type="button" onclick="ytMount(this.closest('.vitem'),'${id}',2)">↻ Réessayer</button><a href="${'https://www.youtube.com/watch?v=' + id}" target="_blank" rel="noopener">Ouvrir sur YouTube${code ? ' (erreur ' + code + ')' : ''}</a></div></div>`);
+}
+async function hydrateYT() {
+  const els = [...document.querySelectorAll('.vitem[data-yt]')]; if (!els.length) return;
+  try { await loadYT(); } catch (e) { return; }
+  for (const el of els) {
+    const id = el.dataset.yt; el.removeAttribute('data-yt'); el._mode = 0;
+    const f = el.querySelector('iframe'); if (!f) continue;
+    try { new YT.Player(f, { events: { onError: e => ytError(el, id, e.data) } }); } catch (e) {}
+  }
+}
+// Vidéos : liens uniquement (YouTube, TikTok, Facebook, Instagram Reels)
+function embed(u) {
+  let m;
+  if (!okUrl(u)) return null;
+  if ((m = u.match(/(?:youtube\.com\/(?:watch\?(?:[^#\s]*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([\w-]{11})/))) return { i: '▶️', n: 'YouTube', k: 'yt', yt: m[1], src: ytSrc(m[1]) };
+  if ((m = u.match(/tiktok\.com\/(?:@[\w.-]+\/video|v)\/(\d+)/))) return { i: '🎵', n: 'TikTok', k: 'vt tt', src: 'https://www.tiktok.com/player/v1/' + m[1] + '?controls=1&progress_bar=1&play_button=1&volume_control=1&fullscreen_button=1&timestamp=0&loop=0&autoplay=0&music_info=0&description=0&rel=0&native_context_menu=0' };
+  if (/^https?:\/\/(vm|vt)\.tiktok\.com\/\S+|^https?:\/\/(www\.)?tiktok\.com\/t\/\S+/i.test(u)) return { i: '🎵', n: 'TikTok', k: 'vt tt', src: null, tt: true };
+  if (/^https?:\/\/(www\.|m\.|web\.)?(facebook\.com\/(watch|reel|[^\/]+\/videos)|fb\.watch)/i.test(u)) return { i: '📘', n: 'Facebook', k: /\/reel\//.test(u) ? 'vt' : 'yt', src: 'https://www.facebook.com/plugins/video.php?show_text=false&href=' + encodeURIComponent(u) };
+  if ((m = u.match(/instagram\.com\/(?:[\w.]+\/)?(reels?|p|tv)\/([\w-]+)/))) return { i: '📸', n: 'Instagram', k: 'vt ig', src: 'https://www.instagram.com/' + (m[1] === 'p' || m[1] === 'tv' ? 'p' : 'reel') + '/' + m[2] + '/embed' };
+  return null;
+}
+function addVid(v = '') {
+  const d = document.createElement('div'); d.className = 'vrow';
+  d.innerHTML = `<span>🔗</span><input placeholder="Lien vidéo (YouTube, TikTok, Facebook, Instagram)" oninput="vIcon(this)">`;
+  d.querySelector('input').value = v; $('vl').appendChild(d); vIcon(d.querySelector('input'));
+}
+function vIcon(i) {
+  const u = i.value.trim(), e = u ? embed(u) : null;
+  i.previousElementSibling.textContent = !u ? '🔗' : e ? e.i : '⚠️';
+  i.style.borderColor = !u ? '' : e ? (e.tt ? '#9CA3AF' : '#10B981') : '#DC2626';
+  i.title = !u ? '' : e ? (e.tt ? 'Lien court TikTok : converti automatiquement à la publication' : e.n + ' reconnu') : 'Lien non reconnu';
+}
+
+async function loadQuota() {
+  const [{ data: lg }, { data: ed }] = await Promise.all([
+    sb.from('product_log').select('created_at').gte('created_at', d30()).order('created_at'),
+    sb.from('product_edits').select('product_id').gte('created_at', d30())]);
+  quota.used = (lg || []).length;
+  quota.next = lg && lg[0] ? new Date(new Date(lg[0].created_at).getTime() + 30 * 864e5).toLocaleDateString('fr-FR') : '';
+  quota.edits = {}; (ed || []).forEach(e => quota.edits[e.product_id] = (quota.edits[e.product_id] || 0) + 1);
+}
+
+function cardHTML(p) {
+  const mine = me && p.user_id === me.id, m = getMeta(p.description), stock = typeof m.s === 'number' ? m.s : null;
+  const sold = p.status === 'Vendu' || stock === 0, promo = m.o && m.o > p.price && p.status !== 'Gratuit' ? Math.round((1 - p.price / m.o) * 100) : 0;
+  const fresh = p.created_at && Date.now() - new Date(p.created_at).getTime() < 2 * 864e5;
+  const verified = prods.filter(x => x.user_id === p.user_id).length > 5, fav = !!me && (p.favorites || []).some(f => f.user_id === me.id);
+  const badge = promo ? `<span class="cb">-${promo}%</span>` : fresh ? '<span class="cb n">Nouveau</span>' : stock !== null && stock > 0 && stock <= 5 ? `<span class="cb w">Plus que ${stock}</span>` : p.status === 'Gratuit' ? `<span class="cb n">${isBook(p) ? '📚 Gratuit' : 'Gratuit'}</span>` : '';
+  const img = p.images?.[0] || p.image_url;
+  return `<div class="pcard" onclick="location.hash='#/p/${p.id}'">
+    <div class="pimg">${img ? `<img loading="lazy" src="${esc(img)}">` : isBook(p) ? '📚' : '📦'}${badge}
+      ${mine ? '' : `<button class="chrt" onclick="event.stopPropagation();togFavP('${p.id}',${fav},this)">${fav ? '❤️' : '🤍'}</button>`}
+      ${(p.videos || []).length ? '<span class="cvd">▶ Vidéo</span>' : ''}${verified ? '<span class="cvf">✔</span>' : ''}${sold ? '<div class="csold">Vendu</div>' : ''}</div>
+    <div class="pi"><div class="cn">${esc(p.name)}</div><div class="price">${priceTxt(p)}${promo ? `<s class="cold">${m.o} $</s>` : ''}</div>
+    <div class="cs">${esc(p.profiles.name)}${p.city ? ' · ' + esc(p.city) : ''} · 👁 ${p.views || 0}${mine ? ` <span class="cedit" onclick="event.stopPropagation();prodModal('${p.id}')">✏️</span>` : ''}</div></div></div>`;
+}
+async function togFavP(id, on, el) {
+  if (!me) return needAuth();
+  const k = { product_id: id, user_id: me.id }, q = sb.from('favorites');
+  const { error } = await (on ? q.delete().match(k) : q.insert(k)); if (error) return toast(error.message);
+  if (!on) { track(id, 'fav'); toast('⭐ Ajouté aux favoris'); }
+  el.textContent = on ? '🤍' : '❤️'; el.setAttribute('onclick', `event.stopPropagation();togFavP('${id}',${!on},this)`);
+  const pr = prods.find(x => x.id === id); if (pr) pr.favorites = on ? (pr.favorites || []).filter(f => f.user_id !== me.id) : [...(pr.favorites || []), { user_id: me.id }];
+}
+function viewImg(src) {
+  const d = document.createElement('div'); d.style.cssText = 'position:fixed;inset:0;background:#000;z-index:999;display:flex;align-items:center;justify-content:center';
+  d.innerHTML = `<img src="${esc(src)}" style="max-width:100%;max-height:100%;object-fit:contain"><button style="position:absolute;top:14px;right:14px;width:40px;height:40px;border:none;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:20px">✕</button>`;
+  d.onclick = () => d.remove(); document.body.appendChild(d);
+}
+function galCnt(el) { const i = Math.round(el.scrollLeft / el.clientWidth), c = document.getElementById('gcnt'); if (c) c.textContent = (i + 1) + ' / ' + el.children.length; }
+
+async function renderProducts() {
+  await loadQuota(); catInit();
+  const s = $('p-search').value.trim().toLowerCase();
+  const [{ data, error }, { count: mc }] = await Promise.all([
+    pq(),
+    sb.from('messages').select('*', { count: 'exact', head: true }).eq('to_id', me.id)]);
+  if (error) { $('products').innerHTML = empty('⚠️', 'Erreur de chargement', esc(error.message)); return; }
+  prods = (data || []).filter(p => !blocked.has(p.user_id));
+  const my = prods.filter(p => p.user_id === me.id), sum = f => my.reduce((n, p) => n + f(p), 0);
+  const ev = a => sum(p => p.product_events.filter(e => e.action === a).length), full = !noLimit() && quota.used >= MAXP;
+  $('addp').style.opacity = full ? .5 : 1;
+  $('dash').innerHTML = `<div class="box"><b>📊 Tableau de bord vendeur</b><div class="sgrid" style="margin-top:10px">
+    <div><b>${quota.used}/${noLimit() ? '∞' : MAXP}</b>📦 Produits ce mois</div><div><b>${sum(p => p.views || 0)}</b>👁 Vues</div><div><b>${sum(p => p.product_likes.length)}</b>❤️ Likes</div>
+    <div><b>${mc || 0}</b>💬 Messages</div><div><b>${ev('buy') + ev('wa')}</b>🛒 Commandes</div><div><b>${sum(p => p.favorites.length)}</b>⭐ Favoris</div></div>
+    ${full ? `<div class="err" style="margin-top:10px">⚠️ Limite atteinte. Réessayez le ${quota.next}.</div>` : `<div class="mt" style="margin-top:10px">📦 ${quota.used}/${noLimit() ? '∞' : MAXP} produits utilisés ce mois-ci</div>`}</div>`;
+  const vc = {}; prods.forEach(p => vc[p.user_id] = (vc[p.user_id] || 0) + 1);
+  const city = (me.city || '').toLowerCase(), isSold = p => p.status === 'Vendu' || getMeta(p.description).s === 0;
+  const okF = p => prodF === 'tous' || (prodF === 'mes' ? p.user_id === me.id : prodF === 'Gratuit' ? p.status === 'Gratuit'
+    : prodF === 'ebooks' ? isBook(p)
+    : prodF === 'promo' ? (getMeta(p.description).o > p.price && p.status !== 'Gratuit')
+    : prodF === 'nouveau' ? (p.created_at && Date.now() - new Date(p.created_at).getTime() < 2 * 864e5)
+    : prodF === 'proche' ? (!!city && (p.city || '').toLowerCase().includes(city))
+    : prodF === 'verifies' ? vc[p.user_id] > 5 : true);
+  const list = prods.filter(p => (!s || p.name.toLowerCase().includes(s)) && okF(p)).sort((a, b) => isSold(a) - isSold(b));
+  $('products').innerHTML = list.length ? list.map(cardHTML).join('') : empty('📦', 'Aucun produit', 'Ajoutez votre premier produit !');
+}
+function prodFilter(f, btn) {
+  prodF = f; if (f === 'proche' && !me.city) toast('Ajoutez votre ville dans Réglages pour voir les produits près de vous');
+  document.querySelectorAll('#prod-f button').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on'); renderProducts();
+}
+
+// ---------- Infos de vente facultatives (points forts, promo, stock, choix, garantie) ----------
+// Stockées dans la description (aucune modification de la base nécessaire), masquées à l'affichage.
+const MTAG = /\s*\[\[m:([^\]]*)\]\]/;
+const cleanDesc = t => String(t ?? '').replace(MTAG, '');
+function getMeta(t) { try { const m = String(t ?? '').match(MTAG); return m ? JSON.parse(decodeURIComponent(m[1])) : {}; } catch (e) { return {}; } }
+function buildDesc() {
+  const g = id => ($(id)?.value || '').trim();
+  const h = g('pr-hl').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 5);
+  const ov = g('pr-opts').split(',').map(x => x.trim()).filter(Boolean).slice(0, 12);
+  const o = parseFloat(g('pr-old')) || 0, st = g('pr-stock');
+  const meta = {};
+  if (h.length) meta.h = h; if (o > 0) meta.o = o; if (st !== '' && +st >= 0) meta.s = Math.floor(+st);
+  if (ov.length) { meta.ov = ov; meta.ol = g('pr-optl') || 'Choix'; } if (g('pr-warr')) meta.w = g('pr-warr').slice(0, 80);
+  if (g('pr-deliv')) meta.d = g('pr-deliv').slice(0, 100);
+  const sp = g('pr-spec').split('\n').map(x => x.split(':')).filter(a => a.length > 1 && a[0].trim()).map(a => [a[0].trim(), a.slice(1).join(':').trim()]).slice(0, 8); if (sp.length) meta.c = sp;
+  const fq = g('pr-faq').split('\n').map(x => x.split('|')).filter(a => a.length > 1 && a[0].trim()).map(a => [a[0].trim(), a.slice(1).join('|').trim()]).slice(0, 5); if (fq.length) meta.q = fq;
+  if (okUrl(g('pr-f'))) { meta.f = g('pr-f'); if (g('pr-au')) meta.au = g('pr-au').slice(0, 60); if (+g('pr-pg') > 0) meta.pg = Math.floor(+g('pr-pg')); }
+  const d = g('pr-desc');
+  return Object.keys(meta).length ? (d + '\n[[m:' + encodeURIComponent(JSON.stringify(meta)) + ']]').trim() : d;
+}
+let selChoice = '';
+function pickOpt(el) {
+  document.querySelectorAll('.optchip').forEach(x => x.classList.remove('on'));
+  if (selChoice === el.dataset.v) selChoice = ''; else { el.classList.add('on'); selChoice = el.dataset.v; }
+  const b = document.getElementById('barch'); if (b) b.textContent = selChoice ? (document.getElementById('optl')?.textContent || '') + ' ' + selChoice : '';
+}
+function prodModal(id) {
+  const p = prods.find(x => x.id === id) || {};
+  if (!id && !noLimit() && quota.used >= MAXP) return toast(`⚠️ Limite atteinte. Réessayez le ${quota.next}.`);
+  if (id && editsLeft(id) <= 0) return toast('✏️ Limite de 10 modifications atteinte ce mois-ci.');
+  openM(`<h3>${id ? 'Modifier le produit' : 'Nouveau produit'}</h3>
+    <div class="mt" style="margin-bottom:12px">${id ? (noLimit() ? '✏️ Modifications illimitées' : `✏️ ${editsLeft(id)}/${MAXE} modifications restantes`) : `📦 ${quota.used}/${noLimit() ? '∞' : MAXP} produits utilisés ce mois-ci`}</div>
+    <div class="fg"><label>Nom du produit</label><input id="pr-name" value="${esc(p.name)}"></div>
+    <div class="fg"><label>Description</label><textarea id="pr-desc" rows="3">${esc(cleanDesc(p.description))}</textarea></div>
+    <div class="fg"><label>Prix ($)</label><input id="pr-price" type="number" step="0.01" value="${p.price ?? ''}"></div>
+    <div class="fg"><label>Catégorie</label><select id="pr-cat">${CATS.map(c => `<option ${p.category === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
+    <div class="fg"><label>Ville</label><input id="pr-city" value="${esc(p.city || me.city || '')}"></div>
+    <div class="fg"><label>Statut</label><select id="pr-status">${['En vente', 'Vendu', 'Gratuit'].map(x => `<option ${p.status === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
+    <details class="moreopt" ${Object.keys(getMeta(p.description)).length ? 'open' : ''}><summary>✨ Options de vente (facultatif)</summary>
+      <div class="fg"><label>Points forts (un par ligne, 5 max)</label><textarea id="pr-hl" rows="3" placeholder="Cuir véritable&#10;Très confortable&#10;Livraison rapide">${esc((getMeta(p.description).h || []).join('\n'))}</textarea></div>
+      <div class="fg"><label>Ancien prix ($) — pour afficher une promo</label><input id="pr-old" type="number" step="0.01" value="${getMeta(p.description).o ?? ''}"></div>
+      <div class="fg"><label>Stock disponible</label><input id="pr-stock" type="number" min="0" value="${getMeta(p.description).s ?? ''}"></div>
+      <div class="fg"><label>Choix proposés (ex. Pointure)</label><input id="pr-optl" placeholder="Pointure, Taille, Couleur…" value="${esc(getMeta(p.description).ol || '')}"></div>
+      <div class="fg"><label>Valeurs (séparées par des virgules)</label><input id="pr-opts" placeholder="40, 41, 42, 43" value="${esc((getMeta(p.description).ov || []).join(', '))}"></div>
+      <div class="fg"><label>Garantie / retour</label><input id="pr-warr" placeholder="Retour sous 7 jours" value="${esc(getMeta(p.description).w || '')}"></div>
+      <div class="fg"><label>Livraison</label><input id="pr-deliv" placeholder="Livraison partout en RDC" value="${esc(getMeta(p.description).d || '')}"></div>
+      <div class="fg"><label>Caractéristiques (une par ligne : Nom : valeur)</label><textarea id="pr-spec" rows="3" placeholder="Matière : Cuir&#10;Couleur : Noir">${esc((getMeta(p.description).c || []).map(r => r[0] + ' : ' + r[1]).join('\n'))}</textarea></div>
+      <div class="fg"><label>Questions fréquentes (une par ligne : Question | Réponse)</label><textarea id="pr-faq" rows="3" placeholder="Livrez-vous à Goma ? | Oui, en 24 h">${esc((getMeta(p.description).q || []).map(r => r[0] + ' | ' + r[1]).join('\n'))}</textarea></div>
+    </details>
+    <div class="box" style="background:#F5F3FF;margin-bottom:14px"><b>📚 C'est un ebook ?</b><div class="mt" style="margin:4px 0 10px">Déposez le PDF sur Google Drive (partage : « Tous les utilisateurs disposant du lien »), puis collez le lien ici. Le fichier n'occupe aucune place sur SocialPages.</div>
+      <div class="fg"><label>Lien du PDF</label><input id="pr-f" inputmode="url" autocapitalize="none" placeholder="https://drive.google.com/file/d/..." value="${esc(getMeta(p.description).f || '')}" oninput="bookCheck(this)"><div id="pr-fst" class="mt" style="margin-top:6px"></div></div>
+      <div style="display:flex;gap:8px"><div class="fg" style="flex:2;min-width:0"><label>Auteur</label><input id="pr-au" value="${esc(getMeta(p.description).au || me.name || '')}"></div><div class="fg" style="flex:1;min-width:0"><label>Pages</label><input id="pr-pg" type="number" min="1" value="${getMeta(p.description).pg ?? ''}"></div></div></div>
+    <div class="fg"><label>Images (jusqu'à 6) — les vidéos se partagent par lien</label><input type="file" id="pr-img" accept="image/*" multiple></div>
+    <div class="fg"><label>Liens vidéo</label><div class="mt" style="font-size:12px;margin-bottom:6px">💡 Vidéo publique sur YouTube, TikTok, Facebook ou Instagram, avec l'intégration autorisée.</div><div id="vl"></div><button class="c1" style="padding:10px;border:none;border-radius:10px;font-weight:600" onclick="addVid()">+ Ajouter un autre lien</button></div>
+    <div id="pr-err" class="err"></div>
+    <div class="acts"><button class="c1" onclick="closeM()">Annuler</button><button class="c2" id="pr-btn" onclick="saveProduct('${id || ''}')">Enregistrer</button></div>`);
+  (p.videos?.length ? p.videos : ['']).forEach(addVid);
+  if ($('pr-f')?.value) bookCheck($('pr-f'));
+}
+async function saveProduct(id) {
+  const err = $('pr-err'); err.textContent = '';
+  const name = $('pr-name').value.trim(); if (!name) return err.textContent = 'Le nom est requis';
+  const files = [...$('pr-img').files];
+  if (files.some(f => !f.type.startsWith('image/'))) return err.textContent = '⚠️ Vidéos interdites : ajoutez un lien (YouTube, TikTok, Facebook, Instagram).';
+  const bl = ($('pr-f')?.value || '').trim();
+  if (bl && !bookLink(bl)) return err.textContent = '⚠️ Lien du PDF non reconnu (voir les services acceptés sous le champ).';
+  let videos = [...document.querySelectorAll('#vl input')].map(i => i.value.trim()).filter(Boolean);
+  if (videos.some(u => !embed(u))) return err.textContent = '⚠️ Lien non valide';
+  const old = prods.find(x => x.id === id) || {}, btn = $('pr-btn'); btn.disabled = true;
+  try { videos = await Promise.all(videos.map(normVid)); } catch (e) { btn.disabled = false; return err.textContent = e.message; }
+  const images = old.images?.length ? [...old.images] : old.image_url ? [old.image_url] : [];
+  for (const f of files.slice(0, Math.max(0, 6 - images.length))) { const u = await upload(f, 'product'); if (u) images.push(u); }
+  const row = { name, description: buildDesc(), price: parseFloat($('pr-price').value) || 0, category: $('pr-cat').value, city: $('pr-city').value.trim() || null, status: $('pr-status').value, videos, images, image_url: images[0] || null };
+  const { error } = id ? await sb.from('products').update(row).eq('id', id) : await sb.from('products').insert({ ...row, user_id: me.id });
+  btn.disabled = false;
+  if (error) return err.textContent = error.message;
+  closeM(); toast('✅ Produit enregistré'); refresh();
+}
+async function delProduct(id) {
+  if (!confirm('Supprimer ce produit ? (la place du quota mensuel ne sera pas libérée)')) return;
+  const { error } = await sb.from('products').delete().eq('id', id);
+  if (error) return toast(error.message);
+  toast('Produit supprimé'); go('produits');
+}
+
+// Partage, WhatsApp, paiement
+const pctx = id => { const p = prods.find(x => x.id === id); return { url: base() + '#/p/' + id, title: p.name, text: freeBook(p) ? `Salut ! L'ebook « ${p.name} » est gratuit sur SocialPages. Télécharge-le ici :` : `Salut ! J'ai vu ce produit sur SocialPages : ${p.name} à ${priceTxt(p)}. Intéressé ?`, img: p.images?.[0] || p.image_url || null, price: priceTxt(p) }; };
+function shareProd(id, a) { sh = pctx(id); shareGo(a); }
+function shareP(id) { shareMenu(pctx(id)); }
+function waOrder(id) {
+  const p = prods.find(x => x.id === id), ph = (p.profiles.phone || '').replace(/\D/g, '');
+  if (!ph) return toast("Le vendeur n'a pas ajouté de numéro WhatsApp.");
+  track(id, 'wa');
+  window.open(`https://wa.me/${ph}?text=${encodeURIComponent(`Bonjour, je suis intéressé(e) par ${p.name}${selChoice ? ' (' + (getMeta(p.description).ol || 'Choix') + ' : ' + selChoice + ')' : ''} à ${priceTxt(p)}. Est-il disponible ?`)}`, '_blank');
+}
+function mailSeller(id) { const p = prods.find(x => x.id === id); if (p?.profiles.contact_email) location.href = 'mailto:' + p.profiles.contact_email + '?subject=' + encodeURIComponent(p.name); }
+function buyNow(id) {
+  const p = prods.find(x => x.id === id); track(id, 'buy');
+  okUrl(p.payment_link) ? window.open(p.payment_link, '_blank', 'noopener') : toast("Le vendeur n'a pas ajouté de lien de paiement. Contactez-le sur WhatsApp.");
+}
+// Ebooks hébergés ailleurs (comme les vidéos) : rien n'est stocké sur Supabase
+function bookLink(u) {
+  u = String(u || '').trim(); if (!okUrl(u)) return null;
+  let m;
+  if ((m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=)([\w-]{20,})/))) return { n: 'Google Drive', dl: `https://drive.google.com/uc?export=download&id=${m[1]}`, view: `https://drive.google.com/file/d/${m[1]}/view` };
+  if (/^https:\/\/(www\.)?dropbox\.com\//.test(u)) { const d = new URL(u), v = new URL(u); d.searchParams.set('dl', '1'); v.searchParams.set('dl', '0'); return { n: 'Dropbox', dl: d.href, view: v.href }; }
+  if ((m = u.match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/(.+\.pdf)$/i))) return { n: 'GitHub', dl: `https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}`, view: u };
+  const k = [[/^https:\/\/(1drv\.ms|onedrive\.live\.com|[\w-]+\.sharepoint\.com)\//, 'OneDrive'], [/^https:\/\/mega\.nz\//, 'MEGA'], [/^https:\/\/github\.com\/[^/]+\/[^/]+\/releases\/download\//, 'GitHub'], [/^https:\/\/archive\.org\//, 'Internet Archive'], [/\.pdf([?#]|$)/i, 'PDF']].find(x => x[0].test(u));
+  return k ? { n: k[1], dl: u, view: u } : null;
+}
+function bookCheck(el) {
+  const v = el.value.trim(), b = bookLink(v), st = $('pr-fst'); if (!st) return;
+  st.innerHTML = !v ? '' : b ? `<span style="color:#059669">✅ Lien ${b.n} reconnu</span>` : '<span style="color:#DC2626">⚠️ Lien non reconnu. Utilisez Google Drive, Dropbox, OneDrive, MEGA, GitHub, Internet Archive ou un lien finissant par .pdf.</span>';
+}
+function ebookUrl(id, dl) {
+  const p = prods.find(x => x.id === id), b = bookLink(getMeta(p?.description).f);
+  if (!b) { toast("Le PDF de cet ebook n'est pas encore disponible."); return null; }
+  return dl ? b.dl : b.view;
+}
+function dlEbook(id) {
+  if (!me) return needAuth();
+  const u = ebookUrl(id, true); if (!u) return;
+  track(id, 'dl');
+  window.open(u, '_blank', 'noopener');
+  toast('📥 Le téléchargement s’ouvre. Bonne lecture !');
+}
+function readEbook(id) { const u = ebookUrl(id, false); if (u) window.open(u, '_blank', 'noopener'); }
+function contactSeller(id) { track(id, 'msg'); openChat(prods.find(x => x.id === id).user_id); }
+const curPay = id => { const i = $('pl'); return (i ? i.value : prods.find(x => x.id === id).payment_link || '').trim(); };
+function payModal(id) {
+  const p = prods.find(x => x.id === id), mine = me && p.user_id === me.id;
+  openM(`<h3>💳 Lien de paiement</h3><p class="mt" style="margin-bottom:10px">${esc(p.name)}</p>
+    ${mine ? `<div class="fg"><label>Lien (PayPal, Mobile Money, Stripe...)</label><input id="pl" value="${esc(p.payment_link || '')}" placeholder="https://..."></div>` : `<div class="pc">${p.payment_link ? esc(p.payment_link) : "Le vendeur n'a pas encore ajouté de lien."}</div>`}
+    <div id="pl-err" class="err"></div><div class="acts" style="flex-wrap:wrap">${mine ? `<button class="c2" style="min-width:100%" onclick="savePay('${id}')">Enregistrer le lien</button>` : ''}
+    <button class="lk" onclick="payLink('${id}','copy')">🔗 Copier le lien</button><button class="pay" onclick="payLink('${id}','buy')">Acheter maintenant</button>
+    <button class="c1" style="min-width:100%" onclick="closeM()">Fermer</button></div>`);
+}
+function payLink(id, a) {
+  const u = curPay(id);
+  if (!okUrl(u)) return $('pl-err').textContent = 'Aucun lien valide (il doit commencer par https://)';
+  a === 'copy' ? copyTxt(u) : window.open(u, '_blank', 'noopener');
+}
+async function savePay(id) {
+  const u = curPay(id);
+  if (u && !okUrl(u)) return $('pl-err').textContent = 'Lien invalide (il doit commencer par https://)';
+  const { error } = await sb.from('products').update({ payment_link: u || null }).eq('id', id);
+  if (error) return $('pl-err').textContent = error.message;
+  prods.find(x => x.id === id).payment_link = u; toast('Lien enregistré !');
+}
+async function rel(t, id, on, act, msg) {
+  if (!me) return needAuth();
+  const el = event?.currentTarget, k = { product_id: id, user_id: me.id }, q = sb.from(t);
+  const { error } = await (on ? q.delete().match(k) : q.insert(k));
+  if (error) return toast(error.message);
+  if (!on) { if (act) track(id, act); if (msg) toast(msg); }
+  if (!el) return renderRoute();
+  const now = !on;
+  if (t === 'product_likes') { const { count } = await sb.from(t).select('*', { count: 'exact', head: true }).eq('product_id', id); el.innerHTML = `<span>${now ? '❤️' : '🤍'}</span> J'aime (${count || 0})`; el.classList.toggle('on', now); }
+  else el.textContent = t === 'favorites' ? (now ? '⭐ Dans mes favoris' : '☆ Ajouter à mes favoris') : (now ? '🔔 Alerte prix activée' : '🔔 Me notifier si le prix baisse');
+  el.setAttribute('onclick', el.getAttribute('onclick').replace(/,(true|false),/, `,${now},`));
+}
+
+// Pages publiques : #/p/<id> (produit) et #/vendeur/<username> (catalogue)
+async function renderRoute() {
+  const r = route(), body = me ? $('prod-body') : $('pub-body'); if (!r) return;
+  body.innerHTML = '<div class="spin"></div>';
+  if (!me) $('pub-msg').textContent = r.t === 'p' ? '💡 Créez un compte gratuit pour acheter en toute sécurité et suivre vos commandes' : 'Suivez ce vendeur en créant un compte gratuit';
+  try { await (r.t === 'p' ? productPage(r.id, body) : catalogPage(r.id, body)); } catch (e) { body.innerHTML = empty('⚠️', 'Erreur', esc(e.message || '')); }
+}
+async function productPage(id, body) {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return body.innerHTML = empty('😕', 'Produit introuvable');
+  const { data: p } = await sb.from('products').select(PQ).eq('id', id).maybeSingle();
+  if (!p) return body.innerHTML = empty('😕', 'Produit introuvable', 'Il a peut-être été supprimé.');
+  const mine = me && me.id === p.user_id, s = p.profiles;
+  if (!mine) { sb.rpc('view_product', { pid: id }).then(() => {}); p.views = (p.views || 0) + 1; }
+  prods = [p]; document.title = `${p.name} - ${priceTxt(p)} | SocialPages`;
+  const { count: n } = await sb.from('products').select('*', { count: 'exact', head: true }).eq('user_id', p.user_id);
+  let fav = false, alr = false, ev = [], nf = 0;
+  if (me) {
+    const q = t => sb.from(t).select('product_id').match({ product_id: id, user_id: me.id });
+    const [a, b] = await Promise.all([q('favorites'), q('price_alerts')]); fav = !!a.data?.length; alr = !!b.data?.length;
+    if (mine) {
+      await loadQuota();
+      ev = (await sb.from('product_events').select('action').eq('product_id', id)).data || [];
+      nf = (await sb.from('favorites').select('product_id', { count: 'exact', head: true }).eq('product_id', id)).count || 0;
+    }
+  }
+  const imgs = p.images?.length ? p.images : p.image_url ? [p.image_url] : [], liked = p.product_likes.some(l => l.user_id === me?.id);
+  const cnt = a => ev.filter(e => e.action === a).length;
+  const vids = (p.videos || []).map(vidHTML).join('');
+  const btn = (c, js, t, x = '') => `<button class="pbtn ${c}" ${x} onclick="${js}">${t}</button>`;
+  const meta = getMeta(p.description), stock = typeof meta.s === 'number' ? meta.s : null;
+  const book = okUrl(meta.f) ? meta : null, fb = freeBook(p);
+  const cls = { 'En vente': 'v', Vendu: 's', Gratuit: 'g' }[p.status], sold = p.status === 'Vendu' || stock === 0;
+  selChoice = '';
+  const promo = meta.o && meta.o > p.price && p.status !== 'Gratuit' ? Math.round((1 - p.price / meta.o) * 100) : 0;
+  const priceBlock = `<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-size:30px;font-weight:bold;color:#3B82F6">${priceTxt(p)}</span>${promo ? `<s style="color:#9CA3AF;font-size:18px">${meta.o} $</s><span class="promo">-${promo}%</span>` : ''}</div>`;
+  const stockTxt = stock !== null && stock > 0 && stock <= 5 ? `<div class="urg">🔥 Plus que ${stock} en stock</div>` : '';
+  const optsHTML = meta.ov?.length ? `<div class="box" style="margin-top:12px"><b>${esc(meta.ol || 'Choix')}</b><div class="optrow">${meta.ov.map(v => `<button type="button" class="optchip" data-v="${esc(v)}" onclick="pickOpt(this)">${esc(v)}</button>`).join('')}</div></div>` : '';
+  const hlHTML = meta.h?.length ? `<div class="box" style="margin-top:12px"><b>Points forts</b><ul class="hl2">${meta.h.map(x => `<li>✔ ${esc(x)}</li>`).join('')}</ul></div>` : '';
+  const trust = [n > 5 ? '✅ Vendeur vérifié' : '', meta.w ? '🛡 ' + esc(meta.w) : '', '📱 Réponse rapide sur WhatsApp'].filter(Boolean).map(x => `<span>${x}</span>`).join('');
+  const hasPay = okUrl(p.payment_link);
+  // Actions principales (acheter / WhatsApp)
+  let main = '';
+  if (sold) main = '<div class="soldbox">✅ Ce produit est vendu</div>';
+  else {
+    if (me && !mine && hasPay) main += btn('b', `buyNow('${id}')`, '💳 Acheter maintenant');
+    main += btn('g', `waOrder('${id}')`, '📱 Commander sur WhatsApp');
+  }
+  // Petites actions
+  const ico = (js, t, on = false) => `<button type="button" class="ico ${on ? 'on' : ''}" onclick="${js}">${t}</button>`;
+  const icons = ico(`rel('product_likes','${id}',${liked},'like')`, `${liked ? '❤️' : '🤍'} ${p.product_likes.length}`, liked)
+    + (me && !mine ? ico(`rel('favorites','${id}',${fav},'fav','⭐ Ajouté aux favoris')`, fav ? '⭐ Favori' : '☆ Favori', fav) : '')
+    + ico(`shareP('${id}')`, '↗️ Partager') + ico(`shareProd('${id}','copy')`, '🔗 Lien');
+  // Options secondaires repliées
+  let more = '';
+  if (me && !mine) more += btn('gray', `rel('price_alerts','${id}',${alr},null,'🔔 Vous serez notifié si le prix baisse')`, alr ? '🔔 Alerte prix activée' : '🔔 Me notifier si le prix baisse');
+  if (s.contact_email) more += btn('gray', `mailSeller('${id}')`, '📧 Contacter par email');
+  if (me && !mine) more += btn('gray', `reportModal('product','${id}','${p.user_id}')`, '🚩 Signaler / bloquer');
+  // Gestion (propriétaire)
+  let manage = '';
+  if (mine) {
+    manage = `<div class="box" style="margin-top:16px"><b>⚙️ Gérer mon produit</b>
+      ${btn('b', `prodModal('${id}')`, (noLimit() ? '✏️ Modifier' : `✏️ Modifier (${editsLeft(id)}/${MAXE} restantes)`), editsLeft(id) <= 0 ? 'style="opacity:.5"' : '')}
+      ${btn('gray', `payModal('${id}')`, hasPay ? '💳 Modifier le lien de paiement' : '💳 Ajouter un lien de paiement')}
+      ${btn('g', `setSold('${id}')`, sold ? '↩️ Remettre en vente' : '✅ Marquer comme vendu')}
+      ${btn('gray', `bump('${id}')`, '⬆️ Remonter mon produit')}
+      ${btn('gray', `document.getElementById('st').classList.toggle('hidden')`, '📊 Statistiques')}
+      <div id="st" class="hidden" style="margin-top:12px"><div class="sgrid"><div><b>${p.views || 0}</b>👁 Vues</div><div><b>${p.product_likes.length}</b>❤️ Likes</div><div><b>${nf}</b>⭐ Favoris</div><div><b>${cnt('buy')}</b>🛒 Achats</div><div><b>${cnt('wa')}</b>📱 WhatsApp</div><div><b>${cnt('msg')}</b>💬 Messages</div>${book ? `<div><b>${cnt('dl')}</b>📥 Téléchargements</div>` : ''}</div></div>
+      ${btn('r', `delProduct('${id}')`, '🗑 Supprimer')}</div>`;
+  }
+  const cta = /Services/i.test(p.category || '') ? 'Réserver' : 'Commander', verified = n > 5;
+  const gal = imgs.length ? `<div class="gal2" onscroll="galCnt(this)">${imgs.map(u => `<img src="${esc(u)}" onclick="viewImg(this.src)">`).join('')}</div>` : `<div class="gal2 g0">${book ? '📚' : '📦'}</div>`;
+  const badgeP = promo ? `<span class="gbadge">-${promo}%</span>` : p.status === 'Gratuit' ? '<span class="gbadge g">Gratuit</span>' : '';
+  const specs = (meta.c || []).map(r => `<div class="srow"><span>${esc(r[0])}</span><span>${esc(r[1])}</span></div>`).join('');
+  const faq = (meta.q || []).map(r => `<div style="margin-bottom:10px"><b>${esc(r[0])}</b><div style="color:#4B5563;margin-top:2px">${esc(r[1])}</div></div>`).join('');
+  const tags = [book ? '📄 PDF' + (book.pg ? ', ' + book.pg + ' pages' : '') : '', book?.au ? '✍️ ' + esc(book.au) : '', meta.d ? '🚚 ' + esc(meta.d) : '', meta.w ? '🛡 ' + esc(meta.w) : ''].filter(Boolean).map(x => `<span class="tg">${x}</span>`).join('');
+  const acc = (t, c, open = false) => c ? `<details class="acc2" ${open ? 'open' : ''}><summary>${t}</summary><div class="accb">${c}</div></details>` : '';
+  const payTxt = (hasPay ? '<p>🔒 Le paiement en ligne se fait sur le site sécurisé du vendeur (bouton « Commander maintenant »).</p>' : '') + '<p style="margin-top:6px">📱 Vous pouvez aussi commander sur WhatsApp et convenir du paiement avec le vendeur.</p>' + (meta.d ? `<p style="margin-top:6px">🚚 ${esc(meta.d)}</p>` : '');
+  const desc = esc(cleanDesc(p.description));
+  const bar = mine ? '' : fb ? `<div class="stickybuy" style="bottom:${me ? 62 : 0}px"><div class="sbbtn"><button class="sb1 main" style="background:#10B981" onclick="dlEbook('${id}')">📥 Télécharger gratuitement</button></div><div class="sbnote">${me ? 'Téléchargement immédiat' : 'Compte gratuit requis'}</div></div>` : sold ? '' : `<div class="stickybuy" style="bottom:${me ? 62 : 0}px">
+    <div class="sbtop"><span id="barch" class="mt"></span><span><b style="font-size:20px">${priceTxt(p)}</b>${promo ? ` <s style="color:#9CA3AF;font-size:13px">${meta.o} $</s>` : ''}</span></div>
+    <div class="sbbtn">${hasPay ? `<button class="sb1 wa" onclick="waOrder('${id}')">📱 WhatsApp</button><button class="sb1 main" onclick="buyNow('${id}')">🔒 Commander maintenant</button>` : `<button class="sb1 main wa" style="background:#10B981" onclick="waOrder('${id}')">📱 ${cta === 'Réserver' ? 'Réserver' : 'Commander'} sur WhatsApp</button>`}</div>
+    ${hasPay ? '<div class="sbnote">Paiement sécurisé sur le site du vendeur</div>' : ''}</div>`;
+  body.innerHTML = `<div class="galw">${gal}
+      ${mine ? '' : `<button class="rb2" style="right:54px" onclick="togFavP('${id}',${fav},this)">${fav ? '❤️' : '🤍'}</button>`}
+      <button class="rb2" style="right:10px" onclick="shareP('${id}')">↗️</button>
+      ${badgeP}${sold ? '<span class="gbadge s">Vendu</span>' : ''}${imgs.length > 1 ? `<span class="gcnt" id="gcnt">1 / ${imgs.length}</span>` : ''}</div>
+    <h1 style="font-size:22px;margin:12px 0 2px">${esc(p.name)}</h1>
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-size:30px;font-weight:bold;color:#3B82F6">${priceTxt(p)}</span>${promo ? `<s style="color:#9CA3AF;font-size:18px">${meta.o} $</s>` : ''}</div>
+    <div class="mt" style="margin:4px 0 8px">${p.city ? '📍 ' + esc(p.city) + ' · ' : ''}👁 ${p.views || 0} vues · ❤️ ${p.product_likes.length}${stock !== null && stock > 0 && stock <= 5 ? ` · <span style="color:#DC2626;font-weight:600">Plus que ${stock}</span>` : ''}</div>
+    <div class="selc" onclick="goSeller()">${av(s, 34)}<div style="flex:1;min-width:0"><b>${esc(s.name)}</b>${verified ? ' <span style="color:#3B82F6">✔</span>' : ''}<div class="mt">${n || 0} produit${n > 1 ? 's' : ''}</div></div><span style="color:#3B82F6;font-size:14px">Boutique ›</span></div>
+    ${meta.ov?.length ? `<div style="margin-top:12px"><div class="mt" id="optl" style="margin-bottom:6px">${esc(meta.ol || 'Choix')}</div><div class="optrow">${meta.ov.map(v => `<button type="button" class="optchip" data-v="${esc(v)}" onclick="pickOpt(this)">${esc(v)}</button>`).join('')}</div></div>` : ''}
+    ${tags ? `<div style="margin-top:8px">${tags}</div>` : ''}
+    ${meta.h?.length ? `<div style="margin-top:12px"><b>Points forts</b><ul class="hl2">${meta.h.map(x => `<li>✔ ${esc(x)}</li>`).join('')}</ul></div>` : ''}
+    ${specs ? `<div style="margin-top:10px">${specs}</div>` : ''}
+    <div style="margin-top:12px">${acc('Description', `<p style="white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6">${desc || 'Aucune description'}</p>`, true)}
+      ${vids ? acc('🎥 Vidéo', `<div class="vcar">${vids}</div>`, true) : ''}
+      ${fb ? acc('Téléchargement', `<p>📥 ${me ? 'Appuyez sur « Télécharger » : le PDF s’enregistre sur votre téléphone.' : 'Créez un compte gratuit, puis appuyez sur « Télécharger ».'}</p>${btn('gray', `readEbook('${id}')`, '👀 Lire un aperçu en ligne')}`, true) : acc('Livraison et paiement', payTxt)}${acc('Questions fréquentes', faq)}${more ? acc("Plus d'options", more) : ''}</div>
+    ${manage}
+    <div id="similar"></div>${bar}
+    <div style="height:110px"></div>`;
+  loadSimilar(p);
+}
+async function loadSimilar(p) {
+  const el = $('similar'); if (!el) return;
+  try {
+    const q = () => sb.from('products').select('id,name,price,status,image_url,images,user_id').neq('id', p.id).limit(8);
+    const [a, b] = await Promise.all([q().eq('user_id', p.user_id), p.category ? q().eq('category', p.category).neq('user_id', p.user_id) : Promise.resolve({ data: [] })]);
+    const mini = list => (list || []).filter(x => !blocked.has(x.user_id)).map(x => `<div class="mini" onclick="location.hash='#/p/${x.id}'"><div class="mimg">${(x.images?.[0] || x.image_url) ? `<img loading="lazy" src="${esc(x.images?.[0] || x.image_url)}">` : '📦'}</div><b>${esc(x.name)}</b><div class="price">${priceTxt(x)}</div></div>`).join('');
+    const A = mini(a.data), B = mini(b.data);
+    el.innerHTML = (A ? `<h3 style="margin:18px 0 8px">Du même vendeur</h3><div class="minirow">${A}</div>` : '') + (B ? `<h3 style="margin:18px 0 8px">Produits similaires</h3><div class="minirow">${B}</div>` : '');
+  } catch (e) {}
+}
+function goSeller() { location.hash = '#/vendeur/' + encodeURIComponent(prods[0].profiles.username); }
+async function catalogPage(u, body) {
+  if (!/^[a-z0-9_.]{3,30}$/.test(u)) return body.innerHTML = empty('😕', 'Vendeur introuvable');
+  const { data: s } = await sb.from('profiles').select('*').eq('username', u).maybeSingle();
+  if (!s) return body.innerHTML = empty('😕', 'Vendeur introuvable');
+  const { data } = await sb.from('products').select(PQ).eq('user_id', s.id).order('bumped_at', { ascending: false }).limit(60);
+  prods = data || []; document.title = `${s.name} | SocialPages`;
+  body.innerHTML = `<div class="box" style="text-align:center"><div style="display:flex;justify-content:center">${av(s, 80)}</div>
+    <div style="font-size:22px;font-weight:bold;margin-top:8px">${esc(s.name)}${prods.length > 5 ? ' <span style="color:#10B981;font-size:14px">✅ Vérifié</span>' : ''}</div>
+    <div class="mt">@${esc(s.username)} · ${prods.length} produit${prods.length > 1 ? 's' : ''}</div>
+    <button class="pbtn gray" onclick="copyTxt(location.href)">🔗 Copier le lien du catalogue</button>
+    ${me && me.id !== s.id ? `<button class="pbtn b" onclick="openUser('${s.id}')">👤 Voir le profil</button>` : ''}</div>
+    <div class="pg">${prods.length ? prods.map(cardHTML).join('') : empty('📦', 'Aucun produit')}</div>`;
+}
+addEventListener('hashchange', () => {
+  if (route()) go(me ? 'product' : 'pub');
+  else if (cur === 'product') go(lastView || 'produits'); else if (cur === 'pub') go('landing');
+});
+
+// ---------- Compression des photos, vidéos en liens ----------
+const postCache = {};
+let sh = null;
+async function compress(file) {
+  if (!file.type.startsWith('image/') || file.type === 'image/gif') return file;
+  try {
+    const bmp = await createImageBitmap(file), k = Math.min(1, 1280 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.8));
+    return blob && blob.size < file.size ? new File([blob], file.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' }) : file;
+  } catch (e) { return file; }
+}
+const vidHTML = u => {
+  if (!okUrl(u)) return '';
+  const e = embed(u);
+  const tt = !!e && /\btt\b/.test(e.k);
+  const body = e && e.src ? `<iframe ${tt ? 'data-src' : 'src'}="${esc(tt ? e.src.replace('autoplay=0', 'autoplay=1') : e.src)}" title="${esc(e.n)}" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; clipboard-write"></iframe>` : '';
+  return `<div class="vitem ${e ? e.k : ''}" ${tt ? `data-u="${esc(u)}"` : ''} ${e && e.tt ? `data-tt="${esc(u)}"` : ''} ${e && e.yt ? `data-yt="${esc(e.yt)}"` : ''}>${body}<a class="vlink" ${e && (e.src || e.tt) ? 'hidden' : ''} href="${e && e.yt ? esc(ytOpenUrl(e.yt)) : esc(u)}" target="_blank" rel="noopener">${e ? e.i : '🔗'} Ouvrir sur ${e ? e.n : 'le site'}</a></div>`;
+};
+// Liens TikTok courts : résolution via le service officiel oEmbed (si le navigateur l'autorise), sinon lien externe
+const ttCache = JSON.parse(sessionStorage.getItem('sp_tt') || '{}');
+async function hydrateTT() {
+  for (const el of document.querySelectorAll('.vitem[data-tt]')) {
+    const u = el.dataset.tt; el.removeAttribute('data-tt');
+    let id = ttCache[u];
+    if (!id) { const r = await ttResolve(u); id = r?.id; if (id) { ttCache[u] = id; try { sessionStorage.setItem('sp_tt', JSON.stringify(ttCache)); } catch (e) {} } }
+    if (id && !el.querySelector('iframe')) el.insertAdjacentHTML('afterbegin', `<iframe data-src="https://www.tiktok.com/player/v1/${id}?controls=1&progress_bar=1&play_button=1&volume_control=1&fullscreen_button=1&autoplay=1&music_info=0&description=0&rel=0" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>`);
+    else if (!id) { el.insertAdjacentHTML('afterbegin', `<a class="ytfb" href="${esc(u)}" target="_blank" rel="noopener" style="background:#111"><span>▶</span><small>Regarder sur TikTok</small></a>`); el.querySelector('.vlink')?.removeAttribute('hidden'); }
+  }
+}
+new MutationObserver(() => { clearTimeout(window._tt); window._tt = setTimeout(() => { hydrateTT(); hydrateYT(); }, 300); }).observe(document.body, { childList: true, subtree: true });
+
+// ---------- Lecture automatique des vidéos (comme TikTok) ----------
+// Démarre en sourdine dès que la vidéo est visible à 60 %, se met en pause quand on la quitte.
+// Une seule vidéo joue à la fois. Pilotage : YouTube, TikTok et vidéos importées
+// (Facebook et Instagram ne permettent pas de commander leur lecteur depuis un autre site).
+// Désactivée en mode économie de données ou depuis les Paramètres.
+const autoOff = () => !!navigator.connection?.saveData || localStorage.getItem('sp_autoplay') === '0';
+let vNow = null;
+function vCmd(el, on) {
+  if (el.tagName === 'VIDEO') { if (on) { el.muted = true; el.playsInline = true; el.play().catch(() => {}); } else el.pause(); return; }
+  const f = el.querySelector('iframe'); if (!f) return;
+  if (f.dataset.src && !f.getAttribute('src')) { if (on) ttStart(el); return; } // TikTok pas encore chargé
+  if (!f.contentWindow) return;
+  const send = () => {
+    const w = f.contentWindow, src = f.src || ''; if (!w) return;
+    if (/youtube(-nocookie)?\.com\/embed/.test(src)) {
+      if (on) w.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+      w.postMessage(JSON.stringify({ event: 'command', func: on ? 'playVideo' : 'pauseVideo', args: [] }), '*');
+    } else if (/tiktok\.com\/player/.test(src)) {
+      if (on) w.postMessage({ 'x-tiktok-player': true, type: 'mute' }, '*');
+      w.postMessage({ 'x-tiktok-player': true, type: on ? 'play' : 'pause' }, '*');
+    }
+  };
+  send();
+  if (on) {
+    setTimeout(() => { if (vNow === el) send(); }, 1200);
+    if (!f._lw) { f._lw = 1; f.addEventListener('load', () => setTimeout(() => { if (vNow === el) send(); }, 700)); }
+  }
+}
+const vIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => {
+  for (const e of es) {
+    const el = e.target, vis = e.isIntersecting && e.intersectionRatio >= 0.6;
+    if (vis && !autoOff()) { if (vNow && vNow !== el) vCmd(vNow, false); vNow = el; vCmd(el, true); }
+    else if (!vis && vNow === el) { vCmd(el, false); vNow = null; }
+  }
+}, { threshold: [0, 0.6] }) : null;
+function vWatch() {
+  document.querySelectorAll('.vitem.tt').forEach(el => { if (el.querySelector('iframe[data-src]') && !el.querySelector('.ttcov')) ttCover(el); });
+  if (vIO) document.querySelectorAll('.vitem, video.pm').forEach(el => { if (!el._vw) { el._vw = 1; vIO.observe(el); } });
+}
+// TikTok ne construit son lecteur qu'au démarrage de la lecture : avant, l'écran reste noir et ignore les commandes.
+// On affiche donc une couverture (miniature) et on ne charge le lecteur, en lecture automatique, qu'au moment voulu.
+// Bonus : les vidéos hors écran ne consomment plus de données.
+const ttThumbs = JSON.parse(sessionStorage.getItem('sp_ttth') || '{}');
+function ttCover(el) {
+  el.insertAdjacentHTML('afterbegin', '<button type="button" class="ttcov" aria-label="Lire la vidéo" onclick="vTap(this)"><span>▶</span></button>');
+  const u = el.dataset.u, set = t => { const c = el.querySelector('.ttcov'); if (c && t) c.style.backgroundImage = `url("${t.replace(/"/g, '%22')}")`; };
+  if (!u) return; if (ttThumbs[u]) return set(ttThumbs[u]);
+  fetch('https://www.tiktok.com/oembed?url=' + encodeURIComponent(u)).then(r => r.json()).then(j => {
+    if (!okUrl(j.thumbnail_url)) return; ttThumbs[u] = j.thumbnail_url; set(j.thumbnail_url);
+    try { sessionStorage.setItem('sp_ttth', JSON.stringify(ttThumbs)); } catch (e) {}
+  }).catch(() => {});
+}
+function ttStart(el) {
+  const f = el.querySelector('iframe[data-src]'); if (!f || f.getAttribute('src')) return;
+  const done = () => el.classList.add('ttok');
+  f.addEventListener('load', () => setTimeout(done, 900), { once: true }); setTimeout(done, 6000);
+  f.src = f.dataset.src;
+}
+function vTap(b) { const el = b.closest('.vitem'); if (vNow && vNow !== el) vCmd(vNow, false); vNow = el; ttStart(el); }
+// Si le navigateur refuse la lecture avec le son (erreur TikTok 3002), on relance en sourdine
+window.addEventListener('message', e => {
+  if (e.origin !== 'https://www.tiktok.com') return;
+  let d = e.data; try { if (typeof d === 'string') d = JSON.parse(d); } catch (x) { return; }
+  if (!d || !d['x-tiktok-player'] || !JSON.stringify(d).includes('3002')) return;
+  e.source?.postMessage({ 'x-tiktok-player': true, type: 'mute' }, '*'); e.source?.postMessage({ 'x-tiktok-player': true, type: 'play' }, '*');
+});
+new MutationObserver(() => { clearTimeout(window._vw); window._vw = setTimeout(vWatch, 350); }).observe(document.body, { childList: true, subtree: true });
+document.addEventListener('visibilitychange', () => { if (document.hidden && vNow) { vCmd(vNow, false); vNow = null; } });
+
+// ---------- Partage multi-réseaux ----------
+function shareMenu(c) {
+  sh = c;
+  const g = (ic, t, js, bg) => `<button class="shb" onclick="${js}"><span style="background:${bg}">${ic}</span>${t}</button>`;
+  openM(`<h3>Partager ce produit</h3>
+    <div class="shprev">${c.img ? `<img src="${esc(c.img)}">` : '<div class="th0">📦</div>'}<div style="min-width:0"><b style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.title)}</b>${c.price ? `<div style="color:#3B82F6;font-weight:700">${esc(c.price)}</div>` : ''}<div class="mt">Photo + lien envoyés ensemble</div></div></div>
+    <button class="opt" style="background:#3B82F6;margin-bottom:14px" onclick="shareNative()">📲 Partager photo + lien</button>
+    <div class="shgrid">${g('📱', 'WhatsApp', "shareGo('wa')", '#25D366')}${g('📘', 'Facebook', "shareGo('fb')", '#1877F2')}${g('📸', 'Instagram', "prepare('Instagram')", 'linear-gradient(45deg,#f09433,#dc2743,#bc1888)')}${g('🎵', 'TikTok', "prepare('TikTok')", '#000')}
+      ${g('✈️', 'Telegram', "shareGo('tg')", '#229ED9')}${g('𝕏', 'X', "shareGo('x')", '#111')}${g('💬', 'SMS', "shareGo('sms')", '#10B981')}${c.img ? g('📌', 'Pinterest', "shareGo('pin')", '#E60023') : g('🔗', 'Copier', "shareGo('copy')", '#6B7280')}</div>
+    <div class="shlink"><span>${esc(c.url)}</span><button onclick="shareGo('copy')">Copier</button></div>
+    <button class="opt c1" style="color:#111;margin-top:10px" onclick="closeM()">Fermer</button>`);
+}
+function shareGo(a) {
+  const u = encodeURIComponent(sh.url), t = encodeURIComponent(sh.text);
+  ({ copy: () => copyTxt(sh.url), wa: () => wa(sh.text + ' ' + sh.url),
+    fb: () => window.open('https://www.facebook.com/sharer/sharer.php?u=' + u, '_blank'),
+    pin: () => window.open(`https://www.pinterest.com/pin/create/button/?url=${u}&media=${encodeURIComponent(sh.img || '')}&description=${t}`, '_blank'),
+    tg: () => window.open(`https://t.me/share/url?url=${u}&text=${t}`, '_blank'),
+    x: () => window.open(`https://x.com/intent/tweet?text=${t}&url=${u}`, '_blank'),
+    sms: () => { location.href = 'sms:?&body=' + encodeURIComponent(sh.text + ' ' + sh.url); } })[a]();
+}
+async function shareNative() {
+  const txt = sh.text + '\n' + sh.url;
+  try {
+    const d = { title: sh.title, text: txt };
+    if (sh.img) { const b = await (await fetch(sh.img)).blob(), f = new File([b], 'photo.jpg', { type: b.type || 'image/jpeg' }); if (navigator.canShare?.({ files: [f] })) d.files = [f]; }
+    if (navigator.share) await navigator.share(d); else copyTxt(sh.url);
+  } catch (e) { if (e.name !== 'AbortError') copyTxt(sh.url); }
+}
+async function prepare(net) {
+  navigator.clipboard?.writeText(sh.text + '\n' + sh.url).catch(() => {});
+  window.open(net === 'Instagram' ? 'https://www.instagram.com/' : 'https://www.tiktok.com/', '_blank');
+  toast(`✅ Légende et lien copiés${sh.img ? ', image enregistrée' : ''}. Dans ${net}, publiez puis collez le lien en bio ou en commentaire.`, 8000);
+  if (sh.img) try { const b = await (await fetch(sh.img)).blob(), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'photo.jpg'; a.click(); } catch (e) {}
+}
+// ---------- Parrainage : inviter des amis avec son lien personnel ----------
+async function claimRef() {
+  try {
+    const r = localStorage.getItem('sp_ref'); if (!r) return;
+    if (me.referred_by || r === me.username) return localStorage.removeItem('sp_ref');
+    const { error } = await sb.rpc('claim_referral', { ref_username: r });
+    if (!error) { localStorage.removeItem('sp_ref'); me.referred_by = true; }
+  } catch (e) {}
+}
+async function inviteModal() {
+  const url = base().split('?')[0] + '?ref=' + encodeURIComponent(me.username);
+  sh = { url, title: 'SocialPages', text: `${me.name} t'invite sur SocialPages : achète et vends près de chez toi, gratuitement.`, img: null };
+  let n = 0; try { const { count } = await sb.from('profiles').select('id', { count: 'exact', head: true }).eq('referred_by', me.id); n = count || 0; } catch (e) {}
+  const goal = n < 5 ? 5 : n < 20 ? 20 : 50, lvl = n >= 50 ? 'Légende 🏆' : n >= 20 ? 'Super ambassadeur 🥇' : n >= 5 ? 'Ambassadeur 🥈' : 'Débutant';
+  openM(`<h3>🎁 Inviter des amis</h3>
+    <p class="mt">Partagez votre lien personnel. Chaque ami qui crée un compte avec ce lien est compté pour vous.</p>
+    <div class="box" style="margin:12px 0;text-align:center"><div style="font-size:34px;font-weight:700;color:#3B82F6">${n}</div><div class="mt">ami${n > 1 ? 's' : ''} invité${n > 1 ? 's' : ''} · Niveau : <b>${lvl}</b></div>
+      <div style="height:8px;border-radius:99px;background:#E5E7EB;margin:10px 0 4px;overflow:hidden"><div style="height:100%;width:${Math.min(100, n / goal * 100)}%;background:#3B82F6"></div></div><div class="mt" style="font-size:12px">${n}/${goal} pour le prochain niveau</div></div>
+    <p class="mt" style="overflow-wrap:anywhere;background:#F3F4F6;border-radius:10px;padding:9px 11px;font-size:12px">${esc(url)}</p>
+    <div class="acts" style="flex-wrap:wrap"><button class="lk" onclick="shareGo('copy')">🔗 Copier</button><button class="wa" onclick="shareGo('wa')">📱 WhatsApp</button><button class="c2" style="min-width:100%" onclick="shareMenu(sh)">↗️ Autres réseaux</button><button class="c1" style="min-width:100%" onclick="closeM()">Fermer</button></div>`);
+}
+
+function shopModal() {
+  const url = base() + '#/vendeur/' + encodeURIComponent(me.username);
+  let svg = ''; try { const q = qrcode(0, 'M'); q.addData(url); q.make(); svg = q.createSvgTag(5); } catch (e) { svg = '<p class="mt">QR code indisponible</p>'; }
+  sh = { url, title: me.name, text: `Ma boutique sur SocialPages : ${me.name}`, img: null };
+  openM(`<h3>🏪 Ma boutique</h3><p class="mt" style="overflow-wrap:anywhere">${esc(url)}</p><div style="display:flex;justify-content:center;margin:12px 0">${svg}</div>
+    <div class="acts" style="flex-wrap:wrap"><button class="lk" onclick="shareGo('copy')">🔗 Copier</button><button class="wa" onclick="shareGo('wa')">📱 WhatsApp</button><button class="c1" style="min-width:100%" onclick="closeM()">Fermer</button></div>`);
+}
+
+// ---------- Filtres produits, vendu, remontée ----------
+function catInit() { const s = $('p-cat'); if (!s.dataset.ok) { s.innerHTML = '<option value="">Toutes catégories</option>' + CATS.map(c => `<option>${c}</option>`).join(''); s.dataset.ok = 1; } }
+function pq() {
+  let q = sb.from('products').select(PQ + ',favorites(user_id),product_events(action)').order('bumped_at', { ascending: false }).limit(60);
+  const c = $('p-city').value.trim().replace(/[%,()]/g, ''), k = $('p-cat').value, m = parseFloat($('p-max').value);
+  if (c) q = q.ilike('city', `%${c}%`); if (k) q = q.eq('category', k); if (m) q = q.lte('price', m);
+  return q;
+}
+async function setSold(id) {
+  const p = prods.find(x => x.id === id), { error } = await sb.from('products').update({ status: p.status === 'Vendu' ? 'En vente' : 'Vendu' }).eq('id', id);
+  toast(error ? error.message : '✅ Statut mis à jour'); renderRoute();
+}
+async function bump(id) {
+  const { error } = await sb.from('products').update({ bumped_at: new Date().toISOString() }).eq('id', id);
+  toast(error ? error.message : '⬆️ Produit remonté en tête de liste'); renderRoute();
+}
+
+// ---------- Signaler / bloquer ----------
+function reportModal(kind, id, uid) {
+  openM(`<h3>Signaler ou bloquer</h3><div class="fg"><label>Motif</label><select id="rp-r"><option>Arnaque ou fraude</option><option>Contenu inapproprié</option><option>Spam</option><option>Autre</option></select></div>
+    <div class="acts" style="flex-wrap:wrap"><button class="c3" style="min-width:100%" onclick="sendReport('${kind}','${id}')">🚩 Signaler</button>
+    <button class="c1" style="min-width:100%" onclick="blockUser('${uid}')">⛔ Bloquer cet utilisateur</button><button class="c1" style="min-width:100%" onclick="closeM()">Annuler</button></div>`);
+}
+async function sendReport(kind, id) {
+  const { error } = await sb.from('reports').insert({ reporter_id: me.id, kind, target_id: id, reason: $('rp-r').value });
+  closeM(); toast(error ? error.message : '🚩 Merci, signalement envoyé');
+}
+async function blockUser(uid) {
+  if (!confirm('Bloquer cet utilisateur ? Vous ne verrez plus ses publications ni ses produits.')) return;
+  await sb.from('blocks').insert({ blocker_id: me.id, blocked_id: uid }); blocked.add(uid); closeM(); toast('⛔ Utilisateur bloqué'); go('accueil');
+}
+
+// ---------- Mot de passe oublié ----------
+async function forgot() {
+  const email = ($('l-email').value || prompt('Votre adresse email :') || '').trim(); if (!email) return;
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+  $('l-err').textContent = error ? error.message : "📧 Si ce compte existe, un email de réinitialisation vient d'être envoyé.";
+}
+sb.auth.onAuthStateChange(ev => {
+  if (ev === 'PASSWORD_RECOVERY') openM(`<h3>Nouveau mot de passe</h3><div class="fg"><input id="np" type="password" placeholder="6 caractères minimum"></div><div id="np-err" class="err"></div><div class="acts"><button class="c2" onclick="newPass()">Enregistrer</button></div>`);
+});
+async function newPass() {
+  const p = $('np').value; if (p.length < 6) return $('np-err').textContent = 'Trop court (6 minimum)';
+  const { error } = await sb.auth.updateUser({ password: p }); if (error) return $('np-err').textContent = error.message;
+  closeM(); toast('✅ Mot de passe changé'); boot();
+}
+
+// ---------- Pages légales, installation ----------
+const LEGAL = {
+  cgu: [`Conditions d'utilisation`, [`SocialPages est un réseau social et une place de marché. Vous êtes responsable de ce que vous publiez.`, `Sont interdits : arnaques, produits illégaux ou dangereux, contenus violents, haineux ou sexuels, usurpation d'identité et spam.`, `Les ventes se font directement entre acheteur et vendeur. SocialPages ne gère pas les paiements et ne garantit ni les produits ni les transactions : vérifiez avant de payer.`, `Un contenu ou un compte qui ne respecte pas ces règles peut être supprimé. Vous pouvez signaler et bloquer tout utilisateur.`, `Limites : 3 produits par mois et par compte, 10 modifications par produit et par mois.`]],
+  priv: [`Confidentialité`, [`Données collectées : nom, nom d'utilisateur, email, mot de passe (chiffré), ville et numéro WhatsApp (facultatifs), publications, produits et messages.`, `Vos publications, vos produits, votre nom, votre @, votre ville et, si vous les renseignez, votre numéro WhatsApp et votre email de contact sont visibles publiquement.`, `Les données sont stockées chez Supabase. Vos messages ne sont visibles que par vous et votre interlocuteur.`, `Vous pouvez demander la suppression de votre compte et de vos données à l'administrateur du site.`]]
+};
+function legal(k) { const [t, ps] = LEGAL[k]; openM(`<h3>${t}</h3>${ps.map(x => `<p style="margin-bottom:10px;font-size:14px;line-height:1.5">${x}</p>`).join('')}<div class="acts"><button class="c2" onclick="closeM()">Fermer</button></div>`); }
+let dip = null;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); dip = e; });
+const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+function installApp() {
+  if (dip) { dip.prompt(); dip = null; return; }
+  toast(/iPhone|iPad|iPod/.test(navigator.userAgent) ? "iPhone : dans Safari, touchez Partager (carré avec flèche) puis « Sur l'écran d'accueil »." : "Android : ouvrez le menu ⋮ du navigateur puis « Installer l'application » (ou « Ajouter à l'écran d'accueil »).", 9000);
+}
+function welcome() {
+  if (standalone()) return;
+  let t = 0; try { t = +localStorage.getItem('sp_inst_' + me.id) || 0; } catch (e) {}
+  if (t === 1 || (t && Date.now() - t < 14 * 864e5)) return;
+  openM(`<h3>Bienvenue sur SocialPages !</h3><p style="margin-bottom:14px;line-height:1.5">Installez SocialPages sur votre téléphone pour retrouver votre réseau plus facilement depuis votre écran d'accueil.</p>
+    <div class="acts"><button class="c1" onclick="laterInstall()">Plus tard</button><button class="c2" onclick="acceptInstall()">Installer SocialPages</button></div>`);
+}
+function laterInstall() { try { localStorage.setItem('sp_inst_' + me.id, Date.now()); } catch (e) {} closeM(); }
+function acceptInstall() { try { localStorage.setItem('sp_inst_' + me.id, 1); } catch (e) {} closeM(); installApp(); }
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+// Push : (ré)enregistre l'abonnement de cet appareil et propose l'activation
+async function syncPush() {
+  try {
+    if (!me || !('serviceWorker' in navigator) || !('PushManager' in window) || location.protocol !== 'https:' || !window.SOCIALPAGES_VAPID_PUBLIC_KEY) return;
+    if (Notification.permission !== 'granted') return;
+    const reg = await navigator.serviceWorker.ready;
+    const key = Uint8Array.from(atob(window.SOCIALPAGES_VAPID_PUBLIC_KEY.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+    const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+    await sb.from('push_subscriptions').upsert({ user_id: me.id, endpoint: sub.endpoint, subscription: sub.toJSON() }, { onConflict: 'endpoint' });
+  } catch (e) {}
+}
+function pushBanner() {
+  try {
+    if (!me || !('PushManager' in window) || Notification.permission !== 'default' || localStorage.getItem('sp_pushask_' + me.id) || document.getElementById('pushbar')) return;
+    const d = document.createElement('div'); d.id = 'pushbar';
+    d.style.cssText = 'position:fixed;left:12px;right:12px;bottom:76px;z-index:120;background:#1F2937;color:#fff;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;font-size:14px';
+    d.innerHTML = `<span style="flex:1">🔔 Recevez vos messages et ventes même quand l'application est fermée.</span><button id="pushyes" style="border:none;border-radius:10px;background:#3B82F6;color:#fff;padding:9px 14px;font-weight:600">Activer</button><button id="pushno" style="border:none;background:none;color:#9CA3AF;font-size:18px">✕</button>`;
+    d.querySelector('#pushyes').onclick = () => { d.remove(); enablePush(); };
+    d.querySelector('#pushno').onclick = () => { try { localStorage.setItem('sp_pushask_' + me.id, 1); } catch (e) {} d.remove(); };
+    document.body.appendChild(d);
+  } catch (e) {}
+}
+
+// Notifications (centre 🔔, badges, push navigateur)
+const setBadge = (id, n) => { const e = $(id); e.textContent = n; e.classList.toggle('hidden', !n); };
+async function updBadges() {
+  const [{ count: m }, { count: n }] = await Promise.all([
+    sb.from('messages').select('*', { count: 'exact', head: true }).eq('to_id', me.id).eq('read', false),
+    sb.from('notifications').select('*', { count: 'exact', head: true }).eq('user_id', me.id).eq('read', false)]);
+  setBadge('mbadge', m || 0); setBadge('nbadge', n || 0);
+  // Pastille sur l'icône de l'appli installée (là où le système le permet)
+  try { const t = (m || 0) + (n || 0); (t ? navigator.setAppBadge?.(t) : navigator.clearAppBadge?.())?.catch?.(() => {}); } catch (e) {}
+}
+function onNotif(n) {
+  toast(n.text); ding(); updBadges();
+  if (!$('npanel').classList.contains('hidden')) loadNotifs();
+  if (me.prefs?.push && 'Notification' in window && Notification.permission === 'granted') showNotif('SocialPages - Nouvelle activité !', n.text, 'sp-n-' + (n.id || Date.now()));
+}
+// Son, vibration et notification système. Sur Android, « new Notification() » est interdit :
+// il faut passer par le service worker (showNotification), sinon rien ne s'affiche.
+let sndCtx = null;
+document.addEventListener('pointerdown', () => { try { sndCtx ||= new (window.AudioContext || window.webkitAudioContext)(); sndCtx.resume(); } catch (e) {} }, { once: true });
+function ding() {
+  try {
+    navigator.vibrate?.([200, 100, 200]);
+    if (!sndCtx) return; const t = sndCtx.currentTime;
+    [[880, 0], [1320, 0.16]].forEach(([hz, d]) => {
+      const o = sndCtx.createOscillator(), g = sndCtx.createGain(); o.type = 'sine'; o.frequency.value = hz;
+      g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(0.8, t + d + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.3);
+      o.connect(g).connect(sndCtx.destination); o.start(t + d); o.stop(t + d + 0.32);
+    });
+  } catch (e) {}
+}
+async function showNotif(title, body, tag = 'sp') {
+  try {
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    const o = { body, tag, renotify: true, icon: 'apple-touch-icon.png', badge: 'apple-touch-icon.png', vibrate: [200, 100, 200, 100, 300], silent: false };
+    const reg = 'serviceWorker' in navigator ? await navigator.serviceWorker.getRegistration() : null;
+    reg ? await reg.showNotification(title, o) : new Notification(title, o);
+  } catch (e) {}
+}
+async function alertMsg(m) {
+  if (!m || (cur === 'chat' && chatWith?.id === m.from_id && !document.hidden)) return; // déjà sous les yeux
+  const { data: u } = await sb.from('profiles').select('name').eq('id', m.from_id).maybeSingle();
+  const who = u?.name || 'Quelqu’un', txt = m.message_type === 'image' ? '🖼 Photo' : m.message_type === 'voice' ? '🎙️ Message vocal' : (m.text || '').slice(0, 80);
+  ding();
+  if (document.hidden) showNotif('💬 ' + who, txt, 'sp-msg-' + m.from_id); else toast('💬 ' + who + ' : ' + txt, 4000);
+}
+function toggleNotif() { if (!$('npanel').classList.toggle('hidden')) loadNotifs(); }
+async function loadNotifs() {
+  const { data } = await sb.from('notifications').select('*').gte('created_at', d30()).order('created_at', { ascending: false }).limit(30);
+  $('npanel').innerHTML = `<div class="row" style="margin-bottom:8px"><b>🔔 Notifications</b><button class="soft" style="padding:8px 12px;font-size:13px" onclick="readAll()">Tout marquer comme lu</button></div>` +
+    ((data || []).map(n => `<div class="ni ${n.read ? '' : 'unread'}"><div style="flex:1;font-size:14px">${esc(n.text)}<div class="mt">${ago(n.created_at)}</div></div>${/^#\/p\/[0-9a-f-]{36}$/i.test(n.link || '') ? `<button class="pill" style="padding:8px 12px;font-size:13px" onclick="openN('${n.id}','${n.link}')">Voir</button>` : ''}</div>`).join('') || empty('🔔', 'Aucune notification'));
+}
+async function openN(id, l) { await sb.from('notifications').update({ read: true }).eq('id', id); $('npanel').classList.add('hidden'); updBadges(); location.hash = l; }
+async function readAll() { await sb.from('notifications').update({ read: true }).eq('user_id', me.id).eq('read', false); loadNotifs(); updBadges(); }
+
+// ---------- Messages ----------
+async function renderMsgs() {
+  await purgeExpiredMedia();
+  const s = $('m-search').value.trim().toLowerCase();
+  const { data: ms } = await sb.from('messages').select('*').order('created_at', { ascending: false }).limit(500);
+  const convs = {};
+  (ms || []).filter(m => !(m.deleted_for || []).includes(me.id)).forEach(m => {
+    const o = m.from_id === me.id ? m.to_id : m.from_id;
+    convs[o] ||= { last: m, unread: 0 };
+    if (m.to_id === me.id && !m.read) convs[o].unread++;
+  });
+  const ids = Object.keys(convs);
+  const { data: us } = ids.length ? await sb.from('profiles').select('*').in('id', ids) : { data: [] };
+  $('unread').textContent = Object.values(convs).reduce((n, c) => n + c.unread, 0);
+  const list = (us || []).filter(u => !s || u.name.toLowerCase().includes(s) || u.username.includes(s))
+    .sort((a, b) => new Date(convs[b.id].last.created_at) - new Date(convs[a.id].last.created_at));
+  $('convs').innerHTML = list.length ? list.map(u => { const c = convs[u.id];
+    return `<div class="item" onclick="openChat('${u.id}')">${av(u, 50)}<div class="info"><b>${esc(u.name)}</b><div class="pre">${c.last.message_type === 'image' ? '🖼 Photo' : c.last.message_type === 'voice' ? '🎙️ Message vocal' : esc(c.last.text)}</div></div>
+      <div style="text-align:right"><div class="mt">${ago(c.last.created_at)}</div>${c.unread ? `<span class="badge">${c.unread}</span>` : ''}</div></div>`; }).join('')
+    : empty('💬', 'Aucune conversation', 'Commencez une discussion !');
+}
+async function newMsg() {
+  const u = (prompt("Nom d'utilisateur de la personne à qui écrire :") || '').trim().replace('@', '').toLowerCase();
+  if (!u) return;
+  const { data } = await sb.from('profiles').select('id').eq('username', u).neq('id', me.id).maybeSingle();
+  data ? openChat(data.id) : alert('Utilisateur introuvable');
+}
+async function openChat(id) {
+  chatWith = (await sb.from('profiles').select('*').eq('id', id).single()).data;
+  if (!chatWith) return;
+  $('c-av').innerHTML = av(chatWith, 40); $('c-name').textContent = chatWith.name;
+  go('chat');
+  if (!localStorage.getItem('sp_tipdel')) { localStorage.setItem('sp_tipdel', 1); setTimeout(() => toast('💡 Appui long sur un message pour le copier ou le supprimer', 4500), 800); }
+}
+async function renderChat() {
+  if (!chatWith) return;
+  await purgeExpiredMedia();
+  const { data: ms } = await sb.from('messages').select('*')
+    .or(`and(from_id.eq.${me.id},to_id.eq.${chatWith.id}),and(from_id.eq.${chatWith.id},to_id.eq.${me.id})`).order('created_at');
+  chatMs = (ms || []).filter(m => !(m.deleted_for || []).includes(me.id));
+  $('msgs').innerHTML = chatMs.map(m => (m.message_type === 'image' ? imgMsgHTML(m) : m.message_type === 'voice' ? `<div class="msg ${m.from_id === me.id ? 's' : 'r'}"><button onclick="playVoice('${m.id}','${esc(m.audio_path)}')">▶ Écouter le message vocal</button><small> · ${Number(m.audio_duration_seconds||0)} s</small></div>` : `<div class="msg ${m.from_id === me.id ? 's' : 'r'}">${esc(m.text)}</div>`).replace('<div ', `<div data-mid="${m.id}" `)).join('');
+  window.scrollTo(0, document.body.scrollHeight);
+  sb.from('messages').update({ read: true }).eq('to_id', me.id).eq('from_id', chatWith.id).eq('read', false).then(() => {});
+}
+async function sendMsg() {
+  const text = $('c-text').value.trim();
+  if (!text || !chatWith) return;
+  $('c-text').value = '';
+  await sb.from('messages').insert({ from_id: me.id, to_id: chatWith.id, text });
+  renderChat();
+}
+
+// ---------- Suppression des messages : « pour moi » (chacun) ou « pour tout le monde » (expéditeur) ----------
+let chatMs = [], lpT = null;
+function msgMenu(id) {
+  const m = chatMs.find(x => x.id === id); if (!m) return;
+  openM(`<h3>Message</h3>
+    ${m.text ? `<button class="pbtn gray" onclick="copyTxt(chatMs.find(x => x.id === '${id}').text);closeM()">📋 Copier le texte</button>` : ''}
+    <button class="pbtn gray" onclick="delMsg('${id}',false)">🗑 Supprimer pour moi</button>
+    ${m.from_id === me.id ? `<button class="pbtn r" onclick="delMsg('${id}',true)">🗑 Supprimer pour tout le monde</button>` : ''}
+    <button class="pbtn gray" onclick="closeM()">Annuler</button>`);
+}
+async function delMsg(id, all) {
+  if (all && !confirm('Supprimer ce message pour vous et pour votre correspondant ?')) return;
+  const { data, error } = await sb.rpc('delete_message', { mid: id, for_all: all });
+  if (error) return toast(/function|schema cache/i.test(error.message) ? "⚙️ Exécutez d'abord supabase_suppression_messages.sql dans Supabase (SQL Editor)." : '⚠️ ' + error.message, 5000);
+  if (data) sb.storage.from('messages').remove([data]).then(() => {});
+  closeM(); toast(all ? 'Message supprimé pour tout le monde' : 'Message supprimé pour vous'); renderChat();
+}
+(() => {
+  const box = $('msgs'); if (!box) return;
+  const mid = e => e.target.closest('[data-mid]')?.dataset.mid;
+  box.addEventListener('contextmenu', e => { const id = mid(e); if (id) { e.preventDefault(); clearTimeout(lpT); msgMenu(id); } });
+  box.addEventListener('touchstart', e => { const id = mid(e); if (!id || e.target.closest('button')) return; clearTimeout(lpT); lpT = setTimeout(() => msgMenu(id), 550); }, { passive: true });
+  ['touchend', 'touchmove', 'touchcancel'].forEach(t => box.addEventListener(t, () => clearTimeout(lpT), { passive: true }));
+})();
+
+// ---------- Photos dans la conversation : compressées, puis supprimées automatiquement ----------
+// Règle : effacée 30 min après avoir été ouverte par le destinataire, ou 24 h après l'envoi si elle n'a jamais été ouverte.
+// La photo est supprimée du stockage Supabase ET de la conversation, pour l'expéditeur comme pour le destinataire.
+const IMG_UNSEEN_MS = 24 * 3600e3, IMG_SEEN_MS = 30 * 60e3;
+function compressImage(file, max = 1280, q = 0.72) {
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      c.toBlob(b => b ? res(b) : rej(new Error('Compression impossible')), 'image/jpeg', q);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('Image illisible sur cet appareil')); };
+    img.src = url;
+  });
+}
+async function sendChatImage(input) {
+  const f = input.files[0]; input.value = ''; if (!f || !chatWith) return;
+  if (!f.type.startsWith('image/')) return alert('Choisissez une image.');
+  const b = $('img-btn'); b.disabled = true;
+  try {
+    const blob = await compressImage(f), path = `${me.id}/img-${crypto.randomUUID()}.jpg`;
+    const { error: up } = await sb.storage.from('messages').upload(path, blob, { contentType: 'image/jpeg', upsert: false }); if (up) throw up;
+    const { error: ins } = await sb.from('messages').insert({ from_id: me.id, to_id: chatWith.id, text: null, message_type: 'image', audio_path: path, expires_at: new Date(Date.now() + IMG_UNSEEN_MS).toISOString() });
+    if (ins) { await sb.storage.from('messages').remove([path]); throw ins; }
+    await renderChat();
+  } catch (e) { alert('Envoi de la photo impossible : ' + e.message + '\n\nSi le message persiste, exécutez le script supabase_photos.sql dans Supabase (SQL Editor).'); }
+  b.disabled = false;
+}
+function imgMsgHTML(m) {
+  const mine = m.from_id === me.id, left = new Date(m.expires_at) - Date.now(), cl = 'msg ' + (mine ? 's' : 'r');
+  if (left <= 0) return `<div class="${cl}">🖼 Photo expirée</div>`;
+  const lbl = left >= 3600e3 ? Math.ceil(left / 3600e3) + ' h' : Math.max(1, Math.ceil(left / 60e3)) + ' min';
+  const note = m.viewed_at ? `Ouverte · disparaît dans ${lbl}` : mine ? `Envoyée · disparaît dans ${lbl} si non ouverte` : 'Disparaît 30 min après ouverture';
+  return `<div class="${cl}"><button onclick="viewChatImage('${m.id}','${esc(m.audio_path)}',${mine})">🖼 Voir la photo</button><small style="display:block;opacity:.8;margin-top:4px">${note}</small></div>`;
+}
+async function viewChatImage(id, path, mine) {
+  const { data, error } = await sb.storage.from('messages').createSignedUrl(path, 300);
+  if (error) { await purgeExpiredMedia(); return alert('Photo indisponible (elle a peut-être expiré).'); }
+  viewImg(data.signedUrl);
+  if (!mine) {
+    await sb.from('messages').update({ viewed_at: new Date().toISOString(), expires_at: new Date(Date.now() + IMG_SEEN_MS).toISOString() }).eq('id', id).is('viewed_at', null);
+    renderChat();
+  }
+}
+async function purgeExpiredMedia() {
+  if (!me) return 0;
+  try {
+    const { data } = await sb.from('messages').select('id,audio_path').eq('message_type', 'image').lt('expires_at', new Date().toISOString()).limit(100);
+    if (!data?.length) return 0;
+    const { error } = await sb.storage.from('messages').remove(data.map(m => m.audio_path).filter(Boolean));
+    if (error) { console.warn('Suppression photo impossible', error); return 0; }
+    await sb.from('messages').delete().in('id', data.map(m => m.id));
+    return data.length;
+  } catch (e) { return 0; }
+}
+setInterval(async () => { if (me && await purgeExpiredMedia() && cur === 'chat') renderChat(); }, 60000);
+
+// Messages vocaux : stockage privé, lecture temporaire, consommation côté serveur.
+let voiceRecorder=null,voiceChunks=[],voiceStarted=0,voiceStream=null;
+async function toggleVoice(){
+ const b=$('voice-btn');
+ if(voiceRecorder&&voiceRecorder.state==='recording'){voiceRecorder.stop();b.textContent='🎙️';return;}
+ if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)return alert('Les messages vocaux ne sont pas pris en charge par ce navigateur.');
+ try{
+  voiceStream=await navigator.mediaDevices.getUserMedia({audio:true});
+  const mime=['audio/webm;codecs=opus','audio/ogg;codecs=opus','audio/mp4'].find(t=>MediaRecorder.isTypeSupported(t));
+  voiceRecorder=new MediaRecorder(voiceStream,mime?{mimeType:mime}:undefined);voiceChunks=[];voiceStarted=Date.now();
+  voiceRecorder.ondataavailable=e=>{if(e.data.size)voiceChunks.push(e.data)};
+  voiceRecorder.onstop=async()=>{voiceStream?.getTracks().forEach(t=>t.stop());voiceStream=null;b.disabled=true;
+   const blob=new Blob(voiceChunks,{type:voiceRecorder.mimeType||'audio/webm'});const duration=Math.min(300,Math.round((Date.now()-voiceStarted)/1000));
+   if(blob.size>5*1024*1024){alert('Message vocal trop volumineux (maximum 5 Mo).');b.disabled=false;return;}
+   if(!chatWith||duration<1){b.disabled=false;return;}
+   const ext=blob.type.includes('mp4')?'mp4':blob.type.includes('ogg')?'ogg':'webm';const path=`${me.id}/${crypto.randomUUID()}.${ext}`;
+   const {error:up}=await sb.storage.from('messages').upload(path,blob,{contentType:blob.type,upsert:false});
+   if(up){alert('Envoi audio impossible : '+up.message);b.disabled=false;return;}
+   const {error:ins}=await sb.from('messages').insert({from_id:me.id,to_id:chatWith.id,text:null,message_type:'voice',audio_path:path,audio_duration_seconds:duration,expires_at:new Date(Date.now()+86400000).toISOString()});
+   if(ins){await sb.storage.from('messages').remove([path]);alert('Enregistrement du message impossible : '+ins.message);}
+   await renderChat();b.disabled=false;
+  };
+  voiceRecorder.start();b.textContent='⏹️';
+ }catch(e){alert('Accès au microphone refusé ou indisponible : '+e.message);voiceStream?.getTracks().forEach(t=>t.stop());}
+}
+async function playVoice(id,path){
+ const {data,error}=await sb.storage.from('messages').createSignedUrl(path,120);
+ if(error)return alert('Audio indisponible : '+error.message);
+ const a=new Audio(data.signedUrl);a.onended=async()=>{const {error:e}=await sb.functions.invoke('consume-voice-message',{body:{message_id:id}});if(e)console.warn('Confirmation de lecture non effectuée',e);await renderChat();};a.onerror=()=>alert('Lecture audio impossible sur cet appareil.');await a.play();
+}
+async function enablePush(){
+ if(!('serviceWorker'in navigator)||!('PushManager'in window))return alert('Les notifications Push ne sont pas prises en charge par ce navigateur.');
+ const permission=await Notification.requestPermission();if(permission!=='granted')return alert('Autorisez les notifications dans les paramètres du navigateur.');
+ const publicKey=window.SOCIALPAGES_VAPID_PUBLIC_KEY;if(!publicKey)return alert('Configuration requise : ajoutez la clé publique VAPID dans SOCIALPAGES_VAPID_PUBLIC_KEY avant activation.');
+ const reg=await navigator.serviceWorker.ready;const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:Uint8Array.from(atob(publicKey.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))});
+ const {error}=await sb.from('push_subscriptions').upsert({user_id:me.id,endpoint:sub.endpoint,subscription:sub.toJSON()},{onConflict:'endpoint'});
+ if(error)return alert('Enregistrement Push impossible : '+error.message+'\nAvez-vous exécuté supabase_push.sql ?');toast('✅ Notifications activées sur cet appareil.');
+}
+
+// ---------- Appels vocaux et vidéo, gratuits (WebRTC pair-à-pair) ----------
+// Le son et l'image passent directement d'un téléphone à l'autre : rien ne transite ni n'est stocké sur Supabase.
+// Supabase Realtime (diffusion) sert seulement à « faire sonner » : offre, réponse, candidats réseau, fin d'appel.
+// Limite des applis web : l'appel ne sonne que si l'appli du correspondant est ouverte ;
+// sinon il reçoit « 📞 Appel manqué » dans la conversation (et en notification si le push fonctionne).
+// Relais TURN facultatif (réseaux très fermés) : window.SOCIALPAGES_TURN = [{ urls, username, credential }]
+const ICE = [{ urls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'] }, ...(window.SOCIALPAGES_TURN || [])];
+let call = null, sigIn = null, ringT = null;
+const sigOut = {};
+function sigListen() {
+  if (sigIn) sb.removeChannel(sigIn);
+  sigIn = sb.channel('call-' + me.id, { config: { broadcast: { self: false } } })
+    .on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload)).subscribe();
+}
+async function sigSend(to, p) {
+  let ch = sigOut[to];
+  if (!ch) {
+    ch = sigOut[to] = sb.channel('call-' + to, { config: { broadcast: { self: false } } });
+    await new Promise(r => { const t = setTimeout(r, 6000); ch.subscribe(st => { if (st === 'SUBSCRIBED') { clearTimeout(t); r(); } }); });
+  }
+  try { await ch.send({ type: 'broadcast', event: 'sig', payload: { ...p, from: me.id } }); } catch (e) {}
+}
+function tone(freqs, dur) {
+  try {
+    if (!sndCtx) return; if (sndCtx.state === 'suspended') sndCtx.resume();
+    const t = sndCtx.currentTime;
+    freqs.forEach(hz => {
+      const o = sndCtx.createOscillator(), g = sndCtx.createGain(); o.frequency.value = hz;
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.35, t + 0.03);
+      g.gain.setValueAtTime(0.35, t + dur - 0.05); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g).connect(sndCtx.destination); o.start(t); o.stop(t + dur);
+    });
+  } catch (e) {}
+}
+function ringtone(on) { clearInterval(ringT); ringT = null; try { navigator.vibrate?.(0); } catch (e) {} if (!on) return; const r = () => { tone([440, 480], 1.2); try { navigator.vibrate?.([700, 300, 700]); } catch (e) {} }; r(); ringT = setInterval(r, 3000); }
+function ringback(on) { clearInterval(ringT); ringT = null; if (!on) return; const r = () => tone([425], 1); r(); ringT = setInterval(r, 3500); }
+const fmtDur = s => (s >= 3600 ? Math.floor(s / 3600) + ' h ' : '') + Math.floor(s % 3600 / 60) + ' min ' + String(s % 60).padStart(2, '0') + ' s';
+const clock = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+function setStatus(t) { const e = $('call-st'); if (e) e.textContent = t; }
+function callUI() {
+  if (!call) return;
+  if (!$('callbox')) {
+    document.body.insertAdjacentHTML('beforeend', `<div id="callbox" class="callbox">
+      <video id="call-rv" autoplay playsinline muted></video><audio id="call-ra" autoplay></audio><video id="call-lv" autoplay playsinline muted></video>
+      <div class="ctop">${av(call.peer, 96)}<b>${esc(call.peer.name)}</b><div id="call-st"></div></div><div class="cbtns" id="call-btns"></div></div>`);
+  }
+  $('callbox').classList.toggle('vid', !!call.video);
+  const b = (cls, fn, ico, lbl) => `<div><button type="button" class="${cls}" onclick="${fn}">${ico}</button><small>${lbl}</small></div>`;
+  $('call-btns').innerHTML = call.status === 'ring'
+    ? b('hang', 'declineCall()', '✖', 'Refuser') + b('pick', 'acceptCall()', call.video ? '🎥' : '📞', 'Répondre')
+    : b(call.micOff ? 'off' : '', 'toggleMic()', call.micOff ? '🔇' : '🎤', 'Micro')
+      + (call.video ? b(call.camOff ? 'off' : '', 'toggleCam()', '📷', 'Caméra') + b('', 'switchCam()', '🔄', 'Retourner') : '')
+      + b('hang', "endCall('hangup')", '📞', 'Raccrocher');
+}
+function getMedia(video) {
+  return navigator.mediaDevices.getUserMedia({
+    audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+    video: video ? { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24 } } : false // qualité modérée : économise les données
+  });
+}
+function showLocal() { const v = $('call-lv'); if (v && call?.local) v.srcObject = call.local; }
+function newPC() {
+  const pc = new RTCPeerConnection({ iceServers: ICE });
+  pc.onicecandidate = e => {
+    if (!e.candidate || !call) return; const c = e.candidate.toJSON();
+    // Côté appelant : on garde les candidats tant que l'offre n'est pas partie (sinon le correspondant les ignore)
+    if (call.role === 'out' && !call.sent) (call.outIce ||= []).push(c); else sigSend(call.peer.id, { t: 'ice', cid: call.id, c });
+  };
+  pc.ontrack = e => {
+    const st = e.streams[0] || new MediaStream([e.track]);
+    const a = $('call-ra'), v = $('call-rv');
+    if (a && a.srcObject !== st) { a.srcObject = st; a.play?.().catch(() => {}); }
+    if (v && v.srcObject !== st) v.srcObject = st;
+  };
+  pc.onconnectionstatechange = () => {
+    const st = pc.connectionState;
+    if (st === 'connected') onConnected();
+    else if (st === 'disconnected') setStatus('Connexion instable…');
+    else if (st === 'failed') endCall('failed');
+  };
+  call.local.getTracks().forEach(t => pc.addTrack(t, call.local));
+  return pc;
+}
+function flushIce() { (call?.ice || []).forEach(c => call.pc.addIceCandidate(c).catch(() => {})); if (call) call.ice = []; }
+function onConnected() {
+  if (!call || call.status === 'on') return;
+  call.status = 'on'; ringback(false); clearTimeout(call.tmo); call.t0 = Date.now();
+  $('callbox')?.classList.add('on'); callUI();
+  setStatus('00:00'); call.timer = setInterval(() => setStatus(clock(Math.round((Date.now() - call.t0) / 1000))), 1000);
+}
+async function startCall(video) {
+  if (!chatWith || !me) return;
+  if (call) return toast('Un appel est déjà en cours');
+  if (!window.RTCPeerConnection || !navigator.mediaDevices?.getUserMedia) return alert('Votre navigateur ne permet pas les appels. Essayez avec Chrome.');
+  if (blocked.has(chatWith.id)) return toast('Vous avez bloqué cette personne.');
+  call = { id: crypto.randomUUID(), peer: chatWith, video, role: 'out', ice: [], status: 'out' };
+  callUI(); setStatus('Accès au micro…');
+  try { call.local = await getMedia(video); }
+  catch (e) { endCall('nomedia'); return alert('Autorisez le micro' + (video ? ' et la caméra' : '') + ' pour appeler.'); }
+  if (!call) return;
+  showLocal(); call.pc = newPC();
+  const off = await call.pc.createOffer(); await call.pc.setLocalDescription(off);
+  setStatus('Appel en cours…'); ringback(true);
+  await sigSend(call.peer.id, { t: 'offer', cid: call.id, sdp: off.sdp, video });
+  if (call) { call.sent = true; (call.outIce || []).forEach(c => sigSend(call.peer.id, { t: 'ice', cid: call.id, c })); call.outIce = []; }
+  const cid = call?.id;
+  if (call) call.tmo = setTimeout(() => { if (call?.id === cid && call.status !== 'on') { sigSend(call.peer.id, { t: 'cancel', cid }); endCall('noanswer'); } }, 45000);
+}
+async function acceptCall() {
+  if (!call || call.role !== 'in' || call.status !== 'ring') return;
+  ringtone(false); clearTimeout(call.tmo); call.status = 'conn'; callUI(); setStatus('Connexion…');
+  try { call.local = await getMedia(call.video); }
+  catch (e) {
+    try { call.local = await getMedia(false); call.video = false; callUI(); } // pas de caméra : on répond en vocal
+    catch (x) { sigSend(call.peer.id, { t: 'decline', cid: call.id }); endCall('nomedia'); return alert('Autorisez le micro pour répondre.'); }
+  }
+  if (!call) return;
+  showLocal(); call.pc = newPC();
+  await call.pc.setRemoteDescription({ type: 'offer', sdp: call.offer }); flushIce();
+  const ans = await call.pc.createAnswer(); await call.pc.setLocalDescription(ans);
+  sigSend(call.peer.id, { t: 'answer', cid: call.id, sdp: ans.sdp });
+}
+function declineCall() { if (!call) return; sigSend(call.peer.id, { t: 'decline', cid: call.id }); endCall('declined-local'); }
+function toggleMic() { const t = call?.local?.getAudioTracks()[0]; if (!t) return; t.enabled = !t.enabled; call.micOff = !t.enabled; callUI(); }
+function toggleCam() { const t = call?.local?.getVideoTracks()[0]; if (!t) return; t.enabled = !t.enabled; call.camOff = !t.enabled; callUI(); }
+async function switchCam() {
+  if (!call?.pc || !call.video) return;
+  call.facing = call.facing === 'environment' ? 'user' : 'environment';
+  try {
+    const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: call.facing, width: { ideal: 640 }, height: { ideal: 480 } } });
+    const nt = s.getVideoTracks()[0], old = call.local.getVideoTracks()[0];
+    await call.pc.getSenders().find(x => x.track?.kind === 'video')?.replaceTrack(nt);
+    if (old) { call.local.removeTrack(old); old.stop(); } call.local.addTrack(nt); showLocal();
+    $('call-lv').style.transform = call.facing === 'user' ? 'scaleX(-1)' : 'none';
+  } catch (e) { toast('Impossible de changer de caméra'); }
+}
+async function onSig(p) {
+  if (!p || !p.from || !p.cid || blocked.has(p.from)) return;
+  if (p.t === 'offer') {
+    if (call) return sigSend(p.from, { t: 'busy', cid: p.cid });
+    const { data: u } = await sb.from('profiles').select('*').eq('id', p.from).maybeSingle();
+    if (!u || call) return;
+    call = { id: p.cid, peer: u, video: !!p.video, role: 'in', offer: p.sdp, ice: [], status: 'ring' };
+    callUI(); setStatus(p.video ? 'Appel vidéo entrant…' : 'Appel vocal entrant…'); ringtone(true);
+    if (document.hidden) showNotif('📞 ' + u.name + ' vous appelle', 'Ouvrez SocialPages pour répondre', 'sp-call');
+    call.tmo = setTimeout(() => { if (call?.id === p.cid && call.status === 'ring') endCall('missed'); }, 45000);
+    return;
+  }
+  if (!call || p.cid !== call.id || p.from !== call.peer.id) return;
+  if (p.t === 'answer' && call.pc) { ringback(false); setStatus('Connexion…'); await call.pc.setRemoteDescription({ type: 'answer', sdp: p.sdp }); flushIce(); }
+  else if (p.t === 'ice') { if (call.pc?.remoteDescription) call.pc.addIceCandidate(p.c).catch(() => {}); else call.ice.push(p.c); }
+  else if (p.t === 'decline') endCall('declined');
+  else if (p.t === 'busy') endCall('busy');
+  else if (p.t === 'end' || p.t === 'cancel') endCall(call.status === 'ring' ? 'missed' : 'remote');
+}
+function endCall(reason) {
+  if (!call) return;
+  const c = call; call = null;
+  if (reason === 'hangup') sigSend(c.peer.id, { t: 'end', cid: c.id });
+  clearTimeout(c.tmo); clearInterval(c.timer); ringtone(false); ringback(false);
+  try { c.pc?.close(); } catch (e) {} c.local?.getTracks().forEach(t => t.stop());
+  $('callbox')?.remove();
+  const dur = c.t0 ? Math.round((Date.now() - c.t0) / 1000) : 0, kind = c.video ? 'vidéo' : 'vocal';
+  // Trace dans la conversation, écrite par l'appelant seulement (pas de doublon)
+  if (c.role === 'out' && reason !== 'nomedia') {
+    const txt = c.t0 ? `📞 Appel ${kind} · ${fmtDur(dur)}` : reason === 'declined' ? `📞 Appel ${kind} refusé` : `📞 Appel ${kind} manqué`;
+    sb.from('messages').insert({ from_id: me.id, to_id: c.peer.id, text: txt }).then(() => { if (cur === 'chat') renderChat(); });
+  }
+  const msg = { declined: 'Appel refusé', busy: 'Votre correspondant est déjà en ligne', noanswer: 'Pas de réponse', failed: 'Connexion impossible : réseau trop instable', missed: 'Appel manqué de ' + c.peer.name, remote: 'Appel terminé', hangup: dur ? 'Appel terminé · ' + clock(dur) : '' }[reason];
+  if (msg) toast(msg);
+  setTimeout(() => { const ch = sigOut[c.peer.id]; if (ch && !call) { sb.removeChannel(ch); delete sigOut[c.peer.id]; } }, 4000);
+}
+window.addEventListener('pagehide', () => { if (!call) return; if (call.role === 'in' && call.status === 'ring') declineCall(); else endCall('hangup'); });
+
+// ---------- Live (direct vidéo) gratuit, pair-à-pair ----------
+// L'animateur envoie sa vidéo directement à chaque spectateur (même technique que les appels) :
+// rien n'est stocké ni relayé par Supabase, qui ne transporte que la signalisation et les commentaires (Realtime).
+// Limite : le téléphone envoie une copie par spectateur, d'où LIVE_MAX. Pour une grande audience :
+// publier un live YouTube avec « 🎥 Lien vidéo » (déjà pris en charge), ou plus tard le relais Cloudflare (SFU).
+const LIVE_MAX = 5;
+let liveDir = null, lives = {}, live = null, liveDirRetry = null;
+const hb = {}, alerted = new Set(); // hb : battements de cœur des animateurs ; alerted : lives déjà signalés
+// Sur mobile, la connexion temps réel se coupe souvent (écran verrouillé, changement de réseau) et la présence
+// de l'animateur peut alors disparaître. D'où trois sécurités : l'animateur émet un battement toutes les 20 s
+// et se ré-annonce, chaque appareil se reconnecte tout seul, et un live reste affiché 45 s après le dernier battement.
+function liveDirListen() {
+  clearTimeout(liveDirRetry);
+  if (liveDir) { const old = liveDir; liveDir = null; sb.removeChannel(old); }
+  const ch = liveDir = sb.channel('lives', { config: { presence: { key: me.id }, broadcast: { self: false } } });
+  ch.on('presence', { event: 'sync' }, computeLives)
+    .on('broadcast', { event: 'live' }, ({ payload: p }) => { if (p?.hid) { hb[p.hid] = { ...p, seen: Date.now() }; computeLives(); } })
+    .on('broadcast', { event: 'live-off' }, ({ payload: p }) => { if (p?.hid) { delete hb[p.hid]; computeLives(); } })
+    .subscribe(st => {
+      if (ch !== liveDir) return; // ancien canal fermé volontairement
+      if (st === 'SUBSCRIBED') { if (live?.host) liveBeat(); computeLives(); }
+      else if (st === 'CHANNEL_ERROR' || st === 'TIMED_OUT' || st === 'CLOSED') { clearTimeout(liveDirRetry); liveDirRetry = setTimeout(() => { if (me) liveDirListen(); }, 4000); }
+    });
+}
+const lvMeta = () => ({ live: true, hid: me.id, name: me.name, avatar_url: me.avatar_url || '', title: live?.title || '', t: live?.t0, sfu: live?.sfu || '' });
+function liveBeat() {
+  if (!live?.host || !liveDir) return;
+  try { liveDir.send({ type: 'broadcast', event: 'live', payload: lvMeta() }); } catch (e) {}
+  if (!liveDir.presenceState()[me.id]) liveDir.track(lvMeta()).catch?.(() => {});
+  if (live.ch && ['closed', 'errored'].includes(live.ch.state)) { const old = live.ch; liveRoom(me.id).then(c => { if (live?.host) { live.ch = c; sb.removeChannel(old); } else sb.removeChannel(c); }); }
+}
+function computeLives() {
+  const st = liveDir?.presenceState?.() || {}, now = Date.now(), out = {};
+  Object.entries(st).forEach(([k, arr]) => { const m = arr[arr.length - 1]; if (m?.live) out[k] = m; });
+  Object.entries(hb).forEach(([k, m]) => { if (now - m.seen < 45000) out[k] ||= m; else delete hb[k]; });
+  Object.keys(out).forEach(k => { if (blocked.has(k)) delete out[k]; });
+  lives = out;
+  Object.entries(lives).forEach(([k, m]) => { const key = k + ':' + m.t; if (k !== me?.id && !alerted.has(key)) { alerted.add(key); if (!live && !call) livePop(k); } });
+  renderLiveBar();
+}
+function livePop(hid) {
+  const m = lives[hid]; if (!m) return;
+  ding();
+  if (document.hidden) showNotif('🔴 ' + m.name + ' est en direct', m.title || 'Ouvrez SocialPages pour regarder', 'sp-live-' + hid);
+  $('livepop')?.remove();
+  document.body.insertAdjacentHTML('beforeend', `<div id="livepop" class="livepop">${av(m, 40)}<div class="lpt"><b>${esc(m.name)} est en direct</b><small>${esc(m.title || 'Rejoignez le live')}</small></div><button type="button" class="lpj" onclick="$('livepop').remove();joinLive('${hid}')">Regarder</button><button type="button" class="lpx" onclick="$('livepop').remove()" aria-label="Fermer">✖</button></div>`);
+  clearTimeout(window._lpT); window._lpT = setTimeout(() => $('livepop')?.remove(), 20000);
+}
+// Surveillance : reconnexion si le canal est tombé, nettoyage des lives sans battement
+setInterval(() => {
+  if (!me) return;
+  if (!liveDir || ['closed', 'errored'].includes(liveDir.state)) liveDirListen(); else computeLives();
+  if (live && !live.host && live.ch && ['closed', 'errored'].includes(live.ch.state)) { const old = live.ch; liveRoom(live.hid).then(c => { if (live && !live.host) { live.ch = c; sb.removeChannel(old); } else sb.removeChannel(c); }); }
+}, 25000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && me && (!liveDir || ['closed', 'errored'].includes(liveDir.state))) liveDirListen(); });
+function renderLiveBar() {
+  const el = $('livebar'); if (!el) return;
+  const ids = Object.keys(lives).filter(k => k !== me?.id);
+  el.classList.toggle('hidden', !ids.length);
+  el.innerHTML = ids.map(k => `<button type="button" class="liveitem" onclick="joinLive('${k}')">${av(lives[k], 38)}<span class="lt"><b>${esc(lives[k].name)} <span class="lvred">LIVE</span></b><small>${esc(lives[k].title || 'En direct')}</small></span></button>`).join('');
+}
+function liveRoom(hid) {
+  const ch = sb.channel('live-' + hid, { config: { broadcast: { self: false }, presence: { key: me.id } } });
+  ch.on('broadcast', { event: 'lv' }, ({ payload }) => onLiveSig(payload))
+    .on('presence', { event: 'sync' }, () => { if (live?.host && live.sfu && live.ch === ch) sfuCount(); });
+  return new Promise(r => { const t = setTimeout(() => r(ch), 6000); ch.subscribe(st => { if (st === 'SUBSCRIBED') { clearTimeout(t); if (live && !live.host) { try { ch.track({ v: 1 }); } catch (e) {} } r(ch); } }); });
+}
+function lvSend(p) { try { live?.ch?.send({ type: 'broadcast', event: 'lv', payload: { ...p, from: me.id, fname: me.name } }); } catch (e) {} }
+function setLiveSt(t) { const e = $('lv-st'); if (e) e.textContent = t; }
+function liveUI() {
+  const h = live.host;
+  document.body.insertAdjacentHTML('beforeend', `<div id="livebox" class="livebox ${h ? 'host' : ''}">
+    <video id="lv-v" autoplay playsinline ${h ? 'muted' : ''}></video>
+    <div class="lvtop"><div class="lvwho">${av({ name: live.hname, avatar_url: live.hav }, 38)}<div><b>${esc(live.hname)}</b><small>${esc(live.title || 'En direct')}</small></div></div>
+      <span class="lvred">🔴 EN DIRECT</span><span id="lv-n">👁 0</span><button type="button" onclick="leaveLive()" aria-label="Quitter">✖</button></div>
+    <div id="lv-st" class="lvst"></div>
+    <div class="lvbottom"><div id="lv-com" class="lvcom"></div>
+      <div class="lvin"><input id="lv-text" maxlength="200" placeholder="Commenter…" onkeypress="if(event.key==='Enter')sendLiveMsg()">
+        <button type="button" onclick="sendLiveMsg()" aria-label="Envoyer">➤</button><button type="button" onclick="sendHeart()" aria-label="J'aime">❤️</button>
+        ${h ? '<button type="button" id="lv-mic" onclick="lvMic()" aria-label="Micro">🎤</button><button type="button" onclick="lvFlip()" aria-label="Retourner la caméra">🔄</button>' : ''}</div></div>
+    <div id="lv-hearts"></div></div>`);
+}
+function addComment(name, text) {
+  const box = $('lv-com'); if (!box || !text) return;
+  box.insertAdjacentHTML('beforeend', `<div><b>${esc(name)}</b>${esc(String(text).slice(0, 200))}</div>`);
+  while (box.children.length > 40) box.firstChild.remove();
+  box.scrollTop = box.scrollHeight;
+}
+function floatHeart() {
+  const b = $('lv-hearts'); if (!b) return;
+  const h = document.createElement('span'); h.textContent = ['❤️', '💖', '🧡', '💛'][Math.floor(Math.random() * 4)];
+  h.style.setProperty('--x', (Math.random() * 40 - 20) + 'px'); b.appendChild(h); setTimeout(() => h.remove(), 2300);
+}
+function sendLiveMsg() { const i = $('lv-text'), t = i?.value.trim(); if (!t || !live) return; i.value = ''; lvSend({ t: 'chat', text: t.slice(0, 200) }); addComment(me.name, t); }
+function sendHeart() { if (!live) return; lvSend({ t: 'heart' }); floatHeart(); }
+const lvCount = () => live?.sfu ? (live.nv || 0) : live?.peers ? Object.values(live.peers).filter(p => p.pc.connectionState === 'connected').length : 0;
+function sendCount() { if (!live?.host) return; const n = lvCount(); live.max = Math.max(live.max || 0, n); const e = $('lv-n'); if (e) e.textContent = '👁 ' + n; lvSend({ t: 'count', n }); }
+function capBitrate(pc) { // ~500 kbit/s : bonne image sur mobile, données préservées
+  pc.getSenders().forEach(sd => { if (sd.track?.kind !== 'video') return; try { const pr = sd.getParameters(); if (!pr.encodings?.length) pr.encodings = [{}]; pr.encodings[0].maxBitrate = 500000; sd.setParameters(pr).catch(() => {}); } catch (e) {} });
+}
+// ---------- Live à grande échelle : relais Cloudflare Realtime (SFU) ----------
+// Le vendeur envoie son flux UNE seule fois ; Cloudflare le redistribue aux spectateurs (au lieu de 1 connexion par spectateur).
+// La clé secrète Cloudflare reste dans la fonction Supabase « sfu ». Si cette fonction n'est pas installée,
+// le live retombe automatiquement sur l'ancien mode (limité à LIVE_MAX spectateurs).
+const SFU_ICE = [{ urls: 'stun:stun.cloudflare.com:3478' }];
+async function sfu(op, sessionId, body) {
+  const { data: { session } } = await sb.auth.getSession();
+  const r = await fetch(SUPABASE_URL + '/functions/v1/sfu', { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY, Authorization: 'Bearer ' + (session?.access_token || '') }, body: JSON.stringify({ op, sessionId, body }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.errorCode || j.error) throw new Error(j.errorDescription || j.error || ('Relais vidéo indisponible (' + r.status + ')'));
+  return j;
+}
+const iceDone = pc => new Promise(res => {
+  if (pc.iceGatheringState === 'complete') return res();
+  const t = setTimeout(res, 3500);
+  pc.addEventListener('icegatheringstatechange', () => { if (pc.iceGatheringState === 'complete') { clearTimeout(t); res(); } });
+});
+async function hostSfuStart() {
+  const pc = new RTCPeerConnection({ iceServers: SFU_ICE, bundlePolicy: 'max-bundle' });
+  try {
+    const { sessionId } = await sfu('new');
+    const trs = live.stream.getTracks().map(t => ({ tr: pc.addTransceiver(t, { direction: 'sendonly', streams: [live.stream] }), name: t.kind }));
+    await pc.setLocalDescription(await pc.createOffer()); await iceDone(pc);
+    const r = await sfu('tracks', sessionId, { sessionDescription: { type: 'offer', sdp: pc.localDescription.sdp }, tracks: trs.map(x => ({ location: 'local', mid: x.tr.mid, trackName: x.name })) });
+    if (r.tracks?.some(t => t.errorCode)) throw new Error('Publication refusée par le relais');
+    await pc.setRemoteDescription(r.sessionDescription);
+    capBitrate(pc);
+    pc.onconnectionstatechange = () => {
+      if (!live?.host || live.pc !== pc) return;
+      if (pc.connectionState === 'failed') setLiveSt('⚠️ Connexion du live perdue. Vérifiez votre réseau.');
+      else if (pc.connectionState === 'connected') setLiveSt('');
+    };
+    live.pc = pc; live.sfu = sessionId; live.nv = 0;
+  } catch (e) { try { pc.close(); } catch (x) {} throw e; }
+}
+function sfuCount() {
+  if (!live?.host || !live.sfu || !live.ch) return;
+  const n = Object.keys(live.ch.presenceState()).filter(k => k !== me.id).length;
+  live.nv = n; live.max = Math.max(live.max || 0, n);
+  const e = $('lv-n'); if (e) e.textContent = '👁 ' + n;
+  lvSend({ t: 'count', n }); if (n > 0) setLiveSt('');
+}
+async function viewerSfu(hostSession) {
+  const pc = live.pc = new RTCPeerConnection({ iceServers: SFU_ICE, bundlePolicy: 'max-bundle' });
+  pc.ontrack = e => {
+    // Le relais envoie l'image et le son séparément : on les réunit dans un seul flux pour la lecture
+    const v = $('lv-v'); if (!v || !live) return;
+    const ms = live.ms || (live.ms = new MediaStream()); ms.addTrack(e.track);
+    if (v.srcObject !== ms) {
+      v.srcObject = ms; v.muted = false;
+      v.play().catch(() => { v.muted = true; v.play().catch(() => {}); setLiveSt('🔇 Touchez l’écran pour activer le son'); $('livebox')?.addEventListener('click', () => { v.muted = false; setLiveSt(''); }, { once: true }); });
+    }
+  };
+  pc.onconnectionstatechange = () => {
+    const st = pc.connectionState;
+    if (st === 'connected') { clearTimeout(live?.tmo); if ($('lv-st')?.textContent.startsWith('Connexion')) setLiveSt(''); }
+    else if (st === 'disconnected') setLiveSt('Connexion instable…');
+    else if (st === 'failed') { toast('Connexion au live impossible : réseau trop instable.'); leaveLive(); }
+  };
+  const { sessionId } = await sfu('new');
+  const r = await sfu('tracks', sessionId, { tracks: [{ location: 'remote', sessionId: hostSession, trackName: 'video' }, { location: 'remote', sessionId: hostSession, trackName: 'audio' }] });
+  if (r.tracks?.some(t => t.errorCode) || !r.sessionDescription) throw new Error('Le live n’est pas disponible.');
+  await pc.setRemoteDescription(r.sessionDescription);
+  await pc.setLocalDescription(await pc.createAnswer()); await iceDone(pc);
+  await sfu('renegotiate', sessionId, { sessionDescription: { type: 'answer', sdp: pc.localDescription.sdp } });
+}
+async function startLive() {
+  if (!me) return needAuth();
+  if (live || call) return toast('Terminez d’abord l’appel ou le live en cours.');
+  if (!window.RTCPeerConnection || !navigator.mediaDevices?.getUserMedia) return alert('Votre navigateur ne permet pas le live. Essayez avec Chrome.');
+  const title = prompt('Titre de votre live (facultatif) :', ''); if (title === null) return;
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true }, video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24 } } }); }
+  catch (e) { return alert('Autorisez la caméra et le micro pour lancer un live.'); }
+  live = { host: true, hid: me.id, hname: me.name, hav: me.avatar_url, title: title.trim().slice(0, 80), stream, peers: {}, t0: Date.now(), facing: 'user', max: 0 };
+  liveUI(); $('lv-v').srcObject = stream;
+  setLiveSt('Vous êtes en direct. Gardez l’appli ouverte.'); setTimeout(() => { if (live?.host && !lvCount()) setLiveSt('En attente de spectateurs…'); }, 4000);
+  live.ch = await liveRoom(me.id);
+  if (!live) return;
+  setLiveSt('Connexion au relais vidéo…');
+  try { await hostSfuStart(); setLiveSt('Vous êtes en direct. En attente de spectateurs…'); }
+  catch (e) { console.warn('SFU indisponible, mode direct :', e); live.sfu = null; toast(`Mode direct : live limité à ${LIVE_MAX} spectateurs.`, 4500); setLiveSt('Vous êtes en direct. Gardez l’appli ouverte.'); }
+  if (!live) return;
+  liveBeat(); live.hb = setInterval(liveBeat, 20000);
+}
+async function hostOffer(vid) {
+  closePeer(vid);
+  const pc = new RTCPeerConnection({ iceServers: ICE }), peer = live.peers[vid] = { pc, ice: [] };
+  live.stream.getTracks().forEach(t => pc.addTrack(t, live.stream));
+  pc.onicecandidate = e => { if (e.candidate) lvSend({ t: 'ice', to: vid, c: e.candidate.toJSON() }); };
+  pc.onconnectionstatechange = () => {
+    const st = pc.connectionState;
+    if (st === 'connected') { setLiveSt(''); sendCount(); }
+    else if (st === 'failed' || st === 'closed') { closePeer(vid); sendCount(); }
+  };
+  const off = await pc.createOffer(); await pc.setLocalDescription(off); capBitrate(pc);
+  lvSend({ t: 'offer', to: vid, sdp: off.sdp });
+}
+function closePeer(vid) { const p = live?.peers?.[vid]; if (!p) return; delete live.peers[vid]; try { p.pc.close(); } catch (e) {} }
+async function joinLive(hid) {
+  if (!me) return needAuth();
+  if (live || call) return toast('Terminez d’abord l’appel ou le live en cours.');
+  const m = lives[hid]; if (!m) return toast('Ce live est terminé.');
+  if (!window.RTCPeerConnection) return alert('Votre navigateur ne permet pas le live. Essayez avec Chrome.');
+  live = { host: false, hid, hname: m.name, hav: m.avatar_url, title: m.title, ice: [] };
+  liveUI(); setLiveSt('Connexion au live…');
+  const ch = await liveRoom(hid); if (!live || live.hid !== hid) return sb.removeChannel(ch);
+  live.ch = ch;
+  if (m.sfu) {
+    live.sfuMode = true;
+    live.tmo = setTimeout(() => { if (live && !live.host && live.hid === hid && live.pc?.connectionState !== 'connected') { toast('Le live ne répond pas.'); leaveLive(); } }, 25000);
+    try { await viewerSfu(m.sfu); } catch (e) { if (live && live.hid === hid) { toast(e.message || 'Impossible de rejoindre le live.'); leaveLive(); } }
+    return;
+  }
+  lvSend({ t: 'join' });
+  live.tmo = setTimeout(() => { if (live && !live.host && live.hid === hid && !live.pc) { toast('Le live ne répond pas.'); leaveLive(); } }, 20000);
+}
+async function viewerAnswer(p) {
+  if (live.pc) try { live.pc.close(); } catch (e) {}
+  const pc = live.pc = new RTCPeerConnection({ iceServers: ICE });
+  pc.ontrack = e => {
+    const v = $('lv-v'), st = e.streams[0]; if (!v || v.srcObject === st) return;
+    v.srcObject = st; v.muted = false;
+    v.play().catch(() => { v.muted = true; v.play().catch(() => {}); setLiveSt('🔇 Touchez l’écran pour activer le son'); $('livebox').addEventListener('click', () => { v.muted = false; setLiveSt(''); }, { once: true }); });
+  };
+  pc.onicecandidate = e => { if (e.candidate) lvSend({ t: 'ice', to: live.hid, c: e.candidate.toJSON() }); };
+  pc.onconnectionstatechange = () => {
+    const st = pc.connectionState;
+    if (st === 'connected') { clearTimeout(live?.tmo); if ($('lv-st')?.textContent.startsWith('Connexion')) setLiveSt(''); }
+    else if (st === 'disconnected') setLiveSt('Connexion instable…');
+    else if (st === 'failed') { toast('Connexion au live impossible : réseau trop instable.'); leaveLive(); }
+  };
+  await pc.setRemoteDescription({ type: 'offer', sdp: p.sdp });
+  live.ice.forEach(c => pc.addIceCandidate(c).catch(() => {})); live.ice = [];
+  const ans = await pc.createAnswer(); await pc.setLocalDescription(ans);
+  lvSend({ t: 'answer', to: live.hid, sdp: ans.sdp });
+}
+async function onLiveSig(p) {
+  if (!live || !p?.from || blocked.has(p.from)) return;
+  if (p.t === 'chat') return addComment(p.fname || '?', p.text);
+  if (p.t === 'heart') return floatHeart();
+  if (p.to && p.to !== me.id) return; // message destiné à quelqu'un d'autre
+  if (live.host) {
+    if (live.sfu) return; // mode relais : pas de connexion individuelle
+    if (p.t === 'join') { if (lvCount() >= LIVE_MAX && !live.peers[p.from]) return lvSend({ t: 'full', to: p.from }); return hostOffer(p.from); }
+    const peer = live.peers[p.from]; if (!peer) return;
+    if (p.t === 'answer') { await peer.pc.setRemoteDescription({ type: 'answer', sdp: p.sdp }); peer.ice.forEach(c => peer.pc.addIceCandidate(c).catch(() => {})); peer.ice = []; }
+    else if (p.t === 'ice') { if (peer.pc.remoteDescription) peer.pc.addIceCandidate(p.c).catch(() => {}); else peer.ice.push(p.c); }
+    else if (p.t === 'leave') { closePeer(p.from); sendCount(); }
+    return;
+  }
+  if (p.from !== live.hid) return;
+  if (p.t === 'offer') return viewerAnswer(p);
+  if (p.t === 'ice') { if (live.pc?.remoteDescription) live.pc.addIceCandidate(p.c).catch(() => {}); else live.ice.push(p.c); }
+  else if (p.t === 'count') { const e = $('lv-n'); if (e) e.textContent = '👁 ' + p.n; }
+  else if (p.t === 'full') { leaveLive(); alert(`Ce live est complet (${LIVE_MAX} spectateurs maximum). Réessayez dans un instant.`); }
+  else if (p.t === 'end') { leaveLive(); toast('Le live est terminé.'); }
+}
+function lvMic() { const t = live?.stream?.getAudioTracks()[0]; if (!t) return; t.enabled = !t.enabled; const b = $('lv-mic'); if (b) { b.textContent = t.enabled ? '🎤' : '🔇'; b.classList.toggle('off', !t.enabled); } }
+async function lvFlip() {
+  if (!live?.host) return;
+  live.facing = live.facing === 'user' ? 'environment' : 'user';
+  try {
+    const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: live.facing, width: { ideal: 640 }, height: { ideal: 480 } } });
+    const nt = s.getVideoTracks()[0], old = live.stream.getVideoTracks()[0];
+    await Promise.all((live.sfu ? [{ pc: live.pc }] : Object.values(live.peers)).map(p => p.pc.getSenders().find(x => x.track?.kind === 'video')?.replaceTrack(nt)));
+    if (old) { live.stream.removeTrack(old); old.stop(); } live.stream.addTrack(nt); $('lv-v').srcObject = live.stream;
+    $('livebox').classList.toggle('back', live.facing !== 'user');
+  } catch (e) { toast('Impossible de changer de caméra'); }
+}
+function leaveLive(force) {
+  if (!live) return;
+  if (live.host) { if (force || confirm('Terminer votre live ?')) endLive(); return; }
+  const l = live; live = null; clearTimeout(l.tmo);
+  if (l.ch) { try { l.ch.send({ type: 'broadcast', event: 'lv', payload: { t: 'leave', to: l.hid, from: me.id } }); } catch (e) {} setTimeout(() => sb.removeChannel(l.ch), 800); }
+  try { l.pc?.close(); } catch (e) {}
+  $('livebox')?.remove();
+}
+function endLive() {
+  if (!live?.host) return;
+  lvSend({ t: 'end' });
+  const l = live; live = null;
+  Object.values(l.peers).forEach(p => { try { p.pc.close(); } catch (e) {} });
+  try { l.pc?.close(); } catch (e) {}
+  l.stream.getTracks().forEach(t => t.stop());
+  clearInterval(l.hb); liveDir?.untrack();
+  try { liveDir?.send({ type: 'broadcast', event: 'live-off', payload: { hid: me.id } }); } catch (e) {}
+  setTimeout(() => l.ch && sb.removeChannel(l.ch), 1500);
+  $('livebox')?.remove();
+  const d = Math.round((Date.now() - l.t0) / 1000);
+  toast(`Live terminé · ${clock(d)} · ${l.max} spectateur${l.max > 1 ? 's' : ''} au maximum`, 5000);
+}
+window.addEventListener('pagehide', () => { if (live) leaveLive(true); });
+
+boot();
+</script>
+</body>
+</html>
