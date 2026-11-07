@@ -1645,7 +1645,7 @@ async function newMsg() {
   data ? openChat(data.id) : alert('Utilisateur introuvable');
 }
 async function openChat(id) {
-  chatWith = (await sb.from('profiles').select('*').eq('id', id).single()).data; sigWarm(id);
+  chatWith = (await sb.from('profiles').select('*').eq('id', id).single()).data;
   if (!chatWith) return;
   $('c-av').innerHTML = av(chatWith, 40); $('c-name').textContent = chatWith.name;
   go('chat');
@@ -1894,7 +1894,7 @@ function tuneCall(pc) {
 // Préchauffe le canal de signalisation pour que l'appel démarre plus vite
 function sigWarm(to) { try { if (!to || sigOut[to]) return; sigOut[to] = sb.channel('call-' + to, { config: { broadcast: { self: false } } }); sigOut[to].subscribe(); } catch (e) {} }
 function newPC() {
-  const pc = new RTCPeerConnection({ iceServers: ICE, bundlePolicy: 'max-bundle', iceCandidatePoolSize: 2 });
+  const pc = new RTCPeerConnection({ iceServers: ICE });
   pc.onicecandidate = e => {
     if (!e.candidate || !call) return; const c = e.candidate.toJSON();
     (call.iceLog ||= []).push(c);
@@ -1909,11 +1909,11 @@ function newPC() {
   };
   pc.onconnectionstatechange = () => {
     const st = pc.connectionState;
-    if (st === 'connected') { tuneCall(pc); onConnected(); }
+    if (st === 'connected') { onConnected(); setTimeout(() => { try { if (call && call.pc === pc) tuneCall(pc); } catch (e) {} }, 2000); }
     else if (st === 'disconnected') setStatus('Connexion instable…');
     else if (st === 'failed') endCall('failed');
   };
-  call.local.getTracks().forEach(t => { try { t.contentHint = t.kind === 'video' ? 'motion' : 'speech'; } catch (e) {} pc.addTrack(t, call.local); });
+  call.local.getTracks().forEach(t => pc.addTrack(t, call.local));
   return pc;
 }
 function flushIce() { (call?.ice || []).forEach(c => call.pc.addIceCandidate(c).catch(() => {})); if (call) call.ice = []; }
