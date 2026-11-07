@@ -1520,13 +1520,23 @@ function laterInstall() { try { localStorage.setItem('sp_inst_' + me.id, Date.no
 function acceptInstall() { try { localStorage.setItem('sp_inst_' + me.id, 1); } catch (e) {} closeM(); installApp(); }
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
 // Push : (ré)enregistre l'abonnement de cet appareil et propose l'activation
+// Réutilise l'abonnement push seulement s'il a été créé avec la clé VAPID actuelle, sinon le recrée
+async function getSub(reg, key) {
+  let sub = await reg.pushManager.getSubscription();
+  if (sub) {
+    const cur = sub.options && sub.options.applicationServerKey;
+    const same = cur && cur.byteLength === key.length && new Uint8Array(cur).every((b, i) => b === key[i]);
+    if (!same) { try { await sub.unsubscribe(); } catch (e) {} sub = null; }
+  }
+  return sub || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+}
 async function syncPush() {
   try {
     if (!me || !('serviceWorker' in navigator) || !('PushManager' in window) || location.protocol !== 'https:' || !window.SOCIALPAGES_VAPID_PUBLIC_KEY) return;
     if (Notification.permission !== 'granted') return;
     const reg = await navigator.serviceWorker.ready;
     const key = Uint8Array.from(atob(window.SOCIALPAGES_VAPID_PUBLIC_KEY.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
-    const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+    const sub = await getSub(reg, key);
     await sb.from('push_subscriptions').upsert({ user_id: me.id, endpoint: sub.endpoint, subscription: sub.toJSON() }, { onConflict: 'endpoint' });
   } catch (e) {}
 }
@@ -1766,7 +1776,7 @@ async function enablePush(){
  if(!('serviceWorker'in navigator)||!('PushManager'in window))return alert('Les notifications Push ne sont pas prises en charge par ce navigateur.');
  const permission=await Notification.requestPermission();if(permission!=='granted')return alert('Autorisez les notifications dans les paramètres du navigateur.');
  const publicKey=window.SOCIALPAGES_VAPID_PUBLIC_KEY;if(!publicKey)return alert('Configuration requise : ajoutez la clé publique VAPID dans SOCIALPAGES_VAPID_PUBLIC_KEY avant activation.');
- const reg=await navigator.serviceWorker.ready;const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:Uint8Array.from(atob(publicKey.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))});
+ const reg=await navigator.serviceWorker.ready;const sub=await getSub(reg,Uint8Array.from(atob(publicKey.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0)));
  const {error}=await sb.from('push_subscriptions').upsert({user_id:me.id,endpoint:sub.endpoint,subscription:sub.toJSON()},{onConflict:'endpoint'});
  if(error)return alert('Enregistrement Push impossible : '+error.message+'\nAvez-vous exécuté supabase_push.sql ?');toast('✅ Notifications activées sur cet appareil.');
 }
