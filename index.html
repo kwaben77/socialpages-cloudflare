@@ -1570,7 +1570,18 @@ function onNotif(n) {
 // Son, vibration et notification système. Sur Android, « new Notification() » est interdit :
 // il faut passer par le service worker (showNotification), sinon rien ne s'affiche.
 let sndCtx = null;
-document.addEventListener('pointerdown', () => { try { sndCtx ||= new (window.AudioContext || window.webkitAudioContext)(); sndCtx.resume(); } catch (e) {} }, { once: true });
+function unlockAudio() {
+  try {
+    sndCtx ||= new (window.AudioContext || window.webkitAudioContext)();
+    if (sndCtx.state !== 'running') sndCtx.resume().then(() => { if (sndCtx.state === 'running') ringAgain(); }).catch(() => {});
+    const b = sndCtx.createBuffer(1, 1, 22050), src = sndCtx.createBufferSource(); src.buffer = b; src.connect(sndCtx.destination); src.start(0);
+  } catch (e) {}
+}
+// Si le son était bloqué pendant qu'un appel sonnait, on le relance dès que l'audio est débloqué
+function ringAgain() { try { if (call && call.status === 'ring' && call.role === 'in') ringtone(true); else if (call && call.role === 'out' && call.status === 'out') ringback(true); } catch (e) {} }
+['pointerdown', 'touchstart', 'keydown', 'click'].forEach(ev => document.addEventListener(ev, unlockAudio, { passive: true }));
+document.addEventListener('visibilitychange', () => { if (!document.hidden && sndCtx && sndCtx.state !== 'running') { try { sndCtx.resume(); } catch (e) {} } });
+let audioHintAt = 0;
 function ding() {
   try {
     navigator.vibrate?.([200, 100, 200]);
@@ -1634,7 +1645,7 @@ async function newMsg() {
   data ? openChat(data.id) : alert('Utilisateur introuvable');
 }
 async function openChat(id) {
-  chatWith = (await sb.from('profiles').select('*').eq('id', id).single()).data;
+  chatWith = (await sb.from('profiles').select('*').eq('id', id).single()).data; sigWarm(id);
   if (!chatWith) return;
   $('c-av').innerHTML = av(chatWith, 40); $('c-name').textContent = chatWith.name;
   go('chat');
@@ -1805,7 +1816,12 @@ async function sigSend(to, p) {
 }
 function tone(freqs, dur) {
   try {
-    if (!sndCtx) return; if (sndCtx.state === 'suspended') sndCtx.resume();
+    if (!sndCtx) { try { sndCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; } }
+    if (sndCtx.state !== 'running') {
+      try { sndCtx.resume(); } catch (e) {}
+      if (Date.now() - audioHintAt > 8000) { audioHintAt = Date.now(); toast('🔔 Touchez l’écran pour activer la sonnerie', 4000); }
+      if (sndCtx.state !== 'running') return;
+    }
     const t = sndCtx.currentTime;
     freqs.forEach(hz => {
       const o = sndCtx.createOscillator(), g = sndCtx.createGain(); o.frequency.value = hz;
@@ -1815,7 +1831,8 @@ function tone(freqs, dur) {
     });
   } catch (e) {}
 }
-function ringtone(on) { clearInterval(ringT); ringT = null; try { navigator.vibrate?.(0); } catch (e) {} if (!on) return; const r = () => { tone([440, 480], 1.2); try { navigator.vibrate?.([700, 300, 700]); } catch (e) {} }; r(); ringT = setInterval(r, 3000); }
+async function closeCallNotifs() { try { const reg = await navigator.serviceWorker.ready; (await reg.getNotifications()).forEach(n => { if (n.tag && n.tag.indexOf('sp-call') === 0) n.close(); }); } catch (e) {} }
+function ringtone(on) { clearInterval(ringT); ringT = null; try { navigator.vibrate?.(0); } catch (e) {} if (!on) { closeCallNotifs(); return; } const r = () => { tone([440, 480], 1.2); try { navigator.vibrate?.([700, 300, 700]); } catch (e) {} }; r(); ringT = setInterval(r, 3000); }
 function ringback(on) { clearInterval(ringT); ringT = null; if (!on) return; const r = () => tone([425], 1); r(); ringT = setInterval(r, 3500); }
 const fmtDur = s => (s >= 3600 ? Math.floor(s / 3600) + ' h ' : '') + Math.floor(s % 3600 / 60) + ' min ' + String(s % 60).padStart(2, '0') + ' s';
 const clock = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
@@ -1832,18 +1849,52 @@ function callUI() {
   $('call-btns').innerHTML = call.status === 'ring'
     ? b('hang', 'declineCall()', '✖', 'Refuser') + b('pick', 'acceptCall()', call.video ? '🎥' : '📞', 'Répondre')
     : b(call.micOff ? 'off' : '', 'toggleMic()', call.micOff ? '🔇' : '🎤', 'Micro')
-      + (call.video ? b(call.camOff ? 'off' : '', 'toggleCam()', '📷', 'Caméra') + b('', 'switchCam()', '🔄', 'Retourner') : '')
+      + (call.video ? b(call.camOff ? 'off' : '', 'toggleCam()', '📷', 'Caméra') + b('', 'switchCam()', '🔄', 'Retourner') + b('', 'cycleQuality()', '📶', CALLQ[callQKey()].label) : '')
       + b('hang', "endCall('hangup')", '📞', 'Raccrocher');
 }
+// Qualité des appels : Éco (peu de données), Standard, HD (image très nette). Le choix est mémorisé.
+const CALLQ = {
+  eco: { w: 480, h: 360, fps: 15, vbr: 250000, abr: 20000, hint: 'motion', label: 'Éco' },
+  std: { w: 640, h: 480, fps: 24, vbr: 600000, abr: 32000, hint: 'motion', label: 'Standard' },
+  hd:  { w: 1280, h: 720, fps: 24, vbr: 1200000, abr: 40000, hint: 'detail', label: 'HD' }
+};
+function callQKey() { try { const k = localStorage.getItem('sp_callq'); if (CALLQ[k]) return k; } catch (e) {} return 'hd'; }
+const callQ = () => CALLQ[callQKey()];
+const qVideo = (facing) => { const q = callQ(); return { facingMode: facing || 'user', width: { ideal: q.w }, height: { ideal: q.h }, frameRate: { ideal: q.fps, max: q.fps + 6 } }; };
 function getMedia(video) {
   return navigator.mediaDevices.getUserMedia({
     audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-    video: video ? { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24 } } : false // qualité modérée : économise les données
+    video: video ? qVideo('user') : false
   });
 }
+async function cycleQuality() {
+  const keys = ['eco', 'std', 'hd'], nk = keys[(keys.indexOf(callQKey()) + 1) % keys.length], q = CALLQ[nk];
+  try { localStorage.setItem('sp_callq', nk); } catch (e) {}
+  if (call && call.pc) {
+    tuneCall(call.pc);
+    const vt = call.local && call.local.getVideoTracks()[0];
+    if (vt) { try { await vt.applyConstraints({ width: { ideal: q.w }, height: { ideal: q.h }, frameRate: { ideal: q.fps, max: q.fps + 6 } }); } catch (e) {} }
+  }
+  toast('Qualité vidéo : ' + q.label, 2200); callUI();
+}
 function showLocal() { const v = $('call-lv'); if (v && call?.local) v.srcObject = call.local; }
+// Appels 1-à-1 : plafonds de débit selon la qualité choisie (Éco / Standard / HD)
+function tuneCall(pc) {
+  pc.getSenders().forEach(sd => {
+    const k = sd.track && sd.track.kind; if (!k) return;
+    try {
+      const pr = sd.getParameters(); if (!pr.encodings || !pr.encodings.length) pr.encodings = [{}];
+      const q = callQ();
+      if (k === 'video') { pr.encodings[0].maxBitrate = q.vbr; pr.encodings[0].maxFramerate = q.fps; try { sd.track.contentHint = q.hint; } catch (e) {} }
+      else pr.encodings[0].maxBitrate = q.abr;
+      sd.setParameters(pr).catch(() => {});
+    } catch (e) {}
+  });
+}
+// Préchauffe le canal de signalisation pour que l'appel démarre plus vite
+function sigWarm(to) { try { if (!to || sigOut[to]) return; sigOut[to] = sb.channel('call-' + to, { config: { broadcast: { self: false } } }); sigOut[to].subscribe(); } catch (e) {} }
 function newPC() {
-  const pc = new RTCPeerConnection({ iceServers: ICE });
+  const pc = new RTCPeerConnection({ iceServers: ICE, bundlePolicy: 'max-bundle', iceCandidatePoolSize: 2 });
   pc.onicecandidate = e => {
     if (!e.candidate || !call) return; const c = e.candidate.toJSON();
     (call.iceLog ||= []).push(c);
@@ -1858,11 +1909,11 @@ function newPC() {
   };
   pc.onconnectionstatechange = () => {
     const st = pc.connectionState;
-    if (st === 'connected') onConnected();
+    if (st === 'connected') { tuneCall(pc); onConnected(); }
     else if (st === 'disconnected') setStatus('Connexion instable…');
     else if (st === 'failed') endCall('failed');
   };
-  call.local.getTracks().forEach(t => pc.addTrack(t, call.local));
+  call.local.getTracks().forEach(t => { try { t.contentHint = t.kind === 'video' ? 'motion' : 'speech'; } catch (e) {} pc.addTrack(t, call.local); });
   return pc;
 }
 function flushIce() { (call?.ice || []).forEach(c => call.pc.addIceCandidate(c).catch(() => {})); if (call) call.ice = []; }
@@ -1916,7 +1967,7 @@ async function switchCam() {
   if (!call?.pc || !call.video) return;
   call.facing = call.facing === 'environment' ? 'user' : 'environment';
   try {
-    const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: call.facing, width: { ideal: 640 }, height: { ideal: 480 } } });
+    const s = await navigator.mediaDevices.getUserMedia({ video: qVideo(call.facing) });
     const nt = s.getVideoTracks()[0], old = call.local.getVideoTracks()[0];
     await call.pc.getSenders().find(x => x.track?.kind === 'video')?.replaceTrack(nt);
     if (old) { call.local.removeTrack(old); old.stop(); } call.local.addTrack(nt); showLocal();
