@@ -6,16 +6,26 @@ self.addEventListener('fetch',()=>{});
 self.addEventListener('push',e=>{
   let d={}; try{d=e.data.json()}catch(x){}
   const call=d.type==='call';
-  e.waitUntil(self.registration.showNotification(d.title||'SocialPages',{
-    body:d.body||'',
-    icon:'apple-touch-icon.png', badge:'apple-touch-icon.png',
-    tag:d.tag||'sp', renotify:true, silent:false,
-    requireInteraction:call,
-    vibrate:call?[700,300,700,300,700,300,700,300,700]:[200,100,200],
-    timestamp:Date.now(),
-    data:{url:d.url||'./'},
-    actions:call?[{action:'open',title:'Répondre'}]:[]
-  }));
+  e.waitUntil((async()=>{
+    // Un appel = une NOUVELLE notification : on ferme les anciennes pour que le téléphone sonne/vibre à chaque fois
+    if(call){
+      try{
+        const old=await self.registration.getNotifications();
+        old.forEach(n=>{ if(n.tag&&n.tag.indexOf('sp-call')===0) n.close(); });
+      }catch(x){}
+    }
+    const tag=call?('sp-call-'+Date.now()):(d.tag||'sp');
+    await self.registration.showNotification(d.title||'SocialPages',{
+      body:d.body||'',
+      icon:'apple-touch-icon.png', badge:'apple-touch-icon.png',
+      tag:tag, renotify:true, silent:false,
+      requireInteraction:call,
+      vibrate:call?[700,300,700,300,700,300,700,300,700,300,700]:[200,100,200],
+      timestamp:Date.now(),
+      data:{url:d.url||'./'},
+      actions:call?[{action:'open',title:'Répondre'}]:[]
+    });
+  })());
 });
 
 self.addEventListener('notificationclick',e=>{
@@ -26,4 +36,3 @@ self.addEventListener('notificationclick',e=>{
     return clients.openWindow(url);
   }));
 });
-
