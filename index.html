@@ -363,7 +363,7 @@ div.ytfb{position:relative;aspect-ratio:16/9;background:#000 center/cover no-rep
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script>
 // ====== CONFIG : colle ici les valeurs de Supabase > Project Settings > API ======
-window.SOCIALPAGES_VAPID_PUBLIC_KEY = 'BOVwFTIREggYCCf8-3ij7cdvM6Ebb45Os0nA3I-9EY5dnlOE-Bzoyr2ajFFr8lem2E1ygCB2930wsrE3oXMGUHQ';
+window.SOCIALPAGES_VAPID_PUBLIC_KEY = 'BJ9lbgB6efmEoP4XYyCgZan22OzX72CJZYO4mpHQV8QdZCTAuUkxHmgnFuo2R4sYIYX11eD_p6OFUTqiQihqtIU';
 const SUPABASE_URL = 'https://ynmbzivljnyaovdppsrz.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_N2mmzxODT7V09XFmdP2ZBA_IpX0Z-9j';
 // =================================================================================
@@ -493,7 +493,7 @@ async function boot() {
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => { updBadges(); if (cur === 'chat' || cur === 'messages') refresh(); })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.id}` }, ev => onNotif(ev.new))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ev => { handleRealtimePost(ev.new); }).subscribe();
-  sigListen(); liveDirListen();
+  sigListen(); liveDirListen(); setTimeout(checkInvites, 1200);
   go(route() ? 'product' : 'accueil');
   setTimeout(welcome, 1500);
 }
@@ -1836,6 +1836,7 @@ function newPC() {
   const pc = new RTCPeerConnection({ iceServers: ICE });
   pc.onicecandidate = e => {
     if (!e.candidate || !call) return; const c = e.candidate.toJSON();
+    (call.iceLog ||= []).push(c);
     // Côté appelant : on garde les candidats tant que l'offre n'est pas partie (sinon le correspondant les ignore)
     if (call.role === 'out' && !call.sent) (call.outIce ||= []).push(c); else sigSend(call.peer.id, { t: 'ice', cid: call.id, c });
   };
@@ -1875,6 +1876,9 @@ async function startCall(video) {
   const off = await call.pc.createOffer(); await call.pc.setLocalDescription(off);
   setStatus('Appel en cours…'); ringback(true);
   await sigSend(call.peer.id, { t: 'offer', cid: call.id, sdp: off.sdp, video });
+  // Réveille l'appareil du correspondant si l'app est fermée (push, voir supabase/functions/send-push)
+  (async () => { try { await sb.from('call_invites').insert({ id: call.id, from_id: me.id, to_id: call.peer.id, video: !!video, sdp: off.sdp }); } catch (e) {}
+    try { await sb.functions.invoke('send-push', { body: { type: 'call', to: call.peer.id, video: !!video, cid: call.id } }); } catch (e) {} })();
   if (call) { call.sent = true; (call.outIce || []).forEach(c => sigSend(call.peer.id, { t: 'ice', cid: call.id, c })); call.outIce = []; }
   const cid = call?.id;
   if (call) call.tmo = setTimeout(() => { if (call?.id === cid && call.status !== 'on') { sigSend(call.peer.id, { t: 'cancel', cid }); endCall('noanswer'); } }, 45000);
@@ -1892,6 +1896,8 @@ async function acceptCall() {
   await call.pc.setRemoteDescription({ type: 'offer', sdp: call.offer }); flushIce();
   const ans = await call.pc.createAnswer(); await call.pc.setLocalDescription(ans);
   sigSend(call.peer.id, { t: 'answer', cid: call.id, sdp: ans.sdp });
+  if (call?.fromInvite) sigSend(call.peer.id, { t: 'needice', cid: call.id });
+  sb.from('call_invites').delete().eq('id', call.id).then(() => {}, () => {});
 }
 function declineCall() { if (!call) return; sigSend(call.peer.id, { t: 'decline', cid: call.id }); endCall('declined-local'); }
 function toggleMic() { const t = call?.local?.getAudioTracks()[0]; if (!t) return; t.enabled = !t.enabled; call.micOff = !t.enabled; callUI(); }
@@ -1910,27 +1916,42 @@ async function switchCam() {
 async function onSig(p) {
   if (!p || !p.from || !p.cid || blocked.has(p.from)) return;
   if (p.t === 'offer') {
+    if (call && call.id === p.cid) return; // déjà reçu (broadcast + invitation en base)
     if (call) return sigSend(p.from, { t: 'busy', cid: p.cid });
     const { data: u } = await sb.from('profiles').select('*').eq('id', p.from).maybeSingle();
     if (!u || call) return;
-    call = { id: p.cid, peer: u, video: !!p.video, role: 'in', offer: p.sdp, ice: [], status: 'ring' };
+    call = { id: p.cid, peer: u, video: !!p.video, role: 'in', offer: p.sdp, ice: [], status: 'ring', fromInvite: !!p._inv };
     callUI(); setStatus(p.video ? 'Appel vidéo entrant…' : 'Appel vocal entrant…'); ringtone(true);
-    if (document.hidden) showNotif('📞 ' + u.name + ' vous appelle', 'Ouvrez SocialPages pour répondre', 'sp-call');
-    call.tmo = setTimeout(() => { if (call?.id === p.cid && call.status === 'ring') endCall('missed'); }, 45000);
+    if (document.hidden && !p._inv) showNotif('📞 ' + u.name + ' vous appelle', 'Ouvrez SocialPages pour répondre', 'sp-call');
+    call.tmo = setTimeout(() => { if (call?.id === p.cid && call.status === 'ring') endCall('missed'); }, Math.max(3000, p._left ?? 45000));
     return;
   }
   if (!call || p.cid !== call.id || p.from !== call.peer.id) return;
   if (p.t === 'answer' && call.pc) { ringback(false); setStatus('Connexion…'); await call.pc.setRemoteDescription({ type: 'answer', sdp: p.sdp }); flushIce(); }
   else if (p.t === 'ice') { if (call.pc?.remoteDescription) call.pc.addIceCandidate(p.c).catch(() => {}); else call.ice.push(p.c); }
+  else if (p.t === 'needice') { if (call.role === 'out') (call.iceLog || []).forEach(c => sigSend(call.peer.id, { t: 'ice', cid: call.id, c })); }
   else if (p.t === 'decline') endCall('declined');
   else if (p.t === 'busy') endCall('busy');
   else if (p.t === 'end' || p.t === 'cancel') endCall(call.status === 'ring' ? 'missed' : 'remote');
 }
+// Appel reçu app fermée : l'invitation est en base, on la récupère à l'ouverture (toucher de la notification)
+async function checkInvites() {
+  try {
+    if (!me || call) return;
+    const since = new Date(Date.now() - 45000).toISOString();
+    const { data } = await sb.from('call_invites').select('*').eq('to_id', me.id).gte('created_at', since).order('created_at', { ascending: false }).limit(1);
+    const r = data && data[0]; if (!r || call) return;
+    onSig({ t: 'offer', from: r.from_id, cid: r.id, sdp: r.sdp, video: r.video, _inv: true, _left: 45000 - (Date.now() - new Date(r.created_at).getTime()) });
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkInvites(); });
+window.addEventListener('focus', () => checkInvites());
 function endCall(reason) {
   if (!call) return;
   const c = call; call = null;
   if (reason === 'hangup') sigSend(c.peer.id, { t: 'end', cid: c.id });
   clearTimeout(c.tmo); clearInterval(c.timer); ringtone(false); ringback(false);
+  sb.from('call_invites').delete().eq('id', c.id).then(() => {}, () => {});
   try { c.pc?.close(); } catch (e) {} c.local?.getTracks().forEach(t => t.stop());
   $('callbox')?.remove();
   const dur = c.t0 ? Math.round((Date.now() - c.t0) / 1000) : 0, kind = c.video ? 'vidéo' : 'vocal';
