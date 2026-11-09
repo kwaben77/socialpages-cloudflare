@@ -476,7 +476,7 @@ async function netErr(e) {
 }
 async function logout() {
   if (chan) sb.removeChannel(chan);
-  await sb.auth.signOut(); me = null; go('landing');
+  await unregisterNative(); await sb.auth.signOut(); me = null; go('landing');
 }
 async function boot() {
   const { data: { session } } = await sb.auth.getSession();
@@ -493,7 +493,7 @@ async function boot() {
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => { updBadges(); if (cur === 'chat' || cur === 'messages') refresh(); })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.id}` }, ev => onNotif(ev.new))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ev => { handleRealtimePost(ev.new); }).subscribe();
-  sigListen(); liveDirListen(); setTimeout(checkInvites, 1200);
+  sigListen(); liveDirListen(); setTimeout(() => { registerNative(); checkNativePending(); }, 300); setTimeout(checkInvites, 1200);
   go(route() ? 'product' : 'accueil');
   setTimeout(welcome, 1500);
 }
@@ -1570,6 +1570,72 @@ function onNotif(n) {
 // Son, vibration et notification système. Sur Android, « new Notification() » est interdit :
 // il faut passer par le service worker (showNotification), sinon rien ne s'affiche.
 let sndCtx = null;
+// ===== Application Android (Capacitor) : sans effet dans un navigateur ordinaire =====
+const WEBVIEW = /; wv\)/.test(navigator.userAgent);
+const NATIVE = !!(window.androidBridge || (window.Capacitor && ((typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) || (typeof window.Capacitor.getPlatform === 'function' && window.Capacitor.getPlatform() === 'android'))));
+const spn = (m, o) => { try { const C = window.Capacitor; if (C.Plugins && C.Plugins.SPCall) return C.Plugins.SPCall[m](o || {}); return C.nativePromise('SPCall', m, o || {}); } catch (e) { return Promise.reject(e); } };
+window.spNativeRinging = false; let nativeAcceptCid = null;
+function nativeStop() { if (!NATIVE) return; window.spNativeRinging = false; spn('stopRing').catch(() => {}); }
+async function nativeDiag() {
+  const out = [], C = window.Capacitor; let ok = false;
+  out.push('Capacitor : ' + (C ? 'oui' : 'NON'));
+  out.push('Plateforme : ' + ((C && C.getPlatform) ? C.getPlatform() : '?') + ' | natif : ' + ((C && C.isNativePlatform) ? C.isNativePlatform() : '?') + ' | pont Android : ' + (window.androidBridge ? 'oui' : 'non'));
+  out.push('Plugins natifs : ' + ((C && C.PluginHeaders) ? (C.PluginHeaders.map(h => h.name).join(', ') || 'aucun') : 'liste absente'));
+  out.push('Accès au plugin SPCall : ' + ((C && C.Plugins && C.Plugins.SPCall) ? 'direct' : ((C && C.nativePromise) ? 'via nativePromise' : 'IMPOSSIBLE')));
+  try { out.push('Permission notifications : ' + JSON.stringify(await spn('requestPermission'))); } catch (e) { out.push('Permission : ERREUR ' + ((e && e.message) || JSON.stringify(e))); }
+  let tok = null;
+  try { const r = await spn('getToken'); tok = r && r.token; out.push('Jeton Firebase : ' + (tok ? 'OK (' + tok.length + ' caractères)' : 'vide')); } catch (e) { out.push('Jeton Firebase : ERREUR ' + ((e && e.message) || JSON.stringify(e))); }
+  if (tok) {
+    try { const { error } = await sb.rpc('register_device', { p_token: tok, p_platform: 'android' }); out.push('Enregistrement Supabase : ' + (error ? 'ERREUR ' + error.message : 'OK')); ok = !error; } catch (e) { out.push('Enregistrement Supabase : ERREUR ' + ((e && e.message) || e)); }
+  }
+  try { out.push('Plein écran : ' + JSON.stringify(await spn('status'))); } catch (e) { out.push('Plein écran : ERREUR ' + ((e && e.message) || e)); }
+  return { ok, text: out.join('\n') };
+}
+async function registerNative(ask) {
+  if (!NATIVE) {
+    // Dans l'application Android (WebView) mais sans pont Capacitor : on le signale clairement
+    if (/;\s*wv\)/.test(navigator.userAgent)) toast('⚠️ Android : pont natif absent (Capacitor non détecté)', 7000);
+    return;
+  }
+  if (!me) return;
+  let etape = 'permission';
+  try {
+    await spn('requestPermission');
+    etape = 'jeton Firebase';
+    const r = await spn('getToken');
+    if (!r || !r.token) throw new Error('jeton vide');
+    etape = 'enregistrement';
+    const { error } = await sb.rpc('register_device', { p_token: r.token, p_platform: 'android' });
+    if (error) throw new Error(error.message || 'erreur base de données');
+    etape = 'réglages';
+    const st = await spn('status');
+    if (st && st.fullScreen === false && !localStorage.getItem('sp_fsi_ask')) {
+      localStorage.setItem('sp_fsi_ask', '1');
+      if (confirm('Pour que le téléphone s’allume quand quelqu’un vous appelle, autorisez les notifications plein écran. Ouvrir les réglages ?')) spn('openFullScreenSettings');
+    }
+    if (ask || !localStorage.getItem('sp_dev_ok')) { localStorage.setItem('sp_dev_ok', '1'); toast('✅ Téléphone enregistré pour les appels', 4500); }
+  } catch (e) {
+    toast('⚠️ Enregistrement (' + etape + ') : ' + ((e && (e.message || e.errorMessage)) || JSON.stringify(e)), 9000);
+  }
+}
+async function unregisterNative() {
+  if (!NATIVE) return;
+  try { const r = await spn('getToken'); if (r && r.token) await sb.rpc('unregister_device', { p_token: r.token }); } catch (e) {}
+}
+// Action choisie dans la notification Android (Répondre / ouverture plein écran)
+async function checkNativePending() {
+  if (!NATIVE || !me) return;
+  try {
+    const r = await spn('getPending');
+    if (r && r.cid) {
+      window.spNativeRinging = !!r.ringing && r.action !== 'accept';
+      nativeAcceptCid = r.action === 'accept' ? r.cid : null;
+      await checkInvites();
+      if (!call) nativeStop();
+    }
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkNativePending(); });
 function unlockAudio() {
   try {
     sndCtx ||= new (window.AudioContext || window.webkitAudioContext)();
@@ -1784,6 +1850,7 @@ async function playVoice(id,path){
  const a=new Audio(data.signedUrl);a.onended=async()=>{const {error:e}=await sb.functions.invoke('consume-voice-message',{body:{message_id:id}});if(e)console.warn('Confirmation de lecture non effectuée',e);await renderChat();};a.onerror=()=>alert('Lecture audio impossible sur cet appareil.');await a.play();
 }
 async function enablePush(){
+ if (NATIVE || WEBVIEW) return registerNative(true);
  if(!('serviceWorker'in navigator)||!('PushManager'in window))return alert('Les notifications Push ne sont pas prises en charge par ce navigateur.');
  const permission=await Notification.requestPermission();if(permission!=='granted')return alert('Autorisez les notifications dans les paramètres du navigateur.');
  const publicKey=window.SOCIALPAGES_VAPID_PUBLIC_KEY;if(!publicKey)return alert('Configuration requise : ajoutez la clé publique VAPID dans SOCIALPAGES_VAPID_PUBLIC_KEY avant activation.');
@@ -1832,7 +1899,7 @@ function tone(freqs, dur) {
   } catch (e) {}
 }
 async function closeCallNotifs() { try { const reg = await navigator.serviceWorker.ready; (await reg.getNotifications()).forEach(n => { if (n.tag && n.tag.indexOf('sp-call') === 0) n.close(); }); } catch (e) {} }
-function ringtone(on) { clearInterval(ringT); ringT = null; try { navigator.vibrate?.(0); } catch (e) {} if (!on) { closeCallNotifs(); return; } const r = () => { tone([440, 480], 1.2); try { navigator.vibrate?.([700, 300, 700]); } catch (e) {} }; r(); ringT = setInterval(r, 3000); }
+function ringtone(on) { clearInterval(ringT); ringT = null; try { navigator.vibrate?.(0); } catch (e) {} if (!on) { closeCallNotifs(); nativeStop(); return; } if (window.spNativeRinging) return; const r = () => { tone([440, 480], 1.2); try { navigator.vibrate?.([700, 300, 700]); } catch (e) {} }; r(); ringT = setInterval(r, 3000); }
 function ringback(on) { clearInterval(ringT); ringT = null; if (!on) return; const r = () => tone([425], 1); r(); ringT = setInterval(r, 3500); }
 const fmtDur = s => (s >= 3600 ? Math.floor(s / 3600) + ' h ' : '') + Math.floor(s % 3600 / 60) + ' min ' + String(s % 60).padStart(2, '0') + ' s';
 const clock = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
@@ -1985,6 +2052,7 @@ async function onSig(p) {
     callUI(); setStatus(p.video ? 'Appel vidéo entrant…' : 'Appel vocal entrant…'); ringtone(true);
     if (document.hidden && !p._inv) showNotif('📞 ' + u.name + ' vous appelle', 'Ouvrez SocialPages pour répondre', 'sp-call');
     call.tmo = setTimeout(() => { if (call?.id === p.cid && call.status === 'ring') endCall('missed'); }, Math.max(3000, p._left ?? 45000));
+    if (nativeAcceptCid && nativeAcceptCid === p.cid) { nativeAcceptCid = null; setTimeout(() => { if (call && call.id === p.cid && call.status === 'ring') acceptCall(); }, 400); }
     return;
   }
   if (!call || p.cid !== call.id || p.from !== call.peer.id) return;
