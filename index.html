@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SocialPages</title>
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#3B82F6"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#15803D"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="referrer" content="strict-origin-when-cross-origin">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('sp_theme')||'light'}catch(e){}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
 body{background:#F0F2F5;color:#1a1a1a;min-height:100vh;padding-bottom:70px}
@@ -206,6 +207,271 @@ div.ytfb{position:relative;aspect-ratio:16/9;background:#000 center/cover no-rep
 .vitem.tt{position:relative}.ttcov{position:absolute;inset:0;z-index:2;border:none;padding:0;background:#111 center/cover no-repeat;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .ttcov span{width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;padding-left:4px}.vitem.ttok .ttcov{display:none}
 </style>
+<style id="sp-design">
+/* ===== Design SocialPages v2 : vert, adaptatif (téléphone / tablette / ordinateur), mode sombre ===== */
+:root{--rail:0px;--rp:0px;--g:#16A34A;--g2:#15803D;--g3:#166534;--gl:#DCFCE7;--gx:#F0FDF4;--bg:#F2F5F3;--card:#fff;--tx:#111827;--mu:#6B7280;--ln:#E5E7EB;--soft:#F3F4F6;--sh:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.08)}
+html[data-theme=dark]{--g:#22C55E;--g2:#4ADE80;--g3:#86EFAC;--gl:#14532D;--gx:#10261A;--bg:#0B1410;--card:#121C17;--tx:#E5E7EB;--mu:#9CA3AF;--ln:#22302A;--soft:#1A2620;--sh:none;color-scheme:dark}
+body{background:var(--bg);color:var(--tx)}
+.header{background:var(--card);border-bottom:1px solid var(--ln);box-shadow:var(--sh);padding:10px 16px}
+.logo{background:linear-gradient(135deg,#22C55E,#15803D);box-shadow:0 2px 6px rgba(21,128,61,.35)}
+.logo-text{color:var(--g2);font-size:20px;letter-spacing:-.2px}
+.hacts{margin-left:auto;display:flex;gap:2px;align-items:center}
+.hbtn{position:relative;width:42px;height:42px;border:none;border-radius:50%;background:transparent;color:var(--tx);display:flex;align-items:center;justify-content:center;padding:0}
+.hbtn:hover{background:var(--soft)}
+.ico svg,.hbtn svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nbd{position:absolute;top:-4px;right:-8px;font-size:10px;background:#EF4444!important;color:#fff!important;margin:0;padding:2px 6px;border-radius:10px;line-height:1.2}
+.hbtn .nbd{top:3px;right:1px}
+nav{background:var(--card);border-top:1px solid var(--ln);padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -1px 3px rgba(0,0,0,.04)}
+nav div{color:var(--mu);font-size:11px;gap:3px;padding:2px 0}
+nav div em{font-style:normal;white-space:nowrap}
+nav div.active{color:var(--g2);font-weight:700}
+nav .ico{display:flex;align-items:center;justify-content:center;width:56px;height:30px;border-radius:999px;font-size:inherit}
+nav div.active .ico{background:var(--gl)}
+/* Couleurs principales : bleu -> vert */
+.pill,.submit,.c2,.follow,.cin button,.cin2 button,.bigfollow,.pbtn.b,.lk,.stickybuy button,.stickybuy button.sb1.main:not(.wa){background:var(--g)}
+.follow.on{background:var(--soft);color:var(--tx)}
+.filters .on{background:var(--g);border-color:var(--g);color:#fff}
+.msg.s{background:var(--g)}
+.price,.alt a,.cvf,.soft,.btn1{color:var(--g2)}
+.landing,.auth{background:linear-gradient(135deg,#22C55E 0%,#15803D 55%,#14532D 100%)}
+.banner,.av{background:linear-gradient(135deg,#22C55E,#15803D)}
+.bd.g,.gbadge.g{background:var(--g)}
+.spin{border-top-color:var(--g)}
+.optchip.on{border-color:var(--g);background:var(--gx);color:var(--g3)}
+.pa .on-l{background:var(--gl);color:var(--g3)}
+.ni.unread{background:var(--gx)}
+.callbtn{background:var(--gx);color:var(--g2)}
+[style*="color:#3B82F6"]{color:var(--g2)!important}
+[style*="background:#3B82F6"]{background:var(--g)!important}
+[style*="background:#EFF6FF"]{background:var(--gx)!important}
+/* Cartes */
+.box,.item,.pcard,.pinfo,.mini{background:var(--card);box-shadow:var(--sh)}
+.box{border-radius:18px}
+.item{border-radius:14px}
+.filters button{background:var(--card);border-color:var(--ln);color:var(--tx)}
+.title{letter-spacing:-.3px}
+/* Section « En direct » de l'accueil */
+#livebar{display:block;margin-bottom:14px}
+.lvhead{display:flex;align-items:baseline;justify-content:space-between;margin:2px 2px 8px}
+.lvhead b{font-size:17px}.lvhead span{font-size:12px;color:var(--mu)}
+.lvrow{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.lvrow::-webkit-scrollbar{display:none}
+.lvcard{flex:0 0 128px;height:172px;border:none;border-radius:16px;position:relative;overflow:hidden;padding:10px;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;text-align:left;color:#fff;background:linear-gradient(165deg,#166534,#052E16);cursor:pointer;box-shadow:var(--sh)}
+.lvcard .lvbg{position:absolute;top:36px;left:50%;transform:translateX(-50%)}
+.lvcard .lvbg .av{border:3px solid #EF4444;box-sizing:content-box}
+.lvcard .lvred{position:absolute;top:8px;left:8px}
+.lvcard b{font-size:13px;line-height:1.25;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvcard small{font-size:11px;opacity:.85;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvstart{background:var(--card);color:var(--tx);border:2px dashed var(--g)}
+.lvstart .lvplus{position:absolute;top:40px;left:50%;transform:translateX(-50%);width:54px;height:54px;border-radius:50%;background:var(--g);color:#fff;font-size:32px;line-height:1;display:flex;align-items:center;justify-content:center}
+.lvstart small{color:var(--mu);opacity:1}
+/* Historique d'appels */
+.callrow{cursor:default}.callrow .callbtn{width:42px;height:42px}
+.callrow .miss{color:#DC2626}
+/* Panneau de droite (ordinateur) */
+#rpanel{display:none}
+#shell{padding-left:var(--rail);padding-right:var(--rp)}
+#shell>.header{margin-left:calc(-1 * var(--rail));margin-right:calc(-1 * var(--rp))}
+body[data-v=accueil] #rp-livebox{display:none}
+.rpbox{background:var(--card);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:var(--sh)}
+.rph{margin-bottom:10px;font-size:16px}
+#rp-live{display:flex;flex-direction:column;gap:8px}
+#rp-live .liveitem{max-width:none;width:100%}
+.rpl{display:block;width:100%;text-align:left;border:none;background:transparent;color:var(--tx);padding:10px 8px;border-radius:10px;font-size:15px}
+.rpl:hover{background:var(--soft)}
+/* ===== Tablette ===== */
+@media (min-width:768px){
+  body{padding-bottom:0}
+  nav{top:0;bottom:0;right:auto;width:88px;flex-direction:column;justify-content:flex-start;gap:8px;padding:82px 0 16px;border-top:none;border-right:1px solid var(--ln);box-shadow:none;z-index:99}
+  nav div{flex:none}
+  :root{--rail:88px}
+  .page{max-width:720px;padding:20px}
+  #v-produits{max-width:1040px}
+  .pg{grid-template-columns:repeat(3,1fr);gap:14px}
+  .cin{bottom:0;left:var(--rail);right:var(--rp)}
+  .msgs{padding-bottom:90px}
+  .stickybuy{left:var(--rail)!important;right:var(--rp)!important}
+  .modal{max-width:560px}
+  .lvcard{flex-basis:140px;height:186px}
+}
+/* ===== Ordinateur ===== */
+@media (min-width:1100px){
+  nav{width:236px;align-items:stretch;padding:86px 14px 16px;gap:4px}
+  nav div{flex-direction:row;justify-content:flex-start;gap:14px;font-size:15px;padding:10px 12px;border-radius:14px}
+  nav div:hover{background:var(--soft)}
+  nav div.active{background:var(--gl)}
+  nav div.active .ico{background:none}
+  nav .ico{width:28px;height:28px}
+  :root{--rail:236px}
+  .pg{grid-template-columns:repeat(4,1fr)}
+  .callbox{inset:auto;right:24px;bottom:24px;width:400px;height:min(680px,calc(100vh - 48px));border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.45);overflow:hidden}
+}
+@media (min-width:1280px){
+  :root{--rp:340px}
+  #rpanel{display:block;position:fixed;top:82px;right:20px;width:310px;bottom:20px;overflow-y:auto;z-index:50}
+}
+/* ===== Mode sombre (bêta) ===== */
+html[data-theme=dark] .header,html[data-theme=dark] nav,html[data-theme=dark] .box,html[data-theme=dark] .item,html[data-theme=dark] .pcard,html[data-theme=dark] .modal,html[data-theme=dark] .npanel,html[data-theme=dark] .card,html[data-theme=dark] .cin,html[data-theme=dark] .chead,html[data-theme=dark] .msg.r,html[data-theme=dark] .pinfo,html[data-theme=dark] .mini,html[data-theme=dark] .stickybuy,html[data-theme=dark] .selc,html[data-theme=dark] .liveitem,html[data-theme=dark] .pubban,html[data-theme=dark] .filters button,html[data-theme=dark] .optchip{background:var(--card);color:var(--tx);border-color:var(--ln)}
+html[data-theme=dark] input,html[data-theme=dark] textarea,html[data-theme=dark] select{background:var(--soft);color:var(--tx);border-color:var(--ln)}
+html[data-theme=dark] .pa button,html[data-theme=dark] .c1,html[data-theme=dark] .tg,html[data-theme=dark] .trust span,html[data-theme=dark] .icorow .ico,html[data-theme=dark] .soldbox,html[data-theme=dark] .sgrid div,html[data-theme=dark] .shlink,html[data-theme=dark] .pimg,html[data-theme=dark] .mimg,html[data-theme=dark] .gal2,html[data-theme=dark] .pbtn.gray{background:var(--soft);color:var(--tx)}
+html[data-theme=dark] .mt,html[data-theme=dark] .item .pre,html[data-theme=dark] .cnt,html[data-theme=dark] .liveitem small,html[data-theme=dark] .cs{color:var(--mu)}
+html[data-theme=dark] .cnt,html[data-theme=dark] .ni,html[data-theme=dark] .srow,html[data-theme=dark] .acc2{border-color:var(--ln)}
+html[data-theme=dark] .fg label,html[data-theme=dark] .accb,html[data-theme=dark] .hl2{color:var(--tx)}
+html[data-theme=dark] [style*="background:#F0F2F5"],html[data-theme=dark] [style*="background:#fff"]{background:var(--soft)!important;color:var(--tx)!important}
+html[data-theme=dark] .follow.on,html[data-theme=dark] .soft{background:var(--soft);color:var(--g2)}
+html[data-theme=dark] .filters .on{background:var(--g);border-color:var(--g);color:#052E16}
+
+
+/* ===== SocialPages — finition compacte fidèle à la maquette validée ===== */
+:root{
+  --g:#0E9F6E; --g2:#087F55; --g3:#066344; --gl:#DDF7EA;
+  --gx:#F0FBF5; --bg:#F3F6F4; --card:#FFFFFF; --tx:#17212B;
+  --mu:#77818A; --ln:#E4EAE6; --soft:#F1F4F2;
+}
+html[data-theme=dark]{
+  --g:#16A36F;--g2:#39C98B;--g3:#8BE0B8;--gl:#123D2D;
+  --gx:#13291F;--bg:#0D1712;--card:#142019;--tx:#E8F0EB;
+  --mu:#A2AEA7;--ln:#293A30;--soft:#1B2A21;
+}
+body{background:var(--bg);color:var(--tx)}
+@media(max-width:767px){body{padding-bottom:76px}}
+#shell>.header{
+  min-height:66px;padding:9px 14px;gap:9px;
+  background:var(--card);border-bottom:1px solid var(--ln);
+}
+.logo{width:42px;height:42px;border-radius:13px;font-size:23px;flex:0 0 42px}
+.logo-text{font-size:20px;color:var(--g2);font-weight:750;letter-spacing:-.45px}
+.hacts{gap:3px}
+.hbtn{width:40px;height:40px}
+.page{padding:10px 12px;max-width:640px}
+#v-accueil{padding-top:8px}
+#livebar{margin:0 0 8px!important}
+.lvhead{margin:0 2px 6px}
+.lvhead b{font-size:16px}
+.lvhead span{font-size:12px}
+.lvrow{gap:8px;padding:1px 1px 4px}
+.lvcard{flex-basis:108px;height:132px;border-radius:14px;padding:8px}
+.lvcard .lvbg{top:27px}
+.lvcard .lvbg .av{width:48px!important;height:48px!important}
+.lvcard .lvred{top:6px;left:6px;font-size:9px}
+.lvcard b{font-size:12px}
+.lvcard small{font-size:10px}
+.lvstart .lvplus{top:28px;width:46px;height:46px;font-size:28px}
+#v-accueil>.box{
+  padding:10px 12px;margin:0 0 9px;border-radius:16px;
+}
+#v-accueil>.box>button:first-child{
+  min-height:44px;padding:10px 14px!important;border-radius:12px;
+  background:var(--soft)!important;color:var(--mu)!important;
+}
+#v-accueil>.box>div{
+  margin-top:5px!important;gap:5px!important;
+}
+#v-accueil>.box>div button{
+  min-height:36px;padding:7px 4px;border-radius:10px;
+  background:transparent;color:var(--g2);font-size:13px;
+}
+#v-accueil .filters{gap:7px;margin:0 0 9px;padding-bottom:1px}
+#v-accueil .filters button{padding:8px 15px;font-size:13px}
+#feed>.box,.post,.feedpost{margin-bottom:9px}
+.box{padding:12px;border-radius:16px}
+.ph{gap:9px;margin-bottom:8px}
+.pc{font-size:14px;line-height:1.42;margin-bottom:8px}
+.pm{max-height:340px;margin-bottom:7px;border-radius:11px}
+.cnt{padding:6px 0;font-size:12px}
+.pa{gap:4px;padding-top:3px}
+.pa button{
+  min-height:39px;padding:7px 2px;border-radius:9px;
+  font-size:clamp(9px,2.55vw,12px);gap:2px;background:var(--soft);
+}
+.pa button span{white-space:nowrap}
+#v-produits{padding-top:12px}
+#v-produits .row{margin-bottom:9px}
+#v-produits .title{font-size:22px}
+#v-produits .search{margin:0 0 8px}
+#v-produits .filters{gap:7px;margin-bottom:9px}
+#v-produits .filters button{padding:8px 14px;font-size:13px}
+#v-produits>.row .pill{padding:9px 14px}
+#v-produits #dash{margin-bottom:8px}
+#v-produits #dash .box{padding:10px;margin-bottom:8px}
+#v-produits .pg{gap:9px}
+#v-produits .pcard{border-radius:13px}
+#v-produits .pimg{height:132px}
+#v-produits .pi{padding:8px}
+#v-produits .pi b{font-size:13px}
+#v-mapage{padding-top:10px}
+#v-mapage .banner{height:104px;border-radius:14px}
+#v-mapage .big{width:78px;height:78px;margin:-39px auto 0;border-width:3px}
+#v-mapage .pinfo{padding:9px 12px;margin-top:5px;border-radius:14px}
+#v-mapage .pinfo .title{font-size:21px}
+#v-mapage .pinfo .soft{padding:9px 13px!important;margin-top:8px!important}
+#v-mapage .grid2{gap:7px;margin:8px 0}
+#v-mapage .grid2 button{padding:10px 8px;font-size:13px;border-radius:11px}
+#v-mapage h3{margin:8px 0!important;font-size:17px}
+#v-messages,#v-appels{padding-top:12px}
+#v-messages .row,#v-appels .row{margin-bottom:9px}
+nav{background:var(--card)}
+/* Barre du bas compacte : téléphone uniquement (sur tablette/ordinateur la barre est à gauche) */
+@media(max-width:767px){
+nav{
+  min-height:66px;padding:5px 0 calc(5px + env(safe-area-inset-bottom,0px));
+  border-top:1px solid var(--ln);
+}
+nav div{gap:2px;font-size:11px}
+nav .ico{width:48px;height:28px}
+nav .ico svg{width:23px;height:23px}
+nav div em{font-size:11px}
+}
+@media(max-width:380px){
+  .header{padding-left:10px!important;padding-right:9px!important}
+  .logo-text{font-size:18px}
+  .hbtn{width:36px;height:38px}
+  .lvcard{flex-basis:100px;height:126px}
+  .pa button{font-size:9px}
+  #v-produits>div[style*="display:flex"]{gap:5px!important}
+}
+@media(min-width:768px){
+  .page{padding:14px 18px}
+  #v-accueil{max-width:760px}
+  #v-produits{max-width:1080px}
+  #v-mapage{max-width:760px}
+  .lvcard{flex-basis:116px;height:142px}
+  #v-mapage .banner{height:130px}
+}
+@media(min-width:1100px){
+  #shell>.header{padding-left:24px;padding-right:24px}
+  .page{padding:18px 24px}
+  #v-accueil{max-width:820px}
+  #v-produits{max-width:1120px}
+}
+
+
+/* Publication composer: unified media control */
+.pm-media label.soft{background:var(--card);border:1px solid var(--ln);color:var(--g2);font-weight:650}
+.pm-media input[type="text"],.pm-media input:not([type]){background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:12px}
+#pm-text{background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:12px;padding:12px;width:100%;box-sizing:border-box}
+
+
+/* Images des publications : image entière (sans recadrage), adaptée à chaque écran */
+.pm{display:block;width:100%;height:auto;max-height:70vh;object-fit:contain;background:var(--soft);border-radius:12px;margin:0 0 8px}
+video.pm{background:#000}
+@media(min-width:768px){.pm{max-height:560px}}
+@media(min-width:1100px){#v-accueil{max-width:720px}.pm{max-height:600px}}
+
+/* Bouton « Suivre » dans le fil */
+.ffw{flex:none;margin-left:2px;border:none;background:var(--gx);color:var(--g2);font-weight:700;font-size:13px;padding:6px 12px;border-radius:999px;white-space:nowrap;cursor:pointer}
+.ffw.on{background:var(--soft);color:var(--mu)}
+.ffw:disabled{opacity:.6}
+/* Vidéos : repli YouTube lisible, lien TikTok toujours disponible (si le lecteur TikTok affiche une erreur) */
+.vitem .ytmsg a.ytgo,.ytmsg a.ytgo{display:inline-flex!important;align-items:center;gap:8px;background:#fff;color:#111!important;font-weight:700;font-size:15px;padding:11px 20px!important;border-radius:999px;text-decoration:none!important;text-align:left}
+.ytmsg .ytgo span{color:#f00;font-size:16px}
+.ytmsg .ytsm{font-size:12px;opacity:.9}
+.ytmsg .ytre{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:3px 10px;font-size:12px;margin-left:6px}
+.vitem.tt a.vlink[hidden]{display:block}
+.vitem.tt a.vlink{position:relative;z-index:3;background:#111;color:#fff;text-align:center;padding:9px;font-size:13px}
+.ttcov{flex-direction:column;gap:8px}
+.ttcov small{color:#fff;font-size:13px;text-shadow:0 1px 3px #000}
+</style>
 </head>
 <body>
 
@@ -248,13 +514,14 @@ div.ytfb{position:relative;aspect-ratio:16/9;background:#000 center/cover no-rep
 
 <div id="shell" class="hidden">
   <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span>
-    <span onclick="toggleNotif()" style="margin-left:auto;position:relative;font-size:24px;cursor:pointer">🔔<b id="nbadge" class="badge hidden" style="position:absolute;top:-6px;right:-8px;font-size:10px;background:#EF4444;color:#fff;margin:0;padding:2px 6px">0</b></span></div>
+    <div class="hacts"><button class="hbtn" type="button" onclick="go('decouvrir')" title="Rechercher" aria-label="Rechercher"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button><button class="hbtn" type="button" onclick="toggleTheme()" title="Mode sombre" aria-label="Mode sombre"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button><button class="hbtn" type="button" onclick="toggleNotif()" title="Notifications" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><b id="nbadge" class="badge hidden nbd">0</b></button></div></div>
   <div id="npanel" class="npanel hidden"></div>
+  <aside id="rpanel"><div class="rpbox" id="rp-livebox"><div class="rph"><b>🔴 En direct</b></div><div id="rp-live"><p class="mt">Aucun direct pour le moment.</p></div><button class="pill" type="button" style="width:100%;margin-top:12px" onclick="startLive()">Lancer un live</button></div><div class="rpbox"><div class="rph"><b>Raccourcis</b></div><button class="rpl" type="button" onclick="postModal()">✏️ Créer une publication</button><button class="rpl" type="button" onclick="go('decouvrir')">🔍 Découvrir des pages</button><button class="rpl" type="button" onclick="go('produits')">🛍️ Boutique</button><button class="rpl" type="button" onclick="go('appels')">📞 Historique d'appels</button></div></aside>
 
   <div id="v-accueil" class="view page hidden">
-    <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
-      <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1" onclick="postModal(1)">📷 Photo</button><button class="soft" style="flex:1" onclick="postModal(0,1)">🎥 Lien vidéo</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div></div>
     <div id="livebar" class="hidden"></div>
+    <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div></div>
     <div class="filters" id="feed-f">
       <button class="on" onclick="feedFilter('pourvous',this)">Pour vous</button>
       <button onclick="feedFilter('abonnements',this)">Abonnements</button>
@@ -272,7 +539,7 @@ div.ytfb{position:relative;aspect-ratio:16/9;background:#000 center/cover no-rep
   </div>
 
   <div id="v-produits" class="view page hidden">
-    <div class="row"><h2 class="title">Produits</h2><button class="pill" id="addp" onclick="prodModal()">+ Ajouter</button></div>
+    <div class="row"><h2 class="title">Boutique</h2><button class="pill" id="addp" onclick="prodModal()">+ Ajouter</button></div>
     <div id="dash"></div>
     <input class="search" id="p-search" placeholder="Rechercher un produit..." oninput="renderProducts()">
     <div style="display:flex;gap:8px;margin-bottom:12px"><input id="p-city" placeholder="📍 Ville" oninput="renderProducts()" style="flex:1;min-width:0"><select id="p-cat" onchange="renderProducts()" style="flex:1;min-width:0"></select><input id="p-max" type="number" placeholder="Prix max $" oninput="renderProducts()" style="flex:1;min-width:0"></div>
@@ -289,8 +556,14 @@ div.ytfb{position:relative;aspect-ratio:16/9;background:#000 center/cover no-rep
     <div class="pg" id="products"></div>
   </div>
 
+  <div id="v-appels" class="view page hidden">
+    <div class="row"><h2 class="title">Appels</h2></div>
+    <p class="mt" style="margin:-8px 0 14px">Appels manqués et refusés des dernières 24 h · touchez 📞 ou 🎥 pour rappeler</p>
+    <div id="calls"></div>
+  </div>
+
   <div id="v-messages" class="view page hidden">
-    <div class="row"><h2 class="title">Messages <span class="badge" id="unread">0</span></h2><button class="pill" onclick="newMsg()">+ Nouveau</button></div>
+    <div class="row"><h2 class="title">Discussions <span class="badge" id="unread">0</span></h2><button class="pill" onclick="newMsg()">+ Nouveau</button></div>
     <input class="search" id="m-search" placeholder="Rechercher une conversation..." oninput="renderMsgs()">
     <div id="convs"></div>
   </div>
@@ -349,11 +622,11 @@ div.ytfb{position:relative;aspect-ratio:16/9;background:#000 center/cover no-rep
   </div>
 
   <nav>
-    <div data-p="accueil" onclick="go('accueil')"><span>🏠</span>Accueil</div>
-    <div data-p="mapage" onclick="go('mapage')"><span>👤</span>Ma page</div>
-    <div data-p="produits" onclick="go('produits')"><span>📦</span>Produits</div>
-    <div data-p="messages" onclick="go('messages')"><span style="position:relative">✉️<b id="mbadge" class="badge hidden" style="position:absolute;top:-4px;right:-12px;font-size:10px;background:#EF4444;color:#fff;margin:0;padding:2px 6px">0</b></span>Messages</div>
-    <div data-p="decouvrir" onclick="go('decouvrir')"><span>🔍</span>Découvrir</div>
+    <div data-p="accueil" onclick="go('accueil')"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span><em>Accueil</em></div>
+    <div data-p="messages" onclick="go('messages')"><span class="ico" style="position:relative"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><b id="mbadge" class="badge hidden nbd">0</b></span><em>Discussions</em></div>
+    <div data-p="appels" onclick="go('appels')"><span class="ico"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><em>Appels</em></div>
+    <div data-p="produits" onclick="go('produits')"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12.1a1 1 0 0 1-1 .9H7.2a1 1 0 0 1-1-.9z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span><em>Boutique</em></div>
+    <div data-p="mapage" onclick="go('mapage')"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><em>Profil</em></div>
   </nav>
 </div>
 
@@ -371,7 +644,7 @@ const SUPABASE_KEY = 'sb_publishable_N2mmzxODT7V09XFmdP2ZBA_IpX0Z-9j';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const APP = ['accueil','decouvrir','produits','messages','mapage','settings','chat','user','product'];
+const APP = ['accueil','decouvrir','produits','messages','appels','mapage','settings','chat','user','product'];
 try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('sp_ref', r.toLowerCase().replace(/[^a-z0-9_.]/g, '').slice(0, 30)); } catch (e) {}
 let me = null, cur = 'landing', chatWith = null, feedF = 'pourvous', prodF = 'tous', prods = [], chan = null;
 
@@ -385,11 +658,11 @@ function go(p) {
   $('v-' + p).classList.remove('hidden');
   $('shell').classList.toggle('hidden', !APP.includes(p));
   document.querySelectorAll('nav div').forEach(n => n.classList.toggle('active', n.dataset.p === p));
-  cur = p;
+  cur = p; document.body.dataset.v = p;
   refresh();
 }
 function refresh() {
-  ({accueil: renderFeed, decouvrir: renderDiscover, produits: renderProducts, messages: renderMsgs,
+  ({accueil: () => { renderFeed(); renderLiveBar(); }, appels: renderCalls, decouvrir: renderDiscover, produits: renderProducts, messages: renderMsgs,
     mapage: renderMyPage, settings: loadSettings, chat: renderChat, user: renderUser, product: renderRoute, pub: renderRoute})[cur]?.();
 }
 function closeM() { $('modal').classList.add('hidden'); }
@@ -506,7 +779,7 @@ function postsHTML(ps) {
     const a = p.profiles, u = esc(p.media_url), mine = p.likes.find(l => l.user_id === me.id)?.kind;
     const nl = p.likes.filter(l => l.kind === 'like').length, nd = p.likes.length - nl, nc = p.comments?.[0]?.count || 0;
     const media = !p.media_url ? '' : p.media_type === 'video' ? `<video src="${u}" controls class="pm"></video>` : `<img src="${u}" class="pm">`;
-    return `<div class="box" data-post-id="${p.id}"><div class="ph"><div onclick="openUser('${a.id}')" style="display:flex;align-items:center;gap:12px;cursor:pointer">${av(a)}<div><b>${esc(a.name)}</b><div class="mt">${ago(p.created_at)}</div></div></div>
+    return `<div class="box" data-post-id="${p.id}"><div class="ph"><div onclick="openUser('${a.id}')" style="display:flex;align-items:center;gap:12px;cursor:pointer">${av(a)}<div><b>${esc(a.name)}</b><div class="mt">${ago(p.created_at)}</div></div></div>${p.user_id !== me.id && myFollows && !myFollows.has(a.id) ? `<button type="button" class="ffw" data-u="${a.id}" onclick="feedFollow('${a.id}',this)">+ Suivre</button>` : ''}
       ${p.user_id === me.id ? `<button class="del" onclick="delPost('${p.id}')">Supprimer</button>` : `<button class="del" style="background:#F3F4F6;color:#6B7280" onclick="reportModal('post','${p.id}','${p.user_id}')">⚠️</button>`}</div>
       <div class="pc">${esc(cleanTxt(p.text))}</div>${media}${p.video_url ? `<div class="vcar">${vidHTML(p.video_url)}</div>` : ''}${postProd(p.text) ? `<button type="button" class="buybtn" onclick="openProd('${postProd(p.text)}')">🛒 Acheter</button>` : ''}
       <div class="cnt" data-cnt="${p.id}">${nl} J'aime · ${nd} Je n'aime pas · ${nc} commentaire${nc > 1 ? 's' : ''}</div>
@@ -635,12 +908,28 @@ async function renderUser() {
 async function followUser(id, on) {
   const q = sb.from('follows');
   await (on ? q.delete().match({ follower_id: me.id, followee_id: id }) : q.insert({ follower_id: me.id, followee_id: id }));
+  myFollows = null;
   renderUser();
 }
 let feedN = 10, blocked = new Set();
+// Abonnements de l'utilisateur, pour afficher « + Suivre » dans le fil
+let myFollows = null;
+async function loadMyFollows() { if (!me) return; const { data } = await sb.from('follows').select('followee_id').eq('follower_id', me.id); myFollows = new Set((data || []).map(x => x.followee_id)); }
+async function feedFollow(id, btn) {
+  if (!me || !myFollows || btn.disabled) return;
+  const on = myFollows.has(id); btn.disabled = true;
+  const q = sb.from('follows');
+  const { error } = await (on ? q.delete().match({ follower_id: me.id, followee_id: id }) : q.insert({ follower_id: me.id, followee_id: id }));
+  btn.disabled = false;
+  if (error) { toast('Action impossible : ' + error.message, 3500); return; }
+  on ? myFollows.delete(id) : myFollows.add(id);
+  document.querySelectorAll(`.ffw[data-u="${id}"]`).forEach(b => { b.classList.toggle('on', !on); b.textContent = on ? '+ Suivre' : 'Abonné ✓'; });
+  toast(on ? 'Vous ne suivez plus ce compte' : '✅ Abonné : ses publications apparaîtront dans « Abonnements »', 2500);
+}
 async function loadBlocks() { const { data } = await sb.from('blocks').select('blocked_id'); blocked = new Set((data || []).map(b => b.blocked_id)); }
 async function renderFeed() {
   $('newbar').classList.add('hidden');
+  if (!myFollows) await loadMyFollows();
   let q = sb.from('posts').select(POSTQ).order('created_at', { ascending: false }).limit(feedN + 1);
   if (feedF === 'abonnements') {
     const { data: f } = await sb.from('follows').select('followee_id').eq('follower_id', me.id);
@@ -724,19 +1013,33 @@ async function loadMyProdsInto(id) {
   try {
     const { data } = await sb.from('products').select('id,name,price,status').eq('user_id', me.id).order('created_at', { ascending: false });
     const el = $(id); if (!el || !data?.length) return;
-    el.innerHTML = '<option value="">🛒 Aucun produit lié (pas de bouton Acheter)</option>' + data.map(p => `<option value="${p.id}">🛒 ${esc(p.name)} · ${p.status === 'Gratuit' ? 'Gratuit' : esc(p.price) + ' $'}</option>`).join('');
+    el.innerHTML = '<option value="">Aucun produit lié</option>' + data.map(p => `<option value="${p.id}">🛒 ${esc(p.name)} · ${p.status === 'Gratuit' ? 'Gratuit' : esc(p.price) + ' $'}</option>`).join('');
   } catch (err) {}
 }
+// Brouillon conservé quand on part créer un produit depuis la fenêtre de publication
+let pmDraft = null;
+function pmDraftSave() { pmDraft = { t: ($('pm-text') || {}).value || '', v: ($('pm-vid') || {}).value || '' }; }
 function postModal(pick, vid) {
   openM(`<h3>Créer une publication</h3><textarea id="pm-text" rows="4" placeholder="Exprimez-vous..."></textarea>
-    <input type="file" id="pm-file" accept="image/*" style="margin-top:12px" onchange="previewFile(this)">
-    <input id="pm-vid" placeholder="🎥 Lien vidéo (YouTube, TikTok, Facebook, Instagram)" style="margin-top:10px" oninput="vCheck(this,'pm-vst')">
-    <div id="pm-vst" style="font-size:12px;margin:4px 2px 0"></div>
-    <div class="mt" style="font-size:12px;margin:4px 2px 0">💡 Pour que la vidéo se lise dans SocialPages : publiez-la d'abord sur le réseau en <b>public</b>, laissez l'<b>intégration autorisée</b>, puis collez le <b>lien complet</b>.</div>
-    <select id="pm-prod" style="margin-top:10px;width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;background:#fff"><option value="">🛒 Aucun produit lié (pas de bouton Acheter)</option></select>
+    <section class="pm-media" style="margin-top:12px;padding:12px;border:1px solid var(--ln);border-radius:14px;background:var(--soft)">
+      <b style="display:block;margin-bottom:9px">🖼️ Médias</b>
+      <label for="pm-file" class="soft" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:10px;cursor:pointer">📷 Ajouter une photo</label>
+      <input type="file" id="pm-file" accept="image/*" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none" onchange="previewFile(this)">
+      <div style="text-align:center;color:var(--mu);font-size:12px;margin:7px 0">ou</div>
+      <input id="pm-vid" placeholder="Coller un lien vidéo (YouTube, TikTok, Facebook, Instagram)" style="width:100%;box-sizing:border-box" oninput="vCheck(this,'pm-vst')">
+      <div id="pm-vst" style="font-size:12px;margin:5px 2px 0"></div>
+      <div class="mt" style="font-size:12px;margin:7px 2px 0">💡 La vidéo doit être publique et son intégration autorisée. SocialPages conserve uniquement le lien.</div>
+    </section>
+    <section style="margin-top:12px;padding:12px;border:1px solid var(--ln);border-radius:14px">
+      <b style="display:block;margin-bottom:7px">🛍️ Associer un produit (facultatif)</b>
+      <div class="mt" style="font-size:12px;margin-bottom:8px">Choisissez un produit déjà enregistré dans votre Boutique. Son prix et son accès à l'achat seront affichés avec la publication.</div>
+      <select id="pm-prod" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--tx)"><option value="">Aucun produit lié</option></select>
+      <button type="button" class="soft" style="width:100%;margin-top:8px" onclick="pmDraftSave();closeM();setTimeout(()=>prodModal(),120)">＋ Créer un produit dans ma Boutique</button>
+    </section>
     <div id="pm-prev" style="margin-top:12px"></div><div id="pm-err" class="err"></div>
     <div class="acts"><button class="c1" onclick="closeM()">Annuler</button><button class="c2" id="pm-btn" onclick="publish()">Publier</button></div>`);
   loadMyProdsInto('pm-prod');
+  if (pmDraft) { $('pm-text').value = pmDraft.t || ''; if ($('pm-vid') && pmDraft.v) { $('pm-vid').value = pmDraft.v; try { vCheck($('pm-vid'), 'pm-vst'); } catch (e) {} } pmDraft = null; toast('✏️ Brouillon restauré', 2000); }
   if (pick) setTimeout(() => $('pm-file').click(), 100);
   if (vid) setTimeout(() => $('pm-vid').focus(), 100);
 }
@@ -818,6 +1121,7 @@ async function renderDiscover() {
 async function follow(id, on) {
   const q = sb.from('follows');
   await (on ? q.delete().match({ follower_id: me.id, followee_id: id }) : q.insert({ follower_id: me.id, followee_id: id }));
+  myFollows = null;
   renderDiscover();
 }
 
@@ -865,7 +1169,8 @@ function loadYT() {
 // Android : ouvre directement l'application YouTube (le site mobile affiche parfois « Vidéo non disponible »)
 function ytOpenUrl(id) {
   const web = 'https://www.youtube.com/watch?v=' + id;
-  return /Android/i.test(navigator.userAgent)
+  const app = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+  return /Android/i.test(navigator.userAgent) && !app
     ? 'intent://www.youtube.com/watch?v=' + id + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent(web) + ';end'
     : web;
 }
@@ -884,8 +1189,9 @@ function ytError(el, id, code) {
 }
 function ytFallback(el, id, code) {
   el.querySelector('iframe')?.remove(); el.querySelector('.ytfb')?.remove();
-  const msg = [100, 101, 150].includes(code) ? "L'auteur a interdit la lecture de cette vidéo en dehors de YouTube." : 'Cette vidéo ne peut pas être lue ici pour le moment.';
-  el.insertAdjacentHTML('afterbegin', `<div class="ytfb" style="background-image:url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)"><div class="ytmsg"><div>${msg}</div><button type="button" onclick="ytMount(this.closest('.vitem'),'${id}',2)">↻ Réessayer</button><a href="${'https://www.youtube.com/watch?v=' + id}" target="_blank" rel="noopener">Ouvrir sur YouTube${code ? ' (erreur ' + code + ')' : ''}</a></div></div>`);
+  const hard = [100, 101, 150].includes(code);
+  const msg = hard ? "L'auteur réserve cette vidéo à YouTube." : 'Lecture impossible ici pour le moment.';
+  el.insertAdjacentHTML('afterbegin', `<div class="ytfb" style="background-image:url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)"><div class="ytmsg"><a class="ytgo" href="${esc(ytOpenUrl(id))}" target="_blank" rel="noopener"><span>▶</span> Regarder sur YouTube</a><div class="ytsm">${msg}${hard ? '' : ` <button type="button" class="ytre" onclick="ytMount(this.closest('.vitem'),'${id}',0)">↻ Réessayer</button>`}</div></div></div>`);
 }
 async function hydrateYT() {
   const els = [...document.querySelectorAll('.vitem[data-yt]')]; if (!els.length) return;
@@ -1359,7 +1665,7 @@ function vWatch() {
 // Bonus : les vidéos hors écran ne consomment plus de données.
 const ttThumbs = JSON.parse(sessionStorage.getItem('sp_ttth') || '{}');
 function ttCover(el) {
-  el.insertAdjacentHTML('afterbegin', '<button type="button" class="ttcov" aria-label="Lire la vidéo" onclick="vTap(this)"><span>▶</span></button>');
+  el.insertAdjacentHTML('afterbegin', '<button type="button" class="ttcov" aria-label="Lire la vidéo" onclick="vTap(this)"><span>▶</span><small>Toucher pour lire</small></button>');
   const u = el.dataset.u, set = t => { const c = el.querySelector('.ttcov'); if (c && t) c.style.backgroundImage = `url("${t.replace(/"/g, '%22')}")`; };
   if (!u) return; if (ttThumbs[u]) return set(ttThumbs[u]);
   fetch('https://www.tiktok.com/oembed?url=' + encodeURIComponent(u)).then(r => r.json()).then(j => {
@@ -2085,7 +2391,8 @@ function endCall(reason) {
   $('callbox')?.remove();
   const dur = c.t0 ? Math.round((Date.now() - c.t0) / 1000) : 0, kind = c.video ? 'vidéo' : 'vocal';
   // Trace dans la conversation, écrite par l'appelant seulement (pas de doublon)
-  if (c.role === 'out' && reason !== 'nomedia') {
+  // Si l'appel a abouti (on s'est parlé), aucune trace n'est gardée. Manqués / refusés : supprimés après 24 h.
+  if (c.role === 'out' && reason !== 'nomedia' && !c.t0) {
     const txt = c.t0 ? `📞 Appel ${kind} · ${fmtDur(dur)}` : reason === 'declined' ? `📞 Appel ${kind} refusé` : `📞 Appel ${kind} manqué`;
     sb.from('messages').insert({ from_id: me.id, to_id: c.peer.id, text: txt }).then(() => { if (cur === 'chat') renderChat(); });
   }
@@ -2151,11 +2458,42 @@ setInterval(() => {
 }, 25000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && me && (!liveDir || ['closed', 'errored'].includes(liveDir.state))) liveDirListen(); });
 function renderLiveBar() {
-  const el = $('livebar'); if (!el) return;
   const ids = Object.keys(lives).filter(k => k !== me?.id);
-  el.classList.toggle('hidden', !ids.length);
-  el.innerHTML = ids.map(k => `<button type="button" class="liveitem" onclick="joinLive('${k}')">${av(lives[k], 38)}<span class="lt"><b>${esc(lives[k].name)} <span class="lvred">LIVE</span></b><small>${esc(lives[k].title || 'En direct')}</small></span></button>`).join('');
+  const cards = ids.map(k => `<button type="button" class="lvcard" onclick="joinLive('${k}')"><span class="lvbg">${av(lives[k], 56)}</span><span class="lvred">● EN DIRECT</span><b>${esc(lives[k].name)}</b><small>${esc(lives[k].title || 'En direct')}</small></button>`).join('');
+  const el = $('livebar');
+  if (el) {
+    el.classList.remove('hidden');
+    el.innerHTML = `<div class="lvhead"><b>🔴 En direct</b><span>${ids.length ? ids.length + ' en cours' : 'Aucun direct pour le moment'}</span></div><div class="lvrow"><button type="button" class="lvcard lvstart" onclick="startLive()"><span class="lvplus">+</span><b>Lancer un live</b><small>Diffusez en direct</small></button>${cards}</div>`;
+  }
+  const rp = $('rp-live');
+  if (rp) rp.innerHTML = ids.length ? ids.map(k => `<button type="button" class="liveitem" onclick="joinLive('${k}')">${av(lives[k], 38)}<span class="lt"><b>${esc(lives[k].name)} <span class="lvred">LIVE</span></b><small>${esc(lives[k].title || 'En direct')}</small></span></button>`).join('') : '<p class="mt">Aucun direct pour le moment.</p>';
 }
+// ---------- Historique d'appels (lu dans les messages « 📞 … » des 7 derniers jours) ----------
+async function renderCalls() {
+  const el = $('calls'); if (!el || !me) return;
+  el.innerHTML = '<div class="spin"></div>';
+  const { data, error } = await sb.from('messages').select('id,from_id,to_id,text,created_at').or(`from_id.eq.${me.id},to_id.eq.${me.id}`).like('text', '📞%').gte('created_at', new Date(Date.now() - 864e5).toISOString()).order('created_at', { ascending: false }).limit(80);
+  if (cur !== 'appels') return;
+  if (error) { el.innerHTML = '<div class="empty"><div>📞</div>Historique indisponible pour le moment.</div>'; return; }
+  const data2 = (data || []).filter(m => !String(m.text || '').includes('·')); data.length = 0; data.push(...data2);
+  if (!data || !data.length) { el.innerHTML = '<div class="empty"><div>📞</div>Aucun appel manqué ces dernières 24 h.<br><small>Pour appeler, ouvrez une discussion et touchez 📞 ou 🎥.</small></div>'; return; }
+  const ids = [...new Set(data.map(m => m.from_id === me.id ? m.to_id : m.from_id))];
+  const { data: ps } = await sb.from('profiles').select('id,name,avatar_url').in('id', ids);
+  const P = Object.fromEntries((ps || []).map(p => [p.id, p]));
+  el.innerHTML = data.map(m => {
+    const out = m.from_id === me.id, pid = out ? m.to_id : m.from_id, u = P[pid] || { name: 'Utilisateur' };
+    const t = String(m.text || ''), vid = t.includes('vidéo'), missed = t.includes('manqué'), refused = t.includes('refusé');
+    const dur = (t.split('·')[1] || '').trim();
+    const st = missed ? (out ? 'Sans réponse' : 'Appel manqué') : refused ? (out ? 'Refusé' : 'Vous avez refusé') : (dur || 'Terminé');
+    const bad = !out && (missed || refused);
+    return `<div class="item callrow">${av(u, 48)}<div class="info"><b>${esc(u.name)}</b><div class="pre${bad ? ' miss' : ''}">${out ? '↗' : '↙'} ${vid ? 'Vidéo' : 'Vocal'} · ${esc(st)} · ${ago(m.created_at)}</div></div><button class="callbtn" type="button" onclick="callBack('${pid}',false)" title="Appel vocal">📞</button><button class="callbtn" type="button" onclick="callBack('${pid}',true)" title="Appel vidéo">🎥</button></div>`;
+  }).join('');
+}
+async function callBack(id, video) { await openChat(id); if (chatWith && chatWith.id === id) setTimeout(() => startCall(video), 300); }
+// ---------- Mode clair / sombre ----------
+function applyTheme(t) { document.documentElement.dataset.theme = t; const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = t === 'dark' ? '#0B1410' : '#15803D'; }
+function toggleTheme() { const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('sp_theme', t); } catch (e) {} applyTheme(t); toast(t === 'dark' ? '🌙 Mode sombre activé (bêta)' : '☀️ Mode clair activé', 2000); }
+try { applyTheme(localStorage.getItem('sp_theme') || 'light'); } catch (e) {}
 function liveRoom(hid) {
   const ch = sb.channel('live-' + hid, { config: { broadcast: { self: false }, presence: { key: me.id } } });
   ch.on('broadcast', { event: 'lv' }, ({ payload }) => onLiveSig(payload))
