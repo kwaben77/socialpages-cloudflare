@@ -912,7 +912,7 @@ function copyTxt(t) {
 }
 function shareModal(id) {
   const p = postCache[id];
-  shareMenu({ url: base(), title: 'SocialPages', text: (cleanTxt(p.text) ? cleanTxt(p.text).slice(0, 100) + ' — ' : '') + 'sur SocialPages', img: p.media_type === 'image' ? p.media_url : null });
+  shareMenu({ url: location.origin + '/s/' + id, title: 'SocialPages', text: (cleanTxt(p.text) ? cleanTxt(p.text).slice(0, 100) + ' — ' : '') + 'sur SocialPages', img: p.media_type === 'image' ? p.media_url : null });
 }
 
 // ---------- Profil d'un autre utilisateur ----------
@@ -995,25 +995,18 @@ const cleanTxt = t => String(t ?? '').replace(PTAG, '');
 const postProd = t => (String(t ?? '').match(PTAG) || [])[1] || null;
 function openProd(id) { location.hash = '#/p/' + id; }
 // Liens courts TikTok : on les convertit en lien complet avant l'enregistrement
-// Résolution d'un lien court TikTok (vt.tiktok.com / vm.tiktok.com) : essai direct puis via relais CORS
+// Résolution d'un lien court TikTok (vt.tiktok.com / vm.tiktok.com) : fonction Cloudflare de SocialPages, puis oEmbed direct
 async function ttResolve(u) {
-  const api = 'https://www.tiktok.com/oembed?url=' + encodeURIComponent(u);
-  for (const t of [api, 'https://corsproxy.io/?url=' + encodeURIComponent(api), 'https://api.allorigins.win/raw?url=' + encodeURIComponent(api)]) {
-    try {
-      const c = new AbortController(), to = setTimeout(() => c.abort(), 7000);
-      const r = await fetch(t, { signal: c.signal }); clearTimeout(to);
-      const j = await r.json(), id = j.embed_product_id || (j.html || '').match(/data-video-id="(\d+)"/)?.[1];
-      if (id) return { id, url: j.author_url ? j.author_url.replace(/\/$/, '') + '/video/' + id : 'https://www.tiktok.com/v/' + id };
-    } catch (err) {}
-  }
-  // 2e méthode : on lit la page TikTok (la redirection du lien court est suivie) et on y cherche l'identifiant de la vidéo
-  for (const t of ['https://corsproxy.io/?url=' + encodeURIComponent(u), 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u), 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u)]) {
-    try {
-      const c = new AbortController(), to = setTimeout(() => c.abort(), 8000);
-      const r = await fetch(t, { signal: c.signal }); clearTimeout(to);
-      const txt = await r.text(), m = txt.match(/tiktok\.com\/(@[\w.-]+)\/video\/(\d{10,})/) || txt.match(/"(?:videoId|itemId)":"(\d{10,})"/);
-      if (m) return m.length > 2 ? { id: m[2], url: 'https://www.tiktok.com/' + m[1] + '/video/' + m[2] } : { id: m[1], url: 'https://www.tiktok.com/v/' + m[1] };
-    } catch (err) {}
+  const tries = [
+    async (signal) => { const r = await fetch('/api/tiktok?url=' + encodeURIComponent(u), { signal }); const j = await r.json(); return j && j.id ? j : null; },
+    async (signal) => {
+      const r = await fetch('https://www.tiktok.com/oembed?url=' + encodeURIComponent(u), { signal }); const j = await r.json();
+      const id = j.embed_product_id || (j.html || '').match(/data-video-id="(\d+)"/)?.[1];
+      return id ? { id, url: j.author_url ? j.author_url.replace(/\/$/, '') + '/video/' + id : 'https://www.tiktok.com/v/' + id } : null;
+    }];
+  for (const t of tries) {
+    const c = new AbortController(), to = setTimeout(() => c.abort(), 8000);
+    try { const res = await t(c.signal); if (res) return res; } catch (err) {} finally { clearTimeout(to); }
   }
   return null;
 }
@@ -1419,7 +1412,7 @@ async function delProduct(id) {
 }
 
 // Partage, WhatsApp, paiement
-const pctx = id => { const p = prods.find(x => x.id === id); return { url: base() + '#/p/' + id, title: p.name, text: freeBook(p) ? `Salut ! L'ebook « ${p.name} » est gratuit sur SocialPages. Télécharge-le ici :` : `Salut ! J'ai vu ce produit sur SocialPages : ${p.name} à ${priceTxt(p)}. Intéressé ?`, img: p.images?.[0] || p.image_url || null, price: priceTxt(p) }; };
+const pctx = id => { const p = prods.find(x => x.id === id); return { url: location.origin + '/p/' + id, title: p.name, text: freeBook(p) ? `Salut ! L'ebook « ${p.name} » est gratuit sur SocialPages. Télécharge-le ici :` : `Salut ! J'ai vu ce produit sur SocialPages : ${p.name} à ${priceTxt(p)}. Intéressé ?`, img: p.images?.[0] || p.image_url || null, price: priceTxt(p) }; };
 function shareProd(id, a) { sh = pctx(id); shareGo(a); }
 function shareP(id) { shareMenu(pctx(id)); }
 function waOrder(id) {
@@ -1786,7 +1779,7 @@ async function inviteModal() {
 }
 
 function shopModal() {
-  const url = base() + '#/vendeur/' + encodeURIComponent(me.username);
+  const url = location.origin + '/v/' + encodeURIComponent(me.username);
   let svg = ''; try { const q = qrcode(0, 'M'); q.addData(url); q.make(); svg = q.createSvgTag(5); } catch (e) { svg = '<p class="mt">QR code indisponible</p>'; }
   sh = { url, title: me.name, text: `Ma boutique sur SocialPages : ${me.name}`, img: null };
   openM(`<h3>🏪 Ma boutique</h3><p class="mt" style="overflow-wrap:anywhere">${esc(url)}</p><div style="display:flex;justify-content:center;margin:12px 0">${svg}</div>
