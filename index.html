@@ -487,6 +487,9 @@ video.pm{background:#000}
 .avw .ondot{display:none;position:absolute;right:1px;bottom:1px;width:13px;height:13px;border-radius:50%;background:#22C55E;border:2px solid var(--card)}
 .avw.online .ondot{display:block}
 #c-pres{display:block;font-size:12px;line-height:1.2;color:var(--mu)}
+
+/* APK : carte YouTube (miniature + bouton) */
+.vitem a.ytapp b{background:rgba(0,0,0,.65);color:#fff;font-size:14px;padding:6px 14px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -1207,6 +1210,11 @@ function ytOpenUrl(id) {
 const YT_FRAME = 'loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"';
 function ytMount(el, id, mode) {
   el.querySelector('iframe')?.remove(); el.querySelector('.ytfb')?.remove();
+  // Application Android (APK) : YouTube refuse son lecteur intégré (erreur 153) -> miniature qui ouvre l'app YouTube
+  if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
+    el.insertAdjacentHTML('afterbegin', `<a class="ytfb ytapp" href="${esc(ytOpenUrl(id))}" target="_blank" rel="noopener" style="background-image:url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)"><span>▶</span><b>Regarder sur YouTube</b></a>`);
+    return;
+  }
   el.insertAdjacentHTML('afterbegin', `<iframe src="${ytSrc(id, mode)}" title="YouTube" ${YT_FRAME}></iframe>`);
   el._mode = mode;
   loadYT().then(() => { try { new YT.Player(el.querySelector('iframe'), { events: { onError: e => ytError(el, id, e.data) } }); } catch (x) {} });
