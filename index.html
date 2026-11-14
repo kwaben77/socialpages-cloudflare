@@ -490,6 +490,30 @@ video.pm{background:#000}
 
 /* APK : carte YouTube (miniature + bouton) */
 .vitem a.ytapp b{background:rgba(0,0,0,.65);color:#fff;font-size:14px;padding:6px 14px;border-radius:999px}
+
+/* Fil de vente */
+.fpc .ph{justify-content:space-between}
+.fpimg{position:relative;border-radius:14px;overflow:hidden;background:var(--soft);aspect-ratio:4/3;max-height:360px;width:100%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.fpimg img{width:100%;height:100%;object-fit:contain}
+.fpph{font-size:56px}
+.fptag{position:absolute;top:10px;left:10px;background:#EF4444;color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+.fptag.n{background:var(--g)}.fptag.s{background:#6B7280}
+.fpname{font-size:16px;font-weight:700;margin:10px 2px 2px;cursor:pointer;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fpprice{font-size:20px;font-weight:800;color:var(--g2);margin:0 2px 10px}.fpprice s{font-size:14px;font-weight:400;color:var(--mu)}
+.fpacts{display:flex;gap:8px}
+.fpbuy{flex:1;border:none;border-radius:12px;background:#16A34A;color:#fff;font-weight:700;font-size:15px;padding:12px 8px;cursor:pointer}
+.fpbuy:disabled{background:#9CA3AF}
+.fpsee,.fpsh{border:none;border-radius:12px;background:var(--soft);color:var(--tx);font-weight:600;padding:12px 14px;cursor:pointer}
+.buybtn{background:#16A34A!important}
+/* Images des publications : moins hautes */
+.pm{max-height:min(60vh,460px)}
+/* Bande « En direct » compacte */
+#livebar{margin-bottom:10px}
+.lvstrip{display:flex;gap:14px;overflow-x:auto;padding:4px 2px;scrollbar-width:none}.lvstrip::-webkit-scrollbar{display:none}
+.lvdot{flex:none;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;cursor:pointer;color:var(--tx)}
+.lvring{padding:3px;border-radius:50%;background:linear-gradient(135deg,#EF4444,#F59E0B)}.lvring .av{border:2px solid var(--card)}
+.lvlbl{position:absolute;top:50px;background:#EF4444;color:#fff;font-size:9px;font-weight:800;padding:1px 6px;border-radius:5px;letter-spacing:.5px}
+.lvdot small{font-size:12px;margin-top:6px;max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -540,12 +564,13 @@ video.pm{background:#000}
   <div id="v-accueil" class="view page hidden">
     <div id="livebar" class="hidden"></div>
     <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
-      <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div></div>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:var(--g2)" onclick="prodModal()">🛍️ Vendre</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div></div>
     <div class="filters" id="feed-f">
       <button class="on" onclick="feedFilter('pourvous',this)">Pour vous</button>
+      <button onclick="feedFilter('vitrine',this)">🛍️ Vitrine</button>
+      <button onclick="feedFilter('proche',this)">📍 Près de moi</button>
       <button onclick="feedFilter('abonnements',this)">Abonnements</button>
       <button onclick="feedFilter('populaires',this)">Populaires</button>
-      <button onclick="feedFilter('recentes',this)">Récentes</button>
     </div>
     <button id="newbar" class="pbtn b hidden" onclick="feedN=10;renderFeed()">🔄 Nouvelles publications — appuyer pour afficher</button>
     <div id="feed"></div>
@@ -674,6 +699,8 @@ const SUPABASE_KEY = 'sb_publishable_N2mmzxODT7V09XFmdP2ZBA_IpX0Z-9j';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
+// Lien partagé ouvert directement (/p/<id>, /v/<nom>, /s/<id>) : on le transforme en adresse interne de l'app
+(() => { const m = location.pathname.match(/^\/(p|v|s)\/([^\/?#]+)\/?$/); if (m) history.replaceState(null, '', '/' + location.search + '#/' + ({ p: 'p', v: 'vendeur', s: 's' })[m[1]] + '/' + m[2]); })();
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const APP = ['accueil','decouvrir','produits','messages','appels','mapage','settings','chat','user','product','admin'];
 try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('sp_ref', r.toLowerCase().replace(/[^a-z0-9_.]/g, '').slice(0, 30)); } catch (e) {}
@@ -812,7 +839,7 @@ function postsHTML(ps) {
     const media = !p.media_url ? '' : p.media_type === 'video' ? `<video src="${u}" controls class="pm"></video>` : `<img src="${u}" class="pm">`;
     return `<div class="box" data-post-id="${p.id}"><div class="ph"><div onclick="openUser('${a.id}')" style="display:flex;align-items:center;gap:12px;cursor:pointer">${av(a)}<div><b>${esc(a.name)}</b><div class="mt">${ago(p.created_at)}</div></div></div>${p.user_id !== me.id && myFollows && !myFollows.has(a.id) ? `<button type="button" class="ffw" data-u="${a.id}" onclick="feedFollow('${a.id}',this)">+ Suivre</button>` : ''}
       ${p.user_id === me.id ? `<button class="del" onclick="delPost('${p.id}')">Supprimer</button>` : `<button class="del" style="background:#F3F4F6;color:#6B7280" onclick="reportModal('post','${p.id}','${p.user_id}')">⚠️</button>`}</div>
-      <div class="pc">${esc(cleanTxt(p.text))}</div>${media}${p.video_url ? `<div class="vcar">${vidHTML(p.video_url)}</div>` : ''}${postProd(p.text) ? `<button type="button" class="buybtn" onclick="openProd('${postProd(p.text)}')">🛒 Acheter</button>` : ''}
+      <div class="pc">${esc(cleanTxt(p.text))}</div>${media}${p.video_url ? `<div class="vcar">${vidHTML(p.video_url)}</div>` : ''}${postProd(p.text) ? `<button type="button" class="buybtn" onclick="feedOrder('${postProd(p.text)}')">📱 Commander</button>` : ''}
       <div class="cnt" data-cnt="${p.id}">${nl} J'aime · ${nd} Je n'aime pas · ${nc} commentaire${nc > 1 ? 's' : ''}</div>
       <div class="pa"><button data-l="${p.id}" class="${mine === 'like' ? 'on-l' : ''}" type="button" onclick="event.preventDefault();event.stopPropagation();react('${p.id}','like')">👍 J'aime</button>
       <button data-d="${p.id}" class="${mine === 'dislike' ? 'on-d' : ''}" type="button" onclick="event.preventDefault();event.stopPropagation();react('${p.id}','dislike')">👎 Je n'aime pas</button>
@@ -959,24 +986,74 @@ async function feedFollow(id, btn) {
   toast(on ? 'Vous ne suivez plus ce compte' : '✅ Abonné : ses publications apparaîtront dans « Abonnements »', 2500);
 }
 async function loadBlocks() { const { data } = await sb.from('blocks').select('blocked_id'); blocked = new Set((data || []).map(b => b.blocked_id)); }
+// ---------- Fil d'actualité orienté vente : publications + produits avec « Commander » ----------
+const fpCache = {};
+const isSoldP = p => p.status === 'Vendu' || getMeta(p.description).s === 0;
+async function feedProducts(n, ids) {
+  let q = sb.from('products').select(PQ).order('bumped_at', { ascending: false }).limit(n + 1);
+  const city = (me.city || '').trim().replace(/[%,()]/g, '');
+  if (feedF === 'proche') { if (!city) return { list: [], more: false, noCity: true }; q = q.ilike('city', `%${city}%`); }
+  if (ids) q = q.in('user_id', ids);
+  const { data, error } = await q; if (error) return { list: [], more: false };
+  const near = p => !!city && (p.city || '').toLowerCase().includes(city.toLowerCase());
+  const list = (data || []).filter(p => !blocked.has(p.user_id))
+    .map((p, i) => ({ p, i })).sort((x, y) => (isSoldP(x.p) - isSoldP(y.p)) || (feedF === 'pourvous' ? near(y.p) - near(x.p) : 0) || x.i - y.i).map(x => x.p);
+  list.forEach(p => { fpCache[p.id] = p; const k = prods.findIndex(x => x.id === p.id); if (k < 0) prods.push(p); });
+  return { list: list.slice(0, n), more: list.length > n };
+}
+function fpcHTML(p) {
+  const a = p.profiles || {}, m = getMeta(p.description), mine = p.user_id === me.id, sold = isSoldP(p);
+  const promo = m.o && m.o > p.price && p.status !== 'Gratuit' ? Math.round((1 - p.price / m.o) * 100) : 0;
+  const fresh = p.created_at && Date.now() - new Date(p.created_at).getTime() < 2 * 864e5;
+  const img = p.images?.[0] || p.image_url;
+  const tag = sold ? '<span class="fptag s">Vendu</span>' : promo ? `<span class="fptag">-${promo}%</span>` : fresh ? '<span class="fptag n">Nouveau</span>' : '';
+  return `<div class="box fpc" data-pid="${p.id}"><div class="ph"><div onclick="openUser('${a.id}')" style="display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0">${av(a, 40)}<div style="min-width:0"><b>${esc(a.name || '')}</b><div class="mt">🛍️ Produit${p.city ? ' · 📍 ' + esc(p.city) : ''} · ${ago(p.bumped_at || p.created_at)}</div></div></div>${!mine && myFollows && !myFollows.has(a.id) ? `<button type="button" class="ffw" data-u="${a.id}" onclick="feedFollow('${a.id}',this)">+ Suivre</button>` : ''}</div>
+    <div class="fpimg" onclick="openProd('${p.id}')">${img ? `<img loading="lazy" src="${esc(img)}" alt="">` : `<span class="fpph">${isBook(p) ? '📚' : '📦'}</span>`}${tag}</div>
+    <div class="fpname" onclick="openProd('${p.id}')">${esc(p.name)}</div>
+    <div class="fpprice">${priceTxt(p)}${promo ? ` <s>${m.o} $</s>` : ''}</div>
+    <div class="fpacts">${sold ? '<button type="button" class="fpbuy" disabled>Vendu</button>' : mine ? `<button type="button" class="fpbuy" onclick="prodModal('${p.id}')">✏️ Modifier</button>` : `<button type="button" class="fpbuy" onclick="feedOrder('${p.id}')">📱 Commander</button>`}
+      <button type="button" class="fpsee" onclick="openProd('${p.id}')">Voir</button><button type="button" class="fpsh" title="Partager" aria-label="Partager" onclick="shareP('${p.id}')">↗️</button></div></div>`;
+}
+// Commande directe sur WhatsApp depuis le fil (ou fiche produit si le vendeur n'a pas de numéro)
+async function feedOrder(id) {
+  let p = fpCache[id] || prods.find(x => x.id === id);
+  if (!p || !p.profiles) { const { data } = await sb.from('products').select(PQ).eq('id', id).maybeSingle(); p = data; if (p) fpCache[id] = p; }
+  if (!p) return toast('Produit introuvable');
+  if (isSoldP(p)) return toast('Ce produit est déjà vendu.');
+  const ph = (p.profiles?.phone || '').replace(/\D/g, '');
+  if (!ph) { toast("Le vendeur n'a pas de numéro WhatsApp : voici sa fiche produit."); return openProd(id); }
+  track(id, 'wa');
+  window.open(`https://wa.me/${ph}?text=${encodeURIComponent(`Bonjour, je suis intéressé(e) par « ${p.name} » à ${priceTxt(p)}, vu sur SocialPages : ${location.origin}/p/${id}\nEst-il disponible ?`)}`, '_blank');
+}
 async function renderFeed() {
   $('newbar').classList.add('hidden');
   if (!myFollows) await loadMyFollows();
-  let q = sb.from('posts').select(POSTQ).order('created_at', { ascending: false }).limit(feedN + 1);
-  if (feedF === 'abonnements') {
-    const { data: f } = await sb.from('follows').select('followee_id').eq('follower_id', me.id);
-    q = q.in('user_id', (f || []).map(x => x.followee_id).concat(me.id));
+  const prodOnly = feedF === 'vitrine' || feedF === 'proche', withProd = feedF !== 'populaires';
+  const fids = feedF === 'abonnements' ? [...myFollows].concat(me.id) : null;
+  let ps = [], more = false;
+  if (!prodOnly) {
+    let q = sb.from('posts').select(POSTQ).order('created_at', { ascending: false }).limit(feedN + 1);
+    if (fids) q = q.in('user_id', fids);
+    const { data, error } = await q;
+    if (error) { $('feed').innerHTML = empty('⚠️', 'Erreur de chargement', esc(error.message)); return; }
+    ps = (data || []).filter(p => !blocked.has(p.user_id));
+    more = ps.length > feedN; ps = ps.slice(0, feedN);
+    if (feedF === 'populaires') ps.sort((a, b) => b.likes.length - a.likes.length);
   }
-  let { data: ps, error } = await q;
-  if (error) { $('feed').innerHTML = empty('⚠️', 'Erreur de chargement', esc(error.message)); return; }
-  ps = (ps || []).filter(p => !blocked.has(p.user_id));
-  const more = ps.length > feedN; ps = ps.slice(0, feedN);
-  if (feedF === 'populaires') ps.sort((a, b) => b.likes.length - a.likes.length);
-  $('feed').innerHTML = postsHTML(ps) + (more ? '<button class="pbtn gray" onclick="feedN+=10;renderFeed()">Voir plus</button>' : '');
+  const pr = withProd ? await feedProducts(feedN, fids) : { list: [], more: false };
+  more = more || pr.more;
+  if (cur !== 'accueil') return;
+  let html = '';
+  if (prodOnly) html = pr.list.map(fpcHTML).join('');
+  else { const n = Math.max(ps.length, pr.list.length); for (let i = 0; i < n; i++) { if (ps[i]) html += postsHTML([ps[i]]); if (pr.list[i]) html += fpcHTML(pr.list[i]); } }
+  if (!html) html = pr.noCity ? `<div class="empty"><div>📍</div><h3>Ajoutez votre ville</h3><p>Pour voir les produits près de chez vous, indiquez votre ville.</p><button class="pill" onclick="go('settings')">Ajouter ma ville</button></div>`
+    : prodOnly ? empty('🛍️', 'Aucun produit ici pour le moment', 'Soyez le premier à vendre : touchez « 🛍️ Vendre ».') : empty('📭', 'Aucune publication', 'Créez votre premier post !');
+  $('feed').innerHTML = html + (more ? '<button class="pbtn gray" onclick="feedN+=10;renderFeed()">Voir plus</button>' : '');
   afterPosts();
 }
 function feedFilter(f, btn) {
   feedF = f; feedN = 10;
+  if (f === 'proche' && !me.city) toast('Ajoutez votre ville dans « Modifier ma page » pour voir les produits près de chez vous', 4000);
   document.querySelectorAll('#feed-f button').forEach(b => b.classList.remove('on'));
   btn.classList.add('on'); renderFeed();
 }
@@ -1168,7 +1245,7 @@ const needAuth = () => { toast('Créez un compte gratuit pour continuer'); go('r
 const okUrl = u => /^https?:\/\/\S+$/i.test(u || '');
 const isBook = p => okUrl(getMeta(p?.description).f) || /Ebooks/.test(p?.category || '');
 const freeBook = p => okUrl(getMeta(p?.description).f) && (p.status === 'Gratuit' || !p.price);
-const route = () => { const m = location.hash.match(/^#\/(p|vendeur)\/([^\/?]+)/); return m ? { t: m[1], id: decodeURIComponent(m[2]) } : null; };
+const route = () => { const m = location.hash.match(/^#\/(p|vendeur|s)\/([^\/?]+)/); return m ? { t: m[1], id: decodeURIComponent(m[2]) } : null; };
 
 // ---------- YouTube : correction de l'erreur 153 ----------
 // L'erreur 153 = YouTube ne reçoit pas d'origine/referer valide. On transmet donc origin + widget_referrer,
@@ -1492,8 +1569,23 @@ async function rel(t, id, on, act, msg) {
 async function renderRoute() {
   const r = route(), body = me ? $('prod-body') : $('pub-body'); if (!r) return;
   body.innerHTML = '<div class="spin"></div>';
-  if (!me) $('pub-msg').textContent = r.t === 'p' ? '💡 Créez un compte gratuit pour acheter en toute sécurité et suivre vos commandes' : 'Suivez ce vendeur en créant un compte gratuit';
-  try { await (r.t === 'p' ? productPage(r.id, body) : catalogPage(r.id, body)); } catch (e) { body.innerHTML = empty('⚠️', 'Erreur', esc(e.message || '')); }
+  if (!me) $('pub-msg').textContent = r.t === 'p' ? '💡 Créez un compte gratuit pour acheter en toute sécurité et suivre vos commandes' : r.t === 's' ? 'Créez un compte gratuit pour réagir et commenter' : 'Suivez ce vendeur en créant un compte gratuit';
+  try { await (r.t === 'p' ? productPage(r.id, body) : r.t === 's' ? postPage(r.id, body) : catalogPage(r.id, body)); } catch (e) { body.innerHTML = empty('⚠️', 'Erreur', esc(e.message || '')); }
+}
+// Publication partagée : #/s/<id>
+async function postPage(id, body) {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return body.innerHTML = empty('😕', 'Publication introuvable');
+  if (me) {
+    const { data: p } = await sb.from('posts').select(POSTQ).eq('id', id).maybeSingle();
+    if (!p || blocked.has(p.user_id)) return body.innerHTML = empty('😕', 'Publication introuvable', 'Elle a peut-être été supprimée.');
+    if (!myFollows) await loadMyFollows();
+    body.innerHTML = postsHTML([p]); afterPosts(); return;
+  }
+  const { data } = await sb.rpc('share_post_preview', { pid: id }); const p = data && data[0];
+  if (!p) return body.innerHTML = empty('😕', 'Publication introuvable', 'Elle a peut-être été supprimée.');
+  body.innerHTML = `<div class="box"><div class="ph">${av({ name: p.auteur || 'S' })}<div><b>${esc(p.auteur || 'SocialPages')}</b></div></div>
+    <div class="pc">${esc(cleanTxt(p.texte))}</div>${p.image ? `<img src="${esc(p.image)}" class="pm" alt="">` : ''}
+    <button class="pbtn b" onclick="go('register')">Créer un compte gratuit</button><button class="pbtn gray" onclick="go('login')">Se connecter</button></div>`;
 }
 async function productPage(id, body) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return body.innerHTML = empty('😕', 'Produit introuvable');
@@ -2492,11 +2584,10 @@ setInterval(() => {
 document.addEventListener('visibilitychange', () => { if (!document.hidden && me && (!liveDir || ['closed', 'errored'].includes(liveDir.state))) liveDirListen(); });
 function renderLiveBar() {
   const ids = Object.keys(lives).filter(k => k !== me?.id);
-  const cards = ids.map(k => `<button type="button" class="lvcard" onclick="joinLive('${k}')"><span class="lvbg">${av(lives[k], 56)}</span><span class="lvred">● EN DIRECT</span><b>${esc(lives[k].name)}</b><small>${esc(lives[k].title || 'En direct')}</small></button>`).join('');
   const el = $('livebar');
   if (el) {
-    el.classList.remove('hidden');
-    el.innerHTML = `<div class="lvhead"><b>🔴 En direct</b><span>${ids.length ? ids.length + ' en cours' : 'Aucun direct pour le moment'}</span></div><div class="lvrow"><button type="button" class="lvcard lvstart" onclick="startLive()"><span class="lvplus">+</span><b>Lancer un live</b><small>Diffusez en direct</small></button>${cards}</div>`;
+    el.classList.toggle('hidden', !ids.length);
+    el.innerHTML = ids.length ? `<div class="lvstrip">${ids.map(k => `<button type="button" class="lvdot" onclick="joinLive('${k}')"><span class="lvring">${av(lives[k], 56)}</span><span class="lvlbl">LIVE</span><small>${esc((lives[k].name || '').split(' ')[0])}</small></button>`).join('')}</div>` : '';
   }
   const rp = $('rp-live');
   if (rp) rp.innerHTML = ids.length ? ids.map(k => `<button type="button" class="liveitem" onclick="joinLive('${k}')">${av(lives[k], 38)}<span class="lt"><b>${esc(lives[k].name)} <span class="lvred">LIVE</span></b><small>${esc(lives[k].title || 'En direct')}</small></span></button>`).join('') : '<p class="mt">Aucun direct pour le moment.</p>';
