@@ -553,6 +553,30 @@ video.pm{background:#000}
 .lvshi{display:flex;align-items:center;gap:10px;width:100%;border:none;background:none;padding:8px;border-radius:12px;text-align:left}.lvshi:hover{background:#F3F4F6}
 .lvshi img,.lvshi>span:first-child{width:48px;height:48px;border-radius:8px;object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;background:#F3F4F6}
 .lvshi b{display:block;font-size:14px}.lvshi small{color:#15803D;font-weight:700}
+
+/* Commander : fenêtre au-dessus du live */
+.ov{z-index:450}.toast{z-index:600}
+/* Live de vente */
+.lvcom{max-height:22vh}.lvcom div{transition:opacity .6s}.lvcom div.old{opacity:.45}
+.lvshelfb{border:none;border-radius:999px;background:rgba(255,255,255,.92);color:#111;font-weight:700;font-size:13px;padding:7px 12px;margin-bottom:8px}
+.lvshelfb.hidden{display:none}
+.lvcd{color:#DC2626;font-weight:700;font-size:12px}.lvpint s{color:#9CA3AF;font-weight:400;font-size:12px}
+.lvfull{position:absolute;inset:0;z-index:3;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 120px) 12px calc(env(safe-area-inset-bottom,0px) + 250px)}
+.lvfull.hidden{display:none}.lvzoom{z-index:7}
+.lvpinbs{display:flex;flex-direction:column;gap:5px;flex:none}.lvpinbs button{padding:7px 10px;font-size:13px}
+.lvwant{border:none;border-radius:12px;background:#F97316;color:#fff;font-weight:700;white-space:nowrap}.lvwant.on{background:#FED7AA;color:#9A3412}
+.lvw{color:#EA580C;font-weight:700;font-size:12px}.lvw.tap{text-decoration:underline;cursor:pointer}
+.lvwl{display:flex;align-items:center;gap:10px;padding:8px;border-bottom:1px solid #F3F4F6}.lvwl b{flex:1}
+.lvfull img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px}
+.lvfcap{position:absolute;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 168px);display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.lvzoom{padding-bottom:200px}.lvzoom .lvfcap{bottom:110px}
+.lvfcap b{font-size:20px}.lvfcap span{font-size:24px;font-weight:900;color:#4ADE80}.lvfcap s{color:#9CA3AF;font-size:14px;font-weight:400}
+.lvfx{position:absolute;top:calc(env(safe-area-inset-top,0px) + 74px);right:12px;border:none;border-radius:999px;background:rgba(255,255,255,.92);color:#111;font-weight:700;padding:8px 14px}
+.lvfbuy{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 96px);border:none;border-radius:14px;background:#16A34A;color:#fff;font-weight:800;font-size:16px;padding:13px 26px;white-space:nowrap}
+.lvzoom .lvfbuy{bottom:40px}
+.lvgprev{display:block;max-width:100%;max-height:30vh;margin:0 auto 10px;border-radius:12px;object-fit:contain}
+.lvgal>span:first-child{font-size:26px}
+.lvshop .fg input,.lvshop .fg select{width:100%}
 </style>
 </head>
 <body>
@@ -850,7 +874,7 @@ async function logout() {
 }
 async function boot() {
   const { data: { session } } = await sb.auth.getSession();
-  if (!session) return go(route() ? 'pub' : 'landing');
+  if (!session) { go(route() ? 'pub' : 'landing'); liveHash(); return; }
   const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
   if (!data) { await sb.auth.signOut(); return go('landing'); }
   me = { ...data, email: session.user.email };
@@ -1054,15 +1078,29 @@ function fpcHTML(p) {
       <button type="button" class="fpsee" onclick="openProd('${p.id}')">Voir</button><button type="button" class="fpsh" title="Partager" aria-label="Partager" onclick="shareP('${p.id}')">↗️</button></div></div>`;
 }
 // Commande directe sur WhatsApp depuis le fil (ou fiche produit si le vendeur n'a pas de numéro)
-async function feedOrder(id) {
+async function getProd(id) {
   let p = fpCache[id] || prods.find(x => x.id === id);
   if (!p || !p.profiles) { const { data } = await sb.from('products').select(PQ).eq('id', id).maybeSingle(); p = data; if (p) fpCache[id] = p; }
+  return p;
+}
+const waSend = (ph, text) => window.open(`https://wa.me/${ph}?text=${encodeURIComponent(text)}`, '_blank');
+// Commander : choix « Payer maintenant » (si le vendeur a un lien de paiement) ou WhatsApp
+async function feedOrder(id, o = {}) {
+  const p = await getProd(id);
   if (!p) return toast('Produit introuvable');
   if (isSoldP(p)) return toast('Ce produit est déjà vendu.');
+  const price = o.price ? o.price + ' $ (prix live)' : priceTxt(p);
   const ph = (p.profiles?.phone || '').replace(/\D/g, '');
-  if (!ph) { toast("Le vendeur n'a pas de numéro WhatsApp : voici sa fiche produit."); return openProd(id); }
-  track(id, 'wa');
-  window.open(`https://wa.me/${ph}?text=${encodeURIComponent(`Bonjour, je suis intéressé(e) par « ${p.name} » à ${priceTxt(p)}, vu sur SocialPages : ${location.origin}/p/${id}\nEst-il disponible ?`)}`, '_blank');
+  const msg = `Bonjour, je suis intéressé(e) par « ${p.name} » à ${price}${o.live ? ', vu pendant votre live' : ''} sur SocialPages : ${location.origin}/p/${id}\nEst-il disponible ?`;
+  const goWa = () => { if (!ph) { toast("Le vendeur n'a pas de numéro WhatsApp : voici sa fiche produit."); if (!live) openProd(id); return; } track(id, 'wa'); waSend(ph, msg); };
+  if (!okUrl(p.payment_link)) return goWa();
+  window._ordWa = () => { closeM(); goWa(); };
+  window._ordPay = () => { closeM(); track(id, 'buy'); window.open(p.payment_link, '_blank', 'noopener'); };
+  openM(`<h3>Commander</h3><p style="margin:-6px 0 4px"><b>${esc(p.name)}</b></p><p class="price" style="margin-bottom:14px">${esc(price)}</p>
+    <button class="pbtn b" onclick="_ordPay()">💳 Payer maintenant</button>
+    <button class="pbtn" style="background:#16A34A;color:#fff" onclick="_ordWa()">📱 Commander sur WhatsApp</button>
+    <p class="mt" style="font-size:12px;margin:10px 0">💡 Paiement direct au vendeur : SocialPages ne touche pas l’argent. Payez seulement un vendeur de confiance.</p>
+    <button class="pbtn gray" onclick="closeM()">Annuler</button>`);
 }
 // ---------- Vitrine animée d'un vendeur (une toutes les 5 publications, vendeurs à tour de rôle) ----------
 let shCache = null;
@@ -1836,8 +1874,11 @@ function afficheStop() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && aff) afficheStop(); });
 // Lien « rejoindre un live » (notification aux abonnés) : #/live/<id>
 function liveHash() {
-  const m = location.hash.match(/^#\/live\/([0-9a-f-]{36})/i); if (!m) return false;
-  history.replaceState(null, '', location.pathname + location.search); tryJoinLive(m[1]); return true;
+  const m = location.hash.match(/^#\/live\/([0-9a-f-]{36})/i);
+  if (!me) { if (m) { try { sessionStorage.setItem('sp_live', m[1]); } catch (e) {} setTimeout(() => toast('🔴 Connectez-vous ou créez un compte gratuit pour regarder ce live.', 5000), 800); } return false; }
+  let id = m?.[1]; try { id ||= sessionStorage.getItem('sp_live'); sessionStorage.removeItem('sp_live'); } catch (e) {}
+  if (m) history.replaceState(null, '', location.pathname + location.search);
+  if (!id) return false; tryJoinLive(id); return !!m;
 }
 function tryJoinLive(hid, n = 0) {
   if (!me) return;
@@ -2694,7 +2735,7 @@ function liveDirListen() {
 const lvMeta = () => ({ live: true, hid: me.id, name: me.name, avatar_url: me.avatar_url || '', title: live?.title || '', t: live?.t0, sfu: live?.sfu || '' });
 function liveBeat() {
   if (!live?.host || !liveDir) return;
-  if (live.pin) lvSend({ t: 'pin', p: live.pin });
+  lvSync();
   try { liveDir.send({ type: 'broadcast', event: 'live', payload: lvMeta() }); } catch (e) {}
   if (!liveDir.presenceState()[me.id]) liveDir.track(lvMeta()).catch?.(() => {});
   if (live.ch && ['closed', 'errored'].includes(live.ch.state)) { const old = live.ch; liveRoom(me.id).then(c => { if (live?.host) { live.ch = c; sb.removeChannel(old); } else sb.removeChannel(c); }); }
@@ -2883,43 +2924,197 @@ function liveUI() {
   document.body.insertAdjacentHTML('beforeend', `<div id="livebox" class="livebox ${h ? 'host' : ''}">
     <video id="lv-v" autoplay playsinline ${h ? 'muted' : ''}></video>
     <div class="lvtop"><div class="lvwho">${av({ name: live.hname, avatar_url: live.hav }, 38)}<div><b>${esc(live.hname)}</b><small>${esc(live.title || 'En direct')}</small></div></div>
-      <span class="lvred">🔴 EN DIRECT</span><span id="lv-n">👁 0</span><button type="button" onclick="leaveLive()" aria-label="Quitter">✖</button></div>
+      <span class="lvred">🔴 EN DIRECT</span><span id="lv-n">👁 0</span><button type="button" onclick="lvShare()" aria-label="Partager le live" title="Partager le live">📤</button><button type="button" onclick="leaveLive()" aria-label="Quitter">✖</button></div>
     <div id="lv-st" class="lvst"></div>
-    <div class="lvbottom"><div id="lv-pin" class="lvpin hidden"></div><div id="lv-com" class="lvcom"></div>
+    <div class="lvbottom"><button type="button" id="lv-shelfb" class="lvshelfb hidden" onclick="lvShelf()"></button><div id="lv-pin" class="lvpin hidden"></div><div id="lv-com" class="lvcom"></div>
       <div class="lvin"><input id="lv-text" maxlength="200" placeholder="Commenter…" onkeypress="if(event.key==='Enter')sendLiveMsg()">
         <button type="button" onclick="sendLiveMsg()" aria-label="Envoyer">➤</button><button type="button" onclick="sendHeart()" aria-label="J'aime">❤️</button>
         ${h ? '<button type="button" onclick="lvShop()" aria-label="Épingler un produit">🛍️</button><button type="button" id="lv-mic" onclick="lvMic()" aria-label="Micro">🎤</button><button type="button" onclick="lvFlip()" aria-label="Retourner la caméra">🔄</button>' : ''}</div></div>
-    <div id="lv-shop" class="lvshop hidden"></div>
+    <div id="lv-full" class="lvfull hidden"></div><div id="lv-zoom" class="lvfull lvzoom hidden"></div><div id="lv-shop" class="lvshop hidden"></div><div id="lv-shelf" class="lvshop hidden"></div><div id="lv-wants" class="lvshop hidden"></div>
     <div id="lv-hearts"></div></div>`);
 }
-// Produit épinglé pendant le live
+// ===== Live de vente : produits présentés (étagère), prix live avec compte à rebours, photo plein écran =====
+const cutT = (t, n) => { t = String(t || ''); return t.length > n ? t.slice(0, n - 1) + '…' : t; };
+const mmss = ms => { const x = Math.max(0, Math.ceil(ms / 1000)); return String(Math.floor(x / 60)).padStart(2, '0') + ':' + String(x % 60).padStart(2, '0'); };
+const pinOut = p => p && { ...p, left: p.until ? Math.max(0, p.until - Date.now()) : 0, until: undefined };
+const pinIn = p => p && { ...p, until: p.left > 0 ? Date.now() + p.left : 0 };
+const lpOn = p => !!(p && p.lp && p.until > Date.now());
+let lvTick = null;
+function lvSync(to) {
+  if (!live?.host) return; const x = to ? { to } : {};
+  lvSend({ t: 'shelf', items: (live.shelf || []).map(pinOut), ...x });
+  if (live.pin) lvSend({ t: 'pin', p: pinOut(live.pin), ...x });
+  if (live.shown) lvSend({ t: 'show', s: live.shown, ...x });
+  if (live.wantN) lvSend({ t: 'wants', c: live.wantN, ...x });
+}
+function lvClose(id) { $(id)?.classList.add('hidden'); }
 async function lvShop() {
   const box = $('lv-shop'); if (!box || !live?.host) return;
   if (!box.classList.contains('hidden')) return box.classList.add('hidden');
   box.classList.remove('hidden'); box.innerHTML = '<div class="spin"></div>';
   const { data } = await sb.from('products').select('id,name,price,status,description,images,image_url').eq('user_id', me.id).order('bumped_at', { ascending: false }).limit(30);
-  const list = (data || []).filter(p => !isSoldP(p));
-  box.innerHTML = `<div class="lvshh"><b>🛍️ Épingler un produit</b><button type="button" onclick="$('lv-shop').classList.add('hidden')">✖</button></div>` +
-    (list.length ? list.map(p => `<button type="button" class="lvshi" onclick='lvPin(${JSON.stringify({ id: p.id, name: p.name, price: priceTxt(p), img: p.images?.[0] || p.image_url || '' }).replace(/'/g, '&#39;')})'>${(p.images?.[0] || p.image_url) ? `<img src="${esc(p.images?.[0] || p.image_url)}" alt="">` : '<span>📦</span>'}<span><b>${esc(p.name)}</b><small>${priceTxt(p)}</small></span></button>`).join('')
-      : '<p class="mt" style="padding:12px">Ajoutez d’abord un produit dans votre boutique.</p>');
+  if (!live) return;
+  live.myProds = (data || []).filter(p => !isSoldP(p));
+  box.innerHTML = `<div class="lvshh"><b>🛍️ Présenter un produit</b><button type="button" onclick="lvClose('lv-shop')">✖</button></div>
+    <button type="button" class="lvshi lvgal" onclick="lvGallery()"><span>🖼️</span><span><b>Photo de la galerie</b><small>Affichée en plein écran chez tous les spectateurs</small></span></button>` +
+    (live.myProds.length ? live.myProds.map((p, i) => { const im = p.images?.[0] || p.image_url; return `<button type="button" class="lvshi" onclick="lvPinForm(${i})">${im ? `<img src="${esc(im)}" alt="">` : '<span>📦</span>'}<span><b>${esc(p.name)}</b><small>${priceTxt(p)}${(live.shelf || []).some(x => x.id === p.id) ? ' · déjà présenté' : ''}</small></span></button>`; }).join('')
+      : '<p class="mt" style="padding:12px">Aucun produit dans votre boutique : montrez une photo de la galerie.</p>');
 }
-function lvPin(p) { if (!live?.host) return; live.pin = p; $('lv-shop')?.classList.add('hidden'); lvSend({ t: 'pin', p }); showPin(p); addComment('📌', 'Produit épinglé : ' + p.name); }
+function lvPinForm(i) {
+  const p = live?.myProds?.[i], box = $('lv-shop'); if (!p || !box) return; live.form = p;
+  const free = p.status === 'Gratuit';
+  box.innerHTML = `<div class="lvshh"><b>📌 ${esc(cutT(p.name, 40))}</b><button type="button" onclick="lvClose('lv-shop');lvShop()">←</button></div>
+    <p class="mt" style="margin:0 6px 10px">Prix normal : <b>${priceTxt(p)}</b></p>
+    ${free ? '' : `<div class="fg"><label>⚡ Prix live en $ (facultatif, inférieur au prix normal)</label><input id="lv-lp" type="number" min="0" step="0.01" inputmode="decimal" placeholder="ex. ${Math.max(1, Math.round(p.price * 0.9))}"></div>
+    <div class="fg"><label>Durée de l’offre</label><select id="lv-ld"><option value="5">5 minutes</option><option value="10" selected>10 minutes</option><option value="15">15 minutes</option><option value="30">30 minutes</option></select></div>`}
+    <button type="button" class="pbtn b" onclick="lvPinGo()">📌 Présenter à tous</button>`;
+}
+function lvPinGo() {
+  const p = live?.form; if (!p) return;
+  const raw = $('lv-lp')?.value || '', lp = parseFloat(raw), ok = lp > 0 && lp < p.price;
+  if (raw && !ok) return toast('Le prix live doit être inférieur au prix normal.');
+  lvPin({ id: p.id, name: p.name, price: priceTxt(p), img: p.images?.[0] || p.image_url || '', lp: ok ? lp : null, until: ok ? Date.now() + (+$('lv-ld').value) * 60000 : 0 });
+}
+function lvPin(p) {
+  if (!live?.host) return;
+  live.pin = p; live.shelf = [p, ...(live.shelf || []).filter(x => x.id !== p.id)].slice(0, 10); live.shelfItems = live.shelf;
+  lvClose('lv-shop'); lvClose('lv-shelf');
+  lvSend({ t: 'pin', p: pinOut(p) }); lvSend({ t: 'shelf', items: live.shelf.map(pinOut) });
+  showPin(p); renderShelfBtn();
+  addComment('📌', cutT(p.name, 40) + (p.lp ? ` · ⚡ ${p.lp} $ pendant ${mmss(p.until - Date.now())}` : ''));
+}
 function lvUnpin() { if (!live?.host) return; live.pin = null; lvSend({ t: 'unpin' }); showPin(null); }
+function startTick() { if (lvTick) return; lvTick = setInterval(() => { if (!live) { clearInterval(lvTick); lvTick = null; return; } updPinPrice(); }, 1000); }
 function showPin(p) {
   const el = $('lv-pin'); if (!el) return; if (live) live.pinShown = p;
   if (!p) { el.classList.add('hidden'); el.innerHTML = ''; return; }
   el.classList.remove('hidden');
-  el.innerHTML = `${p.img ? `<img src="${esc(p.img)}" alt="" onclick="openProd('${esc(p.id)}')">` : '<span class="lvpinph">📦</span>'}<div class="lvpint"><b>${esc(p.name)}</b><span>${esc(p.price)}</span></div>` +
-    (live?.host ? '<button type="button" class="lvpinx" onclick="lvUnpin()">Retirer</button>' : '<button type="button" class="lvpinb" onclick="lvOrder()">📱 Commander</button>');
+  el.innerHTML = `${p.img ? `<img src="${esc(p.img)}" alt="" onclick="lvZoom()">` : '<span class="lvpinph">📦</span>'}<div class="lvpint" onclick="lvZoom()"><b>${esc(cutT(p.name, 60))}</b><span id="lv-pinp"></span><small id="lv-pinc" class="lvcd"></small><small id="lv-pinw" class="lvw${live?.host ? ' tap' : ''}"${live?.host ? ' onclick="event.stopPropagation();lvWants()"' : ''}></small></div>` +
+    (live?.host ? '<button type="button" class="lvpinx" onclick="lvUnpin()">Retirer</button>'
+      : `<div class="lvpinbs"><button type="button" id="lv-wb" class="lvwant${live?.wanted?.[p.id] ? ' on' : ''}" onclick="lvWant()">${live?.wanted?.[p.id] ? '✅ Noté' : '🔥 Je veux'}</button><button type="button" class="lvpinb" onclick="lvOrder()">📱 Commander</button></div>`);
+  updPinPrice(); updWant(); startTick();
 }
-function lvOrder() {
-  const p = live?.pinShown; if (!p) return;
-  lvSend({ t: 'ordered', name: p.name }); addComment('🛒', 'Vous avez commandé ' + p.name);
-  feedOrder(p.id);
+function updPinPrice() {
+  const p = live?.pinShown, pe = $('lv-pinp'), ce = $('lv-pinc'); if (!p || !pe) return;
+  const on = lpOn(p); pe.innerHTML = on ? `⚡ ${esc(String(p.lp))} $ <s>${esc(p.price)}</s>` : esc(p.price);
+  ce.textContent = on ? '⏱ Prix live encore ' + mmss(p.until - Date.now()) : '';
+  const zp = $('lv-zp'); if (zp) zp.innerHTML = pe.innerHTML;
+}
+// Agrandir le produit présenté (chez soi uniquement)
+function lvZoom(item) {
+  const p = item || live?.pinShown, box = $('lv-zoom'); if (!p || !box) return;
+  box.classList.remove('hidden');
+  box.innerHTML = `${p.img ? `<img src="${esc(p.img)}" alt="">` : ''}<div class="lvfcap"><b>${esc(p.name)}</b><span id="lv-zp">${lpOn(p) ? `⚡ ${esc(String(p.lp))} $ <s>${esc(p.price)}</s>` : esc(p.price)}</span></div>
+    <button type="button" class="lvfx" onclick="lvClose('lv-zoom')">✖ Fermer</button>${live?.host ? '' : `<button type="button" class="lvfbuy" onclick='lvOrder(${JSON.stringify(p).replace(/'/g, '&#39;')})'>📱 Commander</button>`}`;
+}
+// Étagère : tous les produits présentés pendant le live
+function renderShelfBtn() {
+  const b = $('lv-shelfb'), n = (live?.shelfItems || []).length; if (!b) return;
+  b.classList.toggle('hidden', n < 1); b.textContent = `🛍️ Produits du live (${n})`;
+}
+function lvShelf() {
+  const box = $('lv-shelf'), items = live?.shelfItems || []; if (!box || !items.length) return;
+  if (!box.classList.contains('hidden')) return box.classList.add('hidden');
+  box.classList.remove('hidden');
+  box.innerHTML = `<div class="lvshh"><b>🛍️ Produits du live</b><button type="button" onclick="lvClose('lv-shelf')">✖</button></div>` + items.map(p => {
+    const j = JSON.stringify(p).replace(/'/g, '&#39;');
+    return `<div class="lvshi">${p.img ? `<img src="${esc(p.img)}" alt="" onclick='lvZoom(${j})'>` : '<span>📦</span>'}<span onclick='lvZoom(${j})'><b>${esc(p.name)}</b><small>${lpOn(p) ? `⚡ ${esc(String(p.lp))} $ (prix live)` : esc(p.price)}</small></span>
+      ${live.host ? `<button type="button" class="lvpinx" onclick='lvPin(${j})'>Présenter</button>` : `<button type="button" class="lvpinb" onclick='lvOrder(${j})'>📱</button>`}</div>`;
+  }).join('');
+}
+// Commande pendant le live : un seul message « a commandé » par produit, double toucher ignoré
+function lvOrder(item) {
+  const p = item || live?.pinShown; if (!p || !live) return;
+  const now = Date.now(); if (now - (live.lastTap || 0) < 2500) return; live.lastTap = now;
+  live.ordered ||= {};
+  if (!live.ordered[p.id || p.name]) { live.ordered[p.id || p.name] = now; lvSend({ t: 'ordered', name: cutT(p.name, 40) }); addComment('🛒', 'Vous avez commandé ' + cutT(p.name, 40)); }
+  if (p.express) return expressOrder(p);
+  feedOrder(p.id, { price: lpOn(p) ? p.lp : null, live: true });
+}
+async function expressOrder(p) {
+  const { data } = await sb.from('profiles').select('phone').eq('id', live?.hid).maybeSingle();
+  const ph = (data?.phone || '').replace(/\D/g, '');
+  if (!ph) return toast("Le vendeur n'a pas de numéro WhatsApp. Écrivez-lui dans les commentaires du live.", 4000);
+  waSend(ph, `Bonjour, je suis intéressé(e) par « ${p.name} »${p.price ? ' à ' + p.price : ''}, vu pendant votre live sur SocialPages.\nEst-il disponible ?`);
+}
+// Photo de la galerie affichée en plein écran chez tous (effacée à la fin du live)
+function lvGallery() {
+  const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*';
+  i.onchange = async () => {
+    const f = i.files[0], box = $('lv-shop'); if (!f || !box || !live?.host) return;
+    box.innerHTML = '<div class="spin"></div><p class="mt" style="text-align:center">Envoi de la photo…</p>';
+    const url = await upload(f, 'live'); if (!url || !live) return lvClose('lv-shop');
+    (live.uploads ||= []).push(url);
+    box.innerHTML = `<div class="lvshh"><b>🖼️ Photo plein écran</b><button type="button" onclick="lvClose('lv-shop')">✖</button></div><img src="${esc(url)}" class="lvgprev" alt="">
+      <div class="fg"><label>Nom du produit (facultatif)</label><input id="lv-gn" maxlength="80" placeholder="ex. Soulier en cuir"></div>
+      <div class="fg"><label>Prix en $ (facultatif)</label><input id="lv-gp" type="number" min="0" step="0.01" inputmode="decimal"></div>
+      <p class="mt" style="font-size:12px;margin:0 6px 10px">Avec un nom et un prix, les spectateurs peuvent commander sur WhatsApp.</p>
+      <button type="button" class="pbtn b" onclick='lvShowGo(${JSON.stringify(url)})'>📺 Afficher pour tous</button>`;
+  };
+  i.click();
+}
+function lvShowGo(url) {
+  if (!live?.host) return;
+  const n = ($('lv-gn')?.value || '').trim().slice(0, 80), pr = parseFloat($('lv-gp')?.value);
+  const s = { url, name: n, price: !isNaN(pr) && pr >= 0 ? pr + ' $' : '' };
+  live.shown = s; lvClose('lv-shop'); lvSend({ t: 'show', s }); showFull(s);
+  if (n) addComment('🖼️', cutT(n, 40) + (s.price ? ' · ' + s.price : ''));
+}
+function lvHide() { if (!live?.host) return; live.shown = null; lvSend({ t: 'hide' }); showFull(null); }
+function showFull(s) {
+  const el = $('lv-full'); if (!el) return; if (live) live.fullShown = s;
+  if (!s) { el.classList.add('hidden'); el.innerHTML = ''; return; }
+  el.classList.remove('hidden');
+  el.innerHTML = `<img src="${esc(s.url)}" alt="">${s.name || s.price ? `<div class="lvfcap"><b>${esc(s.name)}</b>${s.price ? `<span>${esc(s.price)}</span>` : ''}</div>` : ''}` +
+    (live?.host ? '<button type="button" class="lvfx" onclick="lvHide()">✖ Retirer</button>'
+      : s.name ? `<button type="button" class="lvfbuy" onclick='lvOrder(${JSON.stringify({ express: true, name: s.name, price: s.price }).replace(/'/g, '&#39;')})'>📱 Commander</button>` : '');
+}
+// ===== Partager le live (WhatsApp ou autre application) =====
+function lvShare() {
+  if (!live) return;
+  const url = `${location.origin}/#/live/${live.hid}`, p = live.pinShown;
+  const txt = `🔴 ${live.hname} est en direct sur SocialPages${live.title ? ' : « ' + cutT(live.title, 60) + ' »' : ''}` +
+    (p ? `\n🛍️ En ce moment : ${cutT(p.name, 60)} – ${lpOn(p) ? '⚡ ' + p.lp + ' $ (prix live)' : p.price}` : '') + `\nRegardez et commandez ici 👉 ${url}`;
+  if (navigator.share) navigator.share({ text: txt }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank');
+}
+// ===== « 🔥 Je veux ! » : les spectateurs montrent leur intérêt, le vendeur voit les noms =====
+function lvWant() {
+  const p = live?.pinShown; if (!p || live.host) return;
+  live.wanted ||= {};
+  if (live.wanted[p.id]) return toast('C’est noté 🔥 Le vendeur sait que vous êtes intéressé(e).', 2500);
+  live.wanted[p.id] = 1; lvSend({ t: 'want', id: p.id, name: cutT(p.name, 40) });
+  addComment('🔥', 'Vous voulez ' + cutT(p.name, 40));
+  const b = $('lv-wb'); if (b) { b.classList.add('on'); b.textContent = '✅ Noté'; }
+}
+function hostWant(p) {
+  if (!p.id || !p.from) return false;
+  live.wants ||= {}; const w = live.wants[p.id] ||= { name: cutT(p.name, 40), who: {} };
+  if (w.who[p.from]) return false; w.who[p.from] = cutT(p.fname || 'Quelqu’un', 40);
+  live.wantN ||= {}; live.wantN[p.id] = Object.keys(w.who).length;
+  lvSend({ t: 'wants', c: live.wantN }); updWant();
+  if (!$('lv-wants')?.classList.contains('hidden')) lvWants(true);
+  return true;
+}
+function updWant() {
+  const e = $('lv-pinw'), p = live?.pinShown; if (!e) return;
+  const n = (p && live.wantN?.[p.id]) || 0;
+  e.textContent = n ? `🔥 ${n} intéressé${n > 1 ? 's' : ''}` + (live.host ? ' · voir les noms' : '') : '';
+}
+function lvWants(keep) {
+  const box = $('lv-wants'), all = live?.wants || {}; if (!box || !live.host) return;
+  if (!keep && !box.classList.contains('hidden')) return box.classList.add('hidden');
+  const ids = Object.keys(all).sort((a, b) => (b === live.pinShown?.id) - (a === live.pinShown?.id));
+  box.classList.remove('hidden');
+  box.innerHTML = `<div class="lvshh"><b>🔥 Personnes intéressées</b><button type="button" onclick="lvClose('lv-wants')">✖</button></div>` +
+    (ids.length ? ids.map(id => `<div style="padding:4px 6px"><b>${esc(all[id].name)}</b> <span class="lvw">(${Object.keys(all[id].who).length})</span></div>` +
+      Object.values(all[id].who).map(n => `<div class="lvwl">🙋 <b>${esc(n)}</b></div>`).join('')).join('')
+      : '<p class="mt" style="padding:12px">Personne pour l’instant.</p>') +
+    '<p class="mt" style="font-size:12px;padding:8px 6px">Annoncez dans le live : « Ceux qui ont touché 🔥, écrivez-moi sur WhatsApp ! »</p>';
 }
 function addComment(name, text) {
   const box = $('lv-com'); if (!box || !text) return;
   box.insertAdjacentHTML('beforeend', `<div><b>${esc(name)}</b>${esc(String(text).slice(0, 200))}</div>`);
+  const last = box.lastElementChild; setTimeout(() => last?.classList.add('old'), 15000);
   while (box.children.length > 40) box.firstChild.remove();
   box.scrollTop = box.scrollHeight;
 }
@@ -3019,6 +3214,7 @@ async function startLive() {
   catch (e) { console.warn('SFU indisponible, mode direct :', e); live.sfu = null; toast(`Mode direct : live limité à ${LIVE_MAX} spectateurs.`, 4500); setLiveSt('Vous êtes en direct. Gardez l’appli ouverte.'); }
   if (!live) return;
   liveBeat(); live.hb = setInterval(liveBeat, 20000);
+  addComment('📤', 'Touchez « Partager » pour inviter vos clients sur WhatsApp');
   sb.rpc('notify_live_followers', { p_title: live.title || null }).then(({ data }) => { if (data > 0) addComment('🔔', `${data} abonné${data > 1 ? 's' : ''} prévenu${data > 1 ? 's' : ''} de votre live`); }, () => {});
 }
 async function hostOffer(vid) {
@@ -3077,11 +3273,12 @@ async function onLiveSig(p) {
   if (!live || !p?.from || blocked.has(p.from)) return;
   if (p.t === 'chat') return addComment(p.fname || '?', p.text);
   if (p.t === 'heart') return floatHeart();
-  if (p.t === 'ordered') return addComment('🛒', `${p.fname || 'Quelqu’un'} vient de commander ${p.name || ''}`);
+  if (p.t === 'ordered') return addComment('🛒', `${cutT(p.fname || 'Quelqu’un', 30)} vient de commander ${cutT(p.name, 40)}`);
+  if (p.t === 'want') { if (!live.host || hostWant(p)) addComment('🔥', `${cutT(p.fname || 'Quelqu’un', 30)} veut ${cutT(p.name, 40)}`); return; }
   if (p.to && p.to !== me.id) return; // message destiné à quelqu'un d'autre
   if (live.host) {
     if (live.sfu) return; // mode relais : pas de connexion individuelle
-    if (p.t === 'join') { if (lvCount() >= LIVE_MAX && !live.peers[p.from]) return lvSend({ t: 'full', to: p.from }); if (live.pin) setTimeout(() => lvSend({ t: 'pin', p: live.pin }), 1500); return hostOffer(p.from); }
+    if (p.t === 'join') { if (lvCount() >= LIVE_MAX && !live.peers[p.from]) return lvSend({ t: 'full', to: p.from }); setTimeout(() => lvSync(p.from), 1500); return hostOffer(p.from); }
     const peer = live.peers[p.from]; if (!peer) return;
     if (p.t === 'answer') { await peer.pc.setRemoteDescription({ type: 'answer', sdp: p.sdp }); peer.ice.forEach(c => peer.pc.addIceCandidate(c).catch(() => {})); peer.ice = []; }
     else if (p.t === 'ice') { if (peer.pc.remoteDescription) peer.pc.addIceCandidate(p.c).catch(() => {}); else peer.ice.push(p.c); }
@@ -3092,8 +3289,12 @@ async function onLiveSig(p) {
   if (p.t === 'offer') return viewerAnswer(p);
   if (p.t === 'ice') { if (live.pc?.remoteDescription) live.pc.addIceCandidate(p.c).catch(() => {}); else live.ice.push(p.c); }
   else if (p.t === 'count') { const e = $('lv-n'); if (e) e.textContent = '👁 ' + p.n; }
-  else if (p.t === 'pin') { if (p.p?.id && live.pinShown?.id !== p.p.id) showPin(p.p); }
+  else if (p.t === 'pin') { if (p.p?.id) showPin(pinIn(p.p)); }
   else if (p.t === 'unpin') showPin(null);
+  else if (p.t === 'shelf') { live.shelfItems = (p.items || []).slice(0, 10).map(pinIn); renderShelfBtn(); if (!$('lv-shelf')?.classList.contains('hidden')) { lvClose('lv-shelf'); lvShelf(); } }
+  else if (p.t === 'show') { if (p.s?.url && live.fullShown?.url !== p.s.url) showFull(p.s); }
+  else if (p.t === 'hide') showFull(null);
+  else if (p.t === 'wants') { live.wantN = p.c || {}; updWant(); }
   else if (p.t === 'full') { leaveLive(); alert(`Ce live est complet (${LIVE_MAX} spectateurs maximum). Réessayez dans un instant.`); }
   else if (p.t === 'end') { leaveLive(); toast('Le live est terminé.'); }
 }
@@ -3124,6 +3325,7 @@ function endLive() {
   Object.values(l.peers).forEach(p => { try { p.pc.close(); } catch (e) {} });
   try { l.pc?.close(); } catch (e) {}
   l.stream.getTracks().forEach(t => t.stop());
+  if (l.uploads?.length) try { sb.storage.from('media').remove(l.uploads.map(u => decodeURIComponent((u.split('/object/public/media/')[1] || '').split('?')[0])).filter(Boolean)).then(() => {}, () => {}); } catch (e) {}
   clearInterval(l.hb); liveDir?.untrack();
   try { liveDir?.send({ type: 'broadcast', event: 'live-off', payload: { hid: me.id } }); } catch (e) {}
   setTimeout(() => l.ch && sb.removeChannel(l.ch), 1500);
