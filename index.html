@@ -514,6 +514,45 @@ video.pm{background:#000}
 .lvring{padding:3px;border-radius:50%;background:linear-gradient(135deg,#EF4444,#F59E0B)}.lvring .av{border:2px solid var(--card)}
 .lvlbl{position:absolute;top:50px;background:#EF4444;color:#fff;font-size:9px;font-weight:800;padding:1px 6px;border-radius:5px;letter-spacing:.5px}
 .lvdot small{font-size:12px;margin-top:6px;max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Vitrine animée */
+.shv{position:relative;border-radius:14px;overflow:hidden;background:var(--soft);aspect-ratio:4/3;max-height:380px;width:100%;cursor:pointer;touch-action:pan-y}
+.shs{position:absolute;inset:0;opacity:0;transition:opacity .6s;display:flex;align-items:center;justify-content:center}
+.shs.on{opacity:1;z-index:1}
+.shs img{width:100%;height:100%;object-fit:contain}
+.shcap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;display:flex;flex-direction:column;gap:2px}
+.shcap b{font-size:16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.shcap span{font-size:20px;font-weight:800;color:#86EFAC}.shcap s{font-size:13px;color:#E5E7EB;font-weight:400}
+.shdots{display:flex;justify-content:center;gap:6px;margin:10px 0}
+.shdots i{width:7px;height:7px;border-radius:50%;background:var(--ln)}.shdots i.on{background:var(--g);width:18px;border-radius:4px}
+.shsnd.on{background:var(--gl);color:var(--g2)}
+/* Mode affiche */
+.aff{position:fixed;inset:0;z-index:400;background:#0B1410;color:#fff;display:flex;flex-direction:column}
+.affimg{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#fff}
+.affimg img{max-width:100%;max-height:100%;object-fit:contain}
+.affinfo{padding:16px 20px 30px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.affshop{font-size:14px;color:#86EFAC}.affname{font-size:clamp(20px,4vw,40px);font-weight:800;line-height:1.15}
+.affprice{font-size:clamp(28px,6vw,60px);font-weight:900;color:#4ADE80}.affprice s{font-size:.45em;color:#9CA3AF;font-weight:400}
+.affpromo{margin-left:10px;background:#EF4444;color:#fff;font-size:.4em;padding:4px 10px;border-radius:999px;vertical-align:middle}
+.affqr{background:#fff;border-radius:12px;padding:6px;line-height:0}.affqr svg{width:110px;height:110px}
+.affinfo small{color:#D1D5DB}
+.affbtns{position:absolute;top:12px;right:12px;display:flex;gap:8px}
+.affbtns button{width:44px;height:44px;border-radius:50%;border:none;background:rgba(0,0,0,.55);color:#fff;font-size:18px}
+.affdots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:5px}
+.affdots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}.affdots i.on{background:#4ADE80}
+@media (orientation:landscape) and (min-width:700px){.aff{flex-direction:row}.affinfo{width:40%;justify-content:center}}
+/* Live : produit épinglé */
+.lvpin{position:relative;z-index:4;margin-bottom:10px;background:rgba(255,255,255,.96);color:#111;border-radius:16px;padding:8px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.lvpin.hidden{display:none}
+.lvpin img,.lvpinph{width:56px;height:56px;border-radius:10px;object-fit:cover;flex:none;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:26px}
+.lvpint{flex:1;min-width:0;display:flex;flex-direction:column}.lvpint b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lvpint span{font-weight:800;color:#15803D}
+.lvpinb{border:none;border-radius:12px;background:#16A34A;color:#fff;font-weight:700;padding:10px 12px;white-space:nowrap}
+.lvpinx{border:none;border-radius:12px;background:#F3F4F6;color:#111;padding:10px 12px}
+.lvshop{position:absolute;left:0;right:0;bottom:0;max-height:60vh;overflow-y:auto;z-index:6;background:#fff;color:#111;border-radius:18px 18px 0 0;padding:10px}
+.lvshh{display:flex;justify-content:space-between;align-items:center;padding:6px 6px 10px}.lvshh button{border:none;background:#F3F4F6;border-radius:50%;width:34px;height:34px}
+.lvshi{display:flex;align-items:center;gap:10px;width:100%;border:none;background:none;padding:8px;border-radius:12px;text-align:left}.lvshi:hover{background:#F3F4F6}
+.lvshi img,.lvshi>span:first-child{width:48px;height:48px;border-radius:8px;object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;background:#F3F4F6}
+.lvshi b{display:block;font-size:14px}.lvshi small{color:#15803D;font-weight:700}
 </style>
 </head>
 <body>
@@ -825,7 +864,7 @@ async function boot() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.id}` }, ev => onNotif(ev.new))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ev => { handleRealtimePost(ev.new); }).subscribe();
   sigListen(); liveDirListen(); setTimeout(() => { registerNative(); checkNativePending(); }, 300); checkAdmin(); presStart(); setTimeout(checkInvites, 1200);
-  go(route() ? 'product' : 'accueil');
+  go(route() ? 'product' : 'accueil'); liveHash();
   setTimeout(welcome, 1500);
 }
 
@@ -1025,6 +1064,60 @@ async function feedOrder(id) {
   track(id, 'wa');
   window.open(`https://wa.me/${ph}?text=${encodeURIComponent(`Bonjour, je suis intéressé(e) par « ${p.name} » à ${priceTxt(p)}, vu sur SocialPages : ${location.origin}/p/${id}\nEst-il disponible ?`)}`, '_blank');
 }
+// ---------- Vitrine animée d'un vendeur (une toutes les 5 publications, vendeurs à tour de rôle) ----------
+let shCache = null;
+const shTimers = new Map(); let shIO = null;
+const sayPrice = p => p.status === 'Gratuit' ? 'gratuit' : p.price + ' dollars';
+async function loadShowcases() {
+  if (shCache && Date.now() - shCache.t < 3e5) return shCache.list;
+  const { data } = await sb.from('products').select(PQ).order('bumped_at', { ascending: false }).limit(80);
+  const by = {};
+  (data || []).forEach(p => { if (blocked.has(p.user_id) || isSoldP(p)) return; (by[p.user_id] ||= []).push(p); fpCache[p.id] = p; if (!prods.some(x => x.id === p.id)) prods.push(p); });
+  const day = Math.floor(Date.now() / 864e5), hsh = u => { let x = day; for (const c of u) x = (x * 31 + c.charCodeAt(0)) >>> 0; return x; };
+  const list = Object.entries(by).filter(([, a]) => a.length >= 2).map(([u, a]) => ({ u, items: a.slice(0, 10) })).sort((a, b) => hsh(a.u) - hsh(b.u));
+  shCache = { t: Date.now(), list }; return list;
+}
+function shcHTML(sc) {
+  const a = sc.items[0].profiles || {}, mine = sc.u === me?.id;
+  const slides = sc.items.map((p, i) => {
+    const m = getMeta(p.description), promo = m.o && m.o > p.price && p.status !== 'Gratuit' ? Math.round((1 - p.price / m.o) * 100) : 0, img = p.images?.[0] || p.image_url;
+    return `<div class="shs${i ? '' : ' on'}" data-pid="${p.id}" data-say="${esc(p.name + '. ' + sayPrice(p) + (p.city ? '. À ' + p.city : ''))}">${img ? `<img ${i < 2 ? 'src' : 'data-src'}="${esc(img)}" alt="">` : `<span class="fpph">${isBook(p) ? '📚' : '📦'}</span>`}
+      <div class="shcap"><b>${esc(p.name)}</b><span>${priceTxt(p)}${promo ? ` <s>${m.o} $</s>` : ''}</span></div>${promo ? `<span class="fptag">-${promo}%</span>` : ''}</div>`;
+  }).join('');
+  return `<div class="box shc" data-i="0"><div class="ph"><div onclick="openUser('${a.id}')" style="display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0">${av(a, 40)}<div style="min-width:0"><b>${esc(a.name || '')}</b><div class="mt">🏪 Vitrine · ${sc.items.length} produits</div></div></div>${!mine && myFollows && !myFollows.has(a.id) ? `<button type="button" class="ffw" data-u="${a.id}" onclick="feedFollow('${a.id}',this)">+ Suivre</button>` : ''}</div>
+    <div class="shv" onclick="shOpen(this)">${slides}</div>
+    <div class="shdots">${sc.items.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>
+    <div class="fpacts">${mine ? '' : `<button type="button" class="fpbuy" onclick="shOrder(this)">📱 Commander</button>`}<button type="button" class="fpsee" onclick="location.hash='#/vendeur/${encodeURIComponent(a.username || '')}'">🏪 Boutique</button><button type="button" class="fpsh shsnd" title="Écouter" aria-label="Écouter" onclick="shSpeak(this)">🔊</button></div></div>`;
+}
+function shGo(card, i) {
+  const sl = card.querySelectorAll('.shs'), n = sl.length; if (!n) return; i = ((i % n) + n) % n;
+  sl.forEach((x, k) => x.classList.toggle('on', k === i)); card.querySelectorAll('.shdots i').forEach((x, k) => x.classList.toggle('on', k === i));
+  card.dataset.i = i;
+  [i, (i + 1) % n].forEach(k => { const im = sl[k].querySelector('img[data-src]'); if (im) { im.src = im.dataset.src; im.removeAttribute('data-src'); } });
+  if (card._speak) shSay(card);
+}
+function shStart(card) { if (autoOff() || shTimers.has(card)) return; shTimers.set(card, setInterval(() => { if (!card.isConnected) return shStop(card); if (Date.now() < (card._hold || 0)) return; shGo(card, +card.dataset.i + 1); }, 4000)); }
+function shStop(card) { clearInterval(shTimers.get(card)); shTimers.delete(card); if (card._speak) { card._speak = false; try { speechSynthesis.cancel(); } catch (e) {} card.querySelector('.shsnd')?.classList.remove('on'); } }
+function shInit(root) {
+  if (!root || !('IntersectionObserver' in window)) return;
+  shIO ||= new IntersectionObserver(es => es.forEach(e => (e.isIntersecting && e.intersectionRatio > .6 ? shStart : shStop)(e.target)), { threshold: [0, .6] });
+  root.querySelectorAll('.shc:not([data-ok])').forEach(c => {
+    c.dataset.ok = 1; shIO.observe(c);
+    const v = c.querySelector('.shv'); let x0 = null;
+    v.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; c._hold = Date.now() + 8000; }, { passive: true });
+    v.addEventListener('touchend', e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 40) { c._swiped = Date.now(); shGo(c, +c.dataset.i + (dx < 0 ? 1 : -1)); } }, { passive: true });
+    c.addEventListener('pointerdown', () => { c._hold = Date.now() + 8000; });
+  });
+}
+const shCur = el => el.closest('.shc')?.querySelector('.shs.on')?.dataset.pid;
+function shOpen(v) { const c = v.closest('.shc'); if (Date.now() - (c._swiped || 0) < 500) return; const id = shCur(v); if (id) openProd(id); }
+function shOrder(b) { const id = shCur(b); if (id) feedOrder(id); }
+function shSay(card) { const x = card.querySelector('.shs.on'); if (!x || !window.speechSynthesis) return; try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(x.dataset.say); u.lang = 'fr-FR'; speechSynthesis.speak(u); } catch (e) {} }
+function shSpeak(b) {
+  if (!window.speechSynthesis) return toast('La lecture à voix haute n’est pas disponible sur cet appareil.', 3500);
+  const c = b.closest('.shc'); c._speak = !c._speak; b.classList.toggle('on', c._speak);
+  if (c._speak) shSay(c); else try { speechSynthesis.cancel(); } catch (e) {}
+}
 async function renderFeed() {
   $('newbar').classList.add('hidden');
   if (!myFollows) await loadMyFollows();
@@ -1043,13 +1136,16 @@ async function renderFeed() {
   const pr = withProd ? await feedProducts(feedN, fids) : { list: [], more: false };
   more = more || pr.more;
   if (cur !== 'accueil') return;
-  let html = '';
-  if (prodOnly) html = pr.list.map(fpcHTML).join('');
-  else { const n = Math.max(ps.length, pr.list.length); for (let i = 0; i < n; i++) { if (ps[i]) html += postsHTML([ps[i]]); if (pr.list[i]) html += fpcHTML(pr.list[i]); } }
+  const shs = ['pourvous', 'abonnements', 'vitrine'].includes(feedF) ? (await loadShowcases()).filter(x => !fids || fids.includes(x.u)) : [];
+  if (cur !== 'accueil') return;
+  let html = '', cnt = 0, si = 0;
+  const add = h => { html += h; cnt++; if (si < shs.length && (cnt === 3 || (cnt > 3 && (cnt - 3) % 5 === 0))) html += shcHTML(shs[si++]); };
+  if (prodOnly) { if (feedF === 'vitrine' && shs.length) html += shcHTML(shs[si++]); pr.list.forEach(p => { html += fpcHTML(p); }); }
+  else { const n = Math.max(ps.length, pr.list.length); for (let i = 0; i < n; i++) { if (ps[i]) add(postsHTML([ps[i]])); if (pr.list[i]) add(fpcHTML(pr.list[i])); } }
   if (!html) html = pr.noCity ? `<div class="empty"><div>📍</div><h3>Ajoutez votre ville</h3><p>Pour voir les produits près de chez vous, indiquez votre ville.</p><button class="pill" onclick="go('settings')">Ajouter ma ville</button></div>`
     : prodOnly ? empty('🛍️', 'Aucun produit ici pour le moment', 'Soyez le premier à vendre : touchez « 🛍️ Vendre ».') : empty('📭', 'Aucune publication', 'Créez votre premier post !');
   $('feed').innerHTML = html + (more ? '<button class="pbtn gray" onclick="feedN+=10;renderFeed()">Voir plus</button>' : '');
-  afterPosts();
+  shInit($('feed')); afterPosts();
 }
 function feedFilter(f, btn) {
   feedF = f; feedN = 10;
@@ -1702,11 +1798,55 @@ async function catalogPage(u, body) {
   body.innerHTML = `<div class="box" style="text-align:center"><div style="display:flex;justify-content:center">${av(s, 80)}</div>
     <div style="font-size:22px;font-weight:bold;margin-top:8px">${esc(s.name)}${prods.length > 5 ? ' <span style="color:#10B981;font-size:14px">✅ Vérifié</span>' : ''}</div>
     <div class="mt">@${esc(s.username)} · ${prods.length} produit${prods.length > 1 ? 's' : ''}</div>
+    ${prods.some(p => !isSoldP(p)) ? `<button class="pbtn b" onclick="afficheStart('${esc(s.name).replace(/'/g, '&#39;')}')">📺 Mode affiche (comptoir, vitrine)</button>` : ''}
     <button class="pbtn gray" onclick="copyTxt(location.href)">🔗 Copier le lien du catalogue</button>
     ${me && me.id !== s.id ? `<button class="pbtn b" onclick="openUser('${s.id}')">👤 Voir le profil</button>` : ''}</div>
     <div class="pg">${prods.length ? prods.map(cardHTML).join('') : empty('📦', 'Aucun produit')}</div>`;
 }
+// ---------- Mode affiche : les produits défilent en plein écran, avec QR code pour commander ----------
+let aff = null;
+async function afficheStart(shop) {
+  const items = prods.filter(p => !isSoldP(p)).slice(0, 30); if (!items.length) return;
+  aff = { items, i: -1, shop, snd: false };
+  document.body.insertAdjacentHTML('beforeend', `<div id="aff" class="aff"><div class="affimg"><img id="aff-img" alt=""></div>
+    <div class="affinfo"><div class="affshop">🏪 ${esc(shop)} · SocialPages</div><div id="aff-name" class="affname"></div><div id="aff-price" class="affprice"></div>
+      <div id="aff-qr" class="affqr"></div><small>📱 Scannez pour commander sur WhatsApp</small></div>
+    <div class="affbtns"><button type="button" id="aff-snd" onclick="affSound()" aria-label="Voix">🔇</button><button type="button" onclick="afficheStop()" aria-label="Fermer">✖</button></div>
+    <div id="aff-dots" class="affdots"></div></div>`);
+  try { await document.documentElement.requestFullscreen?.(); } catch (e) {}
+  try { aff.lock = await navigator.wakeLock?.request('screen'); } catch (e) {}
+  affNext(); aff.t = setInterval(affNext, 6000);
+}
+function affNext() {
+  if (!aff) return; const n = aff.items.length; aff.i = (aff.i + 1) % n; const p = aff.items[aff.i], m = getMeta(p.description);
+  const img = p.images?.[0] || p.image_url, promo = m.o && m.o > p.price && p.status !== 'Gratuit';
+  $('aff-img').src = img || ''; $('aff-img').style.visibility = img ? 'visible' : 'hidden';
+  $('aff-name').textContent = p.name;
+  $('aff-price').innerHTML = priceTxt(p) + (promo ? ` <s>${m.o} $</s><span class="affpromo">-${Math.round((1 - p.price / m.o) * 100)}%</span>` : '');
+  try { const q = qrcode(0, 'M'); q.addData(location.origin + '/p/' + p.id); q.make(); $('aff-qr').innerHTML = q.createSvgTag(4); } catch (e) { $('aff-qr').innerHTML = ''; }
+  $('aff-dots').innerHTML = aff.items.map((_, k) => `<i class="${k === aff.i ? 'on' : ''}"></i>`).join('');
+  const nx = aff.items[(aff.i + 1) % n]; if (nx) { const im = new Image(); im.src = nx.images?.[0] || nx.image_url || ''; }
+  if (aff.snd && window.speechSynthesis) try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(p.name + '. ' + sayPrice(p)); u.lang = 'fr-FR'; speechSynthesis.speak(u); } catch (e) {}
+}
+function affSound() { if (!aff) return; if (!window.speechSynthesis) return toast('Voix indisponible sur cet appareil.'); aff.snd = !aff.snd; $('aff-snd').textContent = aff.snd ? '🔊' : '🔇'; if (!aff.snd) speechSynthesis.cancel(); }
+function afficheStop() {
+  if (!aff) return; clearInterval(aff.t); try { aff.lock?.release(); } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {}
+  aff = null; $('aff')?.remove(); try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && aff) afficheStop(); });
+// Lien « rejoindre un live » (notification aux abonnés) : #/live/<id>
+function liveHash() {
+  const m = location.hash.match(/^#\/live\/([0-9a-f-]{36})/i); if (!m) return false;
+  history.replaceState(null, '', location.pathname + location.search); tryJoinLive(m[1]); return true;
+}
+function tryJoinLive(hid, n = 0) {
+  if (!me) return;
+  if (lives[hid]) return joinLive(hid);
+  if (n < 10) return setTimeout(() => tryJoinLive(hid, n + 1), 1000);
+  toast('Ce live est terminé.');
+}
 addEventListener('hashchange', () => {
+  if (liveHash()) return;
   if (route()) go(me ? 'product' : 'pub');
   else if (cur === 'product') go(lastView || 'produits'); else if (cur === 'pub') go('landing');
 });
@@ -2554,6 +2694,7 @@ function liveDirListen() {
 const lvMeta = () => ({ live: true, hid: me.id, name: me.name, avatar_url: me.avatar_url || '', title: live?.title || '', t: live?.t0, sfu: live?.sfu || '' });
 function liveBeat() {
   if (!live?.host || !liveDir) return;
+  if (live.pin) lvSend({ t: 'pin', p: live.pin });
   try { liveDir.send({ type: 'broadcast', event: 'live', payload: lvMeta() }); } catch (e) {}
   if (!liveDir.presenceState()[me.id]) liveDir.track(lvMeta()).catch?.(() => {});
   if (live.ch && ['closed', 'errored'].includes(live.ch.state)) { const old = live.ch; liveRoom(me.id).then(c => { if (live?.host) { live.ch = c; sb.removeChannel(old); } else sb.removeChannel(c); }); }
@@ -2744,11 +2885,37 @@ function liveUI() {
     <div class="lvtop"><div class="lvwho">${av({ name: live.hname, avatar_url: live.hav }, 38)}<div><b>${esc(live.hname)}</b><small>${esc(live.title || 'En direct')}</small></div></div>
       <span class="lvred">🔴 EN DIRECT</span><span id="lv-n">👁 0</span><button type="button" onclick="leaveLive()" aria-label="Quitter">✖</button></div>
     <div id="lv-st" class="lvst"></div>
-    <div class="lvbottom"><div id="lv-com" class="lvcom"></div>
+    <div class="lvbottom"><div id="lv-pin" class="lvpin hidden"></div><div id="lv-com" class="lvcom"></div>
       <div class="lvin"><input id="lv-text" maxlength="200" placeholder="Commenter…" onkeypress="if(event.key==='Enter')sendLiveMsg()">
         <button type="button" onclick="sendLiveMsg()" aria-label="Envoyer">➤</button><button type="button" onclick="sendHeart()" aria-label="J'aime">❤️</button>
-        ${h ? '<button type="button" id="lv-mic" onclick="lvMic()" aria-label="Micro">🎤</button><button type="button" onclick="lvFlip()" aria-label="Retourner la caméra">🔄</button>' : ''}</div></div>
+        ${h ? '<button type="button" onclick="lvShop()" aria-label="Épingler un produit">🛍️</button><button type="button" id="lv-mic" onclick="lvMic()" aria-label="Micro">🎤</button><button type="button" onclick="lvFlip()" aria-label="Retourner la caméra">🔄</button>' : ''}</div></div>
+    <div id="lv-shop" class="lvshop hidden"></div>
     <div id="lv-hearts"></div></div>`);
+}
+// Produit épinglé pendant le live
+async function lvShop() {
+  const box = $('lv-shop'); if (!box || !live?.host) return;
+  if (!box.classList.contains('hidden')) return box.classList.add('hidden');
+  box.classList.remove('hidden'); box.innerHTML = '<div class="spin"></div>';
+  const { data } = await sb.from('products').select('id,name,price,status,description,images,image_url').eq('user_id', me.id).order('bumped_at', { ascending: false }).limit(30);
+  const list = (data || []).filter(p => !isSoldP(p));
+  box.innerHTML = `<div class="lvshh"><b>🛍️ Épingler un produit</b><button type="button" onclick="$('lv-shop').classList.add('hidden')">✖</button></div>` +
+    (list.length ? list.map(p => `<button type="button" class="lvshi" onclick='lvPin(${JSON.stringify({ id: p.id, name: p.name, price: priceTxt(p), img: p.images?.[0] || p.image_url || '' }).replace(/'/g, '&#39;')})'>${(p.images?.[0] || p.image_url) ? `<img src="${esc(p.images?.[0] || p.image_url)}" alt="">` : '<span>📦</span>'}<span><b>${esc(p.name)}</b><small>${priceTxt(p)}</small></span></button>`).join('')
+      : '<p class="mt" style="padding:12px">Ajoutez d’abord un produit dans votre boutique.</p>');
+}
+function lvPin(p) { if (!live?.host) return; live.pin = p; $('lv-shop')?.classList.add('hidden'); lvSend({ t: 'pin', p }); showPin(p); addComment('📌', 'Produit épinglé : ' + p.name); }
+function lvUnpin() { if (!live?.host) return; live.pin = null; lvSend({ t: 'unpin' }); showPin(null); }
+function showPin(p) {
+  const el = $('lv-pin'); if (!el) return; if (live) live.pinShown = p;
+  if (!p) { el.classList.add('hidden'); el.innerHTML = ''; return; }
+  el.classList.remove('hidden');
+  el.innerHTML = `${p.img ? `<img src="${esc(p.img)}" alt="" onclick="openProd('${esc(p.id)}')">` : '<span class="lvpinph">📦</span>'}<div class="lvpint"><b>${esc(p.name)}</b><span>${esc(p.price)}</span></div>` +
+    (live?.host ? '<button type="button" class="lvpinx" onclick="lvUnpin()">Retirer</button>' : '<button type="button" class="lvpinb" onclick="lvOrder()">📱 Commander</button>');
+}
+function lvOrder() {
+  const p = live?.pinShown; if (!p) return;
+  lvSend({ t: 'ordered', name: p.name }); addComment('🛒', 'Vous avez commandé ' + p.name);
+  feedOrder(p.id);
 }
 function addComment(name, text) {
   const box = $('lv-com'); if (!box || !text) return;
@@ -2852,6 +3019,7 @@ async function startLive() {
   catch (e) { console.warn('SFU indisponible, mode direct :', e); live.sfu = null; toast(`Mode direct : live limité à ${LIVE_MAX} spectateurs.`, 4500); setLiveSt('Vous êtes en direct. Gardez l’appli ouverte.'); }
   if (!live) return;
   liveBeat(); live.hb = setInterval(liveBeat, 20000);
+  sb.rpc('notify_live_followers', { p_title: live.title || null }).then(({ data }) => { if (data > 0) addComment('🔔', `${data} abonné${data > 1 ? 's' : ''} prévenu${data > 1 ? 's' : ''} de votre live`); }, () => {});
 }
 async function hostOffer(vid) {
   closePeer(vid);
@@ -2909,10 +3077,11 @@ async function onLiveSig(p) {
   if (!live || !p?.from || blocked.has(p.from)) return;
   if (p.t === 'chat') return addComment(p.fname || '?', p.text);
   if (p.t === 'heart') return floatHeart();
+  if (p.t === 'ordered') return addComment('🛒', `${p.fname || 'Quelqu’un'} vient de commander ${p.name || ''}`);
   if (p.to && p.to !== me.id) return; // message destiné à quelqu'un d'autre
   if (live.host) {
     if (live.sfu) return; // mode relais : pas de connexion individuelle
-    if (p.t === 'join') { if (lvCount() >= LIVE_MAX && !live.peers[p.from]) return lvSend({ t: 'full', to: p.from }); return hostOffer(p.from); }
+    if (p.t === 'join') { if (lvCount() >= LIVE_MAX && !live.peers[p.from]) return lvSend({ t: 'full', to: p.from }); if (live.pin) setTimeout(() => lvSend({ t: 'pin', p: live.pin }), 1500); return hostOffer(p.from); }
     const peer = live.peers[p.from]; if (!peer) return;
     if (p.t === 'answer') { await peer.pc.setRemoteDescription({ type: 'answer', sdp: p.sdp }); peer.ice.forEach(c => peer.pc.addIceCandidate(c).catch(() => {})); peer.ice = []; }
     else if (p.t === 'ice') { if (peer.pc.remoteDescription) peer.pc.addIceCandidate(p.c).catch(() => {}); else peer.ice.push(p.c); }
@@ -2923,6 +3092,8 @@ async function onLiveSig(p) {
   if (p.t === 'offer') return viewerAnswer(p);
   if (p.t === 'ice') { if (live.pc?.remoteDescription) live.pc.addIceCandidate(p.c).catch(() => {}); else live.ice.push(p.c); }
   else if (p.t === 'count') { const e = $('lv-n'); if (e) e.textContent = '👁 ' + p.n; }
+  else if (p.t === 'pin') { if (p.p?.id && live.pinShown?.id !== p.p.id) showPin(p.p); }
+  else if (p.t === 'unpin') showPin(null);
   else if (p.t === 'full') { leaveLive(); alert(`Ce live est complet (${LIVE_MAX} spectateurs maximum). Réessayez dans un instant.`); }
   else if (p.t === 'end') { leaveLive(); toast('Le live est terminé.'); }
 }
