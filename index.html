@@ -610,6 +610,43 @@ video.pm{background:#000}
 .vidwrap{display:flex;justify-content:center}.vidwrap canvas{width:min(46vw,200px);aspect-ratio:9/16;height:auto;border-radius:12px;background:#000}
 .vidbar{height:8px;background:#E5E7EB;border-radius:4px;overflow:hidden;margin:12px 0 4px}.vidbar b{display:block;height:100%;width:0;background:linear-gradient(90deg,#F97316,#DC2626)}
 .vidout{width:100%;max-height:52vh;border-radius:12px;background:#000;margin-bottom:10px}
+/* Pub v2 : intro, prix autocollant, bouton Commander, fin WhatsApp, grand écran */
+.pintro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;background:linear-gradient(150deg,#DC2626,#450A0A)}
+.pilogo .logo{width:84px;height:84px;border-radius:24px;font-size:48px;display:inline-flex;align-items:center;justify-content:center}
+.pin1{font-size:clamp(34px,7vw,84px);font-weight:900;margin-top:14px;text-shadow:0 4px 18px rgba(0,0,0,.4)}.pin2{font-size:clamp(18px,3vw,34px);color:#FDE68A;font-weight:700;margin-top:6px}
+.pithumbs{display:flex;gap:12px;margin-top:26px}.pithumbs img{width:clamp(80px,18vw,200px);aspect-ratio:4/5;object-fit:contain;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.pslide.on .pilogo{animation:pPop .5s both}.pslide.on .pin1{animation:pPop .55s .25s both}.pslide.on .pin2{animation:pUp .5s .5s both}
+.pslide.on .pithumbs img{animation:pFly .7s both}.pslide.on .pithumbs img:nth-child(2){animation-delay:.12s}.pslide.on .pithumbs img:nth-child(3){animation-delay:.24s}
+.pithumbs img:nth-child(1){--r:-8deg}.pithumbs img:nth-child(3){--r:8deg}
+@keyframes pFly{from{opacity:0;transform:translateY(120px) rotate(0)}to{opacity:1;transform:translateY(0) rotate(var(--r,0deg))}}
+.pslide.introc::after{content:'';position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}.pslide.on.introc::after{animation:pFlash .5s .3s}
+@keyframes pFlash{0%{opacity:.75}100%{opacity:0}}
+.pprice span{background:#FACC15;color:#B91C1C!important;padding:4px 18px;border-radius:14px;display:inline-block;transform:rotate(-3deg);box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.pprice s{text-decoration-color:#EF4444;text-decoration-thickness:3px}
+.pcta{position:relative;z-index:6;margin-top:14px;border:none;border-radius:999px;background:#25D366;color:#fff;font-weight:800;font-size:17px;padding:13px 22px;cursor:pointer;opacity:0;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.pslide.on .pcta{animation:pUp .4s .9s forwards,pBlink 1.4s 1.5s ease-in-out infinite}
+.pslide:not(.on) .pcta{pointer-events:none}
+.pendw{font-weight:700;color:#BBF7D0;font-size:clamp(17px,2vw,26px);margin-top:6px}
+.pphone{position:relative;z-index:6;border:none;background:#25D366;color:#fff;font-weight:900;font-size:clamp(26px,4.4vw,52px);padding:10px 30px;border-radius:999px;margin:4px 0;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.pslide.on .pphone{animation:pPop .5s .3s both,pBlink 1.6s 1s ease-in-out infinite}
+.pqr.sm svg{width:min(34vw,170px)!important;height:min(34vw,170px)!important}
+.psig{margin-top:10px;font-size:13px;opacity:.85}
+.pxim{max-width:96%;max-height:62%;top:40%}
+@media (min-aspect-ratio:4/3){
+  .pxim{left:35%;top:50%;max-width:66%;max-height:90%}
+  .pcap{width:34%}.pcta{font-size:clamp(16px,1.5vw,24px);padding:14px 26px;align-self:flex-start}
+  .pend{padding:2vh 4vw}.pqr.sm svg{width:min(22vh,200px)!important;height:min(22vh,200px)!important}
+}
+.modal.mwide{max-width:min(94vw,760px)}
+.vlab{display:block;font-weight:700;margin:14px 0 6px}
+.vprods{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;max-height:36vh;overflow:auto}
+.vprod{display:flex;gap:8px;align-items:center;border:1px solid var(--line,#E5E7EB);border-radius:12px;padding:6px;cursor:pointer;font-size:13px}
+.vprod input{width:18px;height:18px;margin:0;flex:none}.vprod img{width:44px;height:44px;object-fit:cover;border-radius:8px;flex:none}.vprod span{display:flex;flex-direction:column;min-width:0}.vprod b{color:#16A34A}
+.vchips{display:flex;gap:8px;flex-wrap:wrap}.vchips button{flex:1;min-width:120px;border:3px solid transparent;border-radius:12px;padding:12px;font-weight:800;cursor:pointer;background:#F3F4F6}
+.vchips button.on{border-color:#FACC15;box-shadow:0 0 0 2px #111 inset}
+.vidwrap canvas{width:min(70vw,300px)!important}.vidwrap.sq canvas{aspect-ratio:1/1!important;width:min(70vw,380px)!important}
+.vidout{display:block;margin:0 auto 10px;width:auto!important;max-width:100%;max-height:68vh}
+
 
 @media (orientation:landscape) and (min-width:700px){.aff{flex-direction:row}.affinfo{width:40%;justify-content:center}}
 /* Live : produit épinglé */
@@ -885,7 +922,7 @@ function refresh() {
     mapage: renderMyPage, settings: loadSettings, chat: renderChat, user: renderUser, product: renderRoute, pub: renderRoute, explore: renderExplore})[cur]?.();
 }
 function closeM() { $('modal').classList.add('hidden'); }
-function openM(html) { $('modal-box').innerHTML = html; $('modal').classList.remove('hidden'); }
+function openM(html) { $('modal-box').classList.remove('mwide'); $('modal-box').innerHTML = html; $('modal').classList.remove('hidden'); }
 
 // ---------- Helpers ----------
 function av(u, size = 44) {
@@ -2070,12 +2107,19 @@ async function pubStart(shop, items, opt = {}) {
   await Promise.all(items.slice(0, 3).map(p => pubLoad(pImg(p))));
   if (!pub) return;
   items.slice(3).forEach(p => pubLoad(pImg(p)));
-  pubNext();
+  pubShow(pubIntroHTML(), 'introc'); pub.A?.chime(true);
+  pub.t = setTimeout(pubNext, 1600);
   if (pub.tv && opt.refresh) pub.rf = setInterval(opt.refresh, 15 * 60e3);
 }
 function pubBars() {
   const n = Math.min(PUB_EVERY, pub.items.length), k = pub.end ? n : pub.cnt - 1;
   $('pb-bars').innerHTML = Array.from({ length: n }, (_, j) => `<i class="${j < k ? 'done' : j === k && !pub.end ? 'run' : ''}"><b style="animation-duration:${PUB_MS}ms"></b></i>`).join('');
+}
+function pubIntroHTML() {
+  const s = pub.shop || {};
+  return `<div class="pintro"><div class="pilogo"><span class="logo">S</span></div><div class="pin1">${esc(s.name || 'Ma boutique')}</div>
+    <div class="pin2">présente ${pub.items.length} produit${pub.items.length > 1 ? 's' : ''} 🔥</div>
+    <div class="pithumbs">${pub.items.slice(0, 3).map(p => { const u = pImg(p); return u ? `<img src="${esc(pubImgs[u] || u)}" alt="">` : ''; }).join('')}</div></div>`;
 }
 function pubSlideHTML(p) {
   const img = pImg(p), src = pubImgs[img] || img, pr = pPromo(p), kb = 'kb' + (1 + Math.floor(Math.random() * 4)), a = p.profiles || pub.shop || {};
@@ -2084,16 +2128,20 @@ function pubSlideHTML(p) {
     <div class="pcap"><div class="pshop">🏪 ${esc(a.name || pub.shop?.name || '')}${p.city ? ' · 📍 ' + esc(p.city) : ''}</div>
       <div class="pname">${esc(cutT(p.name, 70))}</div>
       <div class="pprice"><span>${priceTxt(p)}</span>${pr ? `<s>${pr.o} $</s>` : ''}</div>
-      ${pr ? `<div class="pbadge">⚡ -${pr.pc}%</div>` : isNewP(p) ? '<div class="pbadge new">✨ Nouveau</div>' : ''}</div>`;
+      ${pr ? `<div class="pbadge">⚡ -${pr.pc}%</div>` : isNewP(p) ? '<div class="pbadge new">✨ Nouveau</div>' : ''}
+      ${pub.tv ? '' : `<button type="button" class="pcta" onclick="event.stopPropagation();pubOrder('${p.id}')">📱 Commander sur WhatsApp</button>`}</div>`;
 }
 function pubEndHTML() {
-  const s = pub.shop || {}, url = shopUrl(s); let qr = '';
+  const s = pub.shop || {}, url = shopUrl(s), ph = (s.phone || pub.items[0]?.profiles?.phone || '').replace(/\D/g, ''); let qr = '';
   try { const q = qrcode(0, 'M'); q.addData(url); q.make(); qr = q.createSvgTag(6, 0); } catch (e) {}
   return `<div class="pend"><div class="pendav">${av(s, 84)}</div><div class="pendn">${esc(s.name || 'Notre boutique')}</div>
     <div class="pends">${pub.items.length} produit${pub.items.length > 1 ? 's' : ''} vous attendent</div>
-    ${qr ? `<div class="pqr">${qr}</div>` : ''}<div class="pendc">📱 Scannez pour voir toute la boutique<br>et commander sur WhatsApp</div>
-    <div class="pendu">${esc(url.replace(/^https?:\/\//, ''))}</div></div>`;
+    ${ph ? `<div class="pendw">📱 Écrivez-moi sur WhatsApp</div><${pub.tv ? 'div' : 'button type="button" onclick="event.stopPropagation();pubWa()"'} class="pphone">${esc(fmtPhone(ph))}</${pub.tv ? 'div' : 'button'}>` : ''}
+    ${qr ? `<div class="pqr${ph ? ' sm' : ''}">${qr}</div>` : ''}<div class="pendc">${ph ? 'ou scannez pour voir toute la boutique' : '📱 Scannez pour voir toute la boutique<br>et commander sur WhatsApp'}</div>
+    <div class="pendu">${esc(url.replace(/^https?:\/\//, ''))}</div><div class="psig">✨ Créée gratuitement avec SocialPages</div></div>`;
 }
+function pubOrder(id) { if (pub && !pub.paused) pubPause(); feedOrder(id); }
+function pubWa() { const s = pub?.shop || {}, ph = (s.phone || pub?.items[0]?.profiles?.phone || '').replace(/\D/g, ''); if (!ph) return; if (!pub.paused) pubPause(); waSend(ph, `Bonjour ${s.name || ''}, j'ai vu votre pub sur SocialPages : ${shopUrl(s)}\nJe voudrais commander.`); guestNudge(s.name); }
 function pubShow(html, cls) {
   pub.buf ^= 1; const el = $('ps-' + pub.buf), old = $('ps-' + (pub.buf ^ 1)); if (!el) return;
   el.className = 'pslide ' + (cls || ''); el.innerHTML = html; void el.offsetWidth; el.classList.add('on'); old?.classList.remove('on');
@@ -2183,101 +2231,208 @@ function tvLink() {
     <p class="mt" style="font-size:13px;margin-top:10px">Pas de compte nécessaire sur la télévision. Les nouveaux produits apparaissent automatiquement toutes les 15 minutes.</p>`);
 }
 
-// ---------- 🎬 Créer ma pub vidéo (statut WhatsApp, TikTok, Facebook) ----------
+// ---------- 🎬 Créer ma pub vidéo v2 (statut WhatsApp, TikTok, Facebook) ----------
 let vidBusy = false;
-async function pubVideo() {
+const VSTYLES = {
+  promo: { n: '🔥 Promo', g: ['#DC2626', '#450A0A'], ac: '#FACC15', st: '#FACC15', stx: '#B91C1C', sh: '#FDE68A' },
+  luxe: { n: '✨ Luxe', g: ['#1F2937', '#000000'], ac: '#D4AF37', st: '#D4AF37', stx: '#111111', sh: '#F5E6B3' },
+  frais: { n: '🌿 Frais', g: ['#16A34A', '#052E16'], ac: '#4ADE80', st: '#22C55E', stx: '#FFFFFF', sh: '#BBF7D0' }
+};
+const fmtPhone = d => { d = String(d || '').replace(/\D/g, ''); if (!d) return ''; return '+' + (d.length > 9 ? d.slice(0, d.length - 9) + ' ' + d.slice(-9, -7) + ' ' + d.slice(-7, -4) + ' ' + d.slice(-4) : d); };
+const vget = (k, d) => { try { return localStorage.getItem('sp_v_' + k) || d; } catch (e) { return d; } };
+const vset = (k, v) => { try { localStorage.setItem('sp_v_' + k, v); } catch (e) {} };
+function pubVideo() {
   const s = window.shopCur; if (!s || vidBusy) return;
-  const items = prods.filter(p => p.user_id === s.id && !isSoldP(p) && pImg(p)).slice(0, 8);
-  if (!items.length) return toast('Ajoutez au moins un produit avec photo.');
-  const cv = document.createElement('canvas'); cv.width = 720; cv.height = 1280;
+  const list = prods.filter(p => p.user_id === s.id && !isSoldP(p) && pImg(p));
+  if (!list.length) return toast('Ajoutez au moins un produit avec photo.');
+  const st = vget('style', 'promo'), fm = vget('fmt', '916');
+  openM(`<h3>🎬 Créer ma pub vidéo</h3>
+    <label class="vlab">1. Choisissez vos produits (8 au maximum)</label>
+    <div class="vprods">${list.slice(0, 30).map((p, i) => `<label class="vprod"><input type="checkbox" value="${p.id}" ${i < 6 ? 'checked' : ''} onchange="vidCount(this)"><img src="${esc(pubImgs[pImg(p)] || pImg(p))}" alt=""><span>${esc(cutT(p.name, 26))}<b>${priceTxt(p)}</b></span></label>`).join('')}</div>
+    <label class="vlab">2. Votre slogan (début de la vidéo)</label>
+    <input id="v-slogan" maxlength="40" value="${esc(vget('slogan_' + s.id, '🔥 Les meilleurs prix' + (list[0]?.city ? ' de ' + list[0].city : '') + ' !'))}">
+    <label class="vlab">3. Style</label>
+    <div class="vchips" id="v-style">${Object.entries(VSTYLES).map(([k, v]) => `<button type="button" data-k="${k}" class="${k === st ? 'on' : ''}" style="background:linear-gradient(135deg,${v.g[0]},${v.g[1]});color:#fff" onclick="vidPick(this)">${v.n}</button>`).join('')}</div>
+    <label class="vlab">4. Format</label>
+    <div class="vchips" id="v-fmt"><button type="button" data-k="916" class="${fm === '916' ? 'on' : ''}" onclick="vidPick(this)">📱 Statut / TikTok</button><button type="button" data-k="11" class="${fm === '11' ? 'on' : ''}" onclick="vidPick(this)">⬛ Facebook (carré)</button></div>
+    <button class="pbtn pubgo" style="margin-top:14px" onclick="vidMake()">🎬 Créer la vidéo</button><button class="pbtn gray" onclick="closeM()">Annuler</button>`);
+  $('modal-box').classList.add('mwide');
+}
+function vidCount(cb) { const n = document.querySelectorAll('.vprods input:checked').length; if (n > 8) { cb.checked = false; toast('8 produits au maximum.'); } }
+function vidPick(b) { b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); }
+async function vidMake() {
+  const s = window.shopCur; if (!s || vidBusy) return;
+  const ids = [...document.querySelectorAll('.vprods input:checked')].map(x => x.value);
+  if (!ids.length) return toast('Choisissez au moins un produit.');
+  const slogan = ($('v-slogan')?.value || '').trim(), style = document.querySelector('#v-style .on')?.dataset.k || 'promo', fmt = document.querySelector('#v-fmt .on')?.dataset.k || '916';
+  vset('slogan_' + s.id, slogan); vset('style', style); vset('fmt', fmt);
+  const items = ids.map(id => prods.find(p => p.id === id)).filter(Boolean);
+  const W = 720, H = fmt === '11' ? 720 : 1280;
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
   if (!window.MediaRecorder || !cv.captureStream) return alert('Votre appareil ne permet pas de créer la vidéo ici. Ouvrez SocialPages dans Chrome (Android ou ordinateur).');
   const types = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
   const mime = types.find(t => MediaRecorder.isTypeSupported?.(t)) || '';
   vidBusy = true;
-  openM(`<h3>🎬 Création de votre pub vidéo…</h3><div class="vidwrap" id="vid-wrap"></div><div class="vidbar"><b id="vid-bar"></b></div><p class="mt" id="vid-msg" style="text-align:center">Préparation des photos…</p>`);
-  $('vid-wrap').appendChild(cv);
+  openM(`<h3>🎬 Création de votre pub…</h3><div class="vidwrap ${fmt === '11' ? 'sq' : ''}" id="vid-wrap"></div><div class="vidbar"><b id="vid-bar"></b></div><p class="mt" id="vid-msg" style="text-align:center">Préparation des photos…</p>`);
+  $('modal-box').classList.add('mwide'); $('vid-wrap').appendChild(cv);
   try {
-    const imgs = [];
-    for (const p of items) { const src = await pubLoad(pImg(p)); if (!src?.startsWith('blob:')) continue; const im = new Image(); im.src = src; try { await im.decode(); imgs.push({ p, im }); } catch (e) {} }
-    if (!imgs.length) throw new Error('Impossible de charger les photos. Vérifiez votre connexion.');
+    // 1. Photos : jusqu'à 3 par produit, fond flou préparé UNE fois (vidéo fluide)
+    const slides = [];
+    for (const p of items) {
+      const urls = (p.images?.length ? p.images : [pImg(p)]).filter(Boolean).slice(0, 3), ims = [];
+      for (const u of urls) { const src = await pubLoad(u); if (!src?.startsWith('blob:')) continue; const im = new Image(); im.src = src; try { await im.decode(); ims.push({ im, bg: vidBg(im, W, H) }); } catch (e) {} }
+      if (ims.length) slides.push({ p, ims });
+    }
+    if (!slides.length) throw new Error('Impossible de charger les photos. Vérifiez votre connexion.');
     let qrM = null; try { const q = qrcode(0, 'M'); q.addData(shopUrl(s)); q.make(); qrM = q; } catch (e) {}
-    const A = pubAudio(true), ctx = cv.getContext('2d'), FPS = 30;
-    const stream = cv.captureStream(FPS); A?.dest?.stream.getAudioTracks().forEach(t => stream.addTrack(t));
-    const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 3e6 } : { videoBitsPerSecond: 3e6 }), chunks = [];
+    const S = VSTYLES[style], ctx = cv.getContext('2d'), INTRO = 1.5, SL = 3, END = 4.5, total = INTRO + slides.length * SL + END;
+    const V = { W, H, sq: fmt === '11', S, s, slogan, slides, qrM, phone: fmtPhone(s.phone), total };
+    // 2. Son : rythme calé sur les coupures (1 temps = 0,5 s)
+    const A = pubAudio(true), stream = cv.captureStream(0), track = stream.getVideoTracks()[0];
+    A?.dest?.stream.getAudioTracks().forEach(t => stream.addTrack(t));
+    const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 4e6 } : { videoBitsPerSecond: 4e6 }), chunks = [];
     rec.ondataavailable = e => e.data.size && chunks.push(e.data);
     const stopped = new Promise(r => rec.onstop = r);
-    const SL = 3, END = 4, total = imgs.length * SL + END;
-    A?.start(); rec.start(500); const t0 = performance.now(); let last = -1;
+    vidFrame(ctx, V, 0); track.requestFrame?.();
+    rec.start(250);
+    await new Promise(r => setTimeout(r, 350)); // l'enregistreur démarre sur une vraie image (pas de début figé)
+    const t0 = performance.now(); if (A) vidMusic(A, total, INTRO, SL, slides.length);
     await new Promise(done => {
       const frame = () => {
         const t = (performance.now() - t0) / 1000;
-        if (t >= total) return done();
-        const k = Math.floor(t / SL);
-        if (k !== last) { last = k; if (k < imgs.length) A?.whoosh(); else A?.chime(true); }
-        if (k < imgs.length) vidDrawSlide(ctx, imgs[k], t - k * SL, SL, s, k, imgs.length); else vidDrawEnd(ctx, s, t - imgs.length * SL, qrM, imgs.length);
+        vidFrame(ctx, V, Math.min(t, total)); track.requestFrame?.();
         $('vid-bar') && ($('vid-bar').style.width = Math.min(100, t / total * 100) + '%');
-        $('vid-msg') && ($('vid-msg').textContent = `Enregistrement… ${Math.ceil(total - t)} s`);
+        $('vid-msg') && ($('vid-msg').textContent = t < total ? `Enregistrement… ${Math.ceil(total - t)} s` : 'Finalisation…');
+        if (t >= total + 0.4) return done(); // image finale tenue un instant : pas de noir à la fin
         requestAnimationFrame(frame);
       };
       requestAnimationFrame(frame);
     });
-    rec.stop(); await stopped; A?.stop();
+    rec.requestData?.(); rec.stop(); await stopped; A?.stop();
     const type = (mime || 'video/webm').split(';')[0], ext = type.includes('mp4') ? 'mp4' : 'webm';
     const blob = new Blob(chunks, { type }), url = URL.createObjectURL(blob), file = new File([blob], `pub-${s.username}.${ext}`, { type });
     window.vidFile = file;
     const canShare = !!navigator.canShare?.({ files: [file] });
-    $('modal-box') && openM(`<h3>🎉 Votre pub est prête !</h3><video class="vidout" src="${url}" controls playsinline autoplay muted></video>
-      ${canShare ? '<button class="pbtn b" onclick="vidShare()">📤 Partager (WhatsApp, TikTok, Facebook…)</button>' : ''}
-      <a class="pbtn ${canShare ? 'gray' : 'b'}" style="display:block;text-align:center;text-decoration:none" href="${url}" download="${file.name}">⬇️ Télécharger la vidéo</a>
+    openM(`<h3>🎉 Votre pub est prête !</h3><video class="vidout ${fmt === '11' ? 'sq' : ''}" src="${url}" controls playsinline autoplay loop></video>
+      ${canShare ? '<button class="pbtn pubgo" onclick="vidShare()">📤 Partager (statut WhatsApp, TikTok, Facebook…)</button>' : ''}
+      <a class="pbtn ${canShare ? 'gray' : 'pubgo'}" style="display:block;text-align:center;text-decoration:none" href="${url}" download="${file.name}">⬇️ Télécharger la vidéo</a>
       ${window.Capacitor?.isNativePlatform?.() ? '<p class="mt" style="font-size:12px;color:#B45309">Dans l’application, si le téléchargement ne marche pas, ouvrez votre boutique dans Chrome pour enregistrer la vidéo.</p>' : ''}
-      <p class="mt" style="font-size:12px;margin-top:8px">${ext === 'webm' ? 'Format WebM : si WhatsApp le refuse, publiez-la sur TikTok ou Facebook. ' : ''}Astuce : publiez-la en statut WhatsApp avec le lien de votre boutique : ${esc(shopUrl(s))}</p>
-      <button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+      <p class="mt" style="font-size:12px;margin-top:8px">${ext === 'webm' ? 'Format WebM : si WhatsApp le refuse, publiez-la sur TikTok ou Facebook. ' : ''}Astuce : en statut WhatsApp, ajoutez le lien de votre boutique : ${esc(shopUrl(s))}</p>
+      <button class="pbtn gray" onclick="pubVideo()">🔁 Refaire avec d’autres choix</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+    $('modal-box').classList.add('mwide');
   } catch (e) { $('vid-msg') && ($('vid-msg').textContent = '⚠️ ' + (e.message || 'Erreur')); }
   vidBusy = false;
 }
 async function vidShare() { const f = window.vidFile, s = window.shopCur; if (!f) return; try { await navigator.share({ files: [f], text: `🏪 ${s?.name || ''} sur SocialPages 👉 ${s ? shopUrl(s) : location.origin}` }); } catch (e) {} }
+// Musique de la vidéo : tout est programmé à l'avance sur l'horloge audio (coupures sur le temps fort)
+function vidMusic(A, total, INTRO, SL, n) {
+  const C = A.C, T = C.currentTime + 0.02, out = A.out; try { C.resume(); } catch (e) {}
+  const nz = () => { const b = C.createBuffer(1, C.sampleRate * 0.6, C.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; const s = C.createBufferSource(); s.buffer = b; return s; };
+  const osc = (t, f1, f2, dur, vol, type = 'sine') => { const o = C.createOscillator(), g = C.createGain(); o.type = type; o.frequency.setValueAtTime(f1, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur * 0.8); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); o.connect(g); g.connect(out); o.start(t); o.stop(t + dur + 0.02); };
+  const noise = (t, type, f, dur, vol, f2) => { const s = nz(), fl = C.createBiquadFilter(), g = C.createGain(); fl.type = type; fl.frequency.setValueAtTime(f, t); if (f2) fl.frequency.exponentialRampToValueAtTime(f2, t + dur); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); s.connect(fl); fl.connect(g); g.connect(out); s.start(t); s.stop(t + dur + 0.02); };
+  const CH = [[220, 277.2, 329.6], [196, 246.9, 293.7], [174.6, 220, 261.6], [196, 246.9, 329.6]], BASS = [110, 98, 87.3, 98];
+  const beats = Math.floor(total / 0.5);
+  for (let b = 0; b < beats; b++) {
+    const t = T + b * 0.5;
+    osc(t, 140, 42, 0.32, 0.55); noise(t + 0.25, 'highpass', 7000, 0.06, 0.09);
+    if (b % 2 === 1) noise(t, 'bandpass', 1800, 0.14, 0.22);
+    osc(t + 0.25, BASS[Math.floor(b / 4) % 4], 0, 0.22, 0.16, 'triangle');
+    if (b % 4 === 0) CH[Math.floor(b / 4) % 4].forEach(f => { const o = C.createOscillator(), g = C.createGain(); o.type = 'triangle'; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.035, t + 0.2); g.gain.linearRampToValueAtTime(0.0001, t + 1.95); o.connect(g); g.connect(out); o.start(t); o.stop(t + 2); });
+  }
+  // impact de l'intro, whoosh avant chaque produit, « ding » quand le prix apparaît
+  osc(T + 0.4, 90, 30, 0.9, 0.8); noise(T + 0.4, 'lowpass', 1200, 0.6, 0.35);
+  for (let k = 0; k <= n; k++) { const ts = T + INTRO + k * SL; noise(ts - 0.3, 'bandpass', 300, 0.4, 0.3, 3500);
+    if (k < n) [1046.5, 1568].forEach((f, j) => osc(ts + 0.5 + j * 0.08, f, 0, 0.6, 0.16)); else [784, 1046.5, 1318.5].forEach((f, j) => osc(ts + 0.2 + j * 0.12, f, 0, 0.9, 0.18)); }
+}
+// ---------- Dessin des images de la vidéo ----------
 const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
-function vidWrap(ctx, text, maxW) { const w = String(text).split(/\s+/), lines = []; let l = ''; w.forEach(x => { const t = l ? l + ' ' + x : x; if (ctx.measureText(t).width > maxW && l) { lines.push(l); l = x; } else l = t; }); if (l) lines.push(l); return lines.slice(0, 2); }
+const back = x => { x = Math.min(1, Math.max(0, x)); const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+function vidBg(im, W, H) { const c = document.createElement('canvas'); c.width = Math.round(W / 8); c.height = Math.round(H / 8); const x = c.getContext('2d'), sc = Math.max(c.width / im.width, c.height / im.height) * 1.15;
+  x.filter = 'blur(3px)'; x.drawImage(im, (c.width - im.width * sc) / 2, (c.height - im.height * sc) / 2, im.width * sc, im.height * sc); x.filter = 'none'; x.fillStyle = 'rgba(0,0,0,.45)'; x.fillRect(0, 0, c.width, c.height); return c; }
+function vidWrap(ctx, text, maxW, max = 2) { const w = String(text).split(/\s+/), lines = []; let l = ''; w.forEach(x => { const t = l ? l + ' ' + x : x; if (ctx.measureText(t).width > maxW && l) { lines.push(l); l = x; } else l = t; }); if (l) lines.push(l); if (lines.length > max) { lines.length = max; lines[max - 1] += '…'; } return lines; }
 function vidRR(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
-function vidHead(ctx, k, n) {
-  for (let j = 0; j < n; j++) { const w = (720 - 40 - (n - 1) * 6) / n, x = 20 + j * (w + 6); ctx.fillStyle = 'rgba(255,255,255,.35)'; vidRR(ctx, x, 22, w, 5, 3); ctx.fill(); if (j <= k) { ctx.fillStyle = '#fff'; vidRR(ctx, x, 22, j < k ? w : w * Math.min(1, ctx._prog || 0), 5, 3); ctx.fill(); } }
-  ctx.fillStyle = '#16A34A'; vidRR(ctx, 20, 42, 40, 40, 10); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('S', 40, 72);
-  ctx.textAlign = 'left'; ctx.font = 'bold 24px sans-serif'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 6; ctx.fillText('SocialPages', 70, 70); ctx.shadowBlur = 0;
+function vidGrad(ctx, V) { const g = ctx.createLinearGradient(0, 0, V.W, V.H); g.addColorStop(0, V.S.g[0]); g.addColorStop(1, V.S.g[1]); ctx.fillStyle = g; ctx.fillRect(0, 0, V.W, V.H); }
+function vidLogo(ctx, x, y, sz, label) { ctx.fillStyle = '#16A34A'; vidRR(ctx, x, y, sz, sz, sz * 0.25); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = `900 ${sz * 0.62}px sans-serif`; ctx.textAlign = 'center'; ctx.fillText('S', x + sz / 2, y + sz * 0.74);
+  if (label) { ctx.textAlign = 'left'; ctx.font = `bold ${sz * 0.6}px sans-serif`; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 6; ctx.fillText('SocialPages', x + sz + 10, y + sz * 0.72); ctx.shadowBlur = 0; } }
+function vidStar(ctx, cx, cy, r, n, rot) { ctx.beginPath(); for (let i = 0; i < n * 2; i++) { const a = rot + i * Math.PI / n, rr = i % 2 ? r * 0.78 : r; ctx.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } ctx.closePath(); }
+function vidFrame(ctx, V, t) {
+  const INTRO = 1.5, SL = 3, n = V.slides.length;
+  ctx.globalAlpha = 1; ctx.textAlign = 'left'; ctx.shadowBlur = 0;
+  if (t < INTRO) return vidIntro(ctx, V, t);
+  const k = Math.floor((t - INTRO) / SL);
+  if (k < n) return vidSlide(ctx, V, V.slides[k], t - INTRO - k * SL, k);
+  vidEnd(ctx, V, t - INTRO - n * SL);
 }
-function vidDrawSlide(ctx, { p, im }, t, SL, s, k, n) {
-  const W = 720, H = 1280, z = 1 + 0.16 * (t / SL), fade = Math.min(1, t / 0.25), pr = pPromo(p);
-  ctx.globalAlpha = 1; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = fade;
-  // fond flou
-  const cs = Math.max(W / im.width, H / im.height) * 1.1; ctx.filter = 'blur(28px) brightness(.55)';
-  ctx.drawImage(im, (W - im.width * cs) / 2, (H - im.height * cs) / 2, im.width * cs, im.height * cs); ctx.filter = 'none';
-  // photo avec zoom
-  const fs = Math.min((W - 40) / im.width, 820 / im.height) * z, dir = k % 2 ? -1 : 1, px = dir * 18 * (t / SL);
-  const iw = im.width * fs, ih = im.height * fs; ctx.save(); vidRR(ctx, 20, 110, W - 40, 840, 26); ctx.clip();
-  ctx.drawImage(im, (W - iw) / 2 + px, 110 + (840 - ih) / 2, iw, ih); ctx.restore();
+function vidIntro(ctx, V, t) {
+  const { W, H, S } = V; vidGrad(ctx, V);
+  // cartes produits qui volent en arrière-plan
+  const th = V.slides.slice(0, 3), nt = th.length; th.forEach((sl, i) => { const e = ease((t - i * 0.12) / 0.7), im = sl.ims[0].im, cw = W * 0.36, ch = cw * 1.2, rel = i - (nt - 1) / 2, x = W / 2 - cw / 2 + rel * W * 0.27 + (1 - e) * W * rel * 0.6, y = H * (V.sq ? 0.58 : 0.64) + (1 - e) * 300;
+    ctx.save(); ctx.globalAlpha = 0.9 * e; ctx.translate(x + cw / 2, y + ch / 2); ctx.rotate(rel * 0.12); ctx.fillStyle = '#fff'; vidRR(ctx, -cw / 2, -ch / 2, cw, ch, 18); ctx.fill();
+    const sc = Math.min((cw - 16) / im.width, (ch - 16) / im.height); ctx.drawImage(im, -im.width * sc / 2, -im.height * sc / 2, im.width * sc, im.height * sc); ctx.restore(); });
+  ctx.globalAlpha = 1;
+  const e1 = back(t / 0.45), cy = V.sq ? H * 0.2 : H * 0.24;
+  ctx.save(); ctx.translate(W / 2, cy); ctx.scale(e1, e1); vidLogo(ctx, -45, -45, 90); ctx.restore();
+  const e2 = back((t - 0.35) / 0.4); ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
+  ctx.save(); ctx.translate(W / 2, cy + 120); ctx.scale(e2, e2); ctx.font = `900 ${V.sq ? 56 : 64}px sans-serif`; ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 12;
+  vidWrap(ctx, V.s.name || 'Ma boutique', W - 80, 2).forEach((l, i) => ctx.fillText(l, 0, i * 68)); ctx.restore();
+  const e3 = ease((t - 0.65) / 0.4); ctx.globalAlpha = e3; ctx.fillStyle = S.sh; ctx.font = `bold ${V.sq ? 32 : 38}px sans-serif`;
+  if (V.slogan) vidWrap(ctx, V.slogan, W - 80, 2).forEach((l, i) => ctx.fillText(l, W / 2, cy + 215 + (1 - e3) * 40 + i * 46));
+  ctx.globalAlpha = 1;
+  if (t > 0.4 && t < 0.62) { ctx.fillStyle = `rgba(255,255,255,${0.7 * (1 - (t - 0.4) / 0.22)})`; ctx.fillRect(0, 0, W, H); } // flash
+  ctx.textAlign = 'left';
+}
+function vidSlide(ctx, V, sl, u, k) {
+  const { W, H, S, sq } = V, p = sl.p, m = sl.ims.length, sub = 3 / m, j = Math.min(m - 1, Math.floor(u / sub)), uu = u - j * sub, ph = sl.ims[j], im = ph.im, pr = pPromo(p);
+  // fond flou (préparé à l'avance)
+  ctx.drawImage(ph.bg, 0, 0, W, H);
+  // zone photo
+  const bx = 24, by = sq ? 82 : 128, bw = W - 48, bh = sq ? H * 0.46 : H * 0.52, tr = ['slide', 'zoom', 'flash'][k % 3], te = ease(u / 0.35);
+  let ox = 0, zs = 1; if (j === 0) { if (tr === 'slide') ox = (1 - te) * W; else if (tr === 'zoom') zs = 1 + 0.35 * (1 - te); }
+  const z = (1 + 0.14 * (uu / sub)) * zs, fs = Math.min(bw / im.width, bh / im.height) * z, iw = im.width * fs, ih = im.height * fs, pan = (k % 2 ? -1 : 1) * 14 * (uu / sub);
+  ctx.save(); ctx.globalAlpha = j > 0 ? Math.min(1, uu / 0.2) : 1; vidRR(ctx, bx + ox, by, bw, bh, 26); ctx.clip(); ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fillRect(bx + ox, by, bw, bh);
+  ctx.drawImage(im, bx + ox + (bw - iw) / 2 + pan, by + (bh - ih) / 2, iw, ih); ctx.restore(); ctx.globalAlpha = 1;
+  // badge étoile « -20 % » ou « Nouveau »
+  if (pr || isNewP(p)) { const e = back((u - 0.75) / 0.35), pulse = 1 + 0.06 * Math.sin(u * 9); if (e > 0) { ctx.save(); ctx.translate(W - 110, by + 70); ctx.scale(e * pulse, e * pulse); ctx.rotate(0.15);
+    ctx.fillStyle = pr ? '#EF4444' : '#2563EB'; vidStar(ctx, 0, 0, 84, 12, u); ctx.fill(); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = '900 34px sans-serif'; ctx.fillText(pr ? `-${pr.pc}%` : 'NEW', 0, 12); ctx.restore(); } }
   // dégradé bas
-  const g = ctx.createLinearGradient(0, 860, 0, H); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(0.35, 'rgba(0,0,0,.75)'); g.addColorStop(1, 'rgba(0,0,0,.95)'); ctx.fillStyle = g; ctx.fillRect(0, 860, W, H - 860);
-  // textes animés
-  const e1 = ease((t - 0.15) / 0.45), e2 = ease((t - 0.55) / 0.35);
-  ctx.textAlign = 'left'; ctx.globalAlpha = fade * e1; ctx.fillStyle = '#86EFAC'; ctx.font = '600 26px sans-serif';
-  ctx.fillText(`🏪 ${s.name || ''}${p.city ? '  ·  📍 ' + p.city : ''}`, 40 - (1 - e1) * 60, 1010);
-  ctx.fillStyle = '#fff'; ctx.font = 'bold 50px sans-serif'; vidWrap(ctx, p.name, W - 80).forEach((l, i) => ctx.fillText(l, 40, 1072 + i * 58 + (1 - e1) * 40));
-  ctx.globalAlpha = fade * e2; const sc = 0.7 + 0.3 * e2 + (e2 >= 1 ? 0.04 * Math.sin(t * 6) : 0);
-  ctx.save(); ctx.translate(40, 1225); ctx.scale(sc, sc); ctx.fillStyle = '#4ADE80'; ctx.font = '900 76px sans-serif'; ctx.fillText(priceTxt(p), 0, 0);
-  if (pr) { const w = ctx.measureText(priceTxt(p)).width; ctx.fillStyle = '#D1D5DB'; ctx.font = '36px sans-serif'; ctx.fillText(pr.o + ' $', w + 20, 0); const w2 = ctx.measureText(pr.o + ' $').width; ctx.fillRect(w + 18, -12, w2 + 4, 3); }
-  ctx.restore();
-  if (pr || isNewP(p)) { const blink = 0.75 + 0.25 * Math.sin(t * 10); ctx.globalAlpha = fade * e2 * blink; ctx.fillStyle = pr ? '#F97316' : '#2563EB'; vidRR(ctx, W - 230, 130, 190, 64, 32); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = 'bold 32px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(pr ? `⚡ -${pr.pc}%` : '✨ Nouveau', W - 135, 173); }
-  ctx.globalAlpha = 1; ctx._prog = t / SL; vidHead(ctx, k, n);
+  const gy = by + bh - 80, g = ctx.createLinearGradient(0, gy, 0, H); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(0.3, 'rgba(0,0,0,.78)'); g.addColorStop(1, 'rgba(0,0,0,.95)'); ctx.fillStyle = g; ctx.fillRect(0, gy, W, H - gy);
+  // textes
+  const ty = by + bh + (sq ? 34 : 54), e1 = ease((u - 0.1) / 0.4);
+  ctx.globalAlpha = e1; ctx.fillStyle = S.ac; ctx.font = `600 ${sq ? 22 : 26}px sans-serif`; ctx.fillText(`🏪 ${V.s.name || ''}${p.city ? '  ·  📍 ' + p.city : ''}`, 40 - (1 - e1) * 60, ty);
+  ctx.fillStyle = '#fff'; ctx.font = `bold ${sq ? 38 : 48}px sans-serif`; const nl = vidWrap(ctx, p.name, W - 80, 2); nl.forEach((l, i) => ctx.fillText(l, 40, ty + (sq ? 46 : 58) + i * (sq ? 44 : 56) + (1 - e1) * 40));
+  // prix autocollant « Prix choc »
+  const py = ty + (sq ? 46 : 58) + nl.length * (sq ? 44 : 56) + (sq ? 22 : 34), e2 = back((u - 0.5) / 0.35);
+  if (e2 > 0) { ctx.globalAlpha = 1; ctx.save(); ctx.font = `900 ${sq ? 52 : 66}px sans-serif`; const pt = priceTxt(p), pw = ctx.measureText(pt).width + 44, phh = sq ? 74 : 92;
+    ctx.translate(40 + pw / 2, py + phh / 2); ctx.rotate(-0.05); const sc = e2 * (1 + (u > 0.85 ? 0.03 * Math.sin(u * 8) : 0)); ctx.scale(sc, sc);
+    ctx.fillStyle = S.st; ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 16; vidRR(ctx, -pw / 2, -phh / 2, pw, phh, 18); ctx.fill(); ctx.shadowBlur = 0;
+    ctx.fillStyle = S.stx; ctx.textAlign = 'center'; ctx.fillText(pt, 0, phh * 0.25); ctx.restore();
+    if (pr) { ctx.globalAlpha = ease((u - 0.8) / 0.3); ctx.fillStyle = '#E5E7EB'; ctx.font = `${sq ? 28 : 34}px sans-serif`; const ox2 = 40 + pw + 24, ot = pr.o + ' $', ow = ctx.measureText(ot).width; ctx.fillText(ot, ox2, py + phh * 0.68); ctx.fillStyle = '#EF4444'; ctx.fillRect(ox2 - 4, py + phh * 0.55, ow + 8, 4); }
+    if (u > 0.5 && u < 0.7) { ctx.globalAlpha = 0.5 * (1 - (u - 0.5) / 0.2); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H); } }
+  // bouton d'appel à l'action (toujours animé : la vidéo ne fige jamais)
+  ctx.globalAlpha = ease((u - 0.9) / 0.3); const cw = sq ? 330 : 440, chh = sq ? 54 : 62, cyy = sq ? py + (sq ? 74 : 92) / 2 - chh / 2 : H - chh - 34, pl = 1 + 0.04 * Math.sin(u * 7);
+  ctx.save(); ctx.translate(sq ? W - cw / 2 - 24 : W / 2, cyy + chh / 2); ctx.scale(pl, pl); ctx.fillStyle = '#25D366'; vidRR(ctx, -cw / 2, -chh / 2, cw, chh, chh / 2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = `bold ${sq ? 21 : 28}px sans-serif`; ctx.fillText(sq ? '📱 Commander sur WhatsApp' : '📱 Commandez sur WhatsApp', 0, chh * 0.17); ctx.restore(); ctx.textAlign = 'left'; ctx.globalAlpha = 1;
+  // entête : barres + logo
+  const n = V.slides.length; for (let i = 0; i < n; i++) { const w = (W - 40 - (n - 1) * 6) / n, x = 20 + i * (w + 6); ctx.fillStyle = 'rgba(255,255,255,.35)'; vidRR(ctx, x, 18, w, 5, 3); ctx.fill(); if (i <= k) { ctx.fillStyle = '#fff'; vidRR(ctx, x, 18, i < k ? w : w * Math.min(1, u / 3), 5, 3); ctx.fill(); } }
+  vidLogo(ctx, 20, 34, 36, true);
 }
-function vidDrawEnd(ctx, s, t, qrM) {
-  const W = 720, H = 1280, e = ease(t / 0.6); const g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, '#15803D'); g.addColorStop(1, '#052E16');
-  ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = e; ctx.textAlign = 'center';
-  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(W / 2, 250, 70, 0, 7); ctx.fill(); ctx.fillStyle = '#16A34A'; ctx.font = 'bold 70px sans-serif'; ctx.fillText((s.name || 'S')[0].toUpperCase(), W / 2, 275);
-  ctx.fillStyle = '#fff'; ctx.font = 'bold 56px sans-serif'; ctx.fillText(cutT(s.name || '', 22), W / 2, 400);
-  ctx.font = '30px sans-serif'; ctx.fillStyle = '#BBF7D0'; ctx.fillText('Toute ma boutique sur SocialPages', W / 2, 450);
-  if (qrM) { const n = qrM.getModuleCount(), size = 380, c = size / n, x0 = (W - size) / 2, y0 = 510; ctx.fillStyle = '#fff'; vidRR(ctx, x0 - 24, y0 - 24, size + 48, size + 48, 24); ctx.fill(); ctx.fillStyle = '#000';
-    for (let r = 0; r < n; r++) for (let q = 0; q < n; q++) if (qrM.isDark(r, q)) ctx.fillRect(x0 + q * c, y0 + r * c, Math.ceil(c), Math.ceil(c)); }
-  ctx.fillStyle = '#fff'; ctx.font = 'bold 36px sans-serif'; ctx.fillText('📱 Scannez et commandez', W / 2, 1000); ctx.fillText('sur WhatsApp', W / 2, 1048);
-  ctx.font = '26px sans-serif'; ctx.fillStyle = '#BBF7D0'; ctx.fillText(shopUrl(s).replace(/^https?:\/\//, ''), W / 2, 1120);
+function vidEnd(ctx, V, t) {
+  const { W, H, S, sq } = V; vidGrad(ctx, V);
+  // halo lumineux qui tourne (l'image bouge toujours)
+  ctx.save(); ctx.globalAlpha = 0.12; ctx.translate(W / 2, H * 0.4); ctx.rotate(t * 0.6); ctx.fillStyle = '#fff'; for (let i = 0; i < 12; i++) { ctx.rotate(Math.PI / 6); ctx.fillRect(-14, 0, 28, Math.max(W, H)); } ctx.restore(); ctx.globalAlpha = 1;
+  ctx.textAlign = 'center'; const e = back(t / 0.45), y0 = sq ? 40 : 190;
+  ctx.save(); ctx.translate(W / 2, y0 + 50); ctx.scale(e, e); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, 0, 54, 0, 7); ctx.fill(); ctx.fillStyle = '#16A34A'; ctx.font = '900 56px sans-serif'; ctx.fillText((V.s.name || 'S')[0].toUpperCase(), 0, 20); ctx.restore();
+  ctx.globalAlpha = ease((t - 0.15) / 0.35); ctx.fillStyle = '#fff'; ctx.font = `900 ${sq ? 44 : 54}px sans-serif`; ctx.fillText(cutT(V.s.name || '', 22), W / 2, y0 + 160);
+  let y = y0 + 210;
+  if (V.phone) { const e2 = back((t - 0.3) / 0.4); ctx.globalAlpha = 1; ctx.fillStyle = S.sh; ctx.font = `bold ${sq ? 28 : 34}px sans-serif`; ctx.fillText('📱 Écrivez-moi sur WhatsApp', W / 2, y + 10);
+    ctx.save(); ctx.translate(W / 2, y + 70); ctx.scale(e2 * (1 + 0.03 * Math.sin(t * 6)), e2 * (1 + 0.03 * Math.sin(t * 6))); ctx.fillStyle = '#25D366'; const bw = W - 90, bh = sq ? 74 : 90; vidRR(ctx, -bw / 2, -bh / 2, bw, bh, bh / 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = `900 ${sq ? 42 : 52}px sans-serif`; ctx.fillText(V.phone, 0, bh * 0.2); ctx.restore(); y += sq ? 140 : 160; }
+  if (V.qrM) { const e3 = ease((t - 0.5) / 0.4), n = V.qrM.getModuleCount(), size = (sq ? 160 : V.phone ? 300 : 380) * e3, c = size / n, x0 = (W - size) / 2, qy = y + 10;
+    ctx.globalAlpha = e3; ctx.fillStyle = '#fff'; vidRR(ctx, x0 - 16, qy - 16, size + 32, size + 32, 18); ctx.fill(); ctx.fillStyle = '#000';
+    for (let r = 0; r < n; r++) for (let q = 0; q < n; q++) if (V.qrM.isDark(r, q)) ctx.fillRect(x0 + q * c, qy + r * c, Math.ceil(c), Math.ceil(c));
+    ctx.fillStyle = S.sh; ctx.font = `${sq ? 22 : 28}px sans-serif`; ctx.fillText(V.phone ? 'ou scannez pour voir toute la boutique' : '📱 Scannez pour voir la boutique et commander', W / 2, qy + size + (sq ? 40 : 56)); y = qy + size + (sq ? 50 : 70); }
+  ctx.globalAlpha = ease((t - 0.7) / 0.4); ctx.fillStyle = '#fff'; ctx.font = `bold ${sq ? 22 : 26}px sans-serif`; ctx.fillText(shopUrl(V.s).replace(/^https?:\/\//, ''), W / 2, Math.min(y + (sq ? 26 : 20), H - (sq ? 58 : 90)));
+  ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.font = `600 ${sq ? 20 : 24}px sans-serif`; ctx.fillText('✨ Créée gratuitement avec SocialPages', W / 2, H - (sq ? 24 : 40));
   ctx.globalAlpha = 1; ctx.textAlign = 'left';
 }
 
