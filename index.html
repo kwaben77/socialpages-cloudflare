@@ -540,6 +540,77 @@ video.pm{background:#000}
 .affbtns button{width:44px;height:44px;border-radius:50%;border:none;background:rgba(0,0,0,.55);color:#fff;font-size:18px}
 .affdots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:5px}
 .affdots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}.affdots i.on{background:#4ADE80}
+/* ===== SocialPages TV : Mode Pub ===== */
+.pubx{position:fixed;inset:0;z-index:420;background:#000;color:#fff;overflow:hidden;user-select:none;-webkit-user-select:none}
+.pubx.nocur,.pubx.nocur *{cursor:none!important}
+.pstage,.pslide{position:absolute;inset:0}
+.pslide{opacity:0;transition:opacity .45s ease}.pslide.on{opacity:1;z-index:1}
+.pbg{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(30px) brightness(.5);transform:scale(1.1)}
+.pxim{position:absolute;left:50%;top:44%;max-width:94%;max-height:66%;object-fit:contain;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.55);transform:translate(-50%,-50%)}
+.pslide.on .kb1{animation:kb1 3.6s ease-out forwards}.pslide.on .kb2{animation:kb2 3.6s ease-out forwards}
+.pslide.on .kb3{animation:kb3 3.6s ease-out forwards}.pslide.on .kb4{animation:kb4 3.6s ease-out forwards}
+@keyframes kb1{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-48%,-50%) scale(1.18)}}
+@keyframes kb2{from{transform:translate(-50%,-50%) scale(1.18)}to{transform:translate(-50%,-50%) scale(1)}}
+@keyframes kb3{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-52%,-48%) scale(1.2)}}
+@keyframes kb4{from{transform:translate(-50%,-52%) scale(1.05)}to{transform:translate(-50%,-49%) scale(1.22)}}
+.pubx.paused .pxim,.pubx.paused .pbars b{animation-play-state:paused!important}
+.pnoimg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:120px;background:#14532D}
+.pshade{position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(transparent,rgba(0,0,0,.78) 45%,rgba(0,0,0,.95))}
+.pcap{position:absolute;left:0;right:0;bottom:0;padding:0 22px calc(env(safe-area-inset-bottom,0px) + 30px)}
+.pshop{color:#86EFAC;font-weight:600;font-size:15px;opacity:0}
+.pname{font-size:30px;font-weight:800;line-height:1.15;margin:6px 0 8px;opacity:0;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.pprice{display:flex;align-items:baseline;gap:12px;opacity:0}.pprice span{font-size:46px;font-weight:900;color:#4ADE80}.pprice s{color:#D1D5DB;font-size:22px}
+.pbadge{position:absolute;right:20px;bottom:calc(100% + 14px);background:#F97316;font-weight:800;font-size:20px;padding:9px 16px;border-radius:999px;opacity:0}
+.pbadge.new{background:#2563EB}
+.pslide.on .pshop{animation:pIn .5s .1s ease-out forwards}.pslide.on .pname{animation:pUp .55s .2s cubic-bezier(.2,.9,.3,1.2) forwards}
+.pslide.on .pprice{animation:pPop .5s .6s cubic-bezier(.2,.9,.3,1.4) forwards}.pslide.on .pbadge{animation:pPop .4s .8s ease-out forwards,pBlink .9s 1.2s ease-in-out infinite}
+@keyframes pIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+@keyframes pUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes pPop{0%{opacity:0;transform:scale(.5)}70%{opacity:1;transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
+@keyframes pBlink{50%{transform:scale(1.1);filter:brightness(1.2)}}
+.pbars{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);left:12px;right:12px;display:flex;gap:5px;z-index:3}
+.pbars i{flex:1;height:4px;border-radius:3px;background:rgba(255,255,255,.3);overflow:hidden}.pbars i.done{background:#fff}
+.pbars i b{display:block;height:100%;width:0;background:#fff}.pbars i.run b{animation:pBar linear forwards}
+@keyframes pBar{to{width:100%}}
+.pmark{position:absolute;top:calc(env(safe-area-inset-top,0px) + 24px);left:14px;z-index:3;font-weight:800;display:flex;align-items:center;gap:8px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.pmark .logo,.tvlogo .logo{width:30px;height:30px;border-radius:9px;font-size:17px;display:inline-flex;align-items:center;justify-content:center}
+.pmark b,.tvlogo b{background:#DC2626;padding:1px 7px;border-radius:6px;font-size:13px}
+.pbtns{position:absolute;top:calc(env(safe-area-inset-top,0px) + 22px);right:12px;display:flex;gap:8px;z-index:5}
+.pbtns button{width:44px;height:44px;border-radius:50%;border:none;background:rgba(0,0,0,.45);color:#fff;font-size:18px;cursor:pointer}
+.pzone{position:absolute;top:80px;bottom:0;z-index:4}.pzone.l{left:0;width:30%}.pzone.m{left:30%;width:40%}.pzone.r{right:0;width:30%}
+.ppause{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;background:rgba(0,0,0,.6);padding:12px 22px;border-radius:999px;font-weight:700;font-size:20px}
+.ppause.hidden{display:none}
+.pend{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:30px;background:linear-gradient(150deg,#15803D,#052E16)}
+.pslide.on .pend>*{animation:pUp .6s ease-out both}.pslide.on .pend>*:nth-child(2){animation-delay:.1s}.pslide.on .pend>*:nth-child(3){animation-delay:.2s}.pslide.on .pend>*:nth-child(4){animation:pPop .6s .3s both}
+.pendn{font-size:32px;font-weight:900}.pends{color:#BBF7D0;font-size:16px}
+.pqr{background:#fff;border-radius:20px;padding:14px;line-height:0;margin:10px 0}.pqr svg{width:min(56vw,280px);height:min(56vw,280px)}
+.pendc{font-weight:700;font-size:18px;line-height:1.35}.pendu{color:#BBF7D0;font-size:13px}
+/* Télévision / ordinateur : écran large */
+@media (min-aspect-ratio:4/3){
+  .pxim{left:36%;top:50%;max-width:64%;max-height:84%}
+  .pshade{left:auto;top:0;width:46%;height:auto;background:linear-gradient(90deg,transparent,rgba(0,0,0,.8) 35%,rgba(0,0,0,.92))}
+  .pcap{left:auto;width:36%;top:0;display:flex;flex-direction:column;justify-content:center;padding:0 4vw 0 1vw}
+  .pname{font-size:clamp(28px,3.4vw,60px)}.pprice span{font-size:clamp(40px,5.2vw,96px)}.pshop{font-size:clamp(15px,1.4vw,24px)}
+  .pbadge{position:static;align-self:flex-start;margin-top:16px;font-size:clamp(18px,1.8vw,30px)}
+  .pend{flex-direction:column}.pqr svg{width:min(36vh,320px);height:min(36vh,320px)}.pendn{font-size:clamp(32px,3.5vw,60px)}
+}
+/* Mode affiche (magasin) en écran large */
+@media (min-aspect-ratio:4/3){.aff{flex-direction:row}.affimg{flex:1.4}.affinfo{flex:1;justify-content:center;padding:30px}.affname{font-size:clamp(24px,3vw,48px)!important}.affprice{font-size:clamp(32px,4vw,70px)!important}.affqr svg{width:clamp(110px,18vw,240px);height:clamp(110px,18vw,240px)}}
+/* Lanceur TV */
+.tvl{position:fixed;inset:0;z-index:415;background:linear-gradient(150deg,#14532D,#030712);color:#fff;display:flex;align-items:center;justify-content:center;overflow:auto;padding:20px}
+.tvbox{width:min(520px,100%);text-align:center}.tvbox h2{margin:6px 0 2px;font-size:28px}.tvsub{color:#BBF7D0;margin:0 0 18px}
+.tvlogo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:20px}
+.tvb{display:flex;flex-direction:column;align-items:center;width:100%;margin:10px 0;padding:16px;border:3px solid transparent;border-radius:18px;background:#fff;color:#111;font-size:20px;font-weight:800;cursor:pointer}
+.tvb small{font-weight:500;font-size:13px;color:#4B5563;margin-top:3px}.tvb:focus{outline:none;border-color:#FACC15;transform:scale(1.03)}
+.tvb.pubgo,.pbtn.pubgo{background:linear-gradient(90deg,#F97316,#DC2626);color:#fff}.tvb.pubgo small{color:#FFEDD5}
+.tvb.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35);font-size:16px;padding:10px}
+.tvsnd{display:inline-flex;gap:8px;align-items:center;margin:6px 0;font-size:16px;white-space:nowrap}.tvsnd input{width:22px;height:22px;margin:0}.tvtip{color:#9CA3AF;font-size:13px;margin-top:14px}
+.tvlink{background:#F3F4F6;border-radius:10px;padding:10px;font-family:monospace;font-size:13px;word-break:break-all;margin:10px 0}
+.pbtn.pubgo{border:none;font-weight:800}
+.vidwrap{display:flex;justify-content:center}.vidwrap canvas{width:min(46vw,200px);aspect-ratio:9/16;height:auto;border-radius:12px;background:#000}
+.vidbar{height:8px;background:#E5E7EB;border-radius:4px;overflow:hidden;margin:12px 0 4px}.vidbar b{display:block;height:100%;width:0;background:linear-gradient(90deg,#F97316,#DC2626)}
+.vidout{width:100%;max-height:52vh;border-radius:12px;background:#000;margin-bottom:10px}
+
 @media (orientation:landscape) and (min-width:700px){.aff{flex-direction:row}.affinfo{width:40%;justify-content:center}}
 /* Live : produit épinglé */
 .lvpin{position:relative;z-index:4;margin-bottom:10px;background:rgba(255,255,255,.96);color:#111;border-radius:16px;padding:8px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
@@ -790,7 +861,7 @@ const SUPABASE_KEY = 'sb_publishable_N2mmzxODT7V09XFmdP2ZBA_IpX0Z-9j';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
 // Lien partagé ouvert directement (/p/<id>, /v/<nom>, /s/<id>) : on le transforme en adresse interne de l'app
-(() => { const m = location.pathname.match(/^\/(p|v|s)\/([^\/?#]+)\/?$/); if (m) history.replaceState(null, '', '/' + location.search + '#/' + ({ p: 'p', v: 'vendeur', s: 's' })[m[1]] + '/' + m[2]); })();
+(() => { const m = location.pathname.match(/^\/(p|v|s|tv)\/([^\/?#]+)\/?$/); if (m) history.replaceState(null, '', '/' + location.search + '#/' + ({ p: 'p', v: 'vendeur', s: 's', tv: 'tv' })[m[1]] + '/' + m[2]); })();
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const APP = ['accueil','decouvrir','produits','messages','appels','mapage','settings','chat','user','product','admin'];
 try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('sp_ref', r.toLowerCase().replace(/[^a-z0-9_.]/g, '').slice(0, 30)); } catch (e) {}
@@ -901,7 +972,7 @@ async function logout() {
 }
 async function boot() {
   const { data: { session } } = await sb.auth.getSession();
-  if (!session) { go(route() ? 'pub' : 'explore'); liveHash(); return; }
+  if (!session) { go(route() ? 'pub' : 'explore'); liveHash(); tvHash(); return; }
   const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
   if (!data) { await sb.auth.signOut(); return go('landing'); }
   me = { ...data, email: session.user.email };
@@ -915,7 +986,7 @@ async function boot() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.id}` }, ev => onNotif(ev.new))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ev => { handleRealtimePost(ev.new); }).subscribe();
   sigListen(); liveDirListen(); setTimeout(() => { registerNative(); checkNativePending(); }, 300); checkAdmin(); presStart(); setTimeout(checkInvites, 1200);
-  go(route() ? 'product' : 'accueil'); liveHash();
+  go(route() ? 'product' : 'accueil'); liveHash(); tvHash();
   setTimeout(welcome, 1500);
 }
 
@@ -1152,7 +1223,7 @@ function shcHTML(sc) {
   return `<div class="box shc" data-i="0"><div class="ph"><div onclick="${sellerJs(a)}" style="display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0">${av(a, 40)}<div style="min-width:0"><b>${esc(a.name || '')}</b><div class="mt">🏪 Vitrine · ${sc.items.length} produits</div></div></div>${!mine && myFollows && !myFollows.has(a.id) ? `<button type="button" class="ffw" data-u="${a.id}" onclick="feedFollow('${a.id}',this)">+ Suivre</button>` : ''}</div>
     <div class="shv" onclick="shOpen(this)">${slides}</div>
     <div class="shdots">${sc.items.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>
-    <div class="fpacts">${mine ? '' : `<button type="button" class="fpbuy" onclick="shOrder(this)">📱 Commander</button>`}<button type="button" class="fpsee" onclick="location.hash='#/vendeur/${encodeURIComponent(a.username || '')}'">🏪 Boutique</button><button type="button" class="fpsh shsnd" title="Écouter" aria-label="Écouter" onclick="shSpeak(this)">🔊</button></div></div>`;
+    <div class="fpacts">${mine ? '' : `<button type="button" class="fpbuy" onclick="shOrder(this)">📱 Commander</button>`}<button type="button" class="fpsee" onclick="location.hash='#/vendeur/${encodeURIComponent(a.username || '')}'">🏪 Boutique</button><button type="button" class="fpsh" title="Voir la pub" aria-label="Voir la pub" onclick="shPub(this)">▶️</button><button type="button" class="fpsh shsnd" title="Écouter" aria-label="Écouter" onclick="shSpeak(this)">🔊</button></div></div>`;
 }
 function shGo(card, i) {
   const sl = card.querySelectorAll('.shs'), n = sl.length; if (!n) return; i = ((i % n) + n) % n;
@@ -1893,13 +1964,15 @@ async function catalogPage(u, body) {
   if (!s) return body.innerHTML = empty('😕', 'Vendeur introuvable');
   const { data } = await sb.from('products').select(PQ).eq('user_id', s.id).order('bumped_at', { ascending: false }).limit(60);
   prods = data || []; document.title = `${s.name} | SocialPages`;
+  window.shopCur = s; const hasP = prods.some(p => !isSoldP(p));
   const own = !!me && me.id === s.id, sph = (s.phone || '').replace(/\D/g, ''), surl = location.origin + '/v/' + s.username;
   window.shopWa = () => { waSend(sph, `Bonjour ${s.name}, j'ai vu votre boutique sur SocialPages : ${surl}\nJe voudrais des informations.`); guestNudge(s.name); };
   window.shopShare = () => { const t = `🏪 Découvrez la boutique de ${s.name} sur SocialPages (${prods.length} produit${prods.length > 1 ? 's' : ''}) 👉 ${surl}`; if (navigator.share) navigator.share({ text: t }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); };
   body.innerHTML = `<div class="box" style="text-align:center"><div style="display:flex;justify-content:center">${av(s, 80)}</div>
     <div style="font-size:22px;font-weight:bold;margin-top:8px">${esc(s.name)}${prods.length > 5 ? ' <span style="color:#10B981;font-size:14px">✅ Vérifié</span>' : ''}</div>
     <div class="mt">@${esc(s.username)} · ${prods.length} produit${prods.length > 1 ? 's' : ''}</div>
-    ${own ? `${prods.some(p => !isSoldP(p)) ? `<button class="pbtn b" onclick="afficheStart('${esc(s.name).replace(/'/g, '&#39;')}')">📺 Mode affiche (comptoir, vitrine)</button>` : ''}
+    ${hasP ? '<button class="pbtn pubgo" onclick="pubShop()">▶️ Voir la pub de la boutique</button>' : ''}
+    ${own ? `${hasP ? `<button class="pbtn b" onclick="pubVideo()">🎬 Créer ma pub vidéo (statut WhatsApp, TikTok)</button><button class="pbtn b" onclick="tvLink()">📺 SocialPages TV (lien pour télévision)</button>` : ''}${prods.some(p => !isSoldP(p)) ? `<button class="pbtn b" onclick="afficheStart('${esc(s.name).replace(/'/g, '&#39;')}')">📺 Mode affiche (comptoir, vitrine)</button>` : ''}
     <button class="pbtn gray" onclick="copyTxt(location.origin + '/v/${esc(s.username)}')">🔗 Copier le lien du catalogue</button>`
     : `${lives[s.id] ? `<button class="pbtn" style="background:#DC2626;color:#fff" onclick="joinLive('${s.id}')">🔴 En direct maintenant : regarder</button>` : ''}
     ${sph ? `<button class="pbtn" style="background:#16A34A;color:#fff" onclick="shopWa()">📱 Contacter ${esc(s.name)} sur WhatsApp</button>` : ''}
@@ -1924,20 +1997,290 @@ async function afficheStart(shop) {
 function affNext() {
   if (!aff) return; const n = aff.items.length; aff.i = (aff.i + 1) % n; const p = aff.items[aff.i], m = getMeta(p.description);
   const img = p.images?.[0] || p.image_url, promo = m.o && m.o > p.price && p.status !== 'Gratuit';
-  $('aff-img').src = img || ''; $('aff-img').style.visibility = img ? 'visible' : 'hidden';
+  $('aff-img').src = (img && pubImgs[img]) || img || ''; $('aff-img').style.visibility = img ? 'visible' : 'hidden'; if (img) pubLoad(img);
   $('aff-name').textContent = p.name;
   $('aff-price').innerHTML = priceTxt(p) + (promo ? ` <s>${m.o} $</s><span class="affpromo">-${Math.round((1 - p.price / m.o) * 100)}%</span>` : '');
   try { const q = qrcode(0, 'M'); q.addData(location.origin + '/p/' + p.id); q.make(); $('aff-qr').innerHTML = q.createSvgTag(4); } catch (e) { $('aff-qr').innerHTML = ''; }
   $('aff-dots').innerHTML = aff.items.map((_, k) => `<i class="${k === aff.i ? 'on' : ''}"></i>`).join('');
-  const nx = aff.items[(aff.i + 1) % n]; if (nx) { const im = new Image(); im.src = nx.images?.[0] || nx.image_url || ''; }
+  const nx = aff.items[(aff.i + 1) % n]; if (nx) pubLoad(pImg(nx));
   if (aff.snd && window.speechSynthesis) try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(p.name + '. ' + sayPrice(p)); u.lang = 'fr-FR'; speechSynthesis.speak(u); } catch (e) {}
 }
 function affSound() { if (!aff) return; if (!window.speechSynthesis) return toast('Voix indisponible sur cet appareil.'); aff.snd = !aff.snd; $('aff-snd').textContent = aff.snd ? '🔊' : '🔇'; if (!aff.snd) speechSynthesis.cancel(); }
 function afficheStop() {
   if (!aff) return; clearInterval(aff.t); try { aff.lock?.release(); } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {}
-  aff = null; $('aff')?.remove(); try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
+  clearInterval(aff.rf); aff = null; $('aff')?.remove(); try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && aff) afficheStop(); });
+document.addEventListener('keydown', e => { if (!aff) return; if (e.key === 'Escape') afficheStop(); else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { if (e.key === 'ArrowLeft') aff.i = (aff.i - 2 + aff.items.length) % aff.items.length; clearInterval(aff.t); affNext(); aff.t = setInterval(affNext, 6000); } });
+// ===================== SocialPages TV : pub plein écran, mode magasin, pub vidéo =====================
+// Les photos sont téléchargées UNE seule fois puis gardées en mémoire (économise le quota gratuit).
+const pubImgs = {};
+async function pubLoad(url) {
+  if (!url) return null; if (pubImgs[url]) return pubImgs[url];
+  try { const r = await fetch(url, { mode: 'cors', cache: 'force-cache' }); if (!r.ok) throw 0; return pubImgs[url] = URL.createObjectURL(await r.blob()); } catch (e) { return url; }
+}
+const pImg = p => p.images?.[0] || p.image_url || '';
+const pPromo = p => { const m = getMeta(p.description); return m.o && m.o > p.price && p.status !== 'Gratuit' ? { o: m.o, pc: Math.round((1 - p.price / m.o) * 100) } : null; };
+const shopUrl = s => location.origin + '/v/' + encodeURIComponent(s.username || '');
+
+// ---------- Sons : créés dans le code (aucun fichier, aucun droit d'auteur) ----------
+function pubAudio(rec) {
+  const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+  const C = new AC(), out = C.createGain(); out.gain.value = 0.55; out.connect(C.destination);
+  let dest = null; if (rec) { dest = C.createMediaStreamDestination(); out.connect(dest); }
+  const A = { C, out, dest, on: true, beat: 0 };
+  const noise = () => { const b = C.createBuffer(1, C.sampleRate * 0.6, C.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; const s = C.createBufferSource(); s.buffer = b; return s; };
+  A.whoosh = () => { if (!A.on) return; const t = C.currentTime, s = noise(), f = C.createBiquadFilter(), g = C.createGain();
+    f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(300, t); f.frequency.exponentialRampToValueAtTime(3500, t + 0.35);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.35, t + 0.12); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.5);
+    s.connect(f); f.connect(g); g.connect(out); s.start(t); s.stop(t + 0.55); };
+  A.chime = (hi) => { if (!A.on) return; const t = C.currentTime; [hi ? 1046.5 : 784, hi ? 1568 : 1174.7].forEach((fr, k) => { const o = C.createOscillator(), g = C.createGain();
+    o.type = 'sine'; o.frequency.value = fr; g.gain.setValueAtTime(0.0001, t + k * 0.09); g.gain.exponentialRampToValueAtTime(0.18, t + k * 0.09 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + k * 0.09 + 0.7);
+    o.connect(g); g.connect(out); o.start(t + k * 0.09); o.stop(t + k * 0.09 + 0.75); }); };
+  const kick = t => { const o = C.createOscillator(), g = C.createGain(); o.frequency.setValueAtTime(130, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.22);
+    g.gain.setValueAtTime(0.5, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3); o.connect(g); g.connect(out); o.start(t); o.stop(t + 0.32); };
+  const hat = t => { const s = noise(), f = C.createBiquadFilter(), g = C.createGain(); f.type = 'highpass'; f.frequency.value = 7000;
+    g.gain.setValueAtTime(0.08, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06); s.connect(f); f.connect(g); g.connect(out); s.start(t); s.stop(t + 0.08); };
+  const CH = [[220, 277.2, 329.6], [196, 246.9, 293.7], [174.6, 220, 261.6], [196, 246.9, 329.6]];
+  const pad = (t, ch) => ch.forEach(fr => { const o = C.createOscillator(), g = C.createGain(); o.type = 'triangle'; o.frequency.value = fr;
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.035, t + 0.3); g.gain.linearRampToValueAtTime(0.0001, t + 2.3); o.connect(g); g.connect(out); o.start(t); o.stop(t + 2.4); });
+  A.tick = () => { if (!A.on) return; const t = C.currentTime + 0.02, b = A.beat++; kick(t); hat(t + 0.29); if (b % 4 === 0) pad(t, CH[(b / 4) % 4]); };
+  A.start = () => { try { C.resume(); } catch (e) {} clearInterval(A.iv); A.iv = setInterval(A.tick, 580); A.tick(); };
+  A.stop = () => { clearInterval(A.iv); try { C.close(); } catch (e) {} };
+  return A;
+}
+
+// ---------- Mode Pub : 3 s par produit, zoom, textes animés, carte QR toutes les 5 photos ----------
+let pub = null;
+const PUB_MS = 3000, PUB_END_MS = 5000, PUB_EVERY = 5;
+async function pubStart(shop, items, opt = {}) {
+  items = (items || []).filter(p => !isSoldP(p)).slice(0, 20);
+  if (!items.length) return toast('Aucun produit disponible à présenter.');
+  if (pub) pubStop();
+  pub = { shop, items, i: -1, cnt: 0, end: false, paused: false, tv: !!opt.tv, snd: opt.sound !== false, buf: 0 };
+  document.body.insertAdjacentHTML('beforeend', `<div id="pubx" class="pubx${pub.tv ? ' tv' : ''}">
+    <div class="pbars" id="pb-bars"></div>
+    <div class="pstage"><div class="pslide" id="ps-0"></div><div class="pslide" id="ps-1"></div></div>
+    <div class="pmark"><span class="logo">S</span> SocialPages${pub.tv ? ' <b>TV</b>' : ''}</div>
+    <div class="pzone l" onclick="pubStep(-1)"></div><div class="pzone m" onclick="pubPause()"></div><div class="pzone r" onclick="pubStep(1)"></div>
+    <div class="pbtns"><button type="button" id="pb-snd" onclick="pubSound()" aria-label="Son">${pub.snd ? '🔊' : '🔇'}</button><button type="button" onclick="pubStop()" aria-label="Fermer">✖</button></div>
+    <div class="ppause hidden" id="pb-pause">⏸ Pause</div></div>`);
+  try { await document.documentElement.requestFullscreen?.(); } catch (e) {}
+  try { pub.lock = await navigator.wakeLock?.request('screen'); } catch (e) {}
+  pub.A = pubAudio(false); if (pub.A) { pub.A.on = pub.snd; if (pub.snd) pub.A.start(); }
+  await Promise.all(items.slice(0, 3).map(p => pubLoad(pImg(p))));
+  if (!pub) return;
+  items.slice(3).forEach(p => pubLoad(pImg(p)));
+  pubNext();
+  if (pub.tv && opt.refresh) pub.rf = setInterval(opt.refresh, 15 * 60e3);
+}
+function pubBars() {
+  const n = Math.min(PUB_EVERY, pub.items.length), k = pub.end ? n : pub.cnt - 1;
+  $('pb-bars').innerHTML = Array.from({ length: n }, (_, j) => `<i class="${j < k ? 'done' : j === k && !pub.end ? 'run' : ''}"><b style="animation-duration:${PUB_MS}ms"></b></i>`).join('');
+}
+function pubSlideHTML(p) {
+  const img = pImg(p), src = pubImgs[img] || img, pr = pPromo(p), kb = 'kb' + (1 + Math.floor(Math.random() * 4)), a = p.profiles || pub.shop || {};
+  return `${src ? `<div class="pbg" style="background-image:url('${esc(src)}')"></div><img class="pxim ${kb}" src="${esc(src)}" alt="">` : `<div class="pnoimg">${isBook(p) ? '📚' : '📦'}</div>`}
+    <div class="pshade"></div>
+    <div class="pcap"><div class="pshop">🏪 ${esc(a.name || pub.shop?.name || '')}${p.city ? ' · 📍 ' + esc(p.city) : ''}</div>
+      <div class="pname">${esc(cutT(p.name, 70))}</div>
+      <div class="pprice"><span>${priceTxt(p)}</span>${pr ? `<s>${pr.o} $</s>` : ''}</div>
+      ${pr ? `<div class="pbadge">⚡ -${pr.pc}%</div>` : isNewP(p) ? '<div class="pbadge new">✨ Nouveau</div>' : ''}</div>`;
+}
+function pubEndHTML() {
+  const s = pub.shop || {}, url = shopUrl(s); let qr = '';
+  try { const q = qrcode(0, 'M'); q.addData(url); q.make(); qr = q.createSvgTag(6, 0); } catch (e) {}
+  return `<div class="pend"><div class="pendav">${av(s, 84)}</div><div class="pendn">${esc(s.name || 'Notre boutique')}</div>
+    <div class="pends">${pub.items.length} produit${pub.items.length > 1 ? 's' : ''} vous attendent</div>
+    ${qr ? `<div class="pqr">${qr}</div>` : ''}<div class="pendc">📱 Scannez pour voir toute la boutique<br>et commander sur WhatsApp</div>
+    <div class="pendu">${esc(url.replace(/^https?:\/\//, ''))}</div></div>`;
+}
+function pubShow(html, cls) {
+  pub.buf ^= 1; const el = $('ps-' + pub.buf), old = $('ps-' + (pub.buf ^ 1)); if (!el) return;
+  el.className = 'pslide ' + (cls || ''); el.innerHTML = html; void el.offsetWidth; el.classList.add('on'); old?.classList.remove('on');
+}
+function pubNext(dir = 1) {
+  if (!pub) return; clearTimeout(pub.t);
+  const n = pub.items.length, per = Math.min(PUB_EVERY, n);
+  if (dir > 0 && !pub.end && pub.cnt >= per) {
+    pub.end = true; pub.cnt = 0; pubBars(); pubShow(pubEndHTML(), 'endc'); pub.A?.chime(true);
+    if (!pub.paused) pub.t = setTimeout(pubNext, PUB_END_MS); return;
+  }
+  if (dir > 0) { pub.i = (pub.i + 1) % n; pub.cnt++; }
+  else if (!pub.end) { pub.i = (pub.i - 1 + n) % n; pub.cnt = Math.max(1, pub.cnt - 1); }
+  else pub.cnt = per;
+  pub.end = false; pubBars();
+  pubShow(pubSlideHTML(pub.items[pub.i])); pub.A?.whoosh();
+  const nx = pub.items[(pub.i + 1) % n]; if (nx) pubLoad(pImg(nx));
+  if (!pub.paused) pub.t = setTimeout(pubNext, PUB_MS);
+}
+function pubStep(d) { if (!pub) return; if (pub.paused) { pub.paused = false; $('pb-pause')?.classList.add('hidden'); $('pubx')?.classList.remove('paused'); } pubNext(d); }
+function pubPause() {
+  if (!pub) return; pub.paused = !pub.paused; $('pb-pause')?.classList.toggle('hidden', !pub.paused); $('pubx')?.classList.toggle('paused', pub.paused);
+  if (pub.paused) clearTimeout(pub.t); else pub.t = setTimeout(pubNext, pub.end ? 2500 : 1500);
+}
+function pubSound() {
+  if (!pub) return; pub.snd = !pub.snd; $('pb-snd').textContent = pub.snd ? '🔊' : '🔇';
+  if (!pub.A) pub.A = pubAudio(false); if (!pub.A) return toast('Son indisponible sur cet appareil.');
+  pub.A.on = pub.snd; if (pub.snd) pub.A.start(); else clearInterval(pub.A.iv);
+}
+function pubStop() {
+  if (!pub) return; clearTimeout(pub.t); clearInterval(pub.rf); pub.A?.stop(); try { pub.lock?.release(); } catch (e) {}
+  pub = null; $('pubx')?.remove(); try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
+}
+document.addEventListener('keydown', e => {
+  if (!pub) return;
+  if (e.key === 'Escape' || e.key === 'Backspace' || e.key === 'BrowserBack') { e.preventDefault(); pubStop(); }
+  else if (e.key === 'ArrowRight') pubStep(1); else if (e.key === 'ArrowLeft') pubStep(-1);
+  else if (e.key === 'Enter' || e.key === ' ' || e.key === 'MediaPlayPause') { e.preventDefault(); pubPause(); }
+});
+let pubIdle; document.addEventListener('mousemove', () => { const x = $('pubx'); if (!x) return; x.classList.remove('nocur'); clearTimeout(pubIdle); pubIdle = setTimeout(() => $('pubx')?.classList.add('nocur'), 3000); });
+const isNewP = p => p.created_at && Date.now() - new Date(p.created_at) < 7 * 864e5;
+// Boutons d'entrée
+function pubShop() { const s = window.shopCur; if (!s) return; pubStart(s, prods.filter(p => p.user_id === s.id)); }
+function shPub(btn) {
+  const card = btn.closest('.shc'), items = [...card.querySelectorAll('.shs')].map(x => fpCache[x.dataset.pid]).filter(Boolean);
+  if (items.length) { shStop?.(card); pubStart(items[0].profiles || {}, items); }
+}
+
+// ---------- SocialPages TV : lien public pour télévision #/tv/<username> ----------
+async function tvLoad(u) {
+  const { data: s } = await sb.from('profiles').select('id,name,username,avatar_url,phone').eq('username', u).maybeSingle(); if (!s) return null;
+  const { data } = await sb.from('products').select(PQ).eq('user_id', s.id).order('bumped_at', { ascending: false }).limit(40);
+  return { s, items: (data || []).filter(p => !isSoldP(p)) };
+}
+function tvHash() {
+  const m = location.hash.match(/^#\/tv\/([a-z0-9_.]{3,30})/i); if (!m) return false;
+  history.replaceState(null, '', location.pathname + location.search); tvOpen(m[1].toLowerCase()); return true;
+}
+async function tvOpen(u) {
+  $('tvl')?.remove();
+  document.body.insertAdjacentHTML('beforeend', '<div id="tvl" class="tvl"><div class="spin"></div></div>');
+  const r = await tvLoad(u), el = $('tvl'); if (!el) return;
+  if (!r) { el.innerHTML = `<div class="tvbox"><h2>😕 Boutique introuvable</h2><button class="tvb" autofocus onclick="$('tvl').remove()">Fermer</button></div>`; return; }
+  window.tvData = r; r.items.slice(0, 4).forEach(p => pubLoad(pImg(p)));
+  el.innerHTML = `<div class="tvbox"><div class="tvlogo"><span class="logo">S</span> SocialPages <b>TV</b></div>
+    <div style="display:flex;justify-content:center;margin:10px 0">${av(r.s, 90)}</div><h2>${esc(r.s.name)}</h2>
+    <p class="tvsub">${r.items.length} produit${r.items.length > 1 ? 's' : ''} disponible${r.items.length > 1 ? 's' : ''}</p>
+    ${r.items.length ? `<button class="tvb pubgo" id="tv-pub" onclick="tvGo('pub')">▶️ Mode Pub<small>Rapide et impressionnant, 3 s par produit</small></button>
+    <button class="tvb" onclick="tvGo('shop')">🏪 Mode Magasin<small>Plus lent, avec QR code sur chaque produit</small></button>
+    <label class="tvsnd"><input type="checkbox" id="tv-snd" checked> 🔊 Musique</label>` : '<p>Aucun produit disponible pour le moment.</p>'}
+    <button class="tvb ghost" onclick="$('tvl').remove()">Fermer</button>
+    <p class="tvtip">Astuce : laissez cet écran allumé dans votre boutique. Les nouveaux produits s'ajoutent tout seuls. Télécommande : ← → pour changer, OK pour pause.</p></div>`;
+  setTimeout(() => $('tv-pub')?.focus(), 50);
+}
+async function tvGo(mode) {
+  const r = window.tvData; if (!r) return; const snd = $('tv-snd')?.checked; $('tvl')?.remove();
+  const refresh = async () => { const x = await tvLoad(r.s.username); if (!x || !x.items.length) return; if (pub) { x.items.slice(0, 20).forEach(p => pubLoad(pImg(p))); pub.items = x.items.slice(0, 20); } if (aff) { aff.items = x.items.slice(0, 30); } };
+  if (mode === 'pub') pubStart(r.s, r.items, { tv: true, sound: snd, refresh });
+  else { prods = r.items; await afficheStart(r.s.name); if (aff) { aff.snd = false; if (snd) affSound(); aff.rf = setInterval(refresh, 15 * 60e3); } }
+}
+function tvLink() {
+  const s = window.shopCur; if (!s) return; const url = location.origin + '/#/tv/' + s.username;
+  openM(`<h3>📺 SocialPages TV</h3><p>Ouvrez ce lien sur la <b>télévision</b> de votre boutique (navigateur internet de la TV), un ordinateur ou une tablette :</p>
+    <div class="tvlink">${esc(url)}</div>
+    <button class="pbtn b" onclick="copyTxt('${esc(url)}')">🔗 Copier le lien</button>
+    <button class="pbtn gray" onclick="closeM();tvOpen('${esc(s.username)}')">▶️ Essayer maintenant</button>
+    <p class="mt" style="font-size:13px;margin-top:10px">Pas de compte nécessaire sur la télévision. Les nouveaux produits apparaissent automatiquement toutes les 15 minutes.</p>`);
+}
+
+// ---------- 🎬 Créer ma pub vidéo (statut WhatsApp, TikTok, Facebook) ----------
+let vidBusy = false;
+async function pubVideo() {
+  const s = window.shopCur; if (!s || vidBusy) return;
+  const items = prods.filter(p => p.user_id === s.id && !isSoldP(p) && pImg(p)).slice(0, 8);
+  if (!items.length) return toast('Ajoutez au moins un produit avec photo.');
+  const cv = document.createElement('canvas'); cv.width = 720; cv.height = 1280;
+  if (!window.MediaRecorder || !cv.captureStream) return alert('Votre appareil ne permet pas de créer la vidéo ici. Ouvrez SocialPages dans Chrome (Android ou ordinateur).');
+  const types = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+  const mime = types.find(t => MediaRecorder.isTypeSupported?.(t)) || '';
+  vidBusy = true;
+  openM(`<h3>🎬 Création de votre pub vidéo…</h3><div class="vidwrap" id="vid-wrap"></div><div class="vidbar"><b id="vid-bar"></b></div><p class="mt" id="vid-msg" style="text-align:center">Préparation des photos…</p>`);
+  $('vid-wrap').appendChild(cv);
+  try {
+    const imgs = [];
+    for (const p of items) { const src = await pubLoad(pImg(p)); if (!src?.startsWith('blob:')) continue; const im = new Image(); im.src = src; try { await im.decode(); imgs.push({ p, im }); } catch (e) {} }
+    if (!imgs.length) throw new Error('Impossible de charger les photos. Vérifiez votre connexion.');
+    let qrM = null; try { const q = qrcode(0, 'M'); q.addData(shopUrl(s)); q.make(); qrM = q; } catch (e) {}
+    const A = pubAudio(true), ctx = cv.getContext('2d'), FPS = 30;
+    const stream = cv.captureStream(FPS); A?.dest?.stream.getAudioTracks().forEach(t => stream.addTrack(t));
+    const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 3e6 } : { videoBitsPerSecond: 3e6 }), chunks = [];
+    rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+    const stopped = new Promise(r => rec.onstop = r);
+    const SL = 3, END = 4, total = imgs.length * SL + END;
+    A?.start(); rec.start(500); const t0 = performance.now(); let last = -1;
+    await new Promise(done => {
+      const frame = () => {
+        const t = (performance.now() - t0) / 1000;
+        if (t >= total) return done();
+        const k = Math.floor(t / SL);
+        if (k !== last) { last = k; if (k < imgs.length) A?.whoosh(); else A?.chime(true); }
+        if (k < imgs.length) vidDrawSlide(ctx, imgs[k], t - k * SL, SL, s, k, imgs.length); else vidDrawEnd(ctx, s, t - imgs.length * SL, qrM, imgs.length);
+        $('vid-bar') && ($('vid-bar').style.width = Math.min(100, t / total * 100) + '%');
+        $('vid-msg') && ($('vid-msg').textContent = `Enregistrement… ${Math.ceil(total - t)} s`);
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    });
+    rec.stop(); await stopped; A?.stop();
+    const type = (mime || 'video/webm').split(';')[0], ext = type.includes('mp4') ? 'mp4' : 'webm';
+    const blob = new Blob(chunks, { type }), url = URL.createObjectURL(blob), file = new File([blob], `pub-${s.username}.${ext}`, { type });
+    window.vidFile = file;
+    const canShare = !!navigator.canShare?.({ files: [file] });
+    $('modal-box') && openM(`<h3>🎉 Votre pub est prête !</h3><video class="vidout" src="${url}" controls playsinline autoplay muted></video>
+      ${canShare ? '<button class="pbtn b" onclick="vidShare()">📤 Partager (WhatsApp, TikTok, Facebook…)</button>' : ''}
+      <a class="pbtn ${canShare ? 'gray' : 'b'}" style="display:block;text-align:center;text-decoration:none" href="${url}" download="${file.name}">⬇️ Télécharger la vidéo</a>
+      ${window.Capacitor?.isNativePlatform?.() ? '<p class="mt" style="font-size:12px;color:#B45309">Dans l’application, si le téléchargement ne marche pas, ouvrez votre boutique dans Chrome pour enregistrer la vidéo.</p>' : ''}
+      <p class="mt" style="font-size:12px;margin-top:8px">${ext === 'webm' ? 'Format WebM : si WhatsApp le refuse, publiez-la sur TikTok ou Facebook. ' : ''}Astuce : publiez-la en statut WhatsApp avec le lien de votre boutique : ${esc(shopUrl(s))}</p>
+      <button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+  } catch (e) { $('vid-msg') && ($('vid-msg').textContent = '⚠️ ' + (e.message || 'Erreur')); }
+  vidBusy = false;
+}
+async function vidShare() { const f = window.vidFile, s = window.shopCur; if (!f) return; try { await navigator.share({ files: [f], text: `🏪 ${s?.name || ''} sur SocialPages 👉 ${s ? shopUrl(s) : location.origin}` }); } catch (e) {} }
+const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
+function vidWrap(ctx, text, maxW) { const w = String(text).split(/\s+/), lines = []; let l = ''; w.forEach(x => { const t = l ? l + ' ' + x : x; if (ctx.measureText(t).width > maxW && l) { lines.push(l); l = x; } else l = t; }); if (l) lines.push(l); return lines.slice(0, 2); }
+function vidRR(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function vidHead(ctx, k, n) {
+  for (let j = 0; j < n; j++) { const w = (720 - 40 - (n - 1) * 6) / n, x = 20 + j * (w + 6); ctx.fillStyle = 'rgba(255,255,255,.35)'; vidRR(ctx, x, 22, w, 5, 3); ctx.fill(); if (j <= k) { ctx.fillStyle = '#fff'; vidRR(ctx, x, 22, j < k ? w : w * Math.min(1, ctx._prog || 0), 5, 3); ctx.fill(); } }
+  ctx.fillStyle = '#16A34A'; vidRR(ctx, 20, 42, 40, 40, 10); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('S', 40, 72);
+  ctx.textAlign = 'left'; ctx.font = 'bold 24px sans-serif'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 6; ctx.fillText('SocialPages', 70, 70); ctx.shadowBlur = 0;
+}
+function vidDrawSlide(ctx, { p, im }, t, SL, s, k, n) {
+  const W = 720, H = 1280, z = 1 + 0.16 * (t / SL), fade = Math.min(1, t / 0.25), pr = pPromo(p);
+  ctx.globalAlpha = 1; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = fade;
+  // fond flou
+  const cs = Math.max(W / im.width, H / im.height) * 1.1; ctx.filter = 'blur(28px) brightness(.55)';
+  ctx.drawImage(im, (W - im.width * cs) / 2, (H - im.height * cs) / 2, im.width * cs, im.height * cs); ctx.filter = 'none';
+  // photo avec zoom
+  const fs = Math.min((W - 40) / im.width, 820 / im.height) * z, dir = k % 2 ? -1 : 1, px = dir * 18 * (t / SL);
+  const iw = im.width * fs, ih = im.height * fs; ctx.save(); vidRR(ctx, 20, 110, W - 40, 840, 26); ctx.clip();
+  ctx.drawImage(im, (W - iw) / 2 + px, 110 + (840 - ih) / 2, iw, ih); ctx.restore();
+  // dégradé bas
+  const g = ctx.createLinearGradient(0, 860, 0, H); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(0.35, 'rgba(0,0,0,.75)'); g.addColorStop(1, 'rgba(0,0,0,.95)'); ctx.fillStyle = g; ctx.fillRect(0, 860, W, H - 860);
+  // textes animés
+  const e1 = ease((t - 0.15) / 0.45), e2 = ease((t - 0.55) / 0.35);
+  ctx.textAlign = 'left'; ctx.globalAlpha = fade * e1; ctx.fillStyle = '#86EFAC'; ctx.font = '600 26px sans-serif';
+  ctx.fillText(`🏪 ${s.name || ''}${p.city ? '  ·  📍 ' + p.city : ''}`, 40 - (1 - e1) * 60, 1010);
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 50px sans-serif'; vidWrap(ctx, p.name, W - 80).forEach((l, i) => ctx.fillText(l, 40, 1072 + i * 58 + (1 - e1) * 40));
+  ctx.globalAlpha = fade * e2; const sc = 0.7 + 0.3 * e2 + (e2 >= 1 ? 0.04 * Math.sin(t * 6) : 0);
+  ctx.save(); ctx.translate(40, 1225); ctx.scale(sc, sc); ctx.fillStyle = '#4ADE80'; ctx.font = '900 76px sans-serif'; ctx.fillText(priceTxt(p), 0, 0);
+  if (pr) { const w = ctx.measureText(priceTxt(p)).width; ctx.fillStyle = '#D1D5DB'; ctx.font = '36px sans-serif'; ctx.fillText(pr.o + ' $', w + 20, 0); const w2 = ctx.measureText(pr.o + ' $').width; ctx.fillRect(w + 18, -12, w2 + 4, 3); }
+  ctx.restore();
+  if (pr || isNewP(p)) { const blink = 0.75 + 0.25 * Math.sin(t * 10); ctx.globalAlpha = fade * e2 * blink; ctx.fillStyle = pr ? '#F97316' : '#2563EB'; vidRR(ctx, W - 230, 130, 190, 64, 32); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = 'bold 32px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(pr ? `⚡ -${pr.pc}%` : '✨ Nouveau', W - 135, 173); }
+  ctx.globalAlpha = 1; ctx._prog = t / SL; vidHead(ctx, k, n);
+}
+function vidDrawEnd(ctx, s, t, qrM) {
+  const W = 720, H = 1280, e = ease(t / 0.6); const g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, '#15803D'); g.addColorStop(1, '#052E16');
+  ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = e; ctx.textAlign = 'center';
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(W / 2, 250, 70, 0, 7); ctx.fill(); ctx.fillStyle = '#16A34A'; ctx.font = 'bold 70px sans-serif'; ctx.fillText((s.name || 'S')[0].toUpperCase(), W / 2, 275);
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 56px sans-serif'; ctx.fillText(cutT(s.name || '', 22), W / 2, 400);
+  ctx.font = '30px sans-serif'; ctx.fillStyle = '#BBF7D0'; ctx.fillText('Toute ma boutique sur SocialPages', W / 2, 450);
+  if (qrM) { const n = qrM.getModuleCount(), size = 380, c = size / n, x0 = (W - size) / 2, y0 = 510; ctx.fillStyle = '#fff'; vidRR(ctx, x0 - 24, y0 - 24, size + 48, size + 48, 24); ctx.fill(); ctx.fillStyle = '#000';
+    for (let r = 0; r < n; r++) for (let q = 0; q < n; q++) if (qrM.isDark(r, q)) ctx.fillRect(x0 + q * c, y0 + r * c, Math.ceil(c), Math.ceil(c)); }
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 36px sans-serif'; ctx.fillText('📱 Scannez et commandez', W / 2, 1000); ctx.fillText('sur WhatsApp', W / 2, 1048);
+  ctx.font = '26px sans-serif'; ctx.fillStyle = '#BBF7D0'; ctx.fillText(shopUrl(s).replace(/^https?:\/\//, ''), W / 2, 1120);
+  ctx.globalAlpha = 1; ctx.textAlign = 'left';
+}
+
 // Lien « rejoindre un live » (notification aux abonnés) : #/live/<id>
 function liveHash() {
   const m = location.hash.match(/^#\/live\/([0-9a-f-]{36})/i);
@@ -1953,7 +2296,7 @@ function tryJoinLive(hid, n = 0) {
   toast('Ce live est terminé.');
 }
 addEventListener('hashchange', () => {
-  if (liveHash()) return;
+  if (tvHash() || liveHash()) return;
   if (route()) go(me ? 'product' : 'pub');
   else if (cur === 'product') go(lastView || 'produits'); else if (cur === 'pub') go(me ? 'accueil' : 'explore');
 });
