@@ -563,6 +563,17 @@ video.pm{background:#000}
 .lvcd{color:#DC2626;font-weight:700;font-size:12px}.lvpint s{color:#9CA3AF;font-weight:400;font-size:12px}
 .lvfull{position:absolute;inset:0;z-index:3;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 120px) 12px calc(env(safe-area-inset-bottom,0px) + 250px)}
 .lvfull.hidden{display:none}.lvzoom{z-index:7}
+/* Live plus propre : commentaires sans cadre, messages système éphémères, boutons sur le côté */
+.lvcom div{background:none!important;padding:2px 4px!important;text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 2px #000;font-size:14px}
+.lvcom div.sys{opacity:.85;font-size:13px}.lvcom div.gone{opacity:0}
+.lvside{position:absolute;right:12px;top:calc(env(safe-area-inset-top,0px) + 74px);z-index:3;display:flex;flex-direction:column;gap:10px}
+.lvside button{border:none;border-radius:50%;width:44px;height:44px;background:rgba(0,0,0,.4);color:#fff;font-size:19px;cursor:pointer}.lvside button.off{background:#fff;color:#111}
+.lvpin{padding:6px;gap:8px;border-radius:14px}.lvpin img,.lvpinph{width:46px;height:46px}.lvpint b{font-size:13px}
+/* Visiteurs */
+.exhero{display:flex;flex-direction:column;gap:4px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;border:none}.exhero b{font-size:17px}.exhero span{font-size:13px;opacity:.95}
+.exlvt{font-weight:700;color:#DC2626;font-size:13px;margin:0 2px 6px}
+#livebar-g{margin-bottom:10px}
+.cord{display:block;width:100%;margin-top:6px;border:none;border-radius:10px;background:#16A34A;color:#fff;font-weight:700;font-size:13px;padding:7px 4px;cursor:pointer}
 .lvpinbs{display:flex;flex-direction:column;gap:5px;flex:none}.lvpinbs button{padding:7px 10px;font-size:13px}
 .lvwant{border:none;border-radius:12px;background:#F97316;color:#fff;font-weight:700;white-space:nowrap}.lvwant.on{background:#FED7AA;color:#9A3412}
 .lvw{color:#EA580C;font-weight:700;font-size:12px}.lvw.tap{text-decoration:underline;cursor:pointer}
@@ -613,9 +624,25 @@ video.pm{background:#000}
 </div></div>
 
 <div id="v-pub" class="view hidden" style="padding-bottom:150px">
-  <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span><button class="pill" style="margin-left:auto" onclick="go('login')">Se connecter</button></div>
+  <div class="header"><div class="logo" onclick="go('explore')" style="cursor:pointer">S</div><span class="logo-text" onclick="go('explore')" style="cursor:pointer">SocialPages</span><button class="pill" style="margin-left:auto;background:var(--soft,#F3F4F6);color:var(--tx,#111);white-space:nowrap" onclick="go('explore')" title="Fil de vente" aria-label="Fil de vente">🏠</button><button class="pill" style="margin-left:8px;white-space:nowrap" onclick="go('login')">Se connecter</button></div>
   <div class="page"><div id="pub-body"></div></div>
   <div class="pubban"><div id="pub-msg"></div><button class="pill" onclick="go('register')">S'inscrire gratuitement</button></div>
+</div>
+
+<div id="v-explore" class="view hidden" style="padding-bottom:120px">
+  <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span><button class="pill" style="margin-left:auto" onclick="go('login')">Se connecter</button></div>
+  <div class="page">
+    <div class="box exhero"><b>🛍️ Achetez près de chez vous</b><span>Goma, Bukavu et ailleurs : commandez directement sur WhatsApp, sans créer de compte.</span></div>
+    <div id="livebar-g" class="hidden"></div>
+    <div class="filters" id="ex-f">
+      <button class="on" onclick="exFilter('tous',this)">Tout</button>
+      <button onclick="exFilter('vitrine',this)">🛍️ Vitrine</button>
+      <button onclick="exFilter('goma',this)">📍 Goma</button>
+      <button onclick="exFilter('bukavu',this)">📍 Bukavu</button>
+    </div>
+    <div id="ex-feed"></div>
+  </div>
+  <div class="pubban"><div>🏪 Vendez vous aussi : votre boutique gratuite en 1 minute</div><button class="pill" onclick="go('register')">Créer ma boutique gratuite</button></div>
 </div>
 
 <div id="shell" class="hidden">
@@ -784,7 +811,7 @@ function go(p) {
 }
 function refresh() {
   ({accueil: () => { renderFeed(); renderLiveBar(); }, appels: renderCalls, admin: renderAdmin, decouvrir: renderDiscover, produits: renderProducts, messages: renderMsgs,
-    mapage: renderMyPage, settings: loadSettings, chat: renderChat, user: renderUser, product: renderRoute, pub: renderRoute})[cur]?.();
+    mapage: renderMyPage, settings: loadSettings, chat: renderChat, user: renderUser, product: renderRoute, pub: renderRoute, explore: renderExplore})[cur]?.();
 }
 function closeM() { $('modal').classList.add('hidden'); }
 function openM(html) { $('modal-box').innerHTML = html; $('modal').classList.remove('hidden'); }
@@ -870,11 +897,11 @@ async function netErr(e) {
 }
 async function logout() {
   if (chan) sb.removeChannel(chan);
-  await unregisterNative(); await sb.auth.signOut(); me = null; go('landing');
+  await unregisterNative(); await sb.auth.signOut(); me = null; go('explore');
 }
 async function boot() {
   const { data: { session } } = await sb.auth.getSession();
-  if (!session) { go(route() ? 'pub' : 'landing'); liveHash(); return; }
+  if (!session) { go(route() ? 'pub' : 'explore'); liveHash(); return; }
   const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
   if (!data) { await sb.auth.signOut(); return go('landing'); }
   me = { ...data, email: session.user.email };
@@ -1054,7 +1081,7 @@ const fpCache = {};
 const isSoldP = p => p.status === 'Vendu' || getMeta(p.description).s === 0;
 async function feedProducts(n, ids) {
   let q = sb.from('products').select(PQ).order('bumped_at', { ascending: false }).limit(n + 1);
-  const city = (me.city || '').trim().replace(/[%,()]/g, '');
+  const city = (me?.city || '').trim().replace(/[%,()]/g, '');
   if (feedF === 'proche') { if (!city) return { list: [], more: false, noCity: true }; q = q.ilike('city', `%${city}%`); }
   if (ids) q = q.in('user_id', ids);
   const { data, error } = await q; if (error) return { list: [], more: false };
@@ -1065,12 +1092,12 @@ async function feedProducts(n, ids) {
   return { list: list.slice(0, n), more: list.length > n };
 }
 function fpcHTML(p) {
-  const a = p.profiles || {}, m = getMeta(p.description), mine = p.user_id === me.id, sold = isSoldP(p);
+  const a = p.profiles || {}, m = getMeta(p.description), mine = !!me && p.user_id === me.id, sold = isSoldP(p);
   const promo = m.o && m.o > p.price && p.status !== 'Gratuit' ? Math.round((1 - p.price / m.o) * 100) : 0;
   const fresh = p.created_at && Date.now() - new Date(p.created_at).getTime() < 2 * 864e5;
   const img = p.images?.[0] || p.image_url;
   const tag = sold ? '<span class="fptag s">Vendu</span>' : promo ? `<span class="fptag">-${promo}%</span>` : fresh ? '<span class="fptag n">Nouveau</span>' : '';
-  return `<div class="box fpc" data-pid="${p.id}"><div class="ph"><div onclick="openUser('${a.id}')" style="display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0">${av(a, 40)}<div style="min-width:0"><b>${esc(a.name || '')}</b><div class="mt">🛍️ Produit${p.city ? ' · 📍 ' + esc(p.city) : ''} · ${ago(p.bumped_at || p.created_at)}</div></div></div>${!mine && myFollows && !myFollows.has(a.id) ? `<button type="button" class="ffw" data-u="${a.id}" onclick="feedFollow('${a.id}',this)">+ Suivre</button>` : ''}</div>
+  return `<div class="box fpc" data-pid="${p.id}"><div class="ph"><div onclick="${sellerJs(a)}" style="display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0">${av(a, 40)}<div style="min-width:0"><b>${esc(a.name || '')}</b><div class="mt">🛍️ Produit${p.city ? ' · 📍 ' + esc(p.city) : ''} · ${ago(p.bumped_at || p.created_at)}</div></div></div>${!mine && myFollows && !myFollows.has(a.id) ? `<button type="button" class="ffw" data-u="${a.id}" onclick="feedFollow('${a.id}',this)">+ Suivre</button>` : ''}</div>
     <div class="fpimg" onclick="openProd('${p.id}')">${img ? `<img loading="lazy" src="${esc(img)}" alt="">` : `<span class="fpph">${isBook(p) ? '📚' : '📦'}</span>`}${tag}</div>
     <div class="fpname" onclick="openProd('${p.id}')">${esc(p.name)}</div>
     <div class="fpprice">${priceTxt(p)}${promo ? ` <s>${m.o} $</s>` : ''}</div>
@@ -1092,7 +1119,7 @@ async function feedOrder(id, o = {}) {
   const price = o.price ? o.price + ' $ (prix live)' : priceTxt(p);
   const ph = (p.profiles?.phone || '').replace(/\D/g, '');
   const msg = `Bonjour, je suis intéressé(e) par « ${p.name} » à ${price}${o.live ? ', vu pendant votre live' : ''} sur SocialPages : ${location.origin}/p/${id}\nEst-il disponible ?`;
-  const goWa = () => { if (!ph) { toast("Le vendeur n'a pas de numéro WhatsApp : voici sa fiche produit."); if (!live) openProd(id); return; } track(id, 'wa'); waSend(ph, msg); };
+  const goWa = () => { if (!ph) { toast("Le vendeur n'a pas de numéro WhatsApp : voici sa fiche produit."); if (!live) openProd(id); return; } track(id, 'wa'); waSend(ph, msg); guestNudge(p.profiles?.name); };
   if (!okUrl(p.payment_link)) return goWa();
   window._ordWa = () => { closeM(); goWa(); };
   window._ordPay = () => { closeM(); track(id, 'buy'); window.open(p.payment_link, '_blank', 'noopener'); };
@@ -1122,7 +1149,7 @@ function shcHTML(sc) {
     return `<div class="shs${i ? '' : ' on'}" data-pid="${p.id}" data-say="${esc(p.name + '. ' + sayPrice(p) + (p.city ? '. À ' + p.city : ''))}">${img ? `<img ${i < 2 ? 'src' : 'data-src'}="${esc(img)}" alt="">` : `<span class="fpph">${isBook(p) ? '📚' : '📦'}</span>`}
       <div class="shcap"><b>${esc(p.name)}</b><span>${priceTxt(p)}${promo ? ` <s>${m.o} $</s>` : ''}</span></div>${promo ? `<span class="fptag">-${promo}%</span>` : ''}</div>`;
   }).join('');
-  return `<div class="box shc" data-i="0"><div class="ph"><div onclick="openUser('${a.id}')" style="display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0">${av(a, 40)}<div style="min-width:0"><b>${esc(a.name || '')}</b><div class="mt">🏪 Vitrine · ${sc.items.length} produits</div></div></div>${!mine && myFollows && !myFollows.has(a.id) ? `<button type="button" class="ffw" data-u="${a.id}" onclick="feedFollow('${a.id}',this)">+ Suivre</button>` : ''}</div>
+  return `<div class="box shc" data-i="0"><div class="ph"><div onclick="${sellerJs(a)}" style="display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0">${av(a, 40)}<div style="min-width:0"><b>${esc(a.name || '')}</b><div class="mt">🏪 Vitrine · ${sc.items.length} produits</div></div></div>${!mine && myFollows && !myFollows.has(a.id) ? `<button type="button" class="ffw" data-u="${a.id}" onclick="feedFollow('${a.id}',this)">+ Suivre</button>` : ''}</div>
     <div class="shv" onclick="shOpen(this)">${slides}</div>
     <div class="shdots">${sc.items.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>
     <div class="fpacts">${mine ? '' : `<button type="button" class="fpbuy" onclick="shOrder(this)">📱 Commander</button>`}<button type="button" class="fpsee" onclick="location.hash='#/vendeur/${encodeURIComponent(a.username || '')}'">🏪 Boutique</button><button type="button" class="fpsh shsnd" title="Écouter" aria-label="Écouter" onclick="shSpeak(this)">🔊</button></div></div>`;
@@ -1184,6 +1211,38 @@ async function renderFeed() {
     : prodOnly ? empty('🛍️', 'Aucun produit ici pour le moment', 'Soyez le premier à vendre : touchez « 🛍️ Vendre ».') : empty('📭', 'Aucune publication', 'Créez votre premier post !');
   $('feed').innerHTML = html + (more ? '<button class="pbtn gray" onclick="feedN+=10;renderFeed()">Voir plus</button>' : '');
   shInit($('feed')); afterPosts();
+}
+// ---------- Fil de vente pour les visiteurs (sans compte) : produits, vitrines et lives ----------
+let exF = 'tous', exN = 12;
+async function renderExplore() {
+  liveGuestListen(); renderLiveBar();
+  const el = $('ex-feed'); if (!el) return;
+  if (!el.innerHTML) el.innerHTML = '<div class="spin"></div>';
+  let q = sb.from('products').select(PQ).order('bumped_at', { ascending: false }).limit(exN + 1);
+  if (exF === 'goma' || exF === 'bukavu') q = q.ilike('city', `%${exF}%`);
+  const { data, error } = await q;
+  if (cur !== 'explore') return;
+  if (error) { el.innerHTML = empty('⚠️', 'Erreur de chargement', 'Vérifiez votre connexion puis réessayez.'); return; }
+  const all = (data || []).map((p, i) => ({ p, i })).sort((x, y) => (isSoldP(x.p) - isSoldP(y.p)) || x.i - y.i).map(x => x.p);
+  all.forEach(p => { fpCache[p.id] = p; if (!prods.some(x => x.id === p.id)) prods.push(p); });
+  const list = all.slice(0, exN), more = all.length > exN;
+  const shs = exF === 'tous' || exF === 'vitrine' ? await loadShowcases() : [];
+  if (cur !== 'explore') return;
+  let html = '', cnt = 0, si = 0;
+  if (exF === 'vitrine') { shs.forEach(x => { html += shcHTML(x); }); list.forEach(p => { html += fpcHTML(p); }); }
+  else list.forEach(p => { html += fpcHTML(p); cnt++; if (si < shs.length && (cnt === 3 || (cnt > 3 && (cnt - 3) % 5 === 0))) html += shcHTML(shs[si++]); });
+  el.innerHTML = (html || empty('🛍️', 'Aucun produit ici pour le moment', 'Revenez bientôt !')) + (more ? '<button class="pbtn gray" onclick="exN+=12;renderExplore()">Voir plus</button>' : '');
+  shInit(el);
+}
+function exFilter(f, btn) { exF = f; exN = 12; document.querySelectorAll('#ex-f button').forEach(b => b.classList.toggle('on', b === btn)); $('ex-feed').innerHTML = ''; renderExplore(); }
+// Lien vers la boutique d'un vendeur (visiteur) ou son profil (membre)
+const sellerJs = a => me ? `openUser('${a.id}')` : `location.hash='#/vendeur/${encodeURIComponent(a.username || '')}'`;
+// D. Après une commande sans compte : invitation douce à créer un compte (une fois par visite)
+function guestNudge(seller) {
+  if (me || live) return; try { if (sessionStorage.getItem('sp_nudge')) return; sessionStorage.setItem('sp_nudge', '1'); } catch (e) {}
+  setTimeout(() => { if (me || live) return; openM(`<h3>✅ Votre message est prêt sur WhatsApp</h3><p>Envoyez-le au vendeur pour finaliser votre commande.</p>
+    <p class="mt" style="margin:10px 0 14px">Créez un compte gratuit pour suivre ${seller ? '<b>' + esc(seller) + '</b>' : 'vos vendeurs'}, être prévenu de leurs lives et de leurs promotions, et vendre vous aussi.</p>
+    <button class="pbtn b" onclick="closeM();go('register')">Créer un compte gratuit</button><button class="pbtn gray" onclick="closeM()">Plus tard</button>`); }, 1500);
 }
 function feedFilter(f, btn) {
   feedF = f; feedN = 10;
@@ -1488,7 +1547,8 @@ function cardHTML(p) {
       ${mine ? '' : `<button class="chrt" onclick="event.stopPropagation();togFavP('${p.id}',${fav},this)">${fav ? '❤️' : '🤍'}</button>`}
       ${(p.videos || []).length ? '<span class="cvd">▶ Vidéo</span>' : ''}${verified ? '<span class="cvf">✔</span>' : ''}${sold ? '<div class="csold">Vendu</div>' : ''}</div>
     <div class="pi"><div class="cn">${esc(p.name)}</div><div class="price">${priceTxt(p)}${promo ? `<s class="cold">${m.o} $</s>` : ''}</div>
-    <div class="cs">${esc(p.profiles.name)}${p.city ? ' · ' + esc(p.city) : ''} · 👁 ${p.views || 0}${mine ? ` <span class="cedit" onclick="event.stopPropagation();prodModal('${p.id}')">✏️</span>` : ''}</div></div></div>`;
+    <div class="cs">${esc(p.profiles.name)}${p.city ? ' · ' + esc(p.city) : ''} · 👁 ${p.views || 0}${mine ? ` <span class="cedit" onclick="event.stopPropagation();prodModal('${p.id}')">✏️</span>` : ''}</div>
+    ${mine || sold ? '' : `<button type="button" class="cord" onclick="event.stopPropagation();feedOrder('${p.id}')">📱 Commander</button>`}</div></div>`;
 }
 async function togFavP(id, on, el) {
   if (!me) return needAuth();
@@ -1629,7 +1689,7 @@ function shareP(id) { shareMenu(pctx(id)); }
 function waOrder(id) {
   const p = prods.find(x => x.id === id), ph = (p.profiles.phone || '').replace(/\D/g, '');
   if (!ph) return toast("Le vendeur n'a pas ajouté de numéro WhatsApp.");
-  track(id, 'wa');
+  track(id, 'wa'); guestNudge(p.profiles?.name);
   window.open(`https://wa.me/${ph}?text=${encodeURIComponent(`Bonjour, je suis intéressé(e) par ${p.name}${selChoice ? ' (' + (getMeta(p.description).ol || 'Choix') + ' : ' + selChoice + ')' : ''} à ${priceTxt(p)}. Est-il disponible ?`)}`, '_blank');
 }
 function mailSeller(id) { const p = prods.find(x => x.id === id); if (p?.profiles.contact_email) location.href = 'mailto:' + p.profiles.contact_email + '?subject=' + encodeURIComponent(p.name); }
@@ -1833,12 +1893,18 @@ async function catalogPage(u, body) {
   if (!s) return body.innerHTML = empty('😕', 'Vendeur introuvable');
   const { data } = await sb.from('products').select(PQ).eq('user_id', s.id).order('bumped_at', { ascending: false }).limit(60);
   prods = data || []; document.title = `${s.name} | SocialPages`;
+  const own = !!me && me.id === s.id, sph = (s.phone || '').replace(/\D/g, ''), surl = location.origin + '/v/' + s.username;
+  window.shopWa = () => { waSend(sph, `Bonjour ${s.name}, j'ai vu votre boutique sur SocialPages : ${surl}\nJe voudrais des informations.`); guestNudge(s.name); };
+  window.shopShare = () => { const t = `🏪 Découvrez la boutique de ${s.name} sur SocialPages (${prods.length} produit${prods.length > 1 ? 's' : ''}) 👉 ${surl}`; if (navigator.share) navigator.share({ text: t }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); };
   body.innerHTML = `<div class="box" style="text-align:center"><div style="display:flex;justify-content:center">${av(s, 80)}</div>
     <div style="font-size:22px;font-weight:bold;margin-top:8px">${esc(s.name)}${prods.length > 5 ? ' <span style="color:#10B981;font-size:14px">✅ Vérifié</span>' : ''}</div>
     <div class="mt">@${esc(s.username)} · ${prods.length} produit${prods.length > 1 ? 's' : ''}</div>
-    ${prods.some(p => !isSoldP(p)) ? `<button class="pbtn b" onclick="afficheStart('${esc(s.name).replace(/'/g, '&#39;')}')">📺 Mode affiche (comptoir, vitrine)</button>` : ''}
-    <button class="pbtn gray" onclick="copyTxt(location.href)">🔗 Copier le lien du catalogue</button>
-    ${me && me.id !== s.id ? `<button class="pbtn b" onclick="openUser('${s.id}')">👤 Voir le profil</button>` : ''}</div>
+    ${own ? `${prods.some(p => !isSoldP(p)) ? `<button class="pbtn b" onclick="afficheStart('${esc(s.name).replace(/'/g, '&#39;')}')">📺 Mode affiche (comptoir, vitrine)</button>` : ''}
+    <button class="pbtn gray" onclick="copyTxt(location.origin + '/v/${esc(s.username)}')">🔗 Copier le lien du catalogue</button>`
+    : `${lives[s.id] ? `<button class="pbtn" style="background:#DC2626;color:#fff" onclick="joinLive('${s.id}')">🔴 En direct maintenant : regarder</button>` : ''}
+    ${sph ? `<button class="pbtn" style="background:#16A34A;color:#fff" onclick="shopWa()">📱 Contacter ${esc(s.name)} sur WhatsApp</button>` : ''}
+    <button class="pbtn gray" onclick="shopShare()">↗️ Partager cette boutique</button>
+    ${me ? `<button class="pbtn gray" onclick="openUser('${s.id}')">👤 Voir le profil</button>` : ''}`}</div>
     <div class="pg">${prods.length ? prods.map(cardHTML).join('') : empty('📦', 'Aucun produit')}</div>`;
 }
 // ---------- Mode affiche : les produits défilent en plein écran, avec QR code pour commander ----------
@@ -1875,13 +1941,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && aff) affic
 // Lien « rejoindre un live » (notification aux abonnés) : #/live/<id>
 function liveHash() {
   const m = location.hash.match(/^#\/live\/([0-9a-f-]{36})/i);
-  if (!me) { if (m) { try { sessionStorage.setItem('sp_live', m[1]); } catch (e) {} setTimeout(() => toast('🔴 Connectez-vous ou créez un compte gratuit pour regarder ce live.', 5000), 800); } return false; }
-  let id = m?.[1]; try { id ||= sessionStorage.getItem('sp_live'); sessionStorage.removeItem('sp_live'); } catch (e) {}
+  let id = m?.[1]; if (me) try { id ||= sessionStorage.getItem('sp_live'); sessionStorage.removeItem('sp_live'); } catch (e) {}
+  if (m && !me && cur !== 'pub') go('explore');
   if (m) history.replaceState(null, '', location.pathname + location.search);
   if (!id) return false; tryJoinLive(id); return !!m;
 }
 function tryJoinLive(hid, n = 0) {
-  if (!me) return;
+  liveGuestListen();
   if (lives[hid]) return joinLive(hid);
   if (n < 10) return setTimeout(() => tryJoinLive(hid, n + 1), 1000);
   toast('Ce live est terminé.');
@@ -1889,7 +1955,7 @@ function tryJoinLive(hid, n = 0) {
 addEventListener('hashchange', () => {
   if (liveHash()) return;
   if (route()) go(me ? 'product' : 'pub');
-  else if (cur === 'product') go(lastView || 'produits'); else if (cur === 'pub') go('landing');
+  else if (cur === 'product') go(lastView || 'produits'); else if (cur === 'pub') go(me ? 'accueil' : 'explore');
 });
 
 // ---------- Compression des photos, vidéos en liens ----------
@@ -2714,6 +2780,11 @@ window.addEventListener('pagehide', () => { if (!call) return; if (call.role ===
 // Limite : le téléphone envoie une copie par spectateur, d'où LIVE_MAX. Pour une grande audience :
 // publier un live YouTube avec « 🎥 Lien vidéo » (déjà pris en charge), ou plus tard le relais Cloudflare (SFU).
 const LIVE_MAX = 5;
+// Visiteur sans compte : identifiant temporaire (pour regarder un live) et prénom facultatif
+let guestId = null;
+const VID = () => me?.id || (guestId ||= (() => { const g = 'g' + Math.random().toString(36).slice(2, 12); try { const o = sessionStorage.getItem('sp_gid'); if (o) return o; sessionStorage.setItem('sp_gid', g); } catch (e) {} return g; })());
+const VNAME = () => { if (me) return me.name; try { return localStorage.getItem('sp_gname') || 'Visiteur'; } catch (e) { return 'Visiteur'; } };
+function liveGuestListen() { if (!me && (!liveDir || ['closed', 'errored'].includes(liveDir.state))) liveDirListen(); }
 let liveDir = null, lives = {}, live = null, liveDirRetry = null;
 const hb = {}, alerted = new Set(); // hb : battements de cœur des animateurs ; alerted : lives déjà signalés
 // Sur mobile, la connexion temps réel se coupe souvent (écran verrouillé, changement de réseau) et la présence
@@ -2722,14 +2793,14 @@ const hb = {}, alerted = new Set(); // hb : battements de cœur des animateurs ;
 function liveDirListen() {
   clearTimeout(liveDirRetry);
   if (liveDir) { const old = liveDir; liveDir = null; sb.removeChannel(old); }
-  const ch = liveDir = sb.channel('lives', { config: { presence: { key: me.id }, broadcast: { self: false } } });
+  const ch = liveDir = sb.channel('lives', { config: { presence: { key: VID() }, broadcast: { self: false } } });
   ch.on('presence', { event: 'sync' }, computeLives)
     .on('broadcast', { event: 'live' }, ({ payload: p }) => { if (p?.hid) { hb[p.hid] = { ...p, seen: Date.now() }; computeLives(); } })
     .on('broadcast', { event: 'live-off' }, ({ payload: p }) => { if (p?.hid) { delete hb[p.hid]; computeLives(); } })
     .subscribe(st => {
       if (ch !== liveDir) return; // ancien canal fermé volontairement
       if (st === 'SUBSCRIBED') { if (live?.host) liveBeat(); computeLives(); }
-      else if (st === 'CHANNEL_ERROR' || st === 'TIMED_OUT' || st === 'CLOSED') { clearTimeout(liveDirRetry); liveDirRetry = setTimeout(() => { if (me) liveDirListen(); }, 4000); }
+      else if (st === 'CHANNEL_ERROR' || st === 'TIMED_OUT' || st === 'CLOSED') { clearTimeout(liveDirRetry); liveDirRetry = setTimeout(() => { if (me || cur === 'explore' || cur === 'pub' || live) liveDirListen(); }, 4000); }
     });
 }
 const lvMeta = () => ({ live: true, hid: me.id, name: me.name, avatar_url: me.avatar_url || '', title: live?.title || '', t: live?.t0, sfu: live?.sfu || '' });
@@ -2746,7 +2817,7 @@ function computeLives() {
   Object.entries(hb).forEach(([k, m]) => { if (now - m.seen < 45000) out[k] ||= m; else delete hb[k]; });
   Object.keys(out).forEach(k => { if (blocked.has(k)) delete out[k]; });
   lives = out;
-  Object.entries(lives).forEach(([k, m]) => { const key = k + ':' + m.t; if (k !== me?.id && !alerted.has(key)) { alerted.add(key); if (!live && !call) livePop(k); } });
+  Object.entries(lives).forEach(([k, m]) => { const key = k + ':' + m.t; if (k !== me?.id && !alerted.has(key)) { alerted.add(key); if (me && !live && !call) livePop(k); } });
   renderLiveBar();
 }
 function livePop(hid) {
@@ -2759,18 +2830,18 @@ function livePop(hid) {
 }
 // Surveillance : reconnexion si le canal est tombé, nettoyage des lives sans battement
 setInterval(() => {
-  if (!me) return;
+  if (!me && cur !== 'explore' && cur !== 'pub' && !live) return;
   if (!liveDir || ['closed', 'errored'].includes(liveDir.state)) liveDirListen(); else computeLives();
   if (live && !live.host && live.ch && ['closed', 'errored'].includes(live.ch.state)) { const old = live.ch; liveRoom(live.hid).then(c => { if (live && !live.host) { live.ch = c; sb.removeChannel(old); } else sb.removeChannel(c); }); }
 }, 25000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && me && (!liveDir || ['closed', 'errored'].includes(liveDir.state))) liveDirListen(); });
 function renderLiveBar() {
   const ids = Object.keys(lives).filter(k => k !== me?.id);
-  const el = $('livebar');
-  if (el) {
+  ['livebar', 'livebar-g'].forEach(b => {
+    const el = $(b); if (!el) return;
     el.classList.toggle('hidden', !ids.length);
-    el.innerHTML = ids.length ? `<div class="lvstrip">${ids.map(k => `<button type="button" class="lvdot" onclick="joinLive('${k}')"><span class="lvring">${av(lives[k], 56)}</span><span class="lvlbl">LIVE</span><small>${esc((lives[k].name || '').split(' ')[0])}</small></button>`).join('')}</div>` : '';
-  }
+    el.innerHTML = ids.length ? (b === 'livebar-g' ? '<div class="exlvt">🔴 En direct maintenant : regardez sans compte</div>' : '') + `<div class="lvstrip">${ids.map(k => `<button type="button" class="lvdot" onclick="joinLive('${k}')"><span class="lvring">${av(lives[k], 56)}</span><span class="lvlbl">LIVE</span><small>${esc((lives[k].name || '').split(' ')[0])}</small></button>`).join('')}</div>` : '';
+  });
   const rp = $('rp-live');
   if (rp) rp.innerHTML = ids.length ? ids.map(k => `<button type="button" class="liveitem" onclick="joinLive('${k}')">${av(lives[k], 38)}<span class="lt"><b>${esc(lives[k].name)} <span class="lvred">LIVE</span></b><small>${esc(lives[k].title || 'En direct')}</small></span></button>`).join('') : '<p class="mt">Aucun direct pour le moment.</p>';
 }
@@ -2912,12 +2983,12 @@ function applyTheme(t) { document.documentElement.dataset.theme = t; const m = d
 function toggleTheme() { const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('sp_theme', t); } catch (e) {} applyTheme(t); toast(t === 'dark' ? '🌙 Mode sombre activé (bêta)' : '☀️ Mode clair activé', 2000); }
 try { applyTheme(localStorage.getItem('sp_theme') || 'light'); } catch (e) {}
 function liveRoom(hid) {
-  const ch = sb.channel('live-' + hid, { config: { broadcast: { self: false }, presence: { key: me.id } } });
+  const ch = sb.channel('live-' + hid, { config: { broadcast: { self: false }, presence: { key: VID() } } });
   ch.on('broadcast', { event: 'lv' }, ({ payload }) => onLiveSig(payload))
     .on('presence', { event: 'sync' }, () => { if (live?.host && live.sfu && live.ch === ch) sfuCount(); });
   return new Promise(r => { const t = setTimeout(() => r(ch), 6000); ch.subscribe(st => { if (st === 'SUBSCRIBED') { clearTimeout(t); if (live && !live.host) { try { ch.track({ v: 1 }); } catch (e) {} } r(ch); } }); });
 }
-function lvSend(p) { try { live?.ch?.send({ type: 'broadcast', event: 'lv', payload: { ...p, from: me.id, fname: me.name } }); } catch (e) {} }
+function lvSend(p) { try { live?.ch?.send({ type: 'broadcast', event: 'lv', payload: { ...p, from: VID(), fname: VNAME() } }); } catch (e) {} }
 function setLiveSt(t) { const e = $('lv-st'); if (e) e.textContent = t; }
 function liveUI() {
   const h = live.host;
@@ -2927,9 +2998,10 @@ function liveUI() {
       <span class="lvred">🔴 EN DIRECT</span><span id="lv-n">👁 0</span><button type="button" onclick="lvShare()" aria-label="Partager le live" title="Partager le live">📤</button><button type="button" onclick="leaveLive()" aria-label="Quitter">✖</button></div>
     <div id="lv-st" class="lvst"></div>
     <div class="lvbottom"><button type="button" id="lv-shelfb" class="lvshelfb hidden" onclick="lvShelf()"></button><div id="lv-pin" class="lvpin hidden"></div><div id="lv-com" class="lvcom"></div>
-      <div class="lvin"><input id="lv-text" maxlength="200" placeholder="Commenter…" onkeypress="if(event.key==='Enter')sendLiveMsg()">
+      <div class="lvin">${me ? `<input id="lv-text" maxlength="200" placeholder="Commenter…" onkeypress="if(event.key==='Enter')sendLiveMsg()">` : `<input id="lv-text" readonly placeholder="💬 Commenter…" onclick="lvGuestChat()">`}
         <button type="button" onclick="sendLiveMsg()" aria-label="Envoyer">➤</button><button type="button" onclick="sendHeart()" aria-label="J'aime">❤️</button>
-        ${h ? '<button type="button" onclick="lvShop()" aria-label="Épingler un produit">🛍️</button><button type="button" id="lv-mic" onclick="lvMic()" aria-label="Micro">🎤</button><button type="button" onclick="lvFlip()" aria-label="Retourner la caméra">🔄</button>' : ''}</div></div>
+        ${h ? '<button type="button" onclick="lvShop()" aria-label="Présenter un produit">🛍️</button>' : ''}</div></div>
+    ${h ? '<div class="lvside"><button type="button" id="lv-mic" onclick="lvMic()" aria-label="Micro">🎤</button><button type="button" onclick="lvFlip()" aria-label="Retourner la caméra">🔄</button></div>' : ''}
     <div id="lv-full" class="lvfull hidden"></div><div id="lv-zoom" class="lvfull lvzoom hidden"></div><div id="lv-shop" class="lvshop hidden"></div><div id="lv-shelf" class="lvshop hidden"></div><div id="lv-wants" class="lvshop hidden"></div>
     <div id="lv-hearts"></div></div>`);
 }
@@ -3082,6 +3154,8 @@ function lvWant() {
   const p = live?.pinShown; if (!p || live.host) return;
   live.wanted ||= {};
   if (live.wanted[p.id]) return toast('C’est noté 🔥 Le vendeur sait que vous êtes intéressé(e).', 2500);
+  if (!me) { let n = ''; try { n = localStorage.getItem('sp_gname') || ''; } catch (e) {}
+    if (!n) { n = prompt('Votre prénom, pour que le vendeur vous reconnaisse :', ''); if (n === null) return; n = n.trim().slice(0, 30); if (n) try { localStorage.setItem('sp_gname', n); } catch (e) {} } }
   live.wanted[p.id] = 1; lvSend({ t: 'want', id: p.id, name: cutT(p.name, 40) });
   addComment('🔥', 'Vous voulez ' + cutT(p.name, 40));
   const b = $('lv-wb'); if (b) { b.classList.add('on'); b.textContent = '✅ Noté'; }
@@ -3111,10 +3185,21 @@ function lvWants(keep) {
       : '<p class="mt" style="padding:12px">Personne pour l’instant.</p>') +
     '<p class="mt" style="font-size:12px;padding:8px 6px">Annoncez dans le live : « Ceux qui ont touché 🔥, écrivez-moi sur WhatsApp ! »</p>';
 }
+// Visiteur sans compte : il regarde, commande et touche 🔥 ; pour commenter, compte gratuit
+function lvGuestChat() {
+  if (!live) return;
+  openM(`<h3>💬 Commenter le live</h3><p>Créez un compte gratuit (1 minute) pour commenter, suivre <b>${esc(live.hname)}</b> et être prévenu de ses prochains lives.</p>
+    <p class="mt" style="font-size:13px;margin:8px 0 14px">Sans compte, vous pouvez déjà regarder, toucher 🔥 Je veux et commander.</p>
+    <button class="pbtn b" onclick="lvToRegister()">Créer un compte gratuit</button><button class="pbtn gray" onclick="closeM()">Continuer à regarder</button>`);
+}
+function lvToRegister() { try { if (live) sessionStorage.setItem('sp_live', live.hid); } catch (e) {} closeM(); leaveLive(); go('register'); }
 function addComment(name, text) {
   const box = $('lv-com'); if (!box || !text) return;
-  box.insertAdjacentHTML('beforeend', `<div><b>${esc(name)}</b>${esc(String(text).slice(0, 200))}</div>`);
-  const last = box.lastElementChild; setTimeout(() => last?.classList.add('old'), 15000);
+  const sys = ['📤', '🔔', '📌', '🖼️'].includes(name);
+  box.insertAdjacentHTML('beforeend', `<div class="${sys ? 'sys' : ''}"><b>${esc(name)}</b>${esc(String(text).slice(0, 200))}</div>`);
+  const last = box.lastElementChild;
+  if (sys) setTimeout(() => { last?.classList.add('gone'); setTimeout(() => last?.remove(), 700); }, 7000);
+  else setTimeout(() => last?.classList.add('old'), 15000);
   while (box.children.length > 40) box.firstChild.remove();
   box.scrollTop = box.scrollHeight;
 }
@@ -3123,7 +3208,7 @@ function floatHeart() {
   const h = document.createElement('span'); h.textContent = ['❤️', '💖', '🧡', '💛'][Math.floor(Math.random() * 4)];
   h.style.setProperty('--x', (Math.random() * 40 - 20) + 'px'); b.appendChild(h); setTimeout(() => h.remove(), 2300);
 }
-function sendLiveMsg() { const i = $('lv-text'), t = i?.value.trim(); if (!t || !live) return; i.value = ''; lvSend({ t: 'chat', text: t.slice(0, 200) }); addComment(me.name, t); }
+function sendLiveMsg() { if (!me) return lvGuestChat(); const i = $('lv-text'), t = i?.value.trim(); if (!t || !live) return; i.value = ''; lvSend({ t: 'chat', text: t.slice(0, 200) }); addComment(me.name, t); }
 function sendHeart() { if (!live) return; lvSend({ t: 'heart' }); floatHeart(); }
 const lvCount = () => live?.sfu ? (live.nv || 0) : live?.peers ? Object.values(live.peers).filter(p => p.pc.connectionState === 'connected').length : 0;
 function sendCount() { if (!live?.host) return; const n = lvCount(); live.max = Math.max(live.max || 0, n); const e = $('lv-n'); if (e) e.textContent = '👁 ' + n; lvSend({ t: 'count', n }); }
@@ -3214,7 +3299,7 @@ async function startLive() {
   catch (e) { console.warn('SFU indisponible, mode direct :', e); live.sfu = null; toast(`Mode direct : live limité à ${LIVE_MAX} spectateurs.`, 4500); setLiveSt('Vous êtes en direct. Gardez l’appli ouverte.'); }
   if (!live) return;
   liveBeat(); live.hb = setInterval(liveBeat, 20000);
-  addComment('📤', 'Touchez « Partager » pour inviter vos clients sur WhatsApp');
+  addComment('📤', 'Touchez 📤 en haut pour inviter vos clients sur WhatsApp');
   sb.rpc('notify_live_followers', { p_title: live.title || null }).then(({ data }) => { if (data > 0) addComment('🔔', `${data} abonné${data > 1 ? 's' : ''} prévenu${data > 1 ? 's' : ''} de votre live`); }, () => {});
 }
 async function hostOffer(vid) {
@@ -3232,7 +3317,6 @@ async function hostOffer(vid) {
 }
 function closePeer(vid) { const p = live?.peers?.[vid]; if (!p) return; delete live.peers[vid]; try { p.pc.close(); } catch (e) {} }
 async function joinLive(hid) {
-  if (!me) return needAuth();
   if (live || call) return toast('Terminez d’abord l’appel ou le live en cours.');
   const m = lives[hid]; if (!m) return toast('Ce live est terminé.');
   if (!window.RTCPeerConnection) return alert('Votre navigateur ne permet pas le live. Essayez avec Chrome.');
@@ -3275,7 +3359,7 @@ async function onLiveSig(p) {
   if (p.t === 'heart') return floatHeart();
   if (p.t === 'ordered') return addComment('🛒', `${cutT(p.fname || 'Quelqu’un', 30)} vient de commander ${cutT(p.name, 40)}`);
   if (p.t === 'want') { if (!live.host || hostWant(p)) addComment('🔥', `${cutT(p.fname || 'Quelqu’un', 30)} veut ${cutT(p.name, 40)}`); return; }
-  if (p.to && p.to !== me.id) return; // message destiné à quelqu'un d'autre
+  if (p.to && p.to !== VID()) return; // message destiné à quelqu'un d'autre
   if (live.host) {
     if (live.sfu) return; // mode relais : pas de connexion individuelle
     if (p.t === 'join') { if (lvCount() >= LIVE_MAX && !live.peers[p.from]) return lvSend({ t: 'full', to: p.from }); setTimeout(() => lvSync(p.from), 1500); return hostOffer(p.from); }
@@ -3314,7 +3398,7 @@ function leaveLive(force) {
   if (!live) return;
   if (live.host) { if (force || confirm('Terminer votre live ?')) endLive(); return; }
   const l = live; live = null; clearTimeout(l.tmo);
-  if (l.ch) { try { l.ch.send({ type: 'broadcast', event: 'lv', payload: { t: 'leave', to: l.hid, from: me.id } }); } catch (e) {} setTimeout(() => sb.removeChannel(l.ch), 800); }
+  if (l.ch) { try { l.ch.send({ type: 'broadcast', event: 'lv', payload: { t: 'leave', to: l.hid, from: VID() } }); } catch (e) {} setTimeout(() => sb.removeChannel(l.ch), 800); }
   try { l.pc?.close(); } catch (e) {}
   $('livebox')?.remove();
 }
