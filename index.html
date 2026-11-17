@@ -646,6 +646,90 @@ video.pm{background:#000}
 .vchips button.on{border-color:#FACC15;box-shadow:0 0 0 2px #111 inset}
 .vidwrap canvas{width:min(70vw,300px)!important}.vidwrap.sq canvas{aspect-ratio:1/1!important;width:min(70vw,380px)!important}
 .vidout{display:block;margin:0 auto 10px;width:auto!important;max-width:100%;max-height:68vh}
+/* ===== Studio pub ===== */
+/* ===== Studio photo d'identité ===== */
+.phentry{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:linear-gradient(135deg,#EFF6FF,#ECFDF5);border:1px solid #BFDBFE;border-radius:16px;padding:12px 14px;margin:10px 0;cursor:pointer}
+.phentry span{font-size:30px}.phentry div{flex:1;display:flex;flex-direction:column}.phentry b{font-size:15px;color:#1E3A8A}.phentry small{color:#4B5563;font-size:12px}.phentry i{font-style:normal;font-size:26px;color:#2563EB}
+.phhero{background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:4px}.phhero b{font-size:18px}.phhero span{font-size:13px;opacity:.95}
+.phfmts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.phfmts button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:#fff;border:2px solid #E5E7EB;border-radius:14px;padding:10px;cursor:pointer}
+.phfmts button.on{border-color:#16A34A;background:#F0FDF4}.phfmts small{color:#6B7280;font-size:12px}.phfmts i{font-style:normal;font-weight:700;color:#047857;font-size:13px}
+.phtips{display:flex;flex-wrap:wrap;gap:6px}.phtips span{background:#fff;border:1px solid #E5E7EB;border-radius:999px;padding:6px 10px;font-size:12px}
+.phed{display:flex;flex-direction:column;gap:12px}.phstage{position:relative;width:min(100%,calc(46vh * var(--r,.78)));max-width:340px;margin:0 auto;background:repeating-conic-gradient(#E5E7EB 0 25%,#fff 0 50%) 0 0/20px 20px;border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.18);overflow:hidden}
+.phstage canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.phmsg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);color:#fff;font-weight:700;text-align:center;padding:10px}
+.phfmtb{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:8px 10px;font-size:14px}
+.phrng{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;margin:4px 0}.phrng input{flex:1;margin:0;padding:0}
+.phbgc{display:flex;gap:8px}.phbgc button{width:34px;height:34px;border-radius:50%;border:2px solid #D1D5DB;cursor:pointer}.phbgc button.on{box-shadow:0 0 0 3px #16A34A}
+.phck{font-size:13px;padding:5px 8px;border-radius:8px;margin:3px 0}.phck.ok{background:#F0FDF4;color:#166534}.phck.ko{background:#FFFBEB;color:#92400E}.phck.na{background:#EFF6FF;color:#1E40AF}
+.phres{display:grid;gap:14px;margin-top:12px}.phres>div{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:12px}.phres img{width:100%;border-radius:6px;margin:8px 0;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.phhero.ok{background:linear-gradient(135deg,#2563EB,#1D4ED8)}
+.phpromo{margin-top:14px;background:#ECFDF5;border:1px dashed #16A34A;color:#065F46;border-radius:12px;padding:12px;text-align:center;font-weight:600;cursor:pointer}
+@media (min-width:860px){.phed{flex-direction:row;align-items:flex-start}.phstage{flex:none;width:min(46%,calc(70vh * var(--r,.78)));max-width:460px;margin:0}.phside{flex:1}.phres{grid-template-columns:1.4fr 1fr}}
+
+/* ===== Mon commerce ===== */
+body.noscroll{overflow:hidden}
+.bizx{position:fixed;inset:0;z-index:400;background:var(--bg,#F3F4F6);display:flex;flex-direction:column}
+.bizh{display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:calc(env(safe-area-inset-top,0px) + 10px);background:#fff;border-bottom:1px solid #E5E7EB}.bizh b{flex:1;font-size:18px}
+.bizb{width:40px;height:40px;border:none;border-radius:50%;background:#F3F4F6;font-size:18px;cursor:pointer}
+.biztabs{display:flex;gap:6px;overflow-x:auto;padding:8px 12px;background:#fff;border-bottom:1px solid #E5E7EB;scrollbar-width:none}
+.biztabs button{flex:none;border:none;border-radius:999px;padding:9px 14px;background:#F3F4F6;font-weight:700;cursor:pointer;white-space:nowrap}.biztabs button.on{background:#16A34A;color:#fff}
+.bizc{flex:1;overflow-y:auto;padding:14px 12px calc(env(safe-area-inset-bottom,0px) + 40px);width:100%;max-width:760px;margin:0 auto;box-sizing:border-box}
+.bizcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px}
+.bizcard{background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px;border:1px solid #E5E7EB;text-align:left}
+.bizcard small{color:#6B7280;font-weight:600}.bizcard b{font-size:22px}.bizcard.wide{grid-column:1/-1}
+.bizcard.g{background:#ECFDF5;border-color:#A7F3D0}.bizcard.g b{color:#047857}.bizcard.r{background:#FEF2F2;border-color:#FECACA}.bizcard.r b{color:#B91C1C}.bizcard.o{background:#FFFBEB;border-color:#FDE68A}.bizcard.o b{color:#B45309}
+.bizcard.bnew{cursor:pointer;align-items:flex-start}.bizcard.bnew span{font-size:26px}.bizcard.bnew b{font-size:15px}.bizcard.bnew small{color:#16A34A}
+.bizm{display:flex;flex-wrap:wrap;gap:8px 16px;margin:10px 0}.bizm span{font-size:14px;color:#4B5563}.bizm b{display:block;font-size:17px;color:#111827}
+.ko{color:#DC2626}
+.bizbars{display:flex;gap:6px;align-items:flex-end;height:110px;margin-top:8px}.bizbars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bizbars i{display:block;width:100%;background:linear-gradient(#22C55E,#15803D);border-radius:6px 6px 2px 2px}.bizbars small{font-size:11px;color:#6B7280;margin-top:4px}
+.bizowe{background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:10px 12px;margin:10px 0 0;cursor:pointer;font-size:14px}
+.bizrow{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:10px 12px;margin-top:8px;cursor:pointer}
+.bizrow>div{flex:1;min-width:0;display:flex;flex-direction:column}.bizrow>div b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bizrow small{color:#6B7280;font-size:12px}
+.bizdot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;flex:none}.bizdot.in{background:#DCFCE7;color:#15803D}.bizdot.out{background:#FEE2E2;color:#B91C1C}
+.bizav{width:40px;height:40px;border-radius:50%;background:#ECFDF5;color:#047857;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex:none}
+.bizdel{border:none;background:none;font-size:18px;cursor:pointer;padding:4px}
+.bizst-ok{color:#047857;font-weight:700}.bizst-wa{color:#B45309;font-weight:700}.bizst-ko{color:#B91C1C;font-weight:700}.bizst-pf{color:#2563EB;font-weight:700}
+.bizst img{width:48px;height:48px;object-fit:cover;border-radius:10px;flex:none;background:#F3F4F6}
+.bizrow>div.bizqty{display:flex;flex-direction:row;align-items:center;gap:4px;flex:none}.bizqty button{width:34px;height:34px;border:none;border-radius:10px;background:#F3F4F6;font-size:18px;font-weight:800;cursor:pointer}.bizqty input{width:56px;text-align:center;padding:6px;margin:0}
+.bizhist{max-height:40vh;overflow:auto;margin:10px 0}
+.bizimg{display:flex;gap:12px;align-items:center;margin:10px 0}.bizimgv{width:86px;height:86px;border-radius:12px;background:repeating-conic-gradient(#F3F4F6 0 25%,#fff 0 50%) 0 0/16px 16px;display:flex;align-items:center;justify-content:center;flex:none;border:1px solid #E5E7EB}
+.bizimgv img{max-width:80px;max-height:80px}.bizimgv span{font-size:12px;color:#9CA3AF}.bizimgb{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.bizimgb .soft{padding:7px 10px;font-size:13px}
+.bizdet{margin:6px 0 10px}.bizdet summary{cursor:pointer;font-weight:700;color:#2563EB;margin-bottom:8px}
+.bizcols{display:flex;gap:8px;flex-wrap:wrap}.bizcols button{width:36px;height:36px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #D1D5DB;cursor:pointer}.bizcols button.on{box-shadow:0 0 0 3px #111}
+.bizit{display:grid;grid-template-columns:1fr 64px 96px 34px;gap:6px;margin-bottom:6px}.bizit input{margin:0;padding:9px;min-width:0}.bizit button{border:none;background:#FEE2E2;color:#B91C1C;border-radius:10px;cursor:pointer}
+.biztot{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:10px 14px;margin:10px 0;display:flex;flex-direction:column;gap:4px}.biztot span{display:flex;justify-content:space-between}.biztot .btot{font-size:18px;color:#047857}
+.docprev{max-height:58vh;overflow:auto;background:#E5E7EB;border-radius:12px;padding:8px;margin:8px 0}.docprev img{width:100%;display:block;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.sgpad{width:100%;aspect-ratio:9/4;background:#fff;border:2px dashed #9CA3AF;border-radius:12px;touch-action:none}
+
+.modal.stubox{max-width:min(96vw,1040px);padding:16px}
+.stu-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.stu-h h3{margin:0}
+.stu-x{border:none;background:#F3F4F6;border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer}
+.stu-body{display:flex;flex-direction:column;gap:12px}
+.stu-prev{display:flex;flex-direction:column;align-items:center;gap:4px;background:#0B0F19;border-radius:16px;padding:10px;position:sticky;top:-16px;z-index:2}
+.stu-prev small{color:#9CA3AF}
+.stu-cvw{--mh:min(34vh,330px);position:relative;width:min(100%,calc(var(--mh) * var(--r,.5625)));aspect-ratio:var(--ar,9/16);border-radius:12px;overflow:hidden;background:#111;margin:0 auto}
+.stu-cvw canvas{width:100%;height:100%;display:block}
+.stu-cvw.big{--mh:min(56vh,560px);margin-bottom:6px}
+.stu-load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;text-align:center;padding:10px;background:rgba(0,0,0,.6)}
+.stu-tpls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stu-tpls button{position:relative;border:3px solid transparent;border-radius:14px;padding:12px 8px 30px;cursor:pointer;text-align:left;min-height:74px}
+.stu-tpls button b{font-size:14px}.stu-tpls button i{position:absolute;left:8px;bottom:8px;font-style:normal;font-weight:900;font-size:13px;padding:2px 8px;border-radius:6px}
+.stu-tpls button.on{border-color:#FACC15;box-shadow:0 0 0 2px #111 inset}
+#v-fmt button{display:flex;flex-direction:column;align-items:center;min-width:110px}#v-fmt button small{font-weight:500;font-size:11px;color:#6B7280;margin-top:2px}
+.stu-mus{display:flex;align-items:center;gap:8px;margin:12px 0 4px;font-weight:600}.stu-mus input{width:20px;height:20px;margin:0}
+.stu-go{display:flex;flex-direction:column;gap:0;margin-top:8px}
+.stu-posters{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin:10px 0}
+.stu-posters a{position:relative;display:block;border-radius:10px;overflow:hidden;background:#111}.stu-posters img{width:100%;display:block}
+.stu-posters span{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.7);color:#fff;font-size:12px;padding:3px 8px;border-radius:999px}
+@media (min-width:860px){
+  .stu-body{flex-direction:row;align-items:flex-start}
+  .stu-prev{flex:0 0 52%;top:0}.stu-cvw{--mh:min(70vh,640px)}
+  .stu-opts{flex:1;min-width:0}.stu-go{flex-direction:row;gap:10px}.stu-go .pbtn{flex:1}
+}
+@media (max-width:420px){.stu-tpls{grid-template-columns:repeat(2,1fr)}}
+
 
 
 @media (orientation:landscape) and (min-width:700px){.aff{flex-direction:row}.affinfo{width:40%;justify-content:center}}
@@ -741,6 +825,7 @@ video.pm{background:#000}
   <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span><button class="pill" style="margin-left:auto" onclick="go('login')">Se connecter</button></div>
   <div class="page">
     <div class="box exhero"><b>🛍️ Achetez près de chez vous</b><span>Goma, Bukavu et ailleurs : commandez directement sur WhatsApp, sans créer de compte.</span></div>
+    <button type="button" class="phentry" onclick="phOpen()"><span>📸</span><div><b>Photo d’identité &amp; visa GRATUITE</b><small>États-Unis, Canada, Schengen, Royaume-Uni, Chine… fond blanc automatique, prête à imprimer</small></div><i>›</i></button>
     <div id="livebar-g" class="hidden"></div>
     <div class="filters" id="ex-f">
       <button class="on" onclick="exFilter('tous',this)">Tout</button>
@@ -762,7 +847,8 @@ video.pm{background:#000}
   <div id="v-accueil" class="view page hidden">
     <div id="livebar" class="hidden"></div>
     <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
-      <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:var(--g2)" onclick="prodModal()">🛍️ Vendre</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div></div>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:var(--g2)" onclick="prodModal()">🛍️ Vendre</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div>
+      <button type="button" class="phentry" style="margin-top:10px" onclick="phOpen()"><span>📸</span><div><b>Photo d’identité &amp; visa gratuite</b><small>Fond blanc automatique, planche prête à imprimer</small></div><i>›</i></button></div>
     <div class="filters" id="feed-f">
       <button class="on" onclick="feedFilter('pourvous',this)">Pour vous</button>
       <button onclick="feedFilter('vitrine',this)">🛍️ Vitrine</button>
@@ -781,7 +867,7 @@ video.pm{background:#000}
   </div>
 
   <div id="v-produits" class="view page hidden">
-    <div class="row"><h2 class="title">Boutique</h2><button class="pill" id="addp" onclick="prodModal()">+ Ajouter</button></div>
+    <div class="row"><h2 class="title">Boutique</h2><div style="display:flex;gap:8px"><button class="soft" onclick="bizOpen()">🧰 Mon commerce</button><button class="pill" id="addp" onclick="prodModal()">+ Ajouter</button></div></div>
     <div id="dash"></div>
     <input class="search" id="p-search" placeholder="Rechercher un produit..." oninput="renderProducts()">
     <div style="display:flex;gap:8px;margin-bottom:12px"><input id="p-city" placeholder="📍 Ville" oninput="renderProducts()" style="flex:1;min-width:0"><select id="p-cat" onchange="renderProducts()" style="flex:1;min-width:0"></select><input id="p-max" type="number" placeholder="Prix max $" oninput="renderProducts()" style="flex:1;min-width:0"></div>
@@ -826,7 +912,7 @@ video.pm{background:#000}
     <div class="big av" id="big-av" onclick="pickImage('avatar')" title="Changer la photo"></div>
     <div class="pinfo"><div class="title" id="p-name"></div><div class="mt" id="p-user"></div>
       <button class="soft" style="margin-top:12px;background:#EFF6FF" onclick="go('settings')">Modifier ma page</button></div>
-    <div class="grid2"><button class="pill" onclick="postModal()">+ Créer une publication</button><button class="soft" onclick="prodModal()">📦 Ajouter un produit</button><button class="soft" style="grid-column:1/-1" onclick="shopModal()">🏪 Ma boutique : lien et QR code</button><button class="soft" style="grid-column:1/-1" onclick="inviteModal()">🎁 Inviter des amis</button><button id="adm-entry" class="pill hidden" style="grid-column:1/-1;background:#111827" onclick="go('admin')">🛡️ Administration</button></div>
+    <div class="grid2"><button class="pill" onclick="postModal()">+ Créer une publication</button><button class="soft" onclick="prodModal()">📦 Ajouter un produit</button><button class="soft" style="grid-column:1/-1;background:#ECFDF5;color:#047857;font-weight:700" onclick="bizOpen()">🧰 Mon commerce : factures, carnet, stock, caisse</button><button class="soft" style="grid-column:1/-1" onclick="shopModal()">🏪 Ma boutique : lien et QR code</button><button class="soft" style="grid-column:1/-1" onclick="inviteModal()">🎁 Inviter des amis</button><button id="adm-entry" class="pill hidden" style="grid-column:1/-1;background:#111827" onclick="go('admin')">🛡️ Administration</button></div>
     <h3 style="margin-bottom:12px">Publications récentes</h3>
     <div id="my-posts"></div>
   </div>
@@ -921,8 +1007,8 @@ function refresh() {
   ({accueil: () => { renderFeed(); renderLiveBar(); }, appels: renderCalls, admin: renderAdmin, decouvrir: renderDiscover, produits: renderProducts, messages: renderMsgs,
     mapage: renderMyPage, settings: loadSettings, chat: renderChat, user: renderUser, product: renderRoute, pub: renderRoute, explore: renderExplore})[cur]?.();
 }
-function closeM() { $('modal').classList.add('hidden'); }
-function openM(html) { $('modal-box').classList.remove('mwide'); $('modal-box').innerHTML = html; $('modal').classList.remove('hidden'); }
+function closeM() { $('modal').classList.add('hidden'); if (typeof stuPrev !== 'undefined' && stuPrev) { stuPrev.stop = 1; stuPrev = null; } }
+function openM(html) { $('modal-box').classList.remove('mwide', 'stubox'); $('modal-box').innerHTML = html; $('modal').classList.remove('hidden'); }
 
 // ---------- Helpers ----------
 function av(u, size = 44) {
@@ -1009,7 +1095,7 @@ async function logout() {
 }
 async function boot() {
   const { data: { session } } = await sb.auth.getSession();
-  if (!session) { go(route() ? 'pub' : 'explore'); liveHash(); tvHash(); return; }
+  if (!session) { go(route() ? 'pub' : 'explore'); liveHash(); tvHash(); phHash(); return; }
   const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
   if (!data) { await sb.auth.signOut(); return go('landing'); }
   me = { ...data, email: session.user.email };
@@ -1023,7 +1109,7 @@ async function boot() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.id}` }, ev => onNotif(ev.new))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ev => { handleRealtimePost(ev.new); }).subscribe();
   sigListen(); liveDirListen(); setTimeout(() => { registerNative(); checkNativePending(); }, 300); checkAdmin(); presStart(); setTimeout(checkInvites, 1200);
-  go(route() ? 'product' : 'accueil'); liveHash(); tvHash();
+  go(route() ? 'product' : 'accueil'); liveHash(); tvHash(); phHash();
   setTimeout(welcome, 1500);
 }
 
@@ -2009,7 +2095,7 @@ async function catalogPage(u, body) {
     <div style="font-size:22px;font-weight:bold;margin-top:8px">${esc(s.name)}${prods.length > 5 ? ' <span style="color:#10B981;font-size:14px">✅ Vérifié</span>' : ''}</div>
     <div class="mt">@${esc(s.username)} · ${prods.length} produit${prods.length > 1 ? 's' : ''}</div>
     ${hasP ? '<button class="pbtn pubgo" onclick="pubShop()">▶️ Voir la pub de la boutique</button>' : ''}
-    ${own ? `${hasP ? `<button class="pbtn b" onclick="pubVideo()">🎬 Créer ma pub vidéo (statut WhatsApp, TikTok)</button><button class="pbtn b" onclick="tvLink()">📺 SocialPages TV (lien pour télévision)</button>` : ''}${prods.some(p => !isSoldP(p)) ? `<button class="pbtn b" onclick="afficheStart('${esc(s.name).replace(/'/g, '&#39;')}')">📺 Mode affiche (comptoir, vitrine)</button>` : ''}
+    ${own ? `${hasP ? `<button class="pbtn b" onclick="bizOpen()">🧰 Mon commerce : factures, carnet, stock, caisse</button><button class="pbtn b" onclick="pubVideo()">🎬 Studio pub : vidéos et affiches</button><button class="pbtn b" onclick="tvLink()">📺 SocialPages TV (lien pour télévision)</button>` : ''}${prods.some(p => !isSoldP(p)) ? `<button class="pbtn b" onclick="afficheStart('${esc(s.name).replace(/'/g, '&#39;')}')">📺 Mode affiche (comptoir, vitrine)</button>` : ''}
     <button class="pbtn gray" onclick="copyTxt(location.origin + '/v/${esc(s.username)}')">🔗 Copier le lien du catalogue</button>`
     : `${lives[s.id] ? `<button class="pbtn" style="background:#DC2626;color:#fff" onclick="joinLive('${s.id}')">🔴 En direct maintenant : regarder</button>` : ''}
     ${sph ? `<button class="pbtn" style="background:#16A34A;color:#fff" onclick="shopWa()">📱 Contacter ${esc(s.name)} sur WhatsApp</button>` : ''}
@@ -2231,210 +2317,1054 @@ function tvLink() {
     <p class="mt" style="font-size:13px;margin-top:10px">Pas de compte nécessaire sur la télévision. Les nouveaux produits apparaissent automatiquement toutes les 15 minutes.</p>`);
 }
 
-// ---------- 🎬 Créer ma pub vidéo v2 (statut WhatsApp, TikTok, Facebook) ----------
+// ===================== 🎬 STUDIO PUB SOCIALPAGES : vidéos et affiches =====================
+// Tout est fait dans le téléphone / l'ordinateur du vendeur : rien n'est envoyé au serveur (gratuit).
 let vidBusy = false;
-const VSTYLES = {
-  promo: { n: '🔥 Promo', g: ['#DC2626', '#450A0A'], ac: '#FACC15', st: '#FACC15', stx: '#B91C1C', sh: '#FDE68A' },
-  luxe: { n: '✨ Luxe', g: ['#1F2937', '#000000'], ac: '#D4AF37', st: '#D4AF37', stx: '#111111', sh: '#F5E6B3' },
-  frais: { n: '🌿 Frais', g: ['#16A34A', '#052E16'], ac: '#4ADE80', st: '#22C55E', stx: '#FFFFFF', sh: '#BBF7D0' }
-};
 const fmtPhone = d => { d = String(d || '').replace(/\D/g, ''); if (!d) return ''; return '+' + (d.length > 9 ? d.slice(0, d.length - 9) + ' ' + d.slice(-9, -7) + ' ' + d.slice(-7, -4) + ' ' + d.slice(-4) : d); };
 const vget = (k, d) => { try { return localStorage.getItem('sp_v_' + k) || d; } catch (e) { return d; } };
 const vset = (k, v) => { try { localStorage.setItem('sp_v_' + k, v); } catch (e) {} };
+const STU_TPL = {
+  luxe: { n: '✨ Luxe', tag: 'COLLECTION PRESTIGE', g: ['#292524', '#0C0A09'], ac: '#D4AF37', tx: '#FFFFFF', sub: '#E7D9A8', st: '#D4AF37', stx: '#111111', serif: 1, tr: ['fade', 'zoom'], beat: 0.75, rot: 0 },
+  promo: { n: '🔥 Promotion', tag: 'OFFRE SPÉCIALE', g: ['#EF4444', '#7F1D1D'], ac: '#FACC15', tx: '#FFFFFF', sub: '#FDE68A', st: '#FACC15', stx: '#B91C1C', tr: ['slide', 'flash'], beat: 0.375, rot: -0.06 },
+  food: { n: '🥗 Alimentaire', tag: 'FRAIS & DÉLICIEUX', g: ['#F7FEE7', '#BEF264'], ac: '#15803D', tx: '#14532D', sub: '#3F6212', st: '#F97316', stx: '#FFFFFF', tr: ['zoom', 'up'], beat: 0.5, rot: -0.04, light: 1 },
+  tech: { n: '💻 Technologie', tag: 'HIGH-TECH', g: ['#020617', '#1E3A8A'], ac: '#22D3EE', tx: '#FFFFFF', sub: '#A5F3FC', st: '#22D3EE', stx: '#0B1120', tr: ['slide', 'wipe'], beat: 0.375, rot: 0 },
+  indus: { n: '🏭 Industriel', tag: 'ÉQUIPEMENT PROFESSIONNEL', g: ['#4B5563', '#111827'], ac: '#FACC15', tx: '#FFFFFF', sub: '#E5E7EB', st: '#FACC15', stx: '#111827', tr: ['wipe', 'slide'], beat: 0.5, rot: -0.03 },
+  mode: { n: '👗 Mode', tag: 'NOUVELLE COLLECTION', g: ['#FFF1F2', '#F9A8D4'], ac: '#BE185D', tx: '#111111', sub: '#9D174D', st: '#111111', stx: '#FFFFFF', serif: 1, tr: ['up', 'fade'], beat: 0.75, rot: 0, light: 1 }
+};
+const STU_FMT = {
+  '916': { n: '📱 9:16', d: 'TikTok · Statut WhatsApp', W: 720, H: 1280 },
+  '11': { n: '⬛ 1:1', d: 'Facebook · Instagram', W: 720, H: 720 },
+  '45': { n: '▯ 4:5', d: 'Instagram · Facebook', W: 720, H: 900 },
+  '169': { n: '🖥️ 16:9', d: 'YouTube · Télévision', W: 1280, H: 720 }
+};
+const STU_INTRO = 1.5, STU_SL = 3, STU_END = 4.5;
+const prodUrl = p => location.origin + '/p/' + p.id;
+const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
+const back = x => { x = Math.min(1, Math.max(0, x)); const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+function vidRR(ctx, x, y, w, h, r) { r = Math.max(0, Math.min(r, w / 2, h / 2)); ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function vidWrap(ctx, text, maxW, max = 2) { const w = String(text || '').split(/\s+/), lines = []; let l = ''; w.forEach(x => { const t = l ? l + ' ' + x : x; if (ctx.measureText(t).width > maxW && l) { lines.push(l); l = x; } else l = t; }); if (l) lines.push(l); if (lines.length > max) { lines.length = max; lines[max - 1] = lines[max - 1].replace(/\s*\S*$/, '') + '…'; } return lines; }
+function vidStar(ctx, cx, cy, r, n, rot) { ctx.beginPath(); for (let i = 0; i < n * 2; i++) { const a = rot + i * Math.PI / n, rr = i % 2 ? r * 0.78 : r; ctx.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } ctx.closePath(); }
+const stuFont = (T, w, px) => `${w} ${Math.round(px)}px ${T.serif ? 'Georgia, "Times New Roman", serif' : 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'}`;
+function stuSpaced(ctx, text, x, y, sp) { // texte espacé (style magazine), centré sur x
+  const ch = [...text], w = ch.reduce((a, c) => a + ctx.measureText(c).width + sp, -sp); let cx = x - w / 2; const al = ctx.textAlign; ctx.textAlign = 'left';
+  ch.forEach(c => { ctx.fillText(c, cx, y); cx += ctx.measureText(c).width + sp; }); ctx.textAlign = al;
+}
+function stuLay(W, H) {
+  if (W > H) return { land: 1, ph: { x: 40, y: 96, w: 700, h: H - 140 }, tx: { x: 790, w: W - 830 } };
+  const sq = H <= 720, f45 = H > 720 && H < 1000;
+  return { sq, f45, ph: { x: 28, y: sq ? 74 : f45 ? 86 : 122, w: W - 56, h: Math.round(H * (sq ? 0.47 : 0.5)) }, tx: { x: 40, w: W - 80 } };
+}
+// ---------- Préparation (une seule fois) : photos réduites, flou, QR ----------
+const stuCache = {};
+function stuQR(url) {
+  try { const q = qrcode(0, 'M'); q.addData(url); q.make(); const n = q.getModuleCount(), c = document.createElement('canvas'); c.width = c.height = n + 2; const x = c.getContext('2d');
+    x.fillStyle = '#fff'; x.fillRect(0, 0, n + 2, n + 2); x.fillStyle = '#000'; for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (q.isDark(r, k)) x.fillRect(k + 1, r + 1, 1, 1); return c; } catch (e) { return null; }
+}
+async function stuImg(url) {
+  const src = await pubLoad(url); if (!src?.startsWith('blob:')) return null;
+  const im = new Image(); im.src = src; try { await im.decode(); } catch (e) { return null; }
+  const M = 1200, sc = Math.min(1, M / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.width * sc)); c.height = Math.max(1, Math.round(im.height * sc));
+  const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(im, 0, 0, c.width, c.height);
+  const b = document.createElement('canvas'); b.width = 36; b.height = 36; const y = b.getContext('2d'), s2 = Math.max(36 / c.width, 36 / c.height) * 1.2;
+  y.filter = 'blur(2px)'; y.drawImage(c, (36 - c.width * s2) / 2, (36 - c.height * s2) / 2, c.width * s2, c.height * s2); y.filter = 'none';
+  return { im: c, bl: b };
+}
+function stuPrep(p) {
+  return stuCache[p.id] ||= (async () => {
+    const urls = (p.images?.length ? p.images : [pImg(p)]).filter(Boolean).slice(0, 3), ims = [];
+    for (const u of urls) { const r = await stuImg(u); if (r) ims.push(r); }
+    return ims.length ? { p, ims, qr: stuQR(prodUrl(p)) } : null;
+  })();
+}
+// ---------- Décor fixe de chaque modèle (dessiné une seule fois) ----------
+function stuLayer(T, W, H, k, card) {
+  const c = document.createElement('canvas'); c.width = Math.round(W * k); c.height = Math.round(H * k); const x = c.getContext('2d'); x.scale(k, k);
+  const g = x.createLinearGradient(0, 0, W * 0.6, H); g.addColorStop(0, T.g[0]); g.addColorStop(1, T.g[1]); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  const key = Object.keys(STU_TPL).find(n => STU_TPL[n] === T), m = Math.min(W, H);
+  if (key === 'luxe') {
+    const r = x.createRadialGradient(W / 2, H * 0.25, 10, W / 2, H * 0.25, m * 0.9); r.addColorStop(0, 'rgba(212,175,55,.22)'); r.addColorStop(1, 'rgba(212,175,55,0)'); x.fillStyle = r; x.fillRect(0, 0, W, H);
+    x.strokeStyle = 'rgba(212,175,55,.75)'; x.lineWidth = 1.5; x.strokeRect(14, 14, W - 28, H - 28); x.lineWidth = 0.8; x.strokeRect(22, 22, W - 44, H - 44);
+    x.fillStyle = 'rgba(231,217,168,.5)'; for (let i = 0; i < 70; i++) { const a = (i * 137.5) % 360, d = (i * 53) % 100; x.beginPath(); x.arc((W * ((i * 37) % 100)) / 100, (H * d) / 100, (i % 3) * 0.6 + 0.6, 0, 7); x.fill(); void a; }
+  } else if (key === 'promo') {
+    x.save(); x.globalAlpha = 0.09; x.fillStyle = '#fff'; x.translate(W / 2, H / 2); x.rotate(-0.5); for (let i = -12; i < 12; i++) x.fillRect(i * 70, -H * 1.5, 30, H * 3); x.restore();
+    x.fillStyle = '#FACC15'; x.beginPath(); x.moveTo(0, 0); x.lineTo(m * 0.32, 0); x.lineTo(0, m * 0.32); x.fill();
+    x.fillStyle = 'rgba(250,204,21,.9)'; x.beginPath(); x.moveTo(W, H); x.lineTo(W - m * 0.22, H); x.lineTo(W, H - m * 0.22); x.fill();
+  } else if (key === 'food') {
+    for (let i = 0; i < 14; i++) { x.save(); x.translate((W * ((i * 41) % 100)) / 100, (H * ((i * 67) % 100)) / 100); x.rotate(i); x.fillStyle = i % 3 ? 'rgba(22,163,74,.13)' : 'rgba(249,115,22,.12)'; x.beginPath(); x.ellipse(0, 0, m * 0.07, m * 0.028, 0, 0, 7); x.fill(); x.restore(); }
+    x.fillStyle = 'rgba(255,255,255,.35)'; x.beginPath(); x.arc(W * 0.85, H * 0.12, m * 0.25, 0, 7); x.fill();
+  } else if (key === 'tech') {
+    x.strokeStyle = 'rgba(34,211,238,.09)'; x.lineWidth = 1; for (let i = 0; i < W; i += 40) { x.beginPath(); x.moveTo(i, 0); x.lineTo(i, H); x.stroke(); } for (let i = 0; i < H; i += 40) { x.beginPath(); x.moveTo(0, i); x.lineTo(W, i); x.stroke(); }
+    const r = x.createRadialGradient(W * 0.8, H * 0.2, 5, W * 0.8, H * 0.2, m * 0.7); r.addColorStop(0, 'rgba(34,211,238,.25)'); r.addColorStop(1, 'rgba(34,211,238,0)'); x.fillStyle = r; x.fillRect(0, 0, W, H);
+    x.strokeStyle = 'rgba(34,211,238,.6)'; x.lineWidth = 2; x.beginPath(); x.moveTo(0, H * 0.9); x.lineTo(W * 0.4, H * 0.9); x.lineTo(W * 0.46, H * 0.85); x.lineTo(W, H * 0.85); x.stroke();
+  } else if (key === 'indus') {
+    x.strokeStyle = 'rgba(255,255,255,.04)'; for (let i = 0; i < H; i += 4) { x.beginPath(); x.moveTo(0, i); x.lineTo(W, i); x.stroke(); }
+    const hz = (y0) => { x.save(); x.beginPath(); x.rect(0, y0, W, 14); x.clip(); x.fillStyle = '#FACC15'; x.fillRect(0, y0, W, 14); x.fillStyle = '#111'; for (let i = -20; i < W + 20; i += 28) { x.beginPath(); x.moveTo(i, y0 + 14); x.lineTo(i + 14, y0); x.lineTo(i + 28, y0); x.lineTo(i + 14, y0 + 14); x.fill(); } x.restore(); };
+    hz(0); hz(H - 14);
+  } else if (key === 'mode') {
+    x.strokeStyle = 'rgba(190,24,93,.25)'; x.lineWidth = 1.2; [0.3, 0.45, 0.6].forEach(f => { x.beginPath(); x.arc(W * 0.9, H * 0.1, m * f, 0, 7); x.stroke(); });
+    x.fillStyle = 'rgba(255,255,255,.4)'; x.fillRect(W * 0.06, 0, 1.5, H); x.fillRect(W * 0.94, 0, 1.5, H);
+  }
+  if (card) { const L = stuLay(W, H), ph = L.ph; x.save(); x.shadowColor = 'rgba(0,0,0,.35)'; x.shadowBlur = 30; x.shadowOffsetY = 12; x.fillStyle = T.light ? '#fff' : 'rgba(0,0,0,.35)'; vidRR(x, ph.x, ph.y, ph.w, ph.h, 26); x.fill(); x.restore(); }
+  return c;
+}
+function stuBuild(o) { // o : { s, slides, tpl, fmt, slogan, k }
+  const T = STU_TPL[o.tpl] || STU_TPL.promo, F = STU_FMT[o.fmt] || STU_FMT['916'], W = F.W, H = F.H;
+  return { ...o, T, W, H, L: stuLay(W, H), bgI: stuLayer(T, W, H, o.k, 0), bgS: stuLayer(T, W, H, o.k, 1), shopQr: stuQR(shopUrl(o.s)), phone: fmtPhone(o.s.phone), total: STU_INTRO + o.slides.length * STU_SL + STU_END };
+}
+// ---------- Dessin d'une image de la vidéo (t en secondes) ----------
+function stuFrame(ctx, V, t) {
+  ctx.setTransform(V.k, 0, 0, V.k, 0, 0); ctx.globalAlpha = 1; ctx.textAlign = 'left'; ctx.shadowBlur = 0; ctx.imageSmoothingEnabled = true;
+  if (t < STU_INTRO) return stuIntro(ctx, V, t);
+  const k = Math.floor((t - STU_INTRO) / STU_SL), n = V.slides.length;
+  if (k < n) return stuSlide(ctx, V, V.slides[k], t - STU_INTRO - k * STU_SL, k);
+  stuEnd(ctx, V, t - STU_INTRO - n * STU_SL);
+}
+function stuLogo(ctx, V, x, y, sz, noText) {
+  ctx.fillStyle = '#16A34A'; vidRR(ctx, x, y, sz, sz, sz * 0.25); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = `900 ${sz * 0.62}px sans-serif`; ctx.textAlign = 'center'; ctx.fillText('S', x + sz / 2, y + sz * 0.74);
+  ctx.textAlign = 'left'; if (noText) return; ctx.font = `bold ${sz * 0.55}px sans-serif`; ctx.fillStyle = V.T.tx; ctx.fillText('SocialPages', x + sz + 9, y + sz * 0.7);
+}
+function stuPhoto(ctx, I, x, y, w, h, z, pan, fill) {
+  ctx.save(); vidRR(ctx, x, y, w, h, 24); ctx.clip();
+  ctx.drawImage(I.bl, x, y, w, h); if (fill) { ctx.fillStyle = 'rgba(0,0,0,.12)'; ctx.fillRect(x, y, w, h); }
+  const im = I.im, fs = Math.min(w / im.width, h / im.height) * z, iw = im.width * fs, ih = im.height * fs; ctx.drawImage(im, x + (w - iw) / 2 + pan, y + (h - ih) / 2, iw, ih); ctx.restore();
+}
+function stuIntro(ctx, V, t) {
+  const { W, H, T, L } = V; ctx.drawImage(V.bgI, 0, 0, W, H);
+  const th = V.slides.slice(0, 3), nt = th.length, m = Math.min(W, H), cw = m * (L.land ? 0.3 : 0.34), chh = cw * 1.2;
+  th.forEach((sl, i) => { const e = ease((t - i * 0.12) / 0.7), I = sl.ims[0], rel = i - (nt - 1) / 2, x = W / 2 - cw / 2 + rel * cw * 0.78 + (1 - e) * W * rel * 0.5, y = H - chh - (L.land ? 40 : L.sq ? 30 : H * 0.12) + (1 - e) * 300;
+    ctx.save(); ctx.globalAlpha = e; ctx.translate(x + cw / 2, y + chh / 2); ctx.rotate(rel * 0.13); ctx.fillStyle = '#fff'; vidRR(ctx, -cw / 2, -chh / 2, cw, chh, 18); ctx.fill();
+    const sc = Math.min((cw - 14) / I.im.width, (chh - 14) / I.im.height); ctx.drawImage(I.im, -I.im.width * sc / 2, -I.im.height * sc / 2, I.im.width * sc, I.im.height * sc); ctx.restore(); });
+  ctx.globalAlpha = 1; ctx.textAlign = 'center';
+  const cy = L.land ? H * 0.16 : L.sq ? H * 0.12 : H * 0.17, e1 = back(t / 0.45);
+  ctx.save(); ctx.translate(W / 2, cy); ctx.scale(e1, e1); stuLogo(ctx, V, -40, -40, 80, 1); ctx.restore(); ctx.textAlign = 'center';
+  const e0 = ease((t - 0.2) / 0.4); ctx.globalAlpha = e0; ctx.fillStyle = T.ac; ctx.font = stuFont(T, 700, L.sq ? 20 : 24); stuSpaced(ctx, T.tag, W / 2, cy + 82, 5);
+  const e2 = back((t - 0.35) / 0.4); ctx.globalAlpha = 1; ctx.fillStyle = T.tx;
+  ctx.save(); ctx.translate(W / 2, cy + (L.sq ? 140 : 150)); ctx.scale(e2, e2); ctx.font = stuFont(T, 900, L.sq ? 52 : 64);
+  vidWrap(ctx, V.s.name || 'Ma boutique', W - 90, 2).forEach((l, i) => ctx.fillText(l, 0, i * (L.sq ? 58 : 70))); ctx.restore();
+  const e3 = ease((t - 0.65) / 0.4); ctx.globalAlpha = e3; ctx.fillStyle = T.sub; ctx.font = stuFont(T, 700, L.sq ? 28 : 34);
+  if (V.slogan) vidWrap(ctx, V.slogan, W - 90, 2).forEach((l, i) => ctx.fillText(l, W / 2, cy + (L.sq ? 205 : 225) + (1 - e3) * 30 + i * 42));
+  ctx.globalAlpha = 1; ctx.textAlign = 'left';
+  if (!T.light && t > 0.4 && t < 0.62) { ctx.fillStyle = `rgba(255,255,255,${0.6 * (1 - (t - 0.4) / 0.22)})`; ctx.fillRect(0, 0, W, H); }
+}
+function stuSlide(ctx, V, sl, u, k, poster) {
+  const { W, H, T, L } = V, ph = L.ph, p = sl.p, m = sl.ims.length, sub = STU_SL / m, j = poster ? 0 : Math.min(m - 1, Math.floor(u / sub)), uu = poster ? sub : u - j * sub, I = sl.ims[j], pr = pPromo(p);
+  ctx.drawImage(V.bgS, 0, 0, W, H);
+  // transition d'entrée (selon le modèle)
+  const tr = T.tr[k % T.tr.length], te = ease(u / 0.4); let ox = 0, oy = 0, zs = 1, al = 1, cw = 1;
+  if (j === 0 && u < 0.4 && !poster) { if (tr === 'slide') ox = (1 - te) * W * 0.7; else if (tr === 'zoom') zs = 1 + 0.35 * (1 - te); else if (tr === 'up') oy = (1 - te) * 140; else if (tr === 'fade') al = te; else if (tr === 'wipe') cw = Math.max(0.02, te); }
+  ctx.save(); ctx.globalAlpha = (j > 0 ? Math.min(1, uu / 0.25) : 1) * al;
+  if (cw < 1) { ctx.beginPath(); ctx.rect(ph.x, ph.y, ph.w * cw, ph.h); ctx.clip(); }
+  stuPhoto(ctx, I, ph.x + ox, ph.y + oy, ph.w, ph.h, (1 + 0.12 * (uu / sub)) * zs, (k % 2 ? -1 : 1) * 12 * (uu / sub), !T.light);
+  ctx.restore(); ctx.globalAlpha = 1;
+  if (tr === 'wipe' && cw < 1) { ctx.fillStyle = T.ac; ctx.fillRect(ph.x + ph.w * cw - 3, ph.y, 6, ph.h); }
+  // badge étoile -20 % / NEW
+  if (pr || isNewP(p)) { const e = poster ? 1 : back((u - 0.75) / 0.35), pulse = poster ? 1 : 1 + 0.06 * Math.sin(u * 9); if (e > 0) { ctx.save(); ctx.translate(ph.x + ph.w - 62, ph.y + 62); ctx.scale(e * pulse, e * pulse); ctx.rotate(0.15);
+    ctx.fillStyle = pr ? '#EF4444' : '#2563EB'; vidStar(ctx, 0, 0, L.sq ? 56 : 70, 12, u); ctx.fill(); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = `900 ${L.sq ? 24 : 30}px sans-serif`; ctx.fillText(pr ? `-${pr.pc}%` : 'NEW', 0, 10); ctx.restore(); } }
+  // textes : boutique, nom, prix, QR du produit, bouton
+  const land = L.land, X = L.tx.x, TW = L.tx.w, e1 = poster ? 1 : ease((u - 0.1) / 0.4), e2 = poster ? 1 : back((u - 0.5) / 0.35), e4 = poster ? 1 : ease((u - 0.9) / 0.3);
+  const fsN = land ? 44 : L.sq ? 32 : L.f45 ? 38 : 46, fsS = land ? 24 : L.sq ? 19 : 23, phh = land ? 88 : L.sq ? 62 : 80, qs = land ? 132 : L.sq ? 92 : L.f45 ? 100 : 120;
+  let y = land ? 150 : ph.y + ph.h + (L.sq ? 30 : 44);
+  ctx.globalAlpha = e1; ctx.fillStyle = T.ac; ctx.font = stuFont(T, 700, fsS); ctx.fillText(`🏪 ${cutT(V.s.name || '', 24)}${p.city ? '  ·  📍 ' + cutT(p.city, 14) : ''}`, X - (1 - e1) * 50, y);
+  ctx.fillStyle = T.tx; ctx.font = stuFont(T, 800, fsN); const nl = vidWrap(ctx, p.name, TW - (land ? 0 : 10), land ? 3 : 2);
+  nl.forEach((l, i) => ctx.fillText(l, X, y + fsN * 1.2 + i * fsN * 1.15 + (1 - e1) * 30)); y += fsN * 1.2 + (nl.length - 1) * fsN * 1.15 + (L.sq ? 18 : 26);
+  // prix autocollant
+  const pt = priceTxt(p); ctx.font = stuFont(T, 900, phh * 0.68); const pw = ctx.measureText(pt).width + 40;
+  if (e2 > 0) { ctx.globalAlpha = 1; ctx.save(); ctx.translate(X + pw / 2, y + phh / 2); ctx.rotate(T.rot); const sc = e2 * (!poster && u > 0.85 ? 1 + 0.025 * Math.sin(u * 8) : 1); ctx.scale(sc, sc);
+    ctx.fillStyle = T.st; vidRR(ctx, -pw / 2, -phh / 2, pw, phh, T.serif ? 6 : 16); ctx.fill(); if (T.serif) { ctx.strokeStyle = T.st; ctx.lineWidth = 2; vidRR(ctx, -pw / 2 - 6, -phh / 2 - 6, pw + 12, phh + 12, 8); ctx.stroke(); }
+    ctx.fillStyle = T.stx; ctx.textAlign = 'center'; ctx.fillText(pt, 0, phh * 0.24); ctx.restore();
+    if (pr) { ctx.globalAlpha = poster ? 1 : ease((u - 0.8) / 0.3); ctx.fillStyle = T.light ? '#6B7280' : '#D1D5DB'; ctx.font = stuFont(T, 500, phh * 0.36); const ot = pr.o + ' $', ow = ctx.measureText(ot).width, ox2 = land ? X : X + pw + 22, oy2 = land ? y + phh + 40 : y + phh * 0.62;
+      ctx.fillText(ot, ox2, oy2); ctx.fillStyle = '#EF4444'; ctx.fillRect(ox2 - 3, oy2 - phh * 0.13, ow + 6, 3); }
+    if (!poster && u > 0.5 && u < 0.68 && !T.light) { ctx.globalAlpha = 0.35 * (1 - (u - 0.5) / 0.18); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H); } }
+  // QR du produit (lien direct vers la fiche produit)
+  if (sl.qr) { ctx.globalAlpha = e4; const qx = land ? X : X + TW - qs, qy = land ? y + phh + (pr ? 64 : 34) : y + (phh - qs) / 2 - (L.sq ? 0 : 4);
+    if (land || qx > X + pw + (pr ? 110 : 20)) {
+      ctx.fillStyle = '#fff'; vidRR(ctx, qx - 6, qy - 6, qs + 12, qs + 12, 10); ctx.fill(); ctx.imageSmoothingEnabled = false; ctx.drawImage(sl.qr, qx, qy, qs, qs); ctx.imageSmoothingEnabled = true;
+      ctx.fillStyle = T.sub; ctx.font = stuFont(T, 600, land ? 20 : L.sq ? 13 : 15); if (land) { ctx.fillText('📱 Scannez pour', qx + qs + 18, qy + qs * 0.42); ctx.fillText('commander ce produit', qx + qs + 18, qy + qs * 0.42 + 26); }
+      else { ctx.textAlign = 'center'; ctx.fillText('Scannez & commandez', qx + qs / 2, qy + qs + (L.sq ? 22 : 26)); ctx.textAlign = 'left'; } } }
+  // points forts du produit (remplissent l'espace libre en 9:16 et 4:5)
+  if (!land && !L.sq) { const mt = getMeta(p.description), pts = (mt.h?.length ? mt.h : [mt.w && 'Garantie : ' + mt.w, mt.d && 'Livraison : ' + mt.d, p.city && 'Disponible à ' + p.city, 'Commande rapide sur WhatsApp'].filter(Boolean)).slice(0, 3);
+    const bh0 = L.f45 ? 50 : 64, top = y + phh + (L.f45 ? 14 : 24), bot = H - bh0 - (L.f45 ? 20 : 36) - 12, lh = L.f45 ? 30 : 38; let yy = top + lh * 0.7;
+    ctx.font = stuFont(T, 600, L.f45 ? 19 : 24); pts.forEach((t, i) => { if (yy > bot) return; ctx.globalAlpha = poster ? 1 : ease((u - 1 - i * 0.15) / 0.3); ctx.fillStyle = T.ac; ctx.fillText('✔', X, yy); ctx.fillStyle = T.tx; ctx.fillText(cutT(String(t), L.f45 ? 36 : 34), X + (L.f45 ? 26 : 34), yy); yy += lh; }); ctx.globalAlpha = 1; }
+  // bouton WhatsApp (en affiche : numéro du vendeur)
+  if (!L.sq || poster) { const label = poster && V.phone ? `📱 WhatsApp ${V.phone}` : '📱 Commandez sur WhatsApp', bh = land ? 58 : L.sq ? 48 : L.f45 ? 50 : 64;
+    ctx.font = `bold ${bh * 0.42}px sans-serif`; const bw = Math.min(land ? TW : W - 80, ctx.measureText(label).width + 60), bx = land ? X + bw / 2 : W / 2, by = H - bh - (land ? 34 : L.sq ? 14 : L.f45 ? 20 : 36), pl = poster ? 1 : 1 + 0.035 * Math.sin(u * 7);
+    ctx.globalAlpha = e4; ctx.save(); ctx.translate(bx, by + bh / 2); ctx.scale(pl, pl); ctx.fillStyle = '#25D366'; vidRR(ctx, -bw / 2, -bh / 2, bw, bh, bh / 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(label, 0, bh * 0.15); ctx.restore(); ctx.textAlign = 'left'; }
+  ctx.globalAlpha = 1;
+  // entête : barres de progression + logo
+  if (!poster) { const n = V.slides.length; for (let i = 0; i < n; i++) { const w = (W - 40 - (n - 1) * 6) / n, x = 20 + i * (w + 6); ctx.fillStyle = T.light ? 'rgba(0,0,0,.15)' : 'rgba(255,255,255,.3)'; vidRR(ctx, x, 16, w, 5, 3); ctx.fill();
+    if (i <= k) { ctx.fillStyle = T.light ? T.ac : '#fff'; vidRR(ctx, x, 16, i < k ? w : w * Math.min(1, u / STU_SL), 5, 3); ctx.fill(); } } }
+  stuLogo(ctx, V, 22, poster ? 20 : 30, 34);
+}
+function stuEnd(ctx, V, t) {
+  const { W, H, T, L } = V; ctx.drawImage(V.bgI, 0, 0, W, H);
+  ctx.save(); ctx.globalAlpha = T.light ? 0.18 : 0.1; ctx.translate(W / 2, H * 0.4); ctx.rotate(t * 0.5); ctx.fillStyle = T.light ? T.ac : '#fff'; for (let i = 0; i < 12; i++) { ctx.rotate(Math.PI / 6); ctx.fillRect(-12, 0, 24, Math.max(W, H)); } ctx.restore(); ctx.globalAlpha = 1;
+  ctx.textAlign = 'center'; const land = L.land, cx = land ? W * 0.32 : W / 2, e = back(t / 0.45);
+  let y = land ? 150 : L.sq ? 70 : L.f45 ? 90 : 190;
+  ctx.save(); ctx.translate(cx, y); ctx.scale(e, e); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, 0, 50, 0, 7); ctx.fill(); ctx.fillStyle = '#16A34A'; ctx.font = '900 52px sans-serif'; ctx.fillText((V.s.name || 'S')[0].toUpperCase(), 0, 19); ctx.restore();
+  ctx.globalAlpha = ease((t - 0.15) / 0.35); ctx.fillStyle = T.tx; ctx.font = stuFont(T, 900, L.sq ? 42 : 52); ctx.fillText(cutT(V.s.name || '', 22), cx, y + 110);
+  y += L.sq ? 150 : 170;
+  if (V.phone) { const e2 = back((t - 0.3) / 0.4), bw = Math.min(land ? W * 0.56 : W - 90, 620), bh = L.sq ? 70 : 86; ctx.globalAlpha = 1; ctx.fillStyle = T.sub; ctx.font = stuFont(T, 700, L.sq ? 26 : 32); ctx.fillText('📱 Écrivez-moi sur WhatsApp', cx, y);
+    ctx.save(); ctx.translate(cx, y + bh / 2 + 18); const sc = e2 * (1 + 0.03 * Math.sin(t * 6)); ctx.scale(sc, sc); ctx.fillStyle = '#25D366'; vidRR(ctx, -bw / 2, -bh / 2, bw, bh, bh / 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = `900 ${L.sq ? 40 : 48}px sans-serif`; ctx.fillText(V.phone, 0, bh * 0.19); ctx.restore(); y += bh + (L.sq ? 50 : 70); }
+  if (V.shopQr) { const e3 = ease((t - 0.5) / 0.4), size = (land ? 300 : L.sq ? 150 : L.f45 ? 200 : V.phone ? 300 : 380) * e3, qx = land ? W * 0.76 - size / 2 : (W - size) / 2, qy = land ? (H - size) / 2 - 20 : y;
+    ctx.globalAlpha = e3; ctx.fillStyle = '#fff'; vidRR(ctx, qx - 14, qy - 14, size + 28, size + 28, 16); ctx.fill(); ctx.imageSmoothingEnabled = false; ctx.drawImage(V.shopQr, qx, qy, size, size); ctx.imageSmoothingEnabled = true;
+    ctx.fillStyle = T.sub; ctx.font = stuFont(T, 600, L.sq ? 19 : 24); ctx.fillText(V.phone ? 'ou scannez pour voir toute la boutique' : '📱 Scannez pour voir la boutique et commander', land ? W * 0.76 : W / 2, qy + size + (L.sq ? 36 : 50)); if (!land) y = qy + size + (L.sq ? 44 : 64); }
+  ctx.globalAlpha = ease((t - 0.7) / 0.4); ctx.fillStyle = T.tx; ctx.font = stuFont(T, 700, L.sq ? 20 : 24); ctx.fillText(shopUrl(V.s).replace(/^https?:\/\//, ''), cx, land ? H - 120 : Math.min(y + 24, H - (L.sq ? 56 : 90)));
+  ctx.fillStyle = T.sub; ctx.font = `600 ${L.sq ? 18 : 22}px sans-serif`; ctx.fillText('✨ Créée gratuitement avec SocialPages', W / 2, H - (L.sq ? 22 : 40));
+  ctx.globalAlpha = 1; ctx.textAlign = 'left';
+}
+// ---------- Musique (créée par le code, sans droits d'auteur), rythme selon le modèle ----------
+function vidMusic(A, total, n, T, offline) {
+  const C = A.C, T0 = C.currentTime + 0.02, out = A.out, bt = T.beat || 0.5, soft = T.serif ? 0.55 : 1; if (!offline) { try { C.resume().catch(() => {}); } catch (e) {} }
+  const nzb = (() => { const b = C.createBuffer(1, Math.round(C.sampleRate * 0.6), C.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; })();
+  const osc = (t, f1, f2, dur, vol, type = 'sine') => { const o = C.createOscillator(), g = C.createGain(); o.type = type; o.frequency.setValueAtTime(f1, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur * 0.8); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); o.connect(g); g.connect(out); o.start(t); o.stop(t + dur + 0.02); };
+  const noise = (t, type, f, dur, vol, f2) => { const s = C.createBufferSource(), fl = C.createBiquadFilter(), g = C.createGain(); s.buffer = nzb; fl.type = type; fl.frequency.setValueAtTime(f, t); if (f2) fl.frequency.exponentialRampToValueAtTime(f2, t + dur); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); s.connect(fl); fl.connect(g); g.connect(out); s.start(t); s.stop(t + Math.min(0.58, dur + 0.02)); };
+  const CH = T.serif ? [[220, 261.6, 329.6], [174.6, 220, 261.6], [196, 246.9, 293.7], [164.8, 207.7, 246.9]] : [[220, 277.2, 329.6], [196, 246.9, 293.7], [174.6, 220, 261.6], [196, 246.9, 329.6]], BASS = CH.map(c => c[0] / 2);
+  const beats = Math.floor((total - 0.3) / bt);
+  for (let b = 0; b < beats; b++) {
+    const t = T0 + b * bt, bar = Math.floor(b / 4) % 4;
+    osc(t, 140, 42, 0.3, 0.5 * soft); noise(t + bt / 2, 'highpass', 7000, 0.05, 0.08 * soft);
+    if (b % 2 === 1 && !T.serif) noise(t, 'bandpass', 1800, 0.13, 0.2);
+    osc(t + bt / 2, BASS[bar], 0, bt * 0.45, 0.15, 'triangle');
+    if (b % 4 === 0) CH[bar].forEach(f => { const o = C.createOscillator(), g = C.createGain(); o.type = 'triangle'; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.035, t + 0.2); g.gain.linearRampToValueAtTime(0.0001, t + bt * 3.9); o.connect(g); g.connect(out); o.start(t); o.stop(t + bt * 4); });
+  }
+  osc(T0 + 0.4, 90, 30, 0.9, 0.7 * soft); noise(T0 + 0.4, 'lowpass', 1200, 0.55, 0.3 * soft);
+  for (let k = 0; k <= n; k++) { const ts = T0 + STU_INTRO + k * STU_SL; noise(ts - 0.3, 'bandpass', 300, 0.4, 0.28, 3500);
+    if (k < n) [1046.5, 1568].forEach((f, j) => osc(ts + 0.5 + j * 0.08, f, 0, 0.6, 0.15)); else [784, 1046.5, 1318.5].forEach((f, j) => osc(ts + 0.2 + j * 0.12, f, 0, 0.9, 0.17)); }
+}
+// ---------- Fabrication du fichier MP4 (H.264 + AAC), sans bibliothèque externe ----------
+function spMp4(v, a) {
+  const cat = arr => { let n = 0; arr.forEach(x => n += x.length); const o = new Uint8Array(n); let p = 0; arr.forEach(x => { o.set(x, p); p += x.length; }); return o; };
+  const U = x => x instanceof Uint8Array ? x : new Uint8Array(x);
+  const u32 = n => [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255], u16 = n => [(n >> 8) & 255, n & 255], s4 = s => [...s].map(c => c.charCodeAt(0));
+  const box = (type, ...parts) => { const body = cat(parts.map(U)); return cat([U([...u32(body.length + 8), ...s4(type)]), body]); };
+  const fbox = (type, ver, fl, ...parts) => box(type, [ver, (fl >> 16) & 255, (fl >> 8) & 255, fl & 255], ...parts);
+  const MAT = [...u32(0x10000), ...u32(0), ...u32(0), ...u32(0), ...u32(0x10000), ...u32(0), ...u32(0), ...u32(0), ...u32(0x40000000)];
+  const tracks = [];
+  if (v) tracks.push({ id: 1, kind: 'vide', ts: 30000, s: v.chunks.map(c => ({ size: c.data.length, dur: Math.max(1, Math.round((c.dur || 33333) * 30000 / 1e6)), key: c.key, data: c.data })), v });
+  if (a) tracks.push({ id: tracks.length + 1, kind: 'soun', ts: a.sr, s: a.chunks.map(c => ({ size: c.data.length, dur: Math.max(1, Math.round((c.dur || 1024 * 1e6 / a.sr) * a.sr / 1e6)), data: c.data })), a });
+  tracks.forEach(t => { t.dur = t.s.reduce((x, s) => x + s.dur, 0); t.mdur = Math.round(t.dur * 1000 / t.ts); });
+  const mdur = Math.max(...tracks.map(t => t.mdur));
+  const moov = offs => box('moov',
+    fbox('mvhd', 0, 0, u32(0), u32(0), u32(1000), u32(mdur), u32(0x10000), u16(0x100), u16(0), u32(0), u32(0), MAT, new Array(24).fill(0), u32(tracks.length + 1)),
+    ...tracks.map((t, ti) => {
+      const isV = t.kind === 'vide', stts = []; let last = null; t.s.forEach(s => { if (last && last[1] === s.dur) last[0]++; else { last = [1, s.dur]; stts.push(last); } });
+      let entry;
+      if (isV) entry = box('avc1', [0, 0, 0, 0, 0, 0, 0, 1], new Array(16).fill(0), u16(t.v.w), u16(t.v.h), u32(0x480000), u32(0x480000), u32(0), u16(1), new Array(32).fill(0), u16(0x18), [0xff, 0xff], box('avcC', t.v.desc));
+      else { const asc = t.a.desc, dcd = [4, 13 + 2 + asc.length, 0x40, 0x15, 0, 0, 0, ...u32(128000), ...u32(128000), 5, asc.length, ...asc], es = [3, 3 + dcd.length + 3, 0, t.id, 0, ...dcd, 6, 1, 2];
+        entry = box('mp4a', [0, 0, 0, 0, 0, 0, 0, 1], new Array(8).fill(0), u16(t.a.ch), u16(16), u16(0), u16(0), u32(t.a.sr * 65536 >>> 0), fbox('esds', 0, 0, es)); }
+      const stbl = box('stbl', fbox('stsd', 0, 0, u32(1), entry), fbox('stts', 0, 0, u32(stts.length), ...stts.map(r => [...u32(r[0]), ...u32(r[1])])),
+        ...(isV ? [fbox('stss', 0, 0, u32(t.s.filter(s => s.key).length), ...t.s.map((s, i) => s.key ? u32(i + 1) : []))] : []),
+        fbox('stsc', 0, 0, u32(1), u32(1), u32(1), u32(1)), fbox('stsz', 0, 0, u32(0), u32(t.s.length), ...t.s.map(s => u32(s.size))), fbox('stco', 0, 0, u32(t.s.length), ...offs[ti].map(o => u32(o))));
+      return box('trak', fbox('tkhd', 0, 3, u32(0), u32(0), u32(t.id), u32(0), u32(t.mdur), u32(0), u32(0), u16(0), u16(0), u16(isV ? 0 : 0x100), u16(0), MAT, u32(isV ? t.v.w * 65536 : 0), u32(isV ? t.v.h * 65536 : 0)),
+        box('mdia', fbox('mdhd', 0, 0, u32(0), u32(0), u32(t.ts), u32(t.dur), u16(0x55c4), u16(0)),
+          fbox('hdlr', 0, 0, u32(0), s4(t.kind), new Array(12).fill(0), s4(isV ? 'VideoHandler' : 'SoundHandler'), [0]),
+          box('minf', isV ? fbox('vmhd', 0, 1, new Array(8).fill(0)) : fbox('smhd', 0, 0, [0, 0, 0, 0]), box('dinf', fbox('dref', 0, 0, u32(1), fbox('url ', 0, 1))), stbl)));
+    }));
+  const ftyp = box('ftyp', s4('isom'), u32(512), s4('isom'), s4('iso2'), s4('avc1'), s4('mp41'));
+  // entrelacement par tranches d'environ 1 s (lecture fluide partout)
+  const order = []; tracks.forEach((t, ti) => { let tm = 0; t.s.forEach((s, si) => { order.push({ ti, si, t: tm / t.ts }); tm += s.dur; }); }); order.sort((x, y) => x.t - y.t || x.ti - y.ti);
+  const offs0 = tracks.map(t => t.s.map(() => 0)), head = ftyp.length + moov(offs0).length + 8;
+  const offs = tracks.map(t => t.s.map(() => 0)); let pos = head; order.forEach(o => { offs[o.ti][o.si] = pos; pos += tracks[o.ti].s[o.si].size; });
+  const mdatLen = pos - head + 8;
+  return new Blob([ftyp, moov(offs), U([...u32(mdatLen), ...s4('mdat')]), ...order.map(o => tracks[o.ti].s[o.si].data)], { type: 'video/mp4' });
+}
+// Encodage image par image (WebCodecs) : 30 images/s garanties, pleine résolution, sans noir
+async function stuEncode(V, cv, music, onProg) {
+  if (!window.VideoEncoder || !window.VideoFrame) return null;
+  const Wp = cv.width, Hp = cv.height, br = Math.round(Wp * Hp * 30 * 0.07);
+  let cfg = null; for (const codec of ['avc1.640028', 'avc1.4D4028', 'avc1.42E028', 'avc1.42E01F']) { const c = { codec, width: Wp, height: Hp, bitrate: br, framerate: 30, avc: { format: 'avc' } }; try { if ((await VideoEncoder.isConfigSupported(c)).supported) { cfg = c; break; } } catch (e) {} }
+  if (!cfg) return null;
+  let acfg = null; if (music) { if (!window.AudioEncoder || !window.OfflineAudioContext) return null; const c = { codec: 'mp4a.40.2', sampleRate: 48000, numberOfChannels: 2, bitrate: 128000 }; try { if ((await AudioEncoder.isConfigSupported(c)).supported) acfg = c; } catch (e) {} if (!acfg) return null; }
+  const ctx = cv.getContext('2d'), FPS = 30, N = Math.ceil((V.total + 0.25) * FPS), vch = []; let vdesc = null, err = null;
+  const enc = new VideoEncoder({ output: (ch, meta) => { const d = new Uint8Array(ch.byteLength); ch.copyTo(d); vch.push({ data: d, dur: ch.duration, key: ch.type === 'key' }); if (meta?.decoderConfig?.description && !vdesc) vdesc = new Uint8Array(meta.decoderConfig.description.buffer ? meta.decoderConfig.description.buffer.slice(meta.decoderConfig.description.byteOffset, meta.decoderConfig.description.byteOffset + meta.decoderConfig.description.byteLength) : meta.decoderConfig.description); }, error: e => err = e });
+  enc.configure(cfg);
+  for (let i = 0; i < N; i++) {
+    if (err) throw err;
+    stuFrame(ctx, V, Math.min(i / FPS, V.total));
+    const f = new VideoFrame(cv, { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) }); enc.encode(f, { keyFrame: i % 60 === 0 }); f.close();
+    while (enc.encodeQueueSize > 4) await new Promise(r => setTimeout(r, 4));
+    if (i % 5 === 0) { onProg?.(i / N * (music ? 0.9 : 1)); await new Promise(r => setTimeout(r, 0)); }
+  }
+  await enc.flush(); enc.close(); if (err) throw err; if (!vdesc || !vch.length) return null;
+  let aud = null;
+  if (acfg) {
+    const SR = 48000, len = Math.ceil(N / FPS * SR), off = new OfflineAudioContext(2, len, SR), out = off.createGain(); out.gain.value = 0.55; out.connect(off.destination);
+    vidMusic({ C: off, out }, V.total, V.slides.length, V.T, true); const buf = await off.startRendering(); onProg?.(0.95);
+    const ach = []; let adesc = null, aerr = null;
+    const aenc = new AudioEncoder({ output: (ch, meta) => { const d = new Uint8Array(ch.byteLength); ch.copyTo(d); ach.push({ data: d, dur: ch.duration }); const ds = meta?.decoderConfig?.description; if (ds && !adesc) adesc = new Uint8Array(ds.buffer ? ds.buffer.slice(ds.byteOffset, ds.byteOffset + ds.byteLength) : ds); }, error: e => aerr = e });
+    aenc.configure(acfg); const L0 = buf.getChannelData(0), R0 = buf.getChannelData(1);
+    for (let i = 0; i < len; i += 4800) { const fr = Math.min(4800, len - i), d = new Float32Array(fr * 2); d.set(L0.subarray(i, i + fr), 0); d.set(R0.subarray(i, i + fr), fr);
+      const ad = new AudioData({ format: 'f32-planar', sampleRate: SR, numberOfFrames: fr, numberOfChannels: 2, timestamp: Math.round(i / SR * 1e6), data: d }); aenc.encode(ad); ad.close(); }
+    await aenc.flush(); aenc.close(); if (aerr) throw aerr;
+    aud = { sr: SR, ch: 2, desc: adesc || new Uint8Array([0x11, 0x90]), chunks: ach };
+  }
+  return spMp4({ w: Wp, h: Hp, desc: vdesc, chunks: vch }, aud);
+}
+// Méthode de secours (anciens appareils) : enregistrement en temps réel
+async function stuRecord(V, cv, music, onProg) {
+  if (!window.MediaRecorder || !cv.captureStream) throw new Error('Votre appareil ne permet pas de créer la vidéo ici. Ouvrez SocialPages dans Chrome (Android ou ordinateur).');
+  const types = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+  const mime = types.find(t => MediaRecorder.isTypeSupported?.(t)) || '', ctx = cv.getContext('2d');
+  const A = music ? pubAudio(true) : null, stream = cv.captureStream(0), track = stream.getVideoTracks()[0];
+  A?.dest?.stream.getAudioTracks().forEach(t => stream.addTrack(t));
+  const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 5e6 } : { videoBitsPerSecond: 5e6 }), chunks = [];
+  rec.ondataavailable = e => e.data.size && chunks.push(e.data); const stopped = new Promise(r => rec.onstop = r);
+  stuFrame(ctx, V, 0); track.requestFrame?.(); rec.start(250); await new Promise(r => setTimeout(r, 350));
+  const t0 = performance.now(); if (A) vidMusic(A, V.total, V.slides.length, V.T);
+  await new Promise(done => { const fr = () => { const t = (performance.now() - t0) / 1000; stuFrame(ctx, V, Math.min(t, V.total)); track.requestFrame?.(); onProg?.(Math.min(1, t / V.total)); if (t >= V.total + 1) return done(); requestAnimationFrame(fr); }; requestAnimationFrame(fr); });
+  rec.requestData?.(); rec.stop(); await stopped; A?.stop();
+  return new Blob(chunks, { type: (mime || 'video/webm').split(';')[0] });
+}
+// ---------- Interface du studio ----------
+let stuSel = null, stuPrev = null;
 function pubVideo() {
   const s = window.shopCur; if (!s || vidBusy) return;
   const list = prods.filter(p => p.user_id === s.id && !isSoldP(p) && pImg(p));
   if (!list.length) return toast('Ajoutez au moins un produit avec photo.');
-  const st = vget('style', 'promo'), fm = vget('fmt', '916');
-  openM(`<h3>🎬 Créer ma pub vidéo</h3>
-    <label class="vlab">1. Choisissez vos produits (8 au maximum)</label>
-    <div class="vprods">${list.slice(0, 30).map((p, i) => `<label class="vprod"><input type="checkbox" value="${p.id}" ${i < 6 ? 'checked' : ''} onchange="vidCount(this)"><img src="${esc(pubImgs[pImg(p)] || pImg(p))}" alt=""><span>${esc(cutT(p.name, 26))}<b>${priceTxt(p)}</b></span></label>`).join('')}</div>
-    <label class="vlab">2. Votre slogan (début de la vidéo)</label>
-    <input id="v-slogan" maxlength="40" value="${esc(vget('slogan_' + s.id, '🔥 Les meilleurs prix' + (list[0]?.city ? ' de ' + list[0].city : '') + ' !'))}">
-    <label class="vlab">3. Style</label>
-    <div class="vchips" id="v-style">${Object.entries(VSTYLES).map(([k, v]) => `<button type="button" data-k="${k}" class="${k === st ? 'on' : ''}" style="background:linear-gradient(135deg,${v.g[0]},${v.g[1]});color:#fff" onclick="vidPick(this)">${v.n}</button>`).join('')}</div>
-    <label class="vlab">4. Format</label>
-    <div class="vchips" id="v-fmt"><button type="button" data-k="916" class="${fm === '916' ? 'on' : ''}" onclick="vidPick(this)">📱 Statut / TikTok</button><button type="button" data-k="11" class="${fm === '11' ? 'on' : ''}" onclick="vidPick(this)">⬛ Facebook (carré)</button></div>
-    <button class="pbtn pubgo" style="margin-top:14px" onclick="vidMake()">🎬 Créer la vidéo</button><button class="pbtn gray" onclick="closeM()">Annuler</button>`);
-  $('modal-box').classList.add('mwide');
+  let tpl = vget('tpl', vget('style', 'promo')); if (tpl === 'frais') tpl = 'food'; if (!STU_TPL[tpl]) tpl = 'promo';
+  const fmt = STU_FMT[vget('fmt', '916')] ? vget('fmt', '916') : '916', mus = vget('music', '1') === '1';
+  if (!stuSel || stuSel.shop !== s.id) stuSel = { shop: s.id, ids: list.slice(0, 6).map(p => p.id) };
+  openM(`<div class="stu"><div class="stu-h"><h3>🎬 Studio pub SocialPages</h3><button type="button" class="stu-x" onclick="stuClose()" aria-label="Fermer">✖</button></div>
+    <div class="stu-body"><div class="stu-prev"><div class="stu-cvw" id="stu-cvw"><canvas id="stu-cv"></canvas><div class="stu-load" id="stu-load">Préparation des photos…</div></div><small>👀 Aperçu en direct</small></div>
+    <div class="stu-opts">
+      <label class="vlab">1. Vos produits <small>(8 au maximum, dans l’ordre choisi)</small></label>
+      <div class="vprods">${list.slice(0, 40).map(p => `<label class="vprod"><input type="checkbox" value="${p.id}" ${stuSel.ids.includes(p.id) ? 'checked' : ''} onchange="stuPick(this)"><img src="${esc(pubImgs[pImg(p)] || pImg(p))}" alt=""><span>${esc(cutT(p.name, 26))}<b>${priceTxt(p)}</b></span></label>`).join('')}</div>
+      <label class="vlab">2. Modèle</label>
+      <div class="stu-tpls" id="v-tpl">${Object.entries(STU_TPL).map(([k, T]) => `<button type="button" data-k="${k}" class="${k === tpl ? 'on' : ''}" style="background:linear-gradient(135deg,${T.g[0]},${T.g[1]});color:${T.tx};${T.serif ? 'font-family:Georgia,serif;' : ''}" onclick="vidPick(this)"><b>${T.n}</b><i style="background:${T.st};color:${T.stx}">25 $</i></button>`).join('')}</div>
+      <label class="vlab">3. Format</label>
+      <div class="vchips" id="v-fmt">${Object.entries(STU_FMT).map(([k, F]) => `<button type="button" data-k="${k}" class="${k === fmt ? 'on' : ''}" onclick="vidPick(this)">${F.n}<small>${F.d}</small></button>`).join('')}</div>
+      <label class="vlab">4. Slogan</label>
+      <input id="v-slogan" maxlength="40" value="${esc(vget('slogan_' + s.id, '🔥 Les meilleurs prix' + (list[0]?.city ? ' de ' + list[0].city : '') + ' !'))}" oninput="stuRefresh(1)">
+      <label class="stu-mus"><input type="checkbox" id="v-music" ${mus ? 'checked' : ''}> 🎵 Musique et effets sonores</label>
+      <div class="stu-go"><button class="pbtn pubgo" onclick="vidMake()">🎬 Créer la vidéo</button><button class="pbtn b" onclick="stuPosters()">🖼️ Créer les affiches (images)</button></div>
+      <p class="mt" style="font-size:12px">Chaque produit a son QR code et son lien direct. La fin de la vidéo montre votre WhatsApp et le QR de votre boutique.</p>
+    </div></div></div>`);
+  $('modal-box').classList.add('mwide', 'stubox');
+  stuRefresh();
 }
-function vidCount(cb) { const n = document.querySelectorAll('.vprods input:checked').length; if (n > 8) { cb.checked = false; toast('8 produits au maximum.'); } }
-function vidPick(b) { b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); }
+function stuClose() { stuPrev && (stuPrev.stop = 1); stuPrev = null; closeM(); }
+function stuPick(cb) {
+  const ids = stuSel.ids; if (cb.checked) { if (ids.length >= 8) { cb.checked = false; return toast('8 produits au maximum.'); } ids.push(cb.value); } else stuSel.ids = ids.filter(x => x !== cb.value);
+  stuRefresh();
+}
+function vidPick(b) { b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); stuRefresh(); }
+function stuOpts() {
+  const s = window.shopCur, tpl = document.querySelector('#v-tpl .on')?.dataset.k || 'promo', fmt = document.querySelector('#v-fmt .on')?.dataset.k || '916', slogan = ($('v-slogan')?.value || '').trim(), music = !!$('v-music')?.checked;
+  vset('tpl', tpl); vset('fmt', fmt); vset('music', music ? '1' : '0'); if (s) vset('slogan_' + s.id, slogan);
+  return { s, tpl, fmt, slogan, music, items: (stuSel?.ids || []).map(id => prods.find(p => p.id === id)).filter(Boolean) };
+}
+async function stuSlides(items) { const r = await Promise.all(items.map(stuPrep)); return r.filter(Boolean); }
+async function stuRefresh(soft) {
+  const cv = $('stu-cv'); if (!cv) return; const o = stuOpts(), F = STU_FMT[o.fmt];
+  const wrap = $('stu-cvw'); wrap.style.setProperty('--ar', F.W + '/' + F.H); wrap.style.setProperty('--r', F.W / F.H);
+  if (soft && stuPrev?.V) { stuPrev.V.slogan = o.slogan; return; }
+  const my = {}; stuPrev && (stuPrev.stop = 1); stuPrev = my;
+  if (!o.items.length) { $('stu-load').textContent = 'Choisissez au moins un produit'; $('stu-load').style.display = ''; return; }
+  $('stu-load').textContent = 'Préparation des photos…'; $('stu-load').style.display = '';
+  const slides = await stuSlides(o.items); if (my.stop) return;
+  if (!slides.length) { $('stu-load').textContent = 'Photos introuvables'; return; }
+  const k = Math.min(1, 420 / Math.max(F.W, F.H)) * Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(F.W * k); cv.height = Math.round(F.H * k);
+  my.V = stuBuild({ s: o.s, slides, tpl: o.tpl, fmt: o.fmt, slogan: o.slogan, k }); $('stu-load').style.display = 'none';
+  const ctx = cv.getContext('2d'), t0 = performance.now();
+  const loop = () => { if (my.stop || !document.body.contains(cv)) return; const t = ((performance.now() - t0) / 1000) % (my.V.total + 0.6); stuFrame(ctx, my.V, Math.min(t, my.V.total)); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+}
 async function vidMake() {
-  const s = window.shopCur; if (!s || vidBusy) return;
-  const ids = [...document.querySelectorAll('.vprods input:checked')].map(x => x.value);
-  if (!ids.length) return toast('Choisissez au moins un produit.');
-  const slogan = ($('v-slogan')?.value || '').trim(), style = document.querySelector('#v-style .on')?.dataset.k || 'promo', fmt = document.querySelector('#v-fmt .on')?.dataset.k || '916';
-  vset('slogan_' + s.id, slogan); vset('style', style); vset('fmt', fmt);
-  const items = ids.map(id => prods.find(p => p.id === id)).filter(Boolean);
-  const W = 720, H = fmt === '11' ? 720 : 1280;
-  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-  if (!window.MediaRecorder || !cv.captureStream) return alert('Votre appareil ne permet pas de créer la vidéo ici. Ouvrez SocialPages dans Chrome (Android ou ordinateur).');
-  const types = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
-  const mime = types.find(t => MediaRecorder.isTypeSupported?.(t)) || '';
-  vidBusy = true;
-  openM(`<h3>🎬 Création de votre pub…</h3><div class="vidwrap ${fmt === '11' ? 'sq' : ''}" id="vid-wrap"></div><div class="vidbar"><b id="vid-bar"></b></div><p class="mt" id="vid-msg" style="text-align:center">Préparation des photos…</p>`);
-  $('modal-box').classList.add('mwide'); $('vid-wrap').appendChild(cv);
+  if (vidBusy) return; const o = stuOpts(); if (!o.items.length) return toast('Choisissez au moins un produit.');
+  stuPrev && (stuPrev.stop = 1); vidBusy = true; const F = STU_FMT[o.fmt];
+  openM(`<h3>🎬 Création de votre pub…</h3><div class="stu-cvw big" style="--ar:${F.W}/${F.H};--r:${F.W / F.H}"><canvas id="vid-cv"></canvas></div><div class="vidbar"><b id="vid-bar"></b></div><p class="mt" id="vid-msg" style="text-align:center">Préparation des photos…</p>`);
+  $('modal-box').classList.add('mwide');
+  const prog = x => { $('vid-bar') && ($('vid-bar').style.width = Math.round(x * 100) + '%'); $('vid-msg') && ($('vid-msg').textContent = `Création de la vidéo… ${Math.round(x * 100)} %`); };
   try {
-    // 1. Photos : jusqu'à 3 par produit, fond flou préparé UNE fois (vidéo fluide)
-    const slides = [];
-    for (const p of items) {
-      const urls = (p.images?.length ? p.images : [pImg(p)]).filter(Boolean).slice(0, 3), ims = [];
-      for (const u of urls) { const src = await pubLoad(u); if (!src?.startsWith('blob:')) continue; const im = new Image(); im.src = src; try { await im.decode(); ims.push({ im, bg: vidBg(im, W, H) }); } catch (e) {} }
-      if (ims.length) slides.push({ p, ims });
-    }
-    if (!slides.length) throw new Error('Impossible de charger les photos. Vérifiez votre connexion.');
-    let qrM = null; try { const q = qrcode(0, 'M'); q.addData(shopUrl(s)); q.make(); qrM = q; } catch (e) {}
-    const S = VSTYLES[style], ctx = cv.getContext('2d'), INTRO = 1.5, SL = 3, END = 4.5, total = INTRO + slides.length * SL + END;
-    const V = { W, H, sq: fmt === '11', S, s, slogan, slides, qrM, phone: fmtPhone(s.phone), total };
-    // 2. Son : rythme calé sur les coupures (1 temps = 0,5 s)
-    const A = pubAudio(true), stream = cv.captureStream(0), track = stream.getVideoTracks()[0];
-    A?.dest?.stream.getAudioTracks().forEach(t => stream.addTrack(t));
-    const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 4e6 } : { videoBitsPerSecond: 4e6 }), chunks = [];
-    rec.ondataavailable = e => e.data.size && chunks.push(e.data);
-    const stopped = new Promise(r => rec.onstop = r);
-    vidFrame(ctx, V, 0); track.requestFrame?.();
-    rec.start(250);
-    await new Promise(r => setTimeout(r, 350)); // l'enregistreur démarre sur une vraie image (pas de début figé)
-    const t0 = performance.now(); if (A) vidMusic(A, total, INTRO, SL, slides.length);
-    await new Promise(done => {
-      const frame = () => {
-        const t = (performance.now() - t0) / 1000;
-        vidFrame(ctx, V, Math.min(t, total)); track.requestFrame?.();
-        $('vid-bar') && ($('vid-bar').style.width = Math.min(100, t / total * 100) + '%');
-        $('vid-msg') && ($('vid-msg').textContent = t < total ? `Enregistrement… ${Math.ceil(total - t)} s` : 'Finalisation…');
-        if (t >= total + 0.4) return done(); // image finale tenue un instant : pas de noir à la fin
-        requestAnimationFrame(frame);
-      };
-      requestAnimationFrame(frame);
-    });
-    rec.requestData?.(); rec.stop(); await stopped; A?.stop();
-    const type = (mime || 'video/webm').split(';')[0], ext = type.includes('mp4') ? 'mp4' : 'webm';
-    const blob = new Blob(chunks, { type }), url = URL.createObjectURL(blob), file = new File([blob], `pub-${s.username}.${ext}`, { type });
-    window.vidFile = file;
-    const canShare = !!navigator.canShare?.({ files: [file] });
-    openM(`<h3>🎉 Votre pub est prête !</h3><video class="vidout ${fmt === '11' ? 'sq' : ''}" src="${url}" controls playsinline autoplay loop></video>
+    const slides = await stuSlides(o.items); if (!slides.length) throw new Error('Impossible de charger les photos. Vérifiez votre connexion.');
+    const cv = $('vid-cv'); let blob = null, V;
+    if (window.VideoEncoder) { V = stuBuild({ s: o.s, slides, tpl: o.tpl, fmt: o.fmt, slogan: o.slogan, k: 1.5 }); cv.width = F.W * 1.5; cv.height = F.H * 1.5;
+      try { blob = await stuEncode(V, cv, o.music, prog); } catch (e) { console.warn('webcodecs', e); blob = null; } }
+    if (!blob) { V = stuBuild({ s: o.s, slides, tpl: o.tpl, fmt: o.fmt, slogan: o.slogan, k: 1 }); cv.width = F.W; cv.height = F.H; $('vid-msg').textContent = 'Enregistrement…'; blob = await stuRecord(V, cv, o.music, prog); }
+    const type = blob.type || 'video/webm', ext = type.includes('mp4') ? 'mp4' : 'webm', url = URL.createObjectURL(blob), file = new File([blob], `pub-${o.s.username}-${o.fmt}.${ext}`, { type });
+    window.vidFile = file; const canShare = !!navigator.canShare?.({ files: [file] });
+    openM(`<h3>🎉 Votre pub est prête !</h3><video class="vidout" src="${url}" controls playsinline autoplay loop></video>
       ${canShare ? '<button class="pbtn pubgo" onclick="vidShare()">📤 Partager (statut WhatsApp, TikTok, Facebook…)</button>' : ''}
       <a class="pbtn ${canShare ? 'gray' : 'pubgo'}" style="display:block;text-align:center;text-decoration:none" href="${url}" download="${file.name}">⬇️ Télécharger la vidéo</a>
-      ${window.Capacitor?.isNativePlatform?.() ? '<p class="mt" style="font-size:12px;color:#B45309">Dans l’application, si le téléchargement ne marche pas, ouvrez votre boutique dans Chrome pour enregistrer la vidéo.</p>' : ''}
-      <p class="mt" style="font-size:12px;margin-top:8px">${ext === 'webm' ? 'Format WebM : si WhatsApp le refuse, publiez-la sur TikTok ou Facebook. ' : ''}Astuce : en statut WhatsApp, ajoutez le lien de votre boutique : ${esc(shopUrl(s))}</p>
-      <button class="pbtn gray" onclick="pubVideo()">🔁 Refaire avec d’autres choix</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+      ${window.Capacitor?.isNativePlatform?.() ? '<p class="mt" style="font-size:12px;color:#B45309">Dans l’application, si le téléchargement ne marche pas, ouvrez votre boutique dans Chrome.</p>' : ''}
+      <p class="mt" style="font-size:12px;margin-top:8px">${ext === 'webm' ? 'Format WebM : si WhatsApp le refuse, publiez-la sur TikTok ou Facebook. ' : ''}Astuce : ajoutez le lien de votre boutique en légende : ${esc(shopUrl(o.s))}</p>
+      <button class="pbtn gray" onclick="pubVideo()">✏️ Modifier et refaire</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
     $('modal-box').classList.add('mwide');
   } catch (e) { $('vid-msg') && ($('vid-msg').textContent = '⚠️ ' + (e.message || 'Erreur')); }
   vidBusy = false;
 }
 async function vidShare() { const f = window.vidFile, s = window.shopCur; if (!f) return; try { await navigator.share({ files: [f], text: `🏪 ${s?.name || ''} sur SocialPages 👉 ${s ? shopUrl(s) : location.origin}` }); } catch (e) {} }
-// Musique de la vidéo : tout est programmé à l'avance sur l'horloge audio (coupures sur le temps fort)
-function vidMusic(A, total, INTRO, SL, n) {
-  const C = A.C, T = C.currentTime + 0.02, out = A.out; try { C.resume(); } catch (e) {}
-  const nz = () => { const b = C.createBuffer(1, C.sampleRate * 0.6, C.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; const s = C.createBufferSource(); s.buffer = b; return s; };
-  const osc = (t, f1, f2, dur, vol, type = 'sine') => { const o = C.createOscillator(), g = C.createGain(); o.type = type; o.frequency.setValueAtTime(f1, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur * 0.8); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); o.connect(g); g.connect(out); o.start(t); o.stop(t + dur + 0.02); };
-  const noise = (t, type, f, dur, vol, f2) => { const s = nz(), fl = C.createBiquadFilter(), g = C.createGain(); fl.type = type; fl.frequency.setValueAtTime(f, t); if (f2) fl.frequency.exponentialRampToValueAtTime(f2, t + dur); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); s.connect(fl); fl.connect(g); g.connect(out); s.start(t); s.stop(t + dur + 0.02); };
-  const CH = [[220, 277.2, 329.6], [196, 246.9, 293.7], [174.6, 220, 261.6], [196, 246.9, 329.6]], BASS = [110, 98, 87.3, 98];
-  const beats = Math.floor(total / 0.5);
-  for (let b = 0; b < beats; b++) {
-    const t = T + b * 0.5;
-    osc(t, 140, 42, 0.32, 0.55); noise(t + 0.25, 'highpass', 7000, 0.06, 0.09);
-    if (b % 2 === 1) noise(t, 'bandpass', 1800, 0.14, 0.22);
-    osc(t + 0.25, BASS[Math.floor(b / 4) % 4], 0, 0.22, 0.16, 'triangle');
-    if (b % 4 === 0) CH[Math.floor(b / 4) % 4].forEach(f => { const o = C.createOscillator(), g = C.createGain(); o.type = 'triangle'; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.035, t + 0.2); g.gain.linearRampToValueAtTime(0.0001, t + 1.95); o.connect(g); g.connect(out); o.start(t); o.stop(t + 2); });
+// ---------- Affiches (images) : une par produit, avec QR et lien direct ----------
+async function stuPosters() {
+  if (vidBusy) return; const o = stuOpts(); if (!o.items.length) return toast('Choisissez au moins un produit.');
+  stuPrev && (stuPrev.stop = 1); vidBusy = true;
+  openM(`<h3>🖼️ Création des affiches…</h3><p class="mt" id="vid-msg">Préparation des photos…</p>`);
+  try {
+    const slides = await stuSlides(o.items); if (!slides.length) throw new Error('Impossible de charger les photos.');
+    const V = stuBuild({ s: o.s, slides, tpl: o.tpl, fmt: o.fmt, slogan: o.slogan, k: 1.5 }), cv = document.createElement('canvas'); cv.width = V.W * 1.5; cv.height = V.H * 1.5; const ctx = cv.getContext('2d'), files = [];
+    for (let i = 0; i < slides.length; i++) {
+      ctx.setTransform(V.k, 0, 0, V.k, 0, 0); stuSlide(ctx, V, slides[i], STU_SL, i, true);
+      const b = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.92)); files.push(new File([b], `affiche-${(slides[i].p.name || 'produit').replace(/[^\w-]+/g, '-').slice(0, 30)}.jpg`, { type: 'image/jpeg' }));
+      $('vid-msg') && ($('vid-msg').textContent = `Affiche ${i + 1} / ${slides.length}…`); await new Promise(r => setTimeout(r, 0));
+    }
+    window.stuFiles = files; const canShare = !!navigator.canShare?.({ files });
+    openM(`<h3>🖼️ Vos affiches sont prêtes !</h3><div class="stu-posters">${files.map((f, i) => { const u = URL.createObjectURL(f); return `<a href="${u}" download="${esc(f.name)}" title="Télécharger"><img src="${u}" alt=""><span>⬇️ ${i + 1}</span></a>`; }).join('')}</div>
+      ${canShare ? '<button class="pbtn pubgo" onclick="stuShareP()">📤 Partager toutes les affiches</button>' : ''}
+      <p class="mt" style="font-size:12px">Touchez une affiche pour la télécharger. Chaque affiche a le QR code et le lien direct du produit.</p>
+      <button class="pbtn gray" onclick="pubVideo()">✏️ Modifier</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+    $('modal-box').classList.add('mwide');
+  } catch (e) { $('vid-msg') && ($('vid-msg').textContent = '⚠️ ' + (e.message || 'Erreur')); }
+  vidBusy = false;
+}
+async function stuShareP() { const f = window.stuFiles, s = window.shopCur; if (!f) return; try { await navigator.share({ files: f, text: `🏪 ${s?.name || ''} sur SocialPages 👉 ${s ? shopUrl(s) : location.origin}` }); } catch (e) {} }
+
+// ===================== 🧰 MON COMMERCE : factures, carnet de crédit, stock, caisse =====================
+// Tout est gardé sur l'appareil du vendeur (gratuit, privé). Le cachet et la signature ne quittent jamais le téléphone.
+let biz = null, bizTab = 'caisse';
+const BIZ_K = () => 'sp_biz_' + (me?.id || 'x');
+const bid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+function bizLoad() {
+  let d = null; try { d = JSON.parse(localStorage.getItem(BIZ_K()) || 'null'); } catch (e) {}
+  d ||= {}; d.pro ||= {}; d.seq ||= {}; d.docs ||= []; d.cli ||= []; d.cash ||= [];
+  const P = d.pro; P.name ??= me?.name || ''; P.phone ??= fmtPhone(me?.phone || ''); P.addr ??= me?.city || '';
+  P.cur ||= 'USD'; P.rate ??= 2800; P.tva ??= 16; P.color ||= '#16A34A'; P.tpl ||= 'moderne'; P.city ??= me?.city || '';
+  return biz = d;
+}
+function bizSave() { try { localStorage.setItem(BIZ_K(), JSON.stringify(biz)); return true; } catch (e) { toast('⚠️ Mémoire du téléphone pleine : exportez une sauvegarde puis supprimez d’anciens documents.', 6000); return false; } }
+const CUR = { USD: { s: '$', n: 'Dollar (USD)' }, CDF: { s: 'FC', n: 'Franc congolais (CDF)' } };
+const r2 = v => Math.round((+v || 0) * 100) / 100;
+function fmtM(v, cur = 'USD') { v = r2(v); const neg = v < 0; v = Math.abs(v); const dec = cur === 'CDF' ? 0 : (v % 1 ? 2 : 0);
+  const s = v.toFixed(dec).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return (neg ? '-' : '') + s + ' ' + CUR[cur].s; }
+function conv(v, from, to) { if (from === to) return +v || 0; const R = +biz?.pro?.rate || 0; if (!R) return 0; return from === 'USD' ? v * R : v / R; }
+const today = () => new Date().toISOString().slice(0, 10);
+const fdate = d => { try { return new Date(d + (String(d).length === 10 ? 'T12:00' : '')).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }); } catch (e) { return d; } };
+// Montant en lettres (français)
+function nWords(n) {
+  const U = ['zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf'];
+  const T = ['', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante', 'quatre-vingt', 'quatre-vingt'];
+  const w99 = n => { if (n < 20) return U[n]; const t = Math.floor(n / 10), u = n % 10;
+    if (t === 7 || t === 9) return T[t] + (t === 7 && u === 1 ? ' et ' : '-') + U[10 + u];
+    if (!u) return t === 8 ? 'quatre-vingts' : T[t]; if (u === 1 && t !== 8) return T[t] + ' et un'; return T[t] + '-' + U[u]; };
+  const w999 = n => { const h = Math.floor(n / 100), r = n % 100; let s = ''; if (h) s = (h === 1 ? 'cent' : U[h] + ' cent') + (!r && h > 1 ? 's' : ''); if (r) s += (s ? ' ' : '') + w99(r); return s; };
+  n = Math.floor(n); if (!n) return 'zéro'; const parts = []; const G = [[1e9, 'milliard'], [1e6, 'million'], [1e3, 'mille']];
+  for (const [v, name] of G) { const q = Math.floor(n / v); n %= v; if (!q) continue;
+    if (name === 'mille') parts.push(q === 1 ? 'mille' : w999(q).replace(/(cent|vingt)s$/, '$1') + ' mille'); else parts.push(w999(q) + ' ' + name + (q > 1 ? 's' : '')); }
+  if (n) parts.push(w999(n)); return parts.join(' ');
+}
+function mWords(v, cur) { v = r2(v); const e = Math.floor(v), c = Math.round((v - e) * 100);
+  let s = cur === 'CDF' ? `${nWords(e)} franc${e > 1 ? 's' : ''} congolais` : `${nWords(e)} dollar${e > 1 ? 's' : ''} américain${e > 1 ? 's' : ''}`;
+  if (c && cur !== 'CDF') s += ` et ${nWords(c)} cent${c > 1 ? 's' : ''}`; return s.charAt(0).toUpperCase() + s.slice(1); }
+const DOCT = { FAC: { n: 'Facture', t: 'FACTURE', i: '🧾' }, PRO: { n: 'Facture proforma', t: 'FACTURE PROFORMA', i: '📝' }, REC: { n: 'Reçu de paiement', t: 'REÇU DE PAIEMENT', i: '✅' } };
+function docCalc(d) {
+  const sub = r2(d.items.reduce((a, x) => a + (+x.qty || 0) * (+x.price || 0), 0)), disc = Math.min(sub, r2(d.disc)), base = r2(sub - disc), tva = d.tvaOn ? r2(base * (+d.tva || 0) / 100) : 0, total = r2(base + tva);
+  const paid = d.type === 'REC' ? total : d.type === 'PRO' ? 0 : Math.min(total, r2(d.paid)), rest = r2(total - paid);
+  return { sub, disc, base, tva, total, paid, rest, status: d.type === 'PRO' ? 'Proforma' : rest <= 0.005 ? 'Payée' : paid > 0 ? 'Acompte' : 'À payer' };
+}
+// ---------- Ouverture ----------
+async function bizOpen(tab) {
+  if (!me) return needAuth(); bizLoad(); if (tab) bizTab = tab;
+  $('bizx')?.remove();
+  document.body.insertAdjacentHTML('beforeend', `<div id="bizx" class="bizx"><div class="bizh"><button type="button" class="bizb" onclick="bizClose()" aria-label="Retour">←</button><b>🧰 Mon commerce</b><button type="button" class="bizb" onclick="bizTab='pro';bizRender()" aria-label="Mon entreprise">⚙️</button></div>
+    <div class="biztabs">${[['caisse', '📊 Caisse'], ['docs', '🧾 Factures'], ['carnet', '📒 Carnet'], ['stock', '📦 Stock'], ['pro', '🏢 Entreprise']].map(([k, n]) => `<button type="button" data-k="${k}" onclick="bizTab='${k}';bizRender()">${n}</button>`).join('')}</div>
+    <div class="bizc" id="bizc"></div></div>`);
+  document.body.classList.add('noscroll'); bizRender();
+}
+function bizClose() { $('bizx')?.remove(); document.body.classList.remove('noscroll'); }
+function bizRender() {
+  document.querySelectorAll('.biztabs button').forEach(b => b.classList.toggle('on', b.dataset.k === bizTab));
+  const el = $('bizc'); if (!el) return; el.scrollTop = 0;
+  ({ caisse: bizCaisse, docs: bizDocs, carnet: bizCarnet, stock: bizStock, pro: bizPro })[bizTab]?.(el);
+}
+// ---------- 📊 Caisse ----------
+function cashSum(from, to) { const C = biz.pro.cur; let i = 0, o = 0; biz.cash.forEach(x => { const d = x.date.slice(0, 10); if (d < from || d > to) return; const v = conv(x.amt, x.cur, C); if (x.type === 'in') i += v; else o += v; }); return { i: r2(i), o: r2(o), b: r2(i - o) }; }
+function bizCaisse(el) {
+  const C = biz.pro.cur, t = today(), m0 = t.slice(0, 8) + '01', D = cashSum(t, t), M = cashSum(m0, t);
+  const days = [...Array(7)].map((_, k) => { const d = new Date(Date.now() - (6 - k) * 864e5).toISOString().slice(0, 10); return { d, v: cashSum(d, d).i }; }), mx = Math.max(1, ...days.map(x => x.v));
+  const owed = biz.cli.reduce((a, c) => a + Math.max(0, cliBal(c)), 0);
+  el.innerHTML = `<div class="bizcards"><div class="bizcard g"><small>Ventes aujourd’hui</small><b>${fmtM(D.i, C)}</b></div><div class="bizcard r"><small>Dépenses aujourd’hui</small><b>${fmtM(D.o, C)}</b></div>
+    <div class="bizcard ${D.b >= 0 ? 'g' : 'r'} wide"><small>Bénéfice du jour</small><b>${fmtM(D.b, C)}</b></div></div>
+    <div class="box"><div class="row"><b>Ce mois-ci</b><small class="mt">${new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</small></div>
+      <div class="bizm"><span>Ventes <b>${fmtM(M.i, C)}</b></span><span>Dépenses <b>${fmtM(M.o, C)}</b></span><span>Bénéfice <b class="${M.b >= 0 ? 'ok' : 'ko'}">${fmtM(M.b, C)}</b></span></div>
+      <div class="bizbars">${days.map(x => `<div title="${fdate(x.d)} : ${fmtM(x.v, C)}"><i style="height:${Math.max(3, x.v / mx * 100)}%"></i><small>${new Date(x.d + 'T12:00').toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0, 3)}</small></div>`).join('')}</div>
+      ${owed > 0 ? `<p class="bizowe" onclick="bizTab='carnet';bizRender()">📒 Vos clients vous doivent <b>${fmtM(owed, C)}</b> →</p>` : ''}</div>
+    <div class="grid2"><button class="pill" onclick="cashModal('in')">➕ Vente</button><button class="soft" style="background:#FEE2E2;color:#991B1B" onclick="cashModal('out')">➖ Dépense</button></div>
+    <h3 style="margin:16px 0 8px">Derniers mouvements</h3>
+    ${biz.cash.length ? biz.cash.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 60).map(x => `<div class="bizrow"><span class="bizdot ${x.type}">${x.type === 'in' ? '↑' : '↓'}</span><div><b>${esc(x.note || (x.type === 'in' ? 'Vente' : 'Dépense'))}</b><small>${fdate(x.date.slice(0, 10))}${x.doc ? ' · ' + esc(x.doc) : ''}</small></div><b class="${x.type === 'in' ? 'ok' : 'ko'}">${x.type === 'in' ? '+' : '-'}${fmtM(x.amt, x.cur)}</b><button type="button" class="bizdel" onclick="cashDel('${x.id}')" aria-label="Supprimer">🗑️</button></div>`).join('')
+      : empty('📊', 'Aucun mouvement', 'Ajoutez une vente ou une dépense. Les factures payées s’ajoutent toutes seules.')}`;
+}
+function cashModal(type) {
+  openM(`<h3>${type === 'in' ? '➕ Nouvelle vente' : '➖ Nouvelle dépense'}</h3>
+    <div class="fg"><label>Montant</label><div style="display:flex;gap:8px"><input id="c-amt" type="number" min="0" step="0.01" inputmode="decimal" style="flex:1"><select id="c-cur" style="width:110px">${Object.keys(CUR).map(k => `<option ${k === biz.pro.cur ? 'selected' : ''}>${k}</option>`).join('')}</select></div></div>
+    <div class="fg"><label>${type === 'in' ? 'Quoi ? (ex : 2 sacs de riz)' : 'Quoi ? (ex : transport, loyer, marchandise)'}</label><input id="c-note" maxlength="80"></div>
+    <div class="fg"><label>Date</label><input id="c-date" type="date" value="${today()}"></div>
+    <button class="pill" style="width:100%" onclick="cashAdd('${type}')">Enregistrer</button><button class="pbtn gray" onclick="closeM()">Annuler</button>`);
+  setTimeout(() => $('c-amt')?.focus(), 50);
+}
+function cashAdd(type) { const a = r2($('c-amt').value); if (!(a > 0)) return toast('Entrez un montant.'); biz.cash.push({ id: bid(), type, amt: a, cur: $('c-cur').value, note: $('c-note').value.trim(), date: ($('c-date').value || today()) + 'T' + new Date().toTimeString().slice(0, 8) }); bizSave(); closeM(); bizRender(); toast('✅ Enregistré'); }
+function cashDel(id) { if (!confirm('Supprimer ce mouvement ?')) return; biz.cash = biz.cash.filter(x => x.id !== id); bizSave(); bizRender(); }
+// ---------- 📒 Carnet de crédit ----------
+const cliBal = c => r2(c.ops.reduce((a, o) => a + conv(o.amt, o.cur, biz.pro.cur), 0));
+function cliFind(name, phone) { const ph = String(phone || '').replace(/\D/g, ''); return biz.cli.find(c => (ph && c.phone.replace(/\D/g, '') === ph) || (!ph && c.name.toLowerCase() === String(name || '').trim().toLowerCase())); }
+function cliGet(name, phone) { let c = cliFind(name, phone); if (!c) { c = { id: bid(), name: String(name || 'Client').trim().slice(0, 60), phone: String(phone || '').trim(), ops: [] }; biz.cli.push(c); } return c; }
+function bizCarnet(el) {
+  const C = biz.pro.cur, list = biz.cli.slice().sort((a, b) => cliBal(b) - cliBal(a)), tot = list.reduce((a, c) => a + Math.max(0, cliBal(c)), 0);
+  el.innerHTML = `<div class="bizcard o wide" style="margin-bottom:12px"><small>Total que vos clients vous doivent</small><b>${fmtM(tot, C)}</b></div>
+    <button class="pill" style="width:100%" onclick="cliModal()">➕ Nouveau client / nouvelle dette</button>
+    <input class="search" style="margin-top:12px" placeholder="🔍 Rechercher un client" oninput="document.querySelectorAll('.bizcli').forEach(x=>x.style.display=x.dataset.n.includes(this.value.toLowerCase())?'':'none')">
+    ${list.length ? list.map(c => { const b = cliBal(c); return `<div class="bizrow bizcli" data-n="${esc(c.name.toLowerCase() + ' ' + c.phone)}" onclick="cliView('${c.id}')"><span class="bizav">${esc((c.name[0] || '?').toUpperCase())}</span><div><b>${esc(c.name)}</b><small>${esc(c.phone || 'Sans numéro')} · ${c.ops.length} opération${c.ops.length > 1 ? 's' : ''}</small></div><b class="${b > 0 ? 'ko' : 'ok'}">${b > 0 ? fmtM(b, C) : b < 0 ? 'Avance ' + fmtM(-b, C) : '✅ Soldé'}</b></div>`; }).join('')
+      : empty('📒', 'Carnet vide', 'Notez ici les clients qui achètent à crédit. Vous pourrez leur envoyer un rappel poli sur WhatsApp.')}`;
+}
+function cliModal(id) {
+  const c = id ? biz.cli.find(x => x.id === id) : null;
+  openM(`<h3>${c ? '✏️ ' + esc(c.name) : '➕ Nouveau client'}</h3>
+    ${c ? '' : `<div class="fg"><label>Nom du client</label><input id="k-name" maxlength="60" list="k-list"><datalist id="k-list">${biz.cli.map(x => `<option value="${esc(x.name)}">`).join('')}</datalist></div><div class="fg"><label>Téléphone WhatsApp (facultatif)</label><input id="k-phone" inputmode="tel" placeholder="+243…"></div>`}
+    <div class="fg"><label>Montant</label><div style="display:flex;gap:8px"><input id="k-amt" type="number" min="0" step="0.01" inputmode="decimal" style="flex:1"><select id="k-cur" style="width:110px">${Object.keys(CUR).map(k => `<option ${k === biz.pro.cur ? 'selected' : ''}>${k}</option>`).join('')}</select></div></div>
+    <div class="fg"><label>Pour quoi ? (facultatif)</label><input id="k-note" maxlength="80" placeholder="ex : 1 sac de ciment"></div>
+    <div class="grid2"><button class="pill" style="background:#DC2626" onclick="cliOp('${id || ''}',1)">Il me doit ➕</button><button class="pill" onclick="cliOp('${id || ''}',-1)">Il a payé ➖</button></div>
+    <button class="pbtn gray" onclick="closeM()">Annuler</button>`);
+}
+function cliOp(id, sign) {
+  const a = r2($('k-amt').value); if (!(a > 0)) return toast('Entrez un montant.');
+  let c = id ? biz.cli.find(x => x.id === id) : null; if (!c) { const n = $('k-name').value.trim(); if (!n) return toast('Entrez le nom du client.'); c = cliGet(n, $('k-phone').value); }
+  const cur = $('k-cur').value, note = $('k-note').value.trim(); c.ops.push({ id: bid(), date: new Date().toISOString(), amt: sign * a, cur, note });
+  if (sign < 0) biz.cash.push({ id: bid(), type: 'in', amt: a, cur, note: `Paiement de ${c.name}${note ? ' – ' + note : ''}`, date: new Date().toISOString() });
+  bizSave(); closeM(); toast(sign > 0 ? '📒 Dette notée' : '✅ Paiement enregistré (ajouté à la caisse)'); id ? cliView(id) : bizRender();
+}
+function cliView(id) {
+  const c = biz.cli.find(x => x.id === id); if (!c) return; const b = cliBal(c), C = biz.pro.cur;
+  openM(`<h3>📒 ${esc(c.name)}</h3><p class="mt">${esc(c.phone || 'Sans numéro')}</p>
+    <div class="bizcard ${b > 0 ? 'r' : 'g'} wide" style="margin:10px 0"><small>${b > 0 ? 'Il vous doit' : b < 0 ? 'Il a une avance de' : 'Compte soldé'}</small><b>${fmtM(Math.abs(b), C)}</b></div>
+    <div class="grid2"><button class="pill" style="background:#DC2626" onclick="cliModal('${c.id}')">➕ / ➖ Opération</button>${c.phone && b > 0 ? `<button class="pill" style="background:#25D366" onclick="cliRemind('${c.id}')">📱 Rappel WhatsApp</button>` : '<span></span>'}</div>
+    <div class="bizhist">${c.ops.slice().reverse().map(o => `<div class="bizrow"><div><b>${o.amt > 0 ? 'Dette' : 'Paiement'}</b><small>${fdate(o.date.slice(0, 10))}${o.note ? ' · ' + esc(o.note) : ''}${o.doc ? ' · ' + esc(o.doc) : ''}</small></div><b class="${o.amt > 0 ? 'ko' : 'ok'}">${o.amt > 0 ? '+' : '-'}${fmtM(Math.abs(o.amt), o.cur)}</b></div>`).join('') || '<p class="mt">Aucune opération.</p>'}</div>
+    <button class="pbtn gray" style="color:#B91C1C" onclick="cliDel('${c.id}')">🗑️ Supprimer ce client</button><button class="pbtn gray" onclick="closeM();bizRender()">Fermer</button>`);
+}
+function cliRemind(id) {
+  const c = biz.cli.find(x => x.id === id), b = cliBal(c), P = biz.pro;
+  const msg = `Bonjour ${c.name},\nJ’espère que vous allez bien. Petit rappel amical de ${P.name || me.name} : il reste ${fmtM(b, P.cur)} à régler sur vos achats.\n${P.pay ? 'Paiement : ' + P.pay.split('\n').join(' · ') + '\n' : ''}Merci beaucoup pour votre confiance ! 🙏`;
+  waSend(String(c.phone).replace(/\D/g, ''), msg);
+}
+function cliDel(id) { if (!confirm('Supprimer ce client et tout son historique ?')) return; biz.cli = biz.cli.filter(x => x.id !== id); bizSave(); closeM(); bizRender(); }
+// ---------- 📦 Stock (relié à la boutique en ligne) ----------
+let bizProds = [];
+function withStock(desc, s) { const m = getMeta(desc), base = cleanDesc(desc).trim(); if (s === null) delete m.s; else m.s = Math.max(0, Math.floor(s)); return Object.keys(m).length ? (base + '\n[[m:' + encodeURIComponent(JSON.stringify(m)) + ']]').trim() : base; }
+async function stockSet(pid, s, quiet) {
+  const p = bizProds.find(x => x.id === pid) || prods.find(x => x.id === pid); if (!p) return false;
+  const nd = withStock(p.description, s), { error } = await sb.from('products').update({ description: nd }).eq('id', pid);
+  if (error) { toast('⚠️ ' + error.message); return false; } p.description = nd; [prods, Object.values(fpCache)].forEach(L => L.forEach?.(x => { if (x.id === pid) x.description = nd; })); if (fpCache[pid]) fpCache[pid].description = nd;
+  if (!quiet) toast(s === 0 ? '🔴 En rupture : affiché « épuisé » dans votre boutique' : '✅ Stock mis à jour'); return true;
+}
+async function bizStock(el) {
+  el.innerHTML = '<div class="spin"></div>';
+  const { data, error } = await sb.from('products').select('id,name,price,status,description,images,image_url,created_at').eq('user_id', me.id).order('created_at', { ascending: false }).limit(200);
+  if (bizTab !== 'stock') return; if (error) { el.innerHTML = empty('⚠️', 'Erreur', esc(error.message)); return; }
+  bizProds = data || []; const st = p => getMeta(p.description).s, low = bizProds.filter(p => st(p) !== undefined && st(p) > 0 && st(p) <= 2).length, out = bizProds.filter(p => st(p) === 0).length;
+  el.innerHTML = `<div class="bizcards"><div class="bizcard"><small>Produits</small><b>${bizProds.length}</b></div><div class="bizcard o"><small>Stock faible</small><b>${low}</b></div><div class="bizcard r"><small>En rupture</small><b>${out}</b></div></div>
+    <p class="mt" style="font-size:13px;margin:4px 0 12px">Le stock est visible dans votre boutique en ligne. À 0, le produit s’affiche « épuisé » automatiquement. Les factures et reçus font baisser le stock tout seuls.</p>
+    ${bizProds.length ? bizProds.map(p => { const s = st(p), im = p.images?.[0] || p.image_url; return `<div class="bizrow bizst" id="bst-${p.id}"><img src="${esc(im || '')}" alt="" onerror="this.style.visibility='hidden'"><div><b>${esc(cutT(p.name, 40))}</b><small>${p.price} $ ${s === 0 ? '· <span class="ko">Rupture</span>' : s !== undefined && s <= 2 ? '· <span style="color:#D97706">Stock faible</span>' : ''}</small></div>
+      ${s === undefined ? `<button type="button" class="soft" onclick="stockTrack('${p.id}')">Suivre le stock</button>` : `<div class="bizqty"><button type="button" onclick="stockStep('${p.id}',-1)">−</button><input type="number" min="0" value="${s}" onchange="stockSet('${p.id}',+this.value||0).then(()=>bizRender())"><button type="button" onclick="stockStep('${p.id}',1)">+</button></div>`}
+      <button type="button" class="bizdel" title="Faire une facture" onclick="docNew('FAC','${p.id}')">🧾</button></div>`; }).join('') : empty('📦', 'Aucun produit', 'Ajoutez des produits dans votre boutique.')}`;
+}
+async function stockStep(pid, d) { const p = bizProds.find(x => x.id === pid), s = Math.max(0, (getMeta(p.description).s || 0) + d); if (await stockSet(pid, s, s !== 0)) bizRender(); }
+async function stockTrack(pid) { const v = prompt('Combien en avez-vous en stock ?', '1'); if (v === null) return; if (await stockSet(pid, Math.max(0, parseInt(v) || 0))) bizRender(); }
+// ---------- 🏢 Mon entreprise ----------
+function bizPro(el) {
+  const P = biz.pro, img = (k, label, act) => `<div class="bizimg"><div class="bizimgv">${P[k] ? `<img src="${P[k]}" alt="">` : '<span>Aucun</span>'}</div><div><b>${label}</b><div class="bizimgb">${act}${P[k] ? `<button type="button" class="soft" onclick="bizImgDel('${k}')">Retirer</button>` : ''}</div></div></div>`;
+  el.innerHTML = `<div class="box"><h3 style="margin-top:0">🏢 Mon entreprise</h3>
+    <div class="fg"><label>Nom commercial</label><input id="b-name" value="${esc(P.name)}" maxlength="60"></div>
+    <div class="fg"><label>Activité / slogan (facultatif)</label><input id="b-act" value="${esc(P.act || '')}" maxlength="70" placeholder="ex : Vente de machines et équipements"></div>
+    <div class="fg"><label>Adresse</label><input id="b-addr" value="${esc(P.addr)}" maxlength="100" placeholder="Avenue, quartier, ville"></div>
+    <div class="grid2"><div class="fg"><label>Téléphone</label><input id="b-phone" value="${esc(P.phone)}" inputmode="tel"></div><div class="fg"><label>E-mail</label><input id="b-mail" value="${esc(P.mail || '')}" inputmode="email"></div></div>
+    <details class="bizdet"><summary>Mentions officielles (facultatif)</summary>
+      <div class="grid2"><div class="fg"><label>RCCM</label><input id="b-rccm" value="${esc(P.rccm || '')}"></div><div class="fg"><label>Id. Nat.</label><input id="b-idnat" value="${esc(P.idnat || '')}"></div></div>
+      <div class="fg"><label>N° Impôt (NIF)</label><input id="b-nif" value="${esc(P.nif || '')}"></div></details>
+    <div class="fg"><label>Moyens de paiement (un par ligne)</label><textarea id="b-pay" rows="3" placeholder="M-Pesa : +243…&#10;Airtel Money : +243…&#10;Banque : …">${esc(P.pay || '')}</textarea></div>
+    <div class="fg"><label>Conditions / note en bas de facture (facultatif)</label><textarea id="b-foot" rows="2" placeholder="ex : Les marchandises vendues ne sont ni reprises ni échangées.">${esc(P.foot || '')}</textarea></div></div>
+    <div class="box"><h3 style="margin-top:0">🎨 Apparence des factures</h3>
+    <div class="fg"><label>Modèle</label><div class="vchips" id="b-tpl">${[['moderne', 'Moderne'], ['classique', 'Classique'], ['elegant', 'Élégant']].map(([k, n]) => `<button type="button" data-k="${k}" class="${P.tpl === k ? 'on' : ''}" onclick="this.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===this))">${n}</button>`).join('')}</div></div>
+    <div class="fg"><label>Couleur de la marque</label><div class="bizcols" id="b-col">${['#16A34A', '#2563EB', '#DC2626', '#7C3AED', '#EA580C', '#0F172A', '#B45309', '#DB2777'].map(c => `<button type="button" data-c="${c}" class="${P.color === c ? 'on' : ''}" style="background:${c}" onclick="this.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===this))"></button>`).join('')}</div></div>
+    <div class="grid2"><div class="fg"><label>Monnaie principale</label><select id="b-cur">${Object.entries(CUR).map(([k, v]) => `<option value="${k}" ${P.cur === k ? 'selected' : ''}>${v.n}</option>`).join('')}</select></div><div class="fg"><label>Taux : 1 $ = ? FC</label><input id="b-rate" type="number" min="0" value="${P.rate || ''}"></div></div>
+    <div class="fg"><label>TVA par défaut (%)</label><input id="b-tva" type="number" min="0" max="100" step="0.1" value="${P.tva}"></div></div>
+    <div class="box"><h3 style="margin-top:0">🖋️ Logo, cachet et signature</h3><p class="mt" style="font-size:12px;margin-top:-6px">🔒 Ils restent uniquement sur cet appareil, ils ne sont jamais envoyés sur Internet.</p>
+    ${img('logo', 'Logo', '<button type="button" class="soft" onclick="bizPick(\'logo\')">📷 Importer</button>')}
+    ${img('stamp', 'Cachet', '<button type="button" class="soft" onclick="stampMake()">✨ Créer</button><button type="button" class="soft" onclick="bizPick(\'stamp\')">📷 Photo du cachet</button>')}
+    ${img('sign', 'Signature', '<button type="button" class="soft" onclick="signPad()">✍️ Signer</button><button type="button" class="soft" onclick="bizPick(\'sign\')">📷 Photo</button>')}</div>
+    <button class="pill" style="width:100%;margin:6px 0 14px" onclick="bizProSave()">💾 Enregistrer</button>
+    <div class="box"><h3 style="margin-top:0">💾 Sauvegarde</h3><p class="mt" style="font-size:13px">Vos factures, carnet et caisse sont gardés sur cet appareil. Faites une sauvegarde de temps en temps (fichier à garder sur WhatsApp, Google Drive…).</p>
+    <div class="grid2"><button class="soft" onclick="bizExport()">⬇️ Exporter</button><button class="soft" onclick="bizImport()">⬆️ Restaurer</button></div></div>`;
+}
+function bizProSave() {
+  const g = id => ($(id)?.value || '').trim(), P = biz.pro;
+  Object.assign(P, { name: g('b-name'), act: g('b-act'), addr: g('b-addr'), phone: g('b-phone'), mail: g('b-mail'), rccm: g('b-rccm'), idnat: g('b-idnat'), nif: g('b-nif'), pay: $('b-pay').value.trim(), foot: $('b-foot').value.trim(),
+    tpl: document.querySelector('#b-tpl .on')?.dataset.k || 'moderne', color: document.querySelector('#b-col .on')?.dataset.c || '#16A34A', cur: g('b-cur') || 'USD', rate: +g('b-rate') || 0, tva: +g('b-tva') || 0 });
+  if (bizSave()) toast('✅ Entreprise enregistrée');
+}
+function bizImgDel(k) { biz.pro[k] = ''; bizSave(); bizRender(); }
+function bizPick(k) {
+  const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*';
+  i.onchange = async () => { const f = i.files[0]; if (!f) return; try { const im = new Image(); im.src = URL.createObjectURL(f); await im.decode();
+    biz.pro[k] = imgToData(im, k === 'logo' ? 500 : 600, k !== 'logo'); bizSave(); bizRender(); toast(k === 'logo' ? '✅ Logo ajouté' : '✅ Ajouté (fond blanc retiré)'); } catch (e) { toast('Image illisible.'); } };
+  i.click();
+}
+// réduit l'image ; pour le cachet et la signature : retire le fond blanc et recadre
+function imgToData(im, M, clean) {
+  const sc = Math.min(1, M / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * sc); c.height = Math.round(im.height * sc);
+  const x = c.getContext('2d'); x.drawImage(im, 0, 0, c.width, c.height);
+  if (clean) { const d = x.getImageData(0, 0, c.width, c.height), a = d.data; let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0;
+    for (let i = 0; i < a.length; i += 4) { const l = (a[i] + a[i + 1] + a[i + 2]) / 3, al = l > 205 ? 0 : Math.min(255, (255 - l) * 2.2); a[i + 3] = Math.min(a[i + 3], al);
+      if (a[i + 3] > 40) { const p = i / 4, px = p % c.width, py = Math.floor(p / c.width); if (px < x0) x0 = px; if (px > x1) x1 = px; if (py < y0) y0 = py; if (py > y1) y1 = py; } }
+    x.putImageData(d, 0, 0); if (x1 > x0 && y1 > y0) { const t = document.createElement('canvas'); t.width = x1 - x0 + 8; t.height = y1 - y0 + 8; t.getContext('2d').drawImage(c, x0 - 4, y0 - 4, t.width, t.height, 0, 0, t.width, t.height); return t.toDataURL('image/png'); } }
+  return c.toDataURL('image/png');
+}
+// Cachet rond créé automatiquement
+function stampMake() {
+  openM(`<h3>✨ Créer mon cachet</h3><div style="display:flex;justify-content:center"><canvas id="stp-cv" width="440" height="440" style="width:220px;height:220px"></canvas></div>
+    <div class="fg"><label>Texte du tour (haut)</label><input id="stp-a" maxlength="34" value="${esc((biz.pro.name || me.name || '').toUpperCase())}" oninput="stampDraw()"></div>
+    <div class="fg"><label>Texte du tour (bas)</label><input id="stp-b" maxlength="30" value="${esc(((biz.pro.city || me.city || '') + ' – RDC').toUpperCase())}" oninput="stampDraw()"></div>
+    <div class="fg"><label>Centre</label><input id="stp-c" maxlength="18" value="LA DIRECTION" oninput="stampDraw()"></div>
+    <div class="vchips" id="stp-col">${[['#1E3A8A', 'Bleu'], ['#B91C1C', 'Rouge'], ['#6D28D9', 'Violet'], ['#065F46', 'Vert']].map(([c, n], i) => `<button type="button" data-c="${c}" class="${i ? '' : 'on'}" style="color:${c}" onclick="this.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===this));stampDraw()">● ${n}</button>`).join('')}</div>
+    <button class="pill" style="width:100%;margin-top:12px" onclick="biz.pro.stamp=$('stp-cv').toDataURL('image/png');bizSave();closeM();bizRender();toast('✅ Cachet créé')">Utiliser ce cachet</button><button class="pbtn gray" onclick="closeM()">Annuler</button>`);
+  stampDraw();
+}
+function stampDraw() {
+  const cv = $('stp-cv'); if (!cv) return; const x = cv.getContext('2d'), col = document.querySelector('#stp-col .on')?.dataset.c || '#1E3A8A', R = 200, cx = 220, cy = 220;
+  x.clearRect(0, 0, 440, 440); x.strokeStyle = x.fillStyle = col; x.lineWidth = 9; x.beginPath(); x.arc(cx, cy, R, 0, 7); x.stroke(); x.lineWidth = 3; x.beginPath(); x.arc(cx, cy, R - 62, 0, 7); x.stroke();
+  const arc = (txt, top) => { txt = txt || ''; x.font = 'bold 30px Arial, sans-serif'; const r = R - 33, chars = [...txt], ws = chars.map(c => x.measureText(c).width + 2), tot = ws.reduce((a, b) => a + b, 0), span = Math.min(Math.PI * 0.95, tot / r);
+    let a = (top ? -Math.PI / 2 : Math.PI / 2) - (top ? span / 2 : -span / 2);
+    chars.forEach((c, i) => { const da = ws[i] / tot * span; const mid = a + (top ? da / 2 : -da / 2); x.save(); x.translate(cx + Math.cos(mid) * r, cy + Math.sin(mid) * r); x.rotate(mid + (top ? Math.PI / 2 : -Math.PI / 2)); x.textAlign = 'center'; x.fillText(c, 0, 10); x.restore(); a += top ? da : -da; }); };
+  arc($('stp-a').value, 1); arc($('stp-b').value, 0);
+  x.font = 'bold 26px Arial, sans-serif'; x.textAlign = 'center'; x.fillText('★ ★ ★', cx, cy - 34); x.font = 'bold 30px Arial, sans-serif'; x.fillText($('stp-c').value || '', cx, cy + 12); x.font = 'bold 26px Arial, sans-serif'; x.fillText('★ ★ ★', cx, cy + 54);
+  // effet « encre » réaliste
+  const d = x.getImageData(0, 0, 440, 440), a = d.data; for (let i = 3; i < a.length; i += 4) if (a[i] && Math.random() < 0.07) a[i] = a[i] * 0.35; x.putImageData(d, 0, 0);
+}
+// Signature au doigt
+function signPad() {
+  openM(`<h3>✍️ Votre signature</h3><p class="mt" style="font-size:13px">Signez avec le doigt (ou la souris) dans le cadre.</p><canvas id="sg-cv" class="sgpad" width="900" height="400"></canvas>
+    <div class="grid2" style="margin-top:10px"><button class="soft" onclick="const c=$('sg-cv');c.getContext('2d').clearRect(0,0,c.width,c.height)">Effacer</button><button class="pill" onclick="signSave()">Utiliser</button></div><button class="pbtn gray" onclick="closeM()">Annuler</button>`);
+  const cv = $('sg-cv'), x = cv.getContext('2d'); x.lineWidth = 6; x.lineCap = x.lineJoin = 'round'; x.strokeStyle = '#0B1F5C'; let dn = false, lp = null;
+  const pt = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * cv.width / r.width, (e.clientY - r.top) * cv.height / r.height]; };
+  cv.onpointerdown = e => { dn = true; lp = pt(e); cv.setPointerCapture(e.pointerId); e.preventDefault(); };
+  cv.onpointermove = e => { if (!dn) return; const p = pt(e); x.beginPath(); x.moveTo(...lp); x.quadraticCurveTo(lp[0], lp[1], (lp[0] + p[0]) / 2, (lp[1] + p[1]) / 2); x.lineTo(...p); x.stroke(); lp = p; e.preventDefault(); };
+  cv.onpointerup = cv.onpointercancel = () => dn = false;
+}
+function signSave() { const cv = $('sg-cv'), im = new Image(); im.onload = () => { biz.pro.sign = imgToData(im, 600, true); bizSave(); closeM(); bizRender(); toast('✅ Signature enregistrée'); }; im.src = cv.toDataURL('image/png'); }
+function bizExport() {
+  const b = new Blob([JSON.stringify({ v: 1, app: 'SocialPages', date: new Date().toISOString(), data: biz })], { type: 'application/json' }), f = new File([b], `socialpages-commerce-${today()}.json`, { type: 'application/json' });
+  if (navigator.canShare?.({ files: [f] })) navigator.share({ files: [f], title: 'Sauvegarde SocialPages' }).catch(() => {}); else { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = f.name; a.click(); }
+}
+function bizImport() {
+  const i = document.createElement('input'); i.type = 'file'; i.accept = '.json,application/json';
+  i.onchange = async () => { try { const j = JSON.parse(await i.files[0].text()); if (j.app !== 'SocialPages' || !j.data) throw 0; if (!confirm('Remplacer les données de cet appareil par cette sauvegarde ?')) return; localStorage.setItem(BIZ_K(), JSON.stringify(j.data)); bizLoad(); bizRender(); toast('✅ Sauvegarde restaurée'); } catch (e) { toast('Fichier de sauvegarde invalide.'); } };
+  i.click();
+}
+// ---------- 🧾 Factures, proformas, reçus ----------
+let docEd = null;
+function bizDocs(el) {
+  const C = biz.pro.cur, L = biz.docs.slice().sort((a, b) => (b.date + b.num).localeCompare(a.date + a.num));
+  el.innerHTML = `<div class="bizcards">${Object.entries(DOCT).map(([k, t]) => `<button type="button" class="bizcard bnew" onclick="docNew('${k}')"><span>${t.i}</span><b>${t.n}</b><small>+ Nouveau</small></button>`).join('')}</div>
+    ${!biz.pro.name || !biz.pro.phone ? '<p class="bizowe" onclick="bizTab=\'pro\';bizRender()">🏢 Complétez « Mon entreprise » (logo, cachet, signature) pour des factures parfaites →</p>' : ''}
+    <input class="search" style="margin-top:12px" placeholder="🔍 Rechercher (numéro, client)" oninput="document.querySelectorAll('.bizdoc').forEach(x=>x.style.display=x.dataset.n.includes(this.value.toLowerCase())?'':'none')">
+    ${L.length ? L.map(d => { const c = docCalc(d), cls = { 'Payée': 'ok', 'Acompte': 'wa', 'À payer': 'ko', 'Proforma': 'pf' }[c.status]; return `<div class="bizrow bizdoc" data-n="${esc((d.num + ' ' + d.client.name).toLowerCase())}" onclick="docView('${d.id}')"><span class="bizav">${DOCT[d.type].i}</span><div><b>${esc(d.num)}</b><small>${esc(d.client.name || 'Client')} · ${fdate(d.date)}</small></div><div style="text-align:right"><b>${fmtM(c.total, d.cur)}</b><small class="bizst-${cls}">${c.status}</small></div></div>`; }).join('')
+      : empty('🧾', 'Aucun document', 'Créez votre première facture : elle se partage sur WhatsApp en image ou en PDF.')}`;
+}
+function docNew(type, pid) {
+  bizLoad(); const P = biz.pro;
+  docEd = { id: '', type, date: today(), due: '', client: { name: '', phone: '', addr: '' }, items: [], disc: 0, tvaOn: false, tva: P.tva, cur: P.cur, paid: 0, notes: '' };
+  if (pid) { const p = bizProds.find(x => x.id === pid) || prods.find(x => x.id === pid); if (p) docEd.items.push({ name: p.name, pid: p.id, qty: 1, price: +p.price || 0, img: p.images?.[0] || p.image_url || '' }); }
+  if (type === 'REC') docEd.items.length || docEd.items.push({ name: '', qty: 1, price: 0 });
+  if (!$('bizx')) bizOpen('docs'); docEdit();
+}
+function docEdit() {
+  const d = docEd, T = DOCT[d.type];
+  openM(`<h3>${T.i} ${d.id ? 'Modifier' : 'Nouveau'} : ${T.n}</h3>
+    <div class="grid2"><div class="fg"><label>Date</label><input id="d-date" type="date" value="${d.date}"></div>${d.type === 'FAC' ? `<div class="fg"><label>Échéance (facultatif)</label><input id="d-due" type="date" value="${d.due}"></div>` : d.type === 'PRO' ? `<div class="fg"><label>Valable jusqu’au</label><input id="d-due" type="date" value="${d.due}"></div>` : '<span></span>'}</div>
+    <div class="fg"><label>Client</label><input id="d-cn" value="${esc(d.client.name)}" list="d-cl" placeholder="Nom du client" onchange="docCli()"><datalist id="d-cl">${biz.cli.map(c => `<option value="${esc(c.name)}">`).join('')}</datalist></div>
+    <div class="grid2"><div class="fg"><label>Téléphone</label><input id="d-cp" value="${esc(d.client.phone)}" inputmode="tel"></div><div class="fg"><label>Adresse (facultatif)</label><input id="d-ca" value="${esc(d.client.addr)}"></div></div>
+    <label class="vlab">Articles</label><div id="d-items"></div>
+    <div class="grid2"><button type="button" class="soft" onclick="docSync();docEd.items.push({name:'',qty:1,price:0});docItems()">➕ Ligne</button><button type="button" class="soft" onclick="docSync();docPickProd()">📦 Depuis ma boutique</button></div>
+    <div class="grid2" style="margin-top:10px"><div class="fg"><label>Monnaie</label><select id="d-cur" onchange="docSync();docTot()">${Object.keys(CUR).map(k => `<option ${k === d.cur ? 'selected' : ''}>${k}</option>`).join('')}</select></div><div class="fg"><label>Remise (montant)</label><input id="d-disc" type="number" min="0" step="0.01" value="${d.disc || ''}" oninput="docSync();docTot()"></div></div>
+    <label class="stu-mus" style="margin-top:0"><input type="checkbox" id="d-tvaon" ${d.tvaOn ? 'checked' : ''} onchange="docSync();docTot()"> Appliquer la TVA <input id="d-tva" type="number" min="0" max="100" step="0.1" value="${d.tva}" style="width:80px;margin-left:6px" oninput="docSync();docTot()"> %</label>
+    ${d.type === 'FAC' ? `<div class="fg"><label>Montant déjà payé (acompte)</label><input id="d-paid" type="number" min="0" step="0.01" value="${d.paid || ''}" oninput="docSync();docTot()"></div>` : ''}
+    <div class="fg"><label>Note (facultatif)</label><textarea id="d-notes" rows="2" placeholder="ex : Garantie 6 mois · Livraison incluse">${esc(d.notes)}</textarea></div>
+    <div class="biztot" id="d-tot"></div>
+    <button class="pill" style="width:100%" onclick="docSave()">✅ Enregistrer et voir</button><button class="pbtn gray" onclick="closeM()">Annuler</button>`);
+  $('modal-box').classList.add('mwide'); docItems();
+}
+function docCli() { const c = biz.cli.find(x => x.name.toLowerCase() === $('d-cn').value.trim().toLowerCase()); if (c && !$('d-cp').value) $('d-cp').value = c.phone; }
+function docItems() {
+  $('d-items').innerHTML = docEd.items.map((it, i) => `<div class="bizit"><input placeholder="Désignation" value="${esc(it.name)}" data-i="${i}" data-f="name" oninput="docSync();docTot()"><input type="number" min="0" step="any" value="${it.qty}" data-i="${i}" data-f="qty" title="Quantité" oninput="docSync();docTot()"><input type="number" min="0" step="0.01" value="${it.price || ''}" placeholder="Prix" data-i="${i}" data-f="price" title="Prix unitaire" oninput="docSync();docTot()"><button type="button" onclick="docSync();docEd.items.splice(${i},1);docItems()" aria-label="Retirer">✖</button></div>`).join('') || '<p class="mt" style="font-size:13px">Ajoutez au moins un article.</p>';
+  docTot();
+}
+function docSync() {
+  const d = docEd, g = id => $(id)?.value ?? ''; if (!$('d-date')) return;
+  document.querySelectorAll('#d-items input').forEach(x => { const it = d.items[+x.dataset.i]; if (!it) return; it[x.dataset.f] = x.dataset.f === 'name' ? x.value : +x.value || 0; });
+  Object.assign(d, { date: g('d-date') || today(), due: g('d-due'), cur: g('d-cur') || d.cur, disc: +g('d-disc') || 0, tvaOn: !!$('d-tvaon')?.checked, tva: +g('d-tva') || 0, paid: +g('d-paid') || 0, notes: g('d-notes').trim() });
+  d.client = { name: g('d-cn').trim(), phone: g('d-cp').trim(), addr: g('d-ca').trim() };
+}
+function docTot() { const c = docCalc(docEd), cur = docEd.cur; $('d-tot') && ($('d-tot').innerHTML = `<span>Sous-total <b>${fmtM(c.sub, cur)}</b></span>${c.disc ? `<span>Remise <b>-${fmtM(c.disc, cur)}</b></span>` : ''}${c.tva ? `<span>TVA <b>${fmtM(c.tva, cur)}</b></span>` : ''}<span class="btot">Total <b>${fmtM(c.total, cur)}</b></span>${docEd.type === 'FAC' && c.paid ? `<span>Reste à payer <b>${fmtM(c.rest, cur)}</b></span>` : ''}`); }
+async function docPickProd() {
+  let L = bizProds; if (!L.length) { const { data } = await sb.from('products').select('id,name,price,status,description,images,image_url').eq('user_id', me.id).order('created_at', { ascending: false }).limit(200); L = bizProds = data || []; }
+  const back = JSON.stringify(docEd);
+  openM(`<h3>📦 Choisir dans ma boutique</h3><div class="vprods">${L.map(p => `<label class="vprod"><input type="checkbox" value="${p.id}"><img src="${esc(p.images?.[0] || p.image_url || '')}" alt=""><span>${esc(cutT(p.name, 30))}<b>${p.price} $${getMeta(p.description).s !== undefined ? ' · stock ' + getMeta(p.description).s : ''}</b></span></label>`).join('') || '<p class="mt">Aucun produit.</p>'}</div>
+    <button class="pill" style="width:100%;margin-top:10px" id="pk-ok">Ajouter</button><button class="pbtn gray" id="pk-no">Annuler</button>`);
+  $('modal-box').classList.add('mwide');
+  $('pk-no').onclick = () => { docEd = JSON.parse(back); docEdit(); };
+  $('pk-ok').onclick = () => { docEd = JSON.parse(back); document.querySelectorAll('.vprods input:checked').forEach(x => { const p = L.find(y => y.id === x.value); if (!p) return; const pr = +p.price || 0;
+    docEd.items = docEd.items.filter(it => it.name || it.price); docEd.items.push({ name: p.name, pid: p.id, qty: 1, price: docEd.cur === 'CDF' ? r2(conv(pr, 'USD', 'CDF')) : pr }); }); docEdit(); };
+}
+async function docSave() {
+  docSync(); const d = docEd; d.items = d.items.filter(it => String(it.name).trim() && it.qty > 0);
+  if (!d.items.length) return toast('Ajoutez au moins un article avec une désignation.');
+  if (!d.client.name) return toast('Entrez le nom du client.');
+  const isNew = !d.id, c = docCalc(d);
+  if (isNew) { const y = d.date.slice(0, 4), k = d.type + y; biz.seq[k] = (biz.seq[k] || 0) + 1; d.num = `${d.type}-${y}-${String(biz.seq[k]).padStart(4, '0')}`; d.id = bid(); d.created = new Date().toISOString(); biz.docs.push(d); }
+  else { const i = biz.docs.findIndex(x => x.id === d.id); if (i >= 0) biz.docs[i] = d; }
+  const fx = [];
+  if (isNew && d.type !== 'PRO') {
+    if (c.paid > 0) { biz.cash.push({ id: bid(), type: 'in', amt: c.paid, cur: d.cur, note: `${DOCT[d.type].n} – ${d.client.name}`, doc: d.num, date: d.date + 'T' + new Date().toTimeString().slice(0, 8) }); fx.push('caisse'); }
+    if (d.type === 'FAC' && c.rest > 0) { const cl = cliGet(d.client.name, d.client.phone); cl.ops.push({ id: bid(), date: new Date().toISOString(), amt: c.rest, cur: d.cur, note: 'Reste à payer', doc: d.num }); fx.push('carnet'); }
+    d.stockDone = 1;
   }
-  // impact de l'intro, whoosh avant chaque produit, « ding » quand le prix apparaît
-  osc(T + 0.4, 90, 30, 0.9, 0.8); noise(T + 0.4, 'lowpass', 1200, 0.6, 0.35);
-  for (let k = 0; k <= n; k++) { const ts = T + INTRO + k * SL; noise(ts - 0.3, 'bandpass', 300, 0.4, 0.3, 3500);
-    if (k < n) [1046.5, 1568].forEach((f, j) => osc(ts + 0.5 + j * 0.08, f, 0, 0.6, 0.16)); else [784, 1046.5, 1318.5].forEach((f, j) => osc(ts + 0.2 + j * 0.12, f, 0, 0.9, 0.18)); }
+  bizSave();
+  if (isNew && d.type !== 'PRO') { let n = 0; for (const it of d.items) { if (!it.pid) continue; const p = bizProds.find(x => x.id === it.pid) || prods.find(x => x.id === it.pid); const s = p && getMeta(p.description).s; if (s === undefined || s === null) continue; if (await stockSet(it.pid, Math.max(0, s - Math.ceil(it.qty)), true)) n++; } if (n) fx.push('stock'); }
+  if (fx.length) toast('✅ Enregistré · mis à jour : ' + fx.join(', '), 4000); else toast('✅ Enregistré');
+  bizRender(); docView(d.id);
 }
-// ---------- Dessin des images de la vidéo ----------
-const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
-const back = x => { x = Math.min(1, Math.max(0, x)); const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
-function vidBg(im, W, H) { const c = document.createElement('canvas'); c.width = Math.round(W / 8); c.height = Math.round(H / 8); const x = c.getContext('2d'), sc = Math.max(c.width / im.width, c.height / im.height) * 1.15;
-  x.filter = 'blur(3px)'; x.drawImage(im, (c.width - im.width * sc) / 2, (c.height - im.height * sc) / 2, im.width * sc, im.height * sc); x.filter = 'none'; x.fillStyle = 'rgba(0,0,0,.45)'; x.fillRect(0, 0, c.width, c.height); return c; }
-function vidWrap(ctx, text, maxW, max = 2) { const w = String(text).split(/\s+/), lines = []; let l = ''; w.forEach(x => { const t = l ? l + ' ' + x : x; if (ctx.measureText(t).width > maxW && l) { lines.push(l); l = x; } else l = t; }); if (l) lines.push(l); if (lines.length > max) { lines.length = max; lines[max - 1] += '…'; } return lines; }
-function vidRR(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
-function vidGrad(ctx, V) { const g = ctx.createLinearGradient(0, 0, V.W, V.H); g.addColorStop(0, V.S.g[0]); g.addColorStop(1, V.S.g[1]); ctx.fillStyle = g; ctx.fillRect(0, 0, V.W, V.H); }
-function vidLogo(ctx, x, y, sz, label) { ctx.fillStyle = '#16A34A'; vidRR(ctx, x, y, sz, sz, sz * 0.25); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = `900 ${sz * 0.62}px sans-serif`; ctx.textAlign = 'center'; ctx.fillText('S', x + sz / 2, y + sz * 0.74);
-  if (label) { ctx.textAlign = 'left'; ctx.font = `bold ${sz * 0.6}px sans-serif`; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 6; ctx.fillText('SocialPages', x + sz + 10, y + sz * 0.72); ctx.shadowBlur = 0; } }
-function vidStar(ctx, cx, cy, r, n, rot) { ctx.beginPath(); for (let i = 0; i < n * 2; i++) { const a = rot + i * Math.PI / n, rr = i % 2 ? r * 0.78 : r; ctx.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } ctx.closePath(); }
-function vidFrame(ctx, V, t) {
-  const INTRO = 1.5, SL = 3, n = V.slides.length;
-  ctx.globalAlpha = 1; ctx.textAlign = 'left'; ctx.shadowBlur = 0;
-  if (t < INTRO) return vidIntro(ctx, V, t);
-  const k = Math.floor((t - INTRO) / SL);
-  if (k < n) return vidSlide(ctx, V, V.slides[k], t - INTRO - k * SL, k);
-  vidEnd(ctx, V, t - INTRO - n * SL);
+async function docView(id) {
+  const d = biz.docs.find(x => x.id === id); if (!d) return; const c = docCalc(d);
+  openM(`<h3>${DOCT[d.type].i} ${esc(d.num)}</h3><div class="docprev" id="docprev"><div class="spin"></div></div>
+    <div class="grid2"><button class="pill" style="background:#25D366" onclick="docShare('${id}')">📤 Partager</button><button class="pill" onclick="docPdf('${id}')">⬇️ PDF</button></div>
+    <div class="grid2" style="margin-top:8px">${d.type === 'FAC' && c.rest > 0 ? `<button class="soft" onclick="docPay('${id}')">💰 Paiement reçu</button>` : ''}${d.type === 'PRO' ? `<button class="soft" onclick="docConvert('${id}')">➡️ Transformer en facture</button>` : ''}
+      <button class="soft" onclick="docEd=JSON.parse(JSON.stringify(biz.docs.find(x=>x.id==='${id}')));docEdit()">✏️ Modifier</button><button class="soft" onclick="docDup('${id}')">📄 Dupliquer</button>
+      ${d.client.phone ? `<button class="soft" onclick="docWa('${id}')">💬 Message WhatsApp</button>` : ''}<button class="soft" style="color:#B91C1C" onclick="docDel('${id}')">🗑️ Supprimer</button></div>
+    <button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+  $('modal-box').classList.add('mwide');
+  const pages = await docRender(d); if (!$('docprev')) return; $('docprev').innerHTML = pages.map(cv => `<img src="${cv.toDataURL('image/jpeg', 0.85)}" alt="Page">`).join('');
 }
-function vidIntro(ctx, V, t) {
-  const { W, H, S } = V; vidGrad(ctx, V);
-  // cartes produits qui volent en arrière-plan
-  const th = V.slides.slice(0, 3), nt = th.length; th.forEach((sl, i) => { const e = ease((t - i * 0.12) / 0.7), im = sl.ims[0].im, cw = W * 0.36, ch = cw * 1.2, rel = i - (nt - 1) / 2, x = W / 2 - cw / 2 + rel * W * 0.27 + (1 - e) * W * rel * 0.6, y = H * (V.sq ? 0.58 : 0.64) + (1 - e) * 300;
-    ctx.save(); ctx.globalAlpha = 0.9 * e; ctx.translate(x + cw / 2, y + ch / 2); ctx.rotate(rel * 0.12); ctx.fillStyle = '#fff'; vidRR(ctx, -cw / 2, -ch / 2, cw, ch, 18); ctx.fill();
-    const sc = Math.min((cw - 16) / im.width, (ch - 16) / im.height); ctx.drawImage(im, -im.width * sc / 2, -im.height * sc / 2, im.width * sc, im.height * sc); ctx.restore(); });
-  ctx.globalAlpha = 1;
-  const e1 = back(t / 0.45), cy = V.sq ? H * 0.2 : H * 0.24;
-  ctx.save(); ctx.translate(W / 2, cy); ctx.scale(e1, e1); vidLogo(ctx, -45, -45, 90); ctx.restore();
-  const e2 = back((t - 0.35) / 0.4); ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
-  ctx.save(); ctx.translate(W / 2, cy + 120); ctx.scale(e2, e2); ctx.font = `900 ${V.sq ? 56 : 64}px sans-serif`; ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 12;
-  vidWrap(ctx, V.s.name || 'Ma boutique', W - 80, 2).forEach((l, i) => ctx.fillText(l, 0, i * 68)); ctx.restore();
-  const e3 = ease((t - 0.65) / 0.4); ctx.globalAlpha = e3; ctx.fillStyle = S.sh; ctx.font = `bold ${V.sq ? 32 : 38}px sans-serif`;
-  if (V.slogan) vidWrap(ctx, V.slogan, W - 80, 2).forEach((l, i) => ctx.fillText(l, W / 2, cy + 215 + (1 - e3) * 40 + i * 46));
-  ctx.globalAlpha = 1;
-  if (t > 0.4 && t < 0.62) { ctx.fillStyle = `rgba(255,255,255,${0.7 * (1 - (t - 0.4) / 0.22)})`; ctx.fillRect(0, 0, W, H); } // flash
-  ctx.textAlign = 'left';
+async function docFiles(id, kind) {
+  const d = biz.docs.find(x => x.id === id), pages = await docRender(d), base = `${d.num}-${(d.client.name || 'client').replace(/[^\w-]+/g, '-').slice(0, 24)}`;
+  if (kind === 'pdf') { const jp = await Promise.all(pages.map(cv => new Promise(r => cv.toBlob(b => b.arrayBuffer().then(a => r({ w: cv.width, h: cv.height, d: new Uint8Array(a) })), 'image/jpeg', 0.9)))); return [new File([pdfMake(jp)], base + '.pdf', { type: 'application/pdf' })]; }
+  return Promise.all(pages.map((cv, i) => new Promise(r => cv.toBlob(b => r(new File([b], base + (pages.length > 1 ? '-p' + (i + 1) : '') + '.jpg', { type: 'image/jpeg' })), 'image/jpeg', 0.92))));
 }
-function vidSlide(ctx, V, sl, u, k) {
-  const { W, H, S, sq } = V, p = sl.p, m = sl.ims.length, sub = 3 / m, j = Math.min(m - 1, Math.floor(u / sub)), uu = u - j * sub, ph = sl.ims[j], im = ph.im, pr = pPromo(p);
-  // fond flou (préparé à l'avance)
-  ctx.drawImage(ph.bg, 0, 0, W, H);
-  // zone photo
-  const bx = 24, by = sq ? 82 : 128, bw = W - 48, bh = sq ? H * 0.46 : H * 0.52, tr = ['slide', 'zoom', 'flash'][k % 3], te = ease(u / 0.35);
-  let ox = 0, zs = 1; if (j === 0) { if (tr === 'slide') ox = (1 - te) * W; else if (tr === 'zoom') zs = 1 + 0.35 * (1 - te); }
-  const z = (1 + 0.14 * (uu / sub)) * zs, fs = Math.min(bw / im.width, bh / im.height) * z, iw = im.width * fs, ih = im.height * fs, pan = (k % 2 ? -1 : 1) * 14 * (uu / sub);
-  ctx.save(); ctx.globalAlpha = j > 0 ? Math.min(1, uu / 0.2) : 1; vidRR(ctx, bx + ox, by, bw, bh, 26); ctx.clip(); ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fillRect(bx + ox, by, bw, bh);
-  ctx.drawImage(im, bx + ox + (bw - iw) / 2 + pan, by + (bh - ih) / 2, iw, ih); ctx.restore(); ctx.globalAlpha = 1;
-  // badge étoile « -20 % » ou « Nouveau »
-  if (pr || isNewP(p)) { const e = back((u - 0.75) / 0.35), pulse = 1 + 0.06 * Math.sin(u * 9); if (e > 0) { ctx.save(); ctx.translate(W - 110, by + 70); ctx.scale(e * pulse, e * pulse); ctx.rotate(0.15);
-    ctx.fillStyle = pr ? '#EF4444' : '#2563EB'; vidStar(ctx, 0, 0, 84, 12, u); ctx.fill(); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = '900 34px sans-serif'; ctx.fillText(pr ? `-${pr.pc}%` : 'NEW', 0, 12); ctx.restore(); } }
-  // dégradé bas
-  const gy = by + bh - 80, g = ctx.createLinearGradient(0, gy, 0, H); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(0.3, 'rgba(0,0,0,.78)'); g.addColorStop(1, 'rgba(0,0,0,.95)'); ctx.fillStyle = g; ctx.fillRect(0, gy, W, H - gy);
-  // textes
-  const ty = by + bh + (sq ? 34 : 54), e1 = ease((u - 0.1) / 0.4);
-  ctx.globalAlpha = e1; ctx.fillStyle = S.ac; ctx.font = `600 ${sq ? 22 : 26}px sans-serif`; ctx.fillText(`🏪 ${V.s.name || ''}${p.city ? '  ·  📍 ' + p.city : ''}`, 40 - (1 - e1) * 60, ty);
-  ctx.fillStyle = '#fff'; ctx.font = `bold ${sq ? 38 : 48}px sans-serif`; const nl = vidWrap(ctx, p.name, W - 80, 2); nl.forEach((l, i) => ctx.fillText(l, 40, ty + (sq ? 46 : 58) + i * (sq ? 44 : 56) + (1 - e1) * 40));
-  // prix autocollant « Prix choc »
-  const py = ty + (sq ? 46 : 58) + nl.length * (sq ? 44 : 56) + (sq ? 22 : 34), e2 = back((u - 0.5) / 0.35);
-  if (e2 > 0) { ctx.globalAlpha = 1; ctx.save(); ctx.font = `900 ${sq ? 52 : 66}px sans-serif`; const pt = priceTxt(p), pw = ctx.measureText(pt).width + 44, phh = sq ? 74 : 92;
-    ctx.translate(40 + pw / 2, py + phh / 2); ctx.rotate(-0.05); const sc = e2 * (1 + (u > 0.85 ? 0.03 * Math.sin(u * 8) : 0)); ctx.scale(sc, sc);
-    ctx.fillStyle = S.st; ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 16; vidRR(ctx, -pw / 2, -phh / 2, pw, phh, 18); ctx.fill(); ctx.shadowBlur = 0;
-    ctx.fillStyle = S.stx; ctx.textAlign = 'center'; ctx.fillText(pt, 0, phh * 0.25); ctx.restore();
-    if (pr) { ctx.globalAlpha = ease((u - 0.8) / 0.3); ctx.fillStyle = '#E5E7EB'; ctx.font = `${sq ? 28 : 34}px sans-serif`; const ox2 = 40 + pw + 24, ot = pr.o + ' $', ow = ctx.measureText(ot).width; ctx.fillText(ot, ox2, py + phh * 0.68); ctx.fillStyle = '#EF4444'; ctx.fillRect(ox2 - 4, py + phh * 0.55, ow + 8, 4); }
-    if (u > 0.5 && u < 0.7) { ctx.globalAlpha = 0.5 * (1 - (u - 0.5) / 0.2); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H); } }
-  // bouton d'appel à l'action (toujours animé : la vidéo ne fige jamais)
-  ctx.globalAlpha = ease((u - 0.9) / 0.3); const cw = sq ? 330 : 440, chh = sq ? 54 : 62, cyy = sq ? py + (sq ? 74 : 92) / 2 - chh / 2 : H - chh - 34, pl = 1 + 0.04 * Math.sin(u * 7);
-  ctx.save(); ctx.translate(sq ? W - cw / 2 - 24 : W / 2, cyy + chh / 2); ctx.scale(pl, pl); ctx.fillStyle = '#25D366'; vidRR(ctx, -cw / 2, -chh / 2, cw, chh, chh / 2); ctx.fill();
-  ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = `bold ${sq ? 21 : 28}px sans-serif`; ctx.fillText(sq ? '📱 Commander sur WhatsApp' : '📱 Commandez sur WhatsApp', 0, chh * 0.17); ctx.restore(); ctx.textAlign = 'left'; ctx.globalAlpha = 1;
-  // entête : barres + logo
-  const n = V.slides.length; for (let i = 0; i < n; i++) { const w = (W - 40 - (n - 1) * 6) / n, x = 20 + i * (w + 6); ctx.fillStyle = 'rgba(255,255,255,.35)'; vidRR(ctx, x, 18, w, 5, 3); ctx.fill(); if (i <= k) { ctx.fillStyle = '#fff'; vidRR(ctx, x, 18, i < k ? w : w * Math.min(1, u / 3), 5, 3); ctx.fill(); } }
-  vidLogo(ctx, 20, 34, 36, true);
+async function docShare(id) {
+  const files = await docFiles(id, 'img'), d = biz.docs.find(x => x.id === id);
+  if (navigator.canShare?.({ files })) { try { await navigator.share({ files, text: `${DOCT[d.type].n} ${d.num} – ${biz.pro.name || ''}` }); } catch (e) {} }
+  else files.forEach(f => { const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); });
 }
-function vidEnd(ctx, V, t) {
-  const { W, H, S, sq } = V; vidGrad(ctx, V);
-  // halo lumineux qui tourne (l'image bouge toujours)
-  ctx.save(); ctx.globalAlpha = 0.12; ctx.translate(W / 2, H * 0.4); ctx.rotate(t * 0.6); ctx.fillStyle = '#fff'; for (let i = 0; i < 12; i++) { ctx.rotate(Math.PI / 6); ctx.fillRect(-14, 0, 28, Math.max(W, H)); } ctx.restore(); ctx.globalAlpha = 1;
-  ctx.textAlign = 'center'; const e = back(t / 0.45), y0 = sq ? 40 : 190;
-  ctx.save(); ctx.translate(W / 2, y0 + 50); ctx.scale(e, e); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, 0, 54, 0, 7); ctx.fill(); ctx.fillStyle = '#16A34A'; ctx.font = '900 56px sans-serif'; ctx.fillText((V.s.name || 'S')[0].toUpperCase(), 0, 20); ctx.restore();
-  ctx.globalAlpha = ease((t - 0.15) / 0.35); ctx.fillStyle = '#fff'; ctx.font = `900 ${sq ? 44 : 54}px sans-serif`; ctx.fillText(cutT(V.s.name || '', 22), W / 2, y0 + 160);
-  let y = y0 + 210;
-  if (V.phone) { const e2 = back((t - 0.3) / 0.4); ctx.globalAlpha = 1; ctx.fillStyle = S.sh; ctx.font = `bold ${sq ? 28 : 34}px sans-serif`; ctx.fillText('📱 Écrivez-moi sur WhatsApp', W / 2, y + 10);
-    ctx.save(); ctx.translate(W / 2, y + 70); ctx.scale(e2 * (1 + 0.03 * Math.sin(t * 6)), e2 * (1 + 0.03 * Math.sin(t * 6))); ctx.fillStyle = '#25D366'; const bw = W - 90, bh = sq ? 74 : 90; vidRR(ctx, -bw / 2, -bh / 2, bw, bh, bh / 2); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.font = `900 ${sq ? 42 : 52}px sans-serif`; ctx.fillText(V.phone, 0, bh * 0.2); ctx.restore(); y += sq ? 140 : 160; }
-  if (V.qrM) { const e3 = ease((t - 0.5) / 0.4), n = V.qrM.getModuleCount(), size = (sq ? 160 : V.phone ? 300 : 380) * e3, c = size / n, x0 = (W - size) / 2, qy = y + 10;
-    ctx.globalAlpha = e3; ctx.fillStyle = '#fff'; vidRR(ctx, x0 - 16, qy - 16, size + 32, size + 32, 18); ctx.fill(); ctx.fillStyle = '#000';
-    for (let r = 0; r < n; r++) for (let q = 0; q < n; q++) if (V.qrM.isDark(r, q)) ctx.fillRect(x0 + q * c, qy + r * c, Math.ceil(c), Math.ceil(c));
-    ctx.fillStyle = S.sh; ctx.font = `${sq ? 22 : 28}px sans-serif`; ctx.fillText(V.phone ? 'ou scannez pour voir toute la boutique' : '📱 Scannez pour voir la boutique et commander', W / 2, qy + size + (sq ? 40 : 56)); y = qy + size + (sq ? 50 : 70); }
-  ctx.globalAlpha = ease((t - 0.7) / 0.4); ctx.fillStyle = '#fff'; ctx.font = `bold ${sq ? 22 : 26}px sans-serif`; ctx.fillText(shopUrl(V.s).replace(/^https?:\/\//, ''), W / 2, Math.min(y + (sq ? 26 : 20), H - (sq ? 58 : 90)));
-  ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.font = `600 ${sq ? 20 : 24}px sans-serif`; ctx.fillText('✨ Créée gratuitement avec SocialPages', W / 2, H - (sq ? 24 : 40));
-  ctx.globalAlpha = 1; ctx.textAlign = 'left';
+async function docPdf(id) { const [f] = await docFiles(id, 'pdf'); if (navigator.canShare?.({ files: [f] }) && /Android|iPhone|iPad/i.test(navigator.userAgent)) { try { await navigator.share({ files: [f] }); return; } catch (e) {} } const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); }
+function docWa(id) { const d = biz.docs.find(x => x.id === id), c = docCalc(d);
+  waSend(d.client.phone.replace(/\D/g, ''), `Bonjour ${d.client.name},\nVoici votre ${DOCT[d.type].n.toLowerCase()} n° ${d.num} d’un montant de ${fmtM(c.total, d.cur)}${d.type === 'FAC' && c.rest > 0 ? ` (reste à payer : ${fmtM(c.rest, d.cur)})` : ''}.\nMerci pour votre confiance !\n${biz.pro.name || ''}`); }
+function docPay(id) {
+  const d = biz.docs.find(x => x.id === id), c = docCalc(d), v = prompt(`Montant reçu (${d.cur}) – reste ${fmtM(c.rest, d.cur)} :`, String(c.rest)); if (v === null) return; const a = Math.min(c.rest, r2(v)); if (!(a > 0)) return;
+  d.paid = r2((+d.paid || 0) + a); biz.cash.push({ id: bid(), type: 'in', amt: a, cur: d.cur, note: `Paiement ${d.num} – ${d.client.name}`, doc: d.num, date: new Date().toISOString() });
+  const cl = cliFind(d.client.name, d.client.phone); if (cl) cl.ops.push({ id: bid(), date: new Date().toISOString(), amt: -a, cur: d.cur, note: 'Paiement', doc: d.num });
+  bizSave(); toast('✅ Paiement enregistré'); bizRender(); docView(id);
 }
+function docConvert(id) { const s = biz.docs.find(x => x.id === id); docEd = { ...JSON.parse(JSON.stringify(s)), id: '', num: '', type: 'FAC', date: today(), due: '', paid: 0, from: s.num }; docEdit(); }
+function docDup(id) { const s = biz.docs.find(x => x.id === id); docEd = { ...JSON.parse(JSON.stringify(s)), id: '', num: '', date: today(), paid: 0 }; docEdit(); }
+function docDel(id) { if (!confirm('Supprimer ce document ? (la caisse et le carnet ne sont pas modifiés)')) return; biz.docs = biz.docs.filter(x => x.id !== id); bizSave(); closeM(); bizRender(); }
+// ---------- Dessin de la facture (A4, 150 dpi) ----------
+const loadImg = src => new Promise(r => { if (!src) return r(null); const i = new Image(); i.onload = () => r(i); i.onerror = () => r(null); i.src = src; });
+async function docRender(d) {
+  const P = biz.pro, c = docCalc(d), W = 1240, H = 1754, M = 80, col = P.color || '#16A34A', tpl = P.tpl || 'moderne', serif = tpl === 'elegant';
+  const F = (w, px) => `${w} ${px}px ${serif ? 'Georgia, "Times New Roman", serif' : 'Arial, Helvetica, sans-serif'}`;
+  const [logo, stamp, sign] = await Promise.all([loadImg(P.logo), loadImg(P.stamp), loadImg(P.sign)]), qr = stuQR(location.origin + '/v/' + (me?.username || ''));
+  const cur = d.cur, ROW = 70, pages = [];
+  // découpage des lignes en pages
+  // capacité : 13 lignes (page 1) / 18 (suivantes) ; la dernière page doit garder la place des totaux et du cachet (5 / 11 lignes)
+  const rows = d.items, chunks = []; let i = 0;
+  while (i < rows.length || !chunks.length) { const cap = chunks.length ? 18 : 13; chunks.push(rows.slice(i, i + cap)); i += cap; }
+  for (;;) { const li = chunks.length - 1, lim = li ? 11 : 5, L = chunks[li]; if (L.length <= lim) break; chunks[li] = L.slice(0, lim); chunks.push(L.slice(lim)); }
+  for (let pg = 0; pg < chunks.length; pg++) {
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const x = cv.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.textBaseline = 'alphabetic';
+    let y;
+    // --- En-tête
+    if (pg === 0) {
+      if (tpl === 'moderne') { x.fillStyle = col; x.fillRect(0, 0, W, 300); x.fillStyle = 'rgba(255,255,255,.08)'; x.beginPath(); x.arc(W - 120, 40, 260, 0, 7); x.fill(); }
+      if (tpl === 'elegant') { x.fillStyle = col; x.fillRect(0, 0, W, 14); x.fillRect(M, 300, W - 2 * M, 2); }
+      const onBand = tpl === 'moderne', tc = onBand ? '#fff' : '#111827', sc = onBand ? 'rgba(255,255,255,.88)' : '#4B5563';
+      let lx = M; if (logo) { const s = Math.min(170 / logo.width, 150 / logo.height); if (onBand) { x.fillStyle = '#fff'; vidRR(x, M - 12, 52, logo.width * s + 24, logo.height * s + 24, 16); x.fill(); } x.drawImage(logo, M, 64, logo.width * s, logo.height * s); lx = M + logo.width * s + 36; }
+      x.font = F('bold', d.type === 'FAC' ? 58 : 44); const tw = x.measureText(DOCT[d.type].t).width, avail = W - M - tw - 40 - lx; let fz = 40, nm = P.name || me?.name || '';
+      x.font = F('bold', fz); while (fz > 24 && x.measureText(nm).width > avail) { fz -= 2; x.font = F('bold', fz); } while (nm.length > 3 && x.measureText(nm).width > avail) nm = nm.slice(0, -2);
+      x.fillStyle = tc; x.fillText(nm === (P.name || me?.name || '') ? nm : nm + '…', lx, 102);
+      x.fillStyle = sc; x.font = F('normal', 22); let yy = 138; [P.act, P.addr, [P.phone, P.mail].filter(Boolean).join('  ·  ')].filter(Boolean).forEach(t => { let u = t; while (u.length > 3 && x.measureText(u).width > avail + tw - 60) u = u.slice(0, -2); x.fillText(u === t ? t : u + '…', lx, yy); yy += 32; });
+      x.textAlign = 'right'; x.fillStyle = onBand ? '#fff' : col; x.font = F('bold', d.type === 'FAC' ? 58 : 44); x.fillText(DOCT[d.type].t, W - M, 104);
+      x.font = F('bold', 26); x.fillStyle = tc; x.fillText('N° ' + d.num, W - M, 150); x.font = F('normal', 22); x.fillStyle = sc; x.fillText('Date : ' + fdate(d.date), W - M, 186);
+      if (d.due) x.fillText((d.type === 'PRO' ? 'Valable jusqu’au : ' : 'Échéance : ') + fdate(d.due), W - M, 218); if (d.from) x.fillText('Réf. proforma : ' + d.from, W - M, d.due ? 250 : 218);
+      x.textAlign = 'left'; if (tpl === 'classique') { x.fillStyle = col; x.fillRect(M, 280, W - 2 * M, 4); }
+      // client
+      y = 340; x.fillStyle = '#F3F4F6'; vidRR(x, M, y, 560, 160, 14); x.fill(); x.fillStyle = col; x.fillRect(M, y, 8, 160);
+      x.fillStyle = '#6B7280'; x.font = F('bold', 20); x.fillText(d.type === 'REC' ? 'REÇU DE' : 'FACTURÉ À', M + 30, y + 40);
+      x.fillStyle = '#111827'; x.font = F('bold', 30); x.fillText(cutT(d.client.name, 30), M + 30, y + 82); x.font = F('normal', 22); x.fillStyle = '#374151';
+      [d.client.phone, d.client.addr].filter(Boolean).forEach((t, k) => x.fillText(cutT(t, 40), M + 30, y + 118 + k * 30));
+      // statut
+      if (d.type !== 'PRO') { const st = c.status, sc2 = st === 'Payée' ? '#16A34A' : st === 'Acompte' ? '#D97706' : '#DC2626'; x.strokeStyle = sc2; x.lineWidth = 3; vidRR(x, W - M - 300, y + 30, 300, 100, 14); x.stroke();
+        x.fillStyle = sc2; x.textAlign = 'center'; x.font = F('bold', 22); x.fillText('STATUT', W - M - 150, y + 66); x.font = F('bold', 34); x.fillText(st.toUpperCase(), W - M - 150, y + 110); x.textAlign = 'left'; }
+      y += 200;
+    } else { x.fillStyle = col; x.fillRect(0, 0, W, 10); x.fillStyle = '#111827'; x.font = F('bold', 26); x.fillText(`${P.name || ''} — ${DOCT[d.type].n} N° ${d.num} (suite)`, M, 80); y = 120; }
+    // --- Tableau
+    const cols = [M, M + 70, W - M - 470, W - M - 330, W - M], th = 56;
+    if (chunks[pg].length) {
+      x.fillStyle = tpl === 'elegant' ? '#fff' : col; x.fillRect(M, y, W - 2 * M, th); if (tpl === 'elegant') { x.fillStyle = col; x.fillRect(M, y + th - 3, W - 2 * M, 3); }
+      x.fillStyle = tpl === 'elegant' ? col : '#fff'; x.font = F('bold', 21); x.fillText('N°', cols[0] + 16, y + 36); x.fillText('DÉSIGNATION', cols[1] + 10, y + 36);
+      x.textAlign = 'right'; x.fillText('QTÉ', cols[3] - 40, y + 36); x.fillText('PRIX UNIT.', cols[3] + 150, y + 36); x.fillText('TOTAL', cols[4] - 16, y + 36); x.textAlign = 'left'; y += th;
+      const start = chunks.slice(0, pg).reduce((a, ch) => a + ch.length, 0);
+      chunks[pg].forEach((it, k) => { if (k % 2) { x.fillStyle = '#F9FAFB'; x.fillRect(M, y, W - 2 * M, ROW); } x.fillStyle = '#111827'; x.font = F('normal', 22);
+        x.fillText(String(start + k + 1), cols[0] + 16, y + 43); const nm = vidWrap(x, it.name, cols[2] - cols[1] - 10, 2); x.font = F(nm.length > 1 ? 'normal' : 'normal', nm.length > 1 ? 19 : 22);
+        nm.forEach((l, j) => x.fillText(l, cols[1] + 10, y + (nm.length > 1 ? 30 + j * 24 : 43))); x.font = F('normal', 22); x.textAlign = 'right';
+        x.fillText(String(it.qty), cols[3] - 40, y + 43); x.fillText(fmtM(it.price, cur), cols[3] + 150, y + 43); x.font = F('bold', 22); x.fillText(fmtM((+it.qty || 0) * (+it.price || 0), cur), cols[4] - 16, y + 43); x.textAlign = 'left';
+        x.strokeStyle = '#E5E7EB'; x.lineWidth = 1; x.beginPath(); x.moveTo(M, y + ROW); x.lineTo(W - M, y + ROW); x.stroke(); y += ROW; });
+    }
+    // --- Totaux, montant en lettres, paiement, cachet (dernière page)
+    if (pg === chunks.length - 1) {
+      y += 24; const bx = W - M - 470; let ty = y; const line = (l, v, bold, big) => { x.font = F(bold ? 'bold' : 'normal', big ? 30 : 22); x.fillStyle = big ? '#fff' : '#374151'; if (big) { x.fillStyle = col; x.fillRect(bx, ty - 2, 470, 64); x.fillStyle = '#fff'; }
+        x.fillText(l, bx + 20, ty + (big ? 42 : 30)); x.textAlign = 'right'; x.fillText(v, W - M - 20, ty + (big ? 42 : 30)); x.textAlign = 'left'; ty += big ? 72 : 42; };
+      line('Sous-total', fmtM(c.sub, cur)); if (c.disc) line('Remise', '-' + fmtM(c.disc, cur)); if (c.tva) line(`TVA (${d.tva} %)`, fmtM(c.tva, cur)); line('TOTAL', fmtM(c.total, cur), 1, 1);
+      if (d.type === 'FAC' && c.paid > 0) { line('Déjà payé', fmtM(c.paid, cur)); line('Reste à payer', fmtM(c.rest, cur), 1); }
+      const other = cur === 'USD' ? 'CDF' : 'USD'; if (+P.rate) { x.font = F('italic', 19); x.fillStyle = '#6B7280'; x.textAlign = 'right'; x.fillText(`Soit ${fmtM(conv(c.total, cur, other), other)} (1 $ = ${P.rate} FC)`, W - M, ty + 18); x.textAlign = 'left'; ty += 34; }
+      // montant en lettres
+      x.fillStyle = '#111827'; x.font = F('bold', 20); x.fillText(d.type === 'REC' ? 'Reçu la somme de :' : `Arrêtée la présente ${d.type === 'PRO' ? 'facture proforma' : 'facture'} à la somme de :`, M, y + 30);
+      x.font = F('italic', 22); x.fillStyle = '#374151'; vidWrap(x, mWords(c.total, cur) + '.', bx - M - 40, 4).forEach((l, k) => x.fillText(l, M, y + 64 + k * 30));
+      let py = Math.max(ty, y + 190) + 20;
+      // notes + paiement
+      if (d.notes) { x.fillStyle = '#111827'; x.font = F('bold', 20); x.fillText('Note :', M, py); x.font = F('normal', 20); x.fillStyle = '#374151'; vidWrap(x, d.notes, W - 2 * M - 80, 2).forEach((l, k) => x.fillText(l, M + 80, py + k * 28)); py += 70; }
+      const sy = Math.max(py, ty + 24, H - 600);
+      if (P.pay) { x.fillStyle = '#F3F4F6'; vidRR(x, M, sy, 560, 210, 14); x.fill(); x.fillStyle = col; x.font = F('bold', 21); x.fillText('💳 MODES DE PAIEMENT', M + 24, sy + 40); x.fillStyle = '#111827'; x.font = F('normal', 21); P.pay.split('\n').slice(0, 5).forEach((l, k) => x.fillText(cutT(l, 44), M + 24, sy + 78 + k * 30)); }
+      // cachet + signature
+      const sx = W - M - 420; x.fillStyle = '#111827'; x.font = F('bold', 21); x.textAlign = 'center'; x.fillText(d.type === 'REC' ? 'Pour acquit, la direction' : 'Cachet et signature', sx + 210, sy + 4); x.textAlign = 'left';
+      if (stamp) { const s = Math.min(240 / stamp.width, 240 / stamp.height); x.save(); x.globalAlpha = 0.9; x.translate(sx + 150, sy + 150); x.rotate(-0.12); x.drawImage(stamp, -stamp.width * s / 2, -stamp.height * s / 2, stamp.width * s, stamp.height * s); x.restore(); }
+      if (sign) { const s = Math.min(300 / sign.width, 140 / sign.height); x.drawImage(sign, sx + 230 - sign.width * s / 2 + 40, sy + 90, sign.width * s, sign.height * s); }
+      if (!stamp && !sign) { x.strokeStyle = '#D1D5DB'; x.setLineDash([8, 8]); x.strokeRect(sx + 20, sy + 30, 380, 220); x.setLineDash([]); }
+      // tampon PAYÉ
+      if (d.type !== 'PRO' && c.status === 'Payée') { x.save(); x.translate(W / 2, 1000); x.rotate(-0.38); x.strokeStyle = x.fillStyle = 'rgba(22,163,74,.16)'; x.lineWidth = 14; vidRR(x, -330, -120, 660, 240, 30); x.stroke(); x.font = 'bold 190px Arial'; x.textAlign = 'center'; x.fillText('PAYÉ', 0, 68); x.restore(); }
+      if (P.foot) { x.font = F('italic', 18); x.fillStyle = '#6B7280'; vidWrap(x, P.foot, W - 2 * M, 2).forEach((l, k) => x.fillText(l, M, H - 190 + k * 24)); }
+    }
+    // --- Pied de page
+    x.fillStyle = col; x.fillRect(0, H - 130, W, 4); x.fillStyle = '#6B7280'; x.font = F('normal', 18);
+    const leg = [P.rccm && 'RCCM : ' + P.rccm, P.idnat && 'Id. Nat. : ' + P.idnat, P.nif && 'NIF : ' + P.nif].filter(Boolean).join('   ·   ');
+    if (leg) x.fillText(leg, M, H - 88); x.fillText(`${P.name || ''}${P.addr ? ' · ' + P.addr : ''}${P.phone ? ' · ' + P.phone : ''}`.slice(0, 110), M, leg ? H - 58 : H - 80);
+    x.fillStyle = '#9CA3AF'; x.font = F('normal', 16); x.fillText(`Page ${pg + 1}/${chunks.length} · Établie avec SocialPages`, M, H - 28);
+    if (qr && me?.username) { x.imageSmoothingEnabled = false; x.drawImage(qr, W - M - 96, H - 118, 96, 96); x.imageSmoothingEnabled = true; x.textAlign = 'right'; x.font = F('normal', 15); x.fillText('Ma boutique en ligne', W - M - 106, H - 28); x.textAlign = 'left'; }
+    pages.push(cv);
+  }
+  return pages;
+}
+// PDF minimal (pages = images JPEG), sans bibliothèque
+function pdfMake(pages) {
+  const enc = new TextEncoder(), parts = [], offs = []; let len = 0;
+  const add = p => { const u = typeof p === 'string' ? enc.encode(p) : p; parts.push(u); len += u.length; };
+  const obj = (n, body, stream) => { offs[n] = len; add(`${n} 0 obj\n${body}\n`); if (stream) { add('stream\n'); add(stream); add('\nendstream\n'); } add('endobj\n'); };
+  const N = pages.length, PW = 595.28, PH = 841.89; add('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  obj(1, '<< /Type /Catalog /Pages 2 0 R >>'); obj(2, `<< /Type /Pages /Count ${N} /Kids [${pages.map((_, i) => (3 + i * 3) + ' 0 R').join(' ')}] >>`);
+  pages.forEach((p, i) => { const b = 3 + i * 3, cs = `q ${PW} 0 0 ${PH} 0 0 cm /Im0 Do Q`;
+    obj(b, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /XObject << /Im0 ${b + 2} 0 R >> >> /Contents ${b + 1} 0 R >>`);
+    obj(b + 1, `<< /Length ${cs.length} >>`, enc.encode(cs));
+    obj(b + 2, `<< /Type /XObject /Subtype /Image /Width ${p.w} /Height ${p.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${p.d.length} >>`, p.d); });
+  const xref = len, n = 3 + N * 3; add(`xref\n0 ${n}\n0000000000 65535 f \n` + [...Array(n - 1)].map((_, i) => String(offs[i + 1]).padStart(10, '0') + ' 00000 n \n').join('') + `trailer\n<< /Size ${n} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(parts, { type: 'application/pdf' });
+}
+
+// ===================== 📸 STUDIO PHOTO D'IDENTITÉ ET DE VISA (gratuit, ouvert à tous) =====================
+// Tout le traitement se fait dans le téléphone : les photos ne sont jamais envoyées sur Internet.
+const PH_FMT = {
+  us: { n: '🇺🇸 États-Unis', d: 'Visa et passeport', w: 50.8, h: 50.8, head: [25, 35], bg: '#FFFFFF', dig: { w: 600, h: 600, kb: 240 } },
+  ca: { n: '🇨🇦 Canada', d: 'Passeport', w: 50, h: 70, head: [31, 36], bg: '#FFFFFF' },
+  cav: { n: '🇨🇦 Canada', d: 'Visa / IRCC', w: 35, h: 45, head: [31, 36], bg: '#FFFFFF' },
+  eu: { n: '🇪🇺 Schengen', d: 'France, Belgique, Allemagne…', w: 35, h: 45, head: [32, 36], bg: '#EEEEEE' },
+  uk: { n: '🇬🇧 Royaume-Uni', d: 'Passeport et visa', w: 35, h: 45, head: [29, 34], bg: '#E7E5E0' },
+  cn: { n: '🇨🇳 Chine', d: 'Visa', w: 33, h: 48, head: [28, 33], bg: '#FFFFFF' },
+  in: { n: '🇮🇳 Inde', d: 'Passeport', w: 50.8, h: 50.8, head: [25, 35], bg: '#FFFFFF' },
+  inv: { n: '🇮🇳 Inde', d: 'Visa / OCI', w: 35, h: 45, head: [25, 35], bg: '#FFFFFF' },
+  au: { n: '🇦🇺 Australie', d: 'Passeport et visa', w: 35, h: 45, head: [32, 36], bg: '#F2F2F2' },
+  jp: { n: '🇯🇵 Japon', d: 'Visa', w: 35, h: 45, head: [32, 36], bg: '#FFFFFF' },
+  za: { n: '🇿🇦 Afrique du Sud', d: 'Visa et passeport', w: 35, h: 45, head: [25, 35], bg: '#FFFFFF' },
+  cd: { n: '🇨🇩 RDC', d: 'Passeport et documents', w: 35, h: 45, head: [32, 36], bg: '#FFFFFF', chk: 1 },
+  icao: { n: '🌍 International', d: 'Format standard 3,5 × 4,5 cm', w: 35, h: 45, head: [32, 36], bg: '#FFFFFF' },
+  f44: { n: '🌍 Format 4 × 4 cm', d: 'Dossiers, cartes, écoles', w: 40, h: 40, head: [24, 30], bg: '#FFFFFF', chk: 1 }
+};
+const PH_BGS = [['#FFFFFF', 'Blanc'], ['#EEEEEE', 'Gris clair'], ['#E7E5E0', 'Crème'], ['#DBEAFE', 'Bleu clair']];
+let ph = null; // état du studio
+const mmPx = (mm, dpi = 300) => Math.round(mm / 25.4 * dpi);
+function phHash() { if (!/^#\/photo\/?$/.test(location.hash)) return false; history.replaceState(null, '', location.pathname + location.search); phOpen(); return true; }
+function phOpen() {
+  $('phx')?.remove(); ph = { fmt: vget('phfmt', 'eu') };
+  document.body.insertAdjacentHTML('beforeend', `<div id="phx" class="bizx"><div class="bizh"><button type="button" class="bizb" onclick="phBack()" aria-label="Retour">←</button><b>📸 Photo d’identité &amp; visa</b><button type="button" class="bizb" onclick="phShareApp()" aria-label="Partager">↗️</button></div><div class="bizc" id="phc"></div></div>`);
+  document.body.classList.add('noscroll'); phStep1();
+}
+function phBack() { if (ph?.step === 2) return phStep1(); if (ph?.step === 3) return phStep2(); $('phx')?.remove(); document.body.classList.remove('noscroll'); ph = null; }
+function phShareApp() { const u = location.origin + '/#/photo', t = `📸 Photos d’identité et de visa GRATUITES, prêtes à imprimer (États-Unis, Canada, Schengen, Royaume-Uni, Chine…) sur SocialPages 👉 ${u}`; if (navigator.share) navigator.share({ text: t }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); }
+function phStep1() {
+  ph.step = 1; const el = $('phc'); el.scrollTop = 0;
+  el.innerHTML = `<div class="phhero"><b>Vos photos d’identité en 1 minute, gratuitement</b><span>Fond blanc automatique, bonne taille de tête, planche prête à imprimer en 10 × 15 cm chez n’importe quel photographe.</span></div>
+    <h3 style="margin:14px 0 8px">1. Pour quel document ?</h3>
+    <div class="phfmts">${Object.entries(PH_FMT).map(([k, F]) => `<button type="button" class="${k === ph.fmt ? 'on' : ''}" onclick="ph.fmt='${k}';vset('phfmt','${k}');phStep1()"><b>${F.n}</b><small>${F.d}</small><i>${(F.w / 10).toString().replace('.', ',')} × ${(F.h / 10).toString().replace('.', ',')} cm</i></button>`).join('')}</div>
+    <h3 style="margin:16px 0 8px">2. Votre photo</h3>
+    <div class="phtips"><span>💡 Face à une fenêtre, bonne lumière</span><span>🧍 Devant un mur clair et uni</span><span>😐 Regard droit, bouche fermée</span><span>👓 Sans lunettes ni chapeau</span><span>📏 Prise à 1–1,5 m, pas trop près</span></div>
+    <div class="grid2" style="margin-top:12px"><button class="pill" onclick="phPick(true)">📷 Prendre la photo</button><button class="soft" onclick="phPick(false)">🖼️ Choisir une photo</button></div>
+    <p class="mt" style="font-size:12px;margin-top:12px">🔒 Votre photo reste dans votre téléphone. Les dimensions suivent les règles connues de chaque pays, mais c’est l’administration qui accepte la photo : vérifiez toujours ses exigences officielles.${PH_FMT[ph.fmt].chk ? ' Pour ce format, confirmez la taille demandée auprès du service concerné.' : ''}</p>`;
+}
+function phPick(cam) {
+  const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; if (cam) i.capture = 'user';
+  i.onchange = async () => { const f = i.files[0]; if (!f) return; const im = new Image(); im.src = URL.createObjectURL(f); try { await im.decode(); } catch (e) { return toast('Photo illisible.'); } phLoad(im); };
+  i.click();
+}
+async function phLoad(im) {
+  const M = 1600, sc = Math.min(1, M / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * sc); c.height = Math.round(im.height * sc);
+  c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+  Object.assign(ph, { src: c, cut: null, face: null, bg: PH_FMT[ph.fmt].bg, rm: true, br: 100, ct: 100, rot: 0, ai: '', busy: true });
+  phAutoFit(); phStep2(); phMsg('🔍 Analyse du visage…');
+  await phDetect(); phAutoFit(); phSync(); phDraw(); phMsg('✂️ Retrait du fond…');
+  await phCutBg(); ph.busy = false; phMsg(''); phDraw(); phChecks();
+}
+// ---------- Intelligence locale (MediaPipe, gratuit, dans le navigateur) avec solution de secours ----------
+let phMP = null;
+async function phVision() {
+  if (phMP) return phMP;
+  phMP = (async () => { for (const v of ['0.10.14', '0.10.3']) { try { const m = await import(`https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${v}/vision_bundle.mjs`); const fs = await m.FilesetResolver.forVisionTasks(`https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${v}/wasm`); return { m, fs }; } catch (e) { console.warn('mediapipe', v, e); } } return null; })();
+  return phMP;
+}
+async function phDetect() {
+  ph.face = null;
+  try { const V = await Promise.race([phVision(), new Promise(r => setTimeout(() => r(null), 20000))]); if (!V) return;
+    const det = ph.fd ||= await V.m.FaceDetector.createFromOptions(V.fs, { baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite', delegate: 'CPU' }, runningMode: 'IMAGE', minDetectionConfidence: 0.5 });
+    const r = det.detect(ph.src), d = (r.detections || []).sort((a, b) => b.boundingBox.width * b.boundingBox.height - a.boundingBox.width * a.boundingBox.height)[0]; if (!d) return;
+    const W = ph.src.width, H = ph.src.height, bb = d.boundingBox, kp = d.keypoints || [], re = kp[0], le = kp[1];
+    const eye = re && le ? { x: (re.x + le.x) / 2 * W, y: (re.y + le.y) / 2 * H } : { x: bb.originX + bb.width / 2, y: bb.originY + bb.height * 0.38 };
+    const chin = bb.originY + bb.height * 1.02, crown = eye.y - (chin - eye.y) * 1.02;
+    ph.face = { cx: bb.originX + bb.width / 2, eye, chin, crown, ang: re && le ? Math.atan2((le.y - re.y) * H, (le.x - re.x) * W) : 0 };
+  } catch (e) { console.warn('face', e); }
+}
+async function phCutBg() {
+  const S = ph.src, W = S.width, H = S.height; let mask = null;
+  try { const V = await Promise.race([phVision(), new Promise(r => setTimeout(() => r(null), 20000))]);
+    if (V) { for (const url of ['https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite', 'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite']) {
+      try { const seg = ph.seg ||= await V.m.ImageSegmenter.createFromOptions(V.fs, { baseOptions: { modelAssetPath: url, delegate: 'CPU' }, runningMode: 'IMAGE', outputCategoryMask: false, outputConfidenceMasks: true });
+        const res = seg.segment(S), cm = res.confidenceMasks?.[0]; if (cm) { const a = Float32Array.from(cm.getAsFloat32Array()), mw = cm.width, mh = cm.height;
+          // orientation automatique : les bords de la photo sont du fond
+          let bs = 0, bn = 0; for (let i = 0; i < mw; i++) { bs += a[i]; bn++; } for (let j = 0; j < mh; j++) { bs += a[j * mw] + a[j * mw + mw - 1]; bn += 2; }
+          if (bs / bn > 0.5) for (let i = 0; i < a.length; i++) a[i] = 1 - a[i]; mask = { w: mw, h: mh, a }; } res.close?.(); if (mask) { ph.ai = 'ia'; break; } } catch (e) { ph.seg = null; console.warn('seg', e); } } }
+  } catch (e) {}
+  if (!mask) { mask = phSimpleMask(S); ph.ai = mask ? 'simple' : ''; }
+  if (!mask) { ph.cut = null; return; }
+  // masque → canal alpha adouci (bords naturels)
+  const mc = document.createElement('canvas'); mc.width = mask.w; mc.height = mask.h; const mx = mc.getContext('2d'), md = mx.createImageData(mask.w, mask.h);
+  for (let i = 0; i < mask.a.length; i++) { const v = Math.min(1, Math.max(0, (mask.a[i] - 0.25) / 0.5)); md.data[i * 4 + 3] = v * 255; } mx.putImageData(md, 0, 0);
+  const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+  x.filter = `blur(${Math.max(1, W / 700)}px)`; x.drawImage(mc, 0, 0, W, H); x.filter = 'none'; x.globalCompositeOperation = 'source-in'; x.drawImage(S, 0, 0); x.globalCompositeOperation = 'source-over';
+  ph.cut = c;
+}
+// Secours sans intelligence artificielle : fond uni détecté depuis les bords (mur clair)
+function phSimpleMask(S) {
+  const w = Math.round(S.width / 4), h = Math.round(S.height / 4), c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.drawImage(S, 0, 0, w, h);
+  const d = x.getImageData(0, 0, w, h).data, px = i => [d[i * 4], d[i * 4 + 1], d[i * 4 + 2]], border = [];
+  for (let i = 0; i < w; i++) { border.push(i, (h - 1) * w + i); } for (let j = 0; j < h * 0.75; j++) { border.push(j * w, j * w + w - 1); }
+  const med = [0, 1, 2].map(k => { const v = border.map(i => d[i * 4 + k]).sort((a, b) => a - b); return v[v.length >> 1]; });
+  const dist = i => { const p = px(i); return Math.hypot(p[0] - med[0], p[1] - med[1], p[2] - med[2]); };
+  const bg = new Uint8Array(w * h), q = []; border.forEach(i => { if (dist(i) < 46 && !bg[i]) { bg[i] = 1; q.push(i); } });
+  while (q.length) { const i = q.pop(), xx = i % w, yy = (i / w) | 0; [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([a, b]) => { const nx = xx + a, ny = yy + b; if (nx < 0 || ny < 0 || nx >= w || ny >= h) return; const n = ny * w + nx; if (!bg[n] && dist(n) < 40) { bg[n] = 1; q.push(n); } }); }
+  const cnt = bg.reduce((a, b) => a + b, 0); if (cnt < w * h * 0.08) return null;
+  return { w, h, a: Float32Array.from(bg, v => v ? 0 : 1) };
+}
+// ---------- Placement automatique selon les règles du format ----------
+function phAutoFit() {
+  const F = PH_FMT[ph.fmt], S = ph.src, f = ph.face, headT = (F.head[0] + F.head[1]) / 2;
+  if (f) { const hs = f.chin - f.crown, k = headT / hs, top = (F.h - headT) * 0.42; ph.k = k; ph.rot = -f.ang;
+    ph.cx = F.w / 2 - (f.cx - S.width / 2) * k; ph.cy = top - (f.crown - S.height / 2) * k; }
+  else { ph.k = F.h / S.height * 1.25; ph.cx = F.w / 2; ph.cy = F.h * 0.62; ph.rot = 0; }
+}
+// ---------- Dessin ----------
+function phRender(x, F, ppm, guides) { // ppm = pixels par mm
+  x.save(); x.fillStyle = ph.rm && ph.cut ? ph.bg : '#fff'; x.fillRect(0, 0, F.w * ppm, F.h * ppm);
+  const S = ph.rm && ph.cut ? ph.cut : ph.src; x.translate(ph.cx * ppm, ph.cy * ppm); x.rotate(ph.rot); const s = ph.k * ppm;
+  x.filter = `brightness(${ph.br}%) contrast(${ph.ct}%)`; x.imageSmoothingQuality = 'high'; x.drawImage(S, -S.width / 2 * s, -S.height / 2 * s, S.width * s, S.height * s); x.filter = 'none'; x.restore();
+  if (!guides) return; const W = F.w * ppm, H = F.h * ppm, top = (F.h - (F.head[0] + F.head[1]) / 2) * 0.42;
+  x.save(); x.fillStyle = 'rgba(22,163,74,.13)'; x.fillRect(0, (top - 1.5) * ppm, W, 3 * ppm); x.fillRect(0, (top + F.head[0]) * ppm, W, (F.head[1] - F.head[0]) * ppm);
+  x.strokeStyle = 'rgba(22,163,74,.9)'; x.setLineDash([6, 5]); x.lineWidth = 2; const hm = (F.head[0] + F.head[1]) / 2;
+  x.beginPath(); x.ellipse(W / 2, (top + hm / 2) * ppm, hm * 0.36 * ppm, hm / 2 * ppm, 0, 0, 7); x.stroke();
+  x.beginPath(); x.moveTo(W / 2, 0); x.lineTo(W / 2, H); x.stroke(); x.setLineDash([]);
+  x.fillStyle = '#15803D'; x.font = `bold ${Math.max(11, ppm * 2)}px sans-serif`; x.fillText('▼ haut de la tête', 6, (top - 1.8) * ppm); x.fillText('▲ menton (zone verte)', 6, (top + F.head[1]) * ppm + ppm * 3.4); x.restore();
+}
+function phStep2() {
+  ph.step = 2; const F = PH_FMT[ph.fmt], el = $('phc');
+  el.innerHTML = `<div class="phed"><div class="phstage" id="phstage" style="aspect-ratio:${F.w}/${F.h};--r:${F.w / F.h}"><canvas id="phcv"></canvas><div class="phmsg" id="phmsg"></div></div>
+    <div class="phside"><div class="phfmtb"><b>${F.n}</b> · ${F.d} · ${(F.w / 10).toString().replace('.', ',')}×${(F.h / 10).toString().replace('.', ',')} cm</div>
+      <p class="mt" style="font-size:12px;margin:4px 0 8px">Glissez pour déplacer, pincez ou utilisez « Taille » pour zoomer. Placez le haut de la tête et le menton dans les zones vertes.</p>
+      <label class="phrng">🔍 Taille<input type="range" min="40" max="250" value="100" id="ph-z" oninput="phZoom(this.value)"></label>
+      <label class="phrng">↻ Inclinaison<input type="range" min="-15" max="15" step="0.5" value="${(ph.rot * 180 / Math.PI).toFixed(1)}" oninput="ph.rot=this.value*Math.PI/180;phDraw()"></label>
+      <label class="phrng">☀️ Luminosité<input type="range" min="60" max="150" value="${ph.br}" oninput="ph.br=+this.value;phDraw()"></label>
+      <label class="phrng">◐ Contraste<input type="range" min="60" max="150" value="${ph.ct}" oninput="ph.ct=+this.value;phDraw()"></label>
+      <div class="phbgs"><label class="stu-mus" style="margin:6px 0"><input type="checkbox" ${ph.rm ? 'checked' : ''} onchange="ph.rm=this.checked;phDraw();phChecks()"> ✂️ Remplacer le fond</label>
+        <div class="phbgc">${PH_BGS.map(([c, n]) => `<button type="button" title="${n}" class="${ph.bg === c ? 'on' : ''}" style="background:${c}" onclick="ph.bg='${c}';this.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===this));phDraw()"></button>`).join('')}</div></div>
+      <div class="grid2" style="margin-top:6px"><button class="soft" onclick="phAutoFit();phSync();phDraw();phChecks()">🎯 Recentrer</button><button class="soft" onclick="ph.guides=!ph.guides;phDraw()">📐 Guides</button></div>
+      <div class="phchk" id="phchk"></div>
+      <button class="pill" style="width:100%;margin-top:8px" onclick="phStep3()">✅ Valider la photo</button>
+      <button class="pbtn gray" onclick="phStep1()">↩️ Changer de photo ou de format</button></div></div>`;
+  ph.guides ??= true; ph.z0 = ph.k; phSize(); phBind(); phDraw(); phChecks();
+}
+function phSync() { ph.z0 = ph.k; const z = $('ph-z'); if (z) z.value = 100; }
+function phZoom(v) { const k0 = ph.k, F = PH_FMT[ph.fmt]; ph.k = (ph.z0 || ph.k) * v / 100; const r = ph.k / k0; ph.cx = F.w / 2 + (ph.cx - F.w / 2) * r; ph.cy = F.h * 0.45 + (ph.cy - F.h * 0.45) * r; phDraw(); phChecks(); }
+function phSize() { const cv = $('phcv'), st = $('phstage'), F = PH_FMT[ph.fmt]; if (!cv) return; const r = st.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1); cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.width * F.h / F.w * dpr); ph.ppm = cv.width / F.w; }
+function phDraw() { const cv = $('phcv'); if (!cv || !ph?.src) return; if (!ph.ppm) phSize(); const x = cv.getContext('2d'); x.clearRect(0, 0, cv.width, cv.height); phRender(x, PH_FMT[ph.fmt], ph.ppm, ph.guides); }
+function phMsg(t) { const m = $('phmsg'); if (m) { m.textContent = t; m.style.display = t ? '' : 'none'; } }
+function phBind() {
+  const cv = $('phcv'); if (!cv) return; const pts = new Map(); let last = null;
+  cv.onpointerdown = e => { cv.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); last = null; };
+  cv.onpointermove = e => { if (!pts.has(e.pointerId)) return; const prev = pts.get(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); const r = cv.getBoundingClientRect(), mmPerCss = PH_FMT[ph.fmt].w / r.width;
+    if (pts.size === 1) { ph.cx += (e.clientX - prev[0]) * mmPerCss; ph.cy += (e.clientY - prev[1]) * mmPerCss; }
+    else if (pts.size === 2) { const [a, b] = [...pts.values()], dd = Math.hypot(a[0] - b[0], a[1] - b[1]); if (last) { const r2 = dd / last, F = PH_FMT[ph.fmt]; ph.k *= r2; ph.cx = F.w / 2 + (ph.cx - F.w / 2) * r2; ph.cy = F.h * 0.45 + (ph.cy - F.h * 0.45) * r2; } last = dd; }
+    phDraw(); e.preventDefault(); };
+  cv.onpointerup = cv.onpointercancel = e => { pts.delete(e.pointerId); last = null; phChecks(); };
+  cv.onwheel = e => { e.preventDefault(); const r2 = e.deltaY < 0 ? 1.04 : 1 / 1.04, F = PH_FMT[ph.fmt]; ph.k *= r2; ph.cx = F.w / 2 + (ph.cx - F.w / 2) * r2; ph.cy = F.h * 0.45 + (ph.cy - F.h * 0.45) * r2; phDraw(); phChecks(); };
+}
+// ---------- Vérifications ----------
+function phChecks() {
+  const el = $('phchk'); if (!el || !ph?.src || ph.busy) return; const F = PH_FMT[ph.fmt], out = [];
+  if (ph.face) { const f = ph.face, cos = Math.cos(ph.rot), sin = Math.sin(ph.rot), map = (sx, sy) => { const dx = (sx - ph.src.width / 2) * ph.k, dy = (sy - ph.src.height / 2) * ph.k; return [ph.cx + dx * cos - dy * sin, ph.cy + dx * sin + dy * cos]; };
+    const cr = map(f.cx, f.crown)[1], ch = map(f.cx, f.chin)[1], hh = ch - cr, fx = map(f.cx, f.eye.y)[0];
+    out.push([hh >= F.head[0] - 0.3 && hh <= F.head[1] + 0.3, `Taille de la tête : ${hh.toFixed(1)} mm (demandé ${F.head[0]}–${F.head[1]} mm)`]);
+    out.push([cr > 0.8, cr > 0.8 ? 'Espace au-dessus de la tête' : 'La tête touche le haut : réduisez ou descendez']);
+    out.push([Math.abs(fx - F.w / 2) < F.w * 0.05, 'Visage centré']);
+  } else out.push([null, 'Visage non détecté automatiquement : placez la tête entre les zones vertes à l’aide des guides']);
+  // netteté de la source et lumière
+  const dpi = 25.4 / ph.k; out.push([dpi >= 200, dpi >= 200 ? 'Qualité suffisante pour l’impression' : 'Photo un peu floue à l’impression : prenez-la plus près ou avec un meilleur appareil']);
+  const t = document.createElement('canvas'); t.width = 60; t.height = Math.round(60 * F.h / F.w); const tx = t.getContext('2d'); phRender(tx, F, 60 / F.w, false); const d = tx.getImageData(0, 0, t.width, t.height).data;
+  let lum = 0, n = 0; for (let y = Math.round(t.height * 0.3); y < t.height * 0.6; y++) for (let x = Math.round(t.width * 0.35); x < t.width * 0.65; x++) { const i = (y * t.width + x) * 4; lum += (d[i] + d[i + 1] + d[i + 2]) / 3; n++; } lum /= n || 1;
+  out.push([lum > 70 && lum < 215, lum <= 70 ? 'Visage trop sombre : augmentez la luminosité' : lum >= 215 ? 'Visage trop clair : baissez la luminosité' : 'Lumière correcte']);
+  const edge = []; for (let x = 0; x < t.width; x++) { const i = x * 4; edge.push((d[i] + d[i + 1] + d[i + 2]) / 3); } const m = edge.reduce((a, b) => a + b, 0) / edge.length, sd = Math.sqrt(edge.reduce((a, b) => a + (b - m) ** 2, 0) / edge.length);
+  out.push([sd < 14 && m > 185, sd < 14 && m > 185 ? 'Fond clair et uni' : 'Fond pas assez uni : activez « Remplacer le fond »']);
+  el.innerHTML = `<b style="display:block;margin:8px 0 4px">Vérifications</b>` + out.map(([ok, t]) => `<div class="phck ${ok === null ? 'na' : ok ? 'ok' : 'ko'}">${ok === null ? 'ℹ️' : ok ? '✅' : '⚠️'} ${t}</div>`).join('') +
+    (ph.ai ? `<small class="mt">${ph.ai === 'ia' ? '✂️ Fond retiré par intelligence artificielle (dans votre téléphone)' : '✂️ Fond retiré (mode simple : mur uni)'}</small>` : '');
+}
+// ---------- Résultats : planche 10×15 et photo numérique ----------
+async function phStep3() {
+  ph.step = 3; const F = PH_FMT[ph.fmt], el = $('phc'); el.innerHTML = '<div class="spin"></div>';
+  const one = document.createElement('canvas'); one.width = mmPx(F.w); one.height = mmPx(F.h); phRender(one.getContext('2d'), F, one.width / F.w, false);
+  // planche 10 × 15 cm à 300 dpi
+  // meilleure disposition sur 10 × 15 cm (portrait ou paysage, marges réduites si besoin) : le plus de photos possible
+  let best = null; for (const land of [1, 0]) for (const [m, g] of [[4, 2], [2, 1], [0.6, 0.4], [0, 0]]) { const sw = land ? 152.4 : 101.6, sh = land ? 101.6 : 152.4, cols = Math.floor((sw - 2 * m + g) / (F.w + g) + 1e-6), rows = Math.floor((sh - 2 * m + g) / (F.h + g) + 1e-6), n = cols * rows;
+    if (n && (!best || n > best.n || (n === best.n && m > best.m))) best = { land, m, g, cols, rows, n, sw, sh }; }
+  const B = best, SW = mmPx(B.sw), SH = mmPx(B.sh), sheet = document.createElement('canvas'); sheet.width = SW; sheet.height = SH; const s = sheet.getContext('2d'); s.fillStyle = '#fff'; s.fillRect(0, 0, SW, SH);
+  const gw = B.cols * F.w + (B.cols - 1) * B.g, gh = B.rows * F.h + (B.rows - 1) * B.g, ox = mmPx((B.sw - gw) / 2), oy = mmPx(Math.max(B.m, (B.sh - gh) / 2 - (B.sh - gh > 8 ? 2 : 0)));
+  s.strokeStyle = '#B0B0B0'; s.lineWidth = 1; const cols = B.cols, rows = B.rows;
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) { const x = ox + mmPx(c * (F.w + B.g)), y = oy + mmPx(r * (F.h + B.g)); s.drawImage(one, x, y, mmPx(F.w), mmPx(F.h)); s.strokeRect(x + 0.5, y + 0.5, mmPx(F.w) - 1, mmPx(F.h) - 1); }
+  const free = B.sh - gh - (oy / mmPx(1)); if (free > 4) { s.fillStyle = '#6B7280'; s.font = `${mmPx(2)}px Arial`; s.textAlign = 'center'; s.fillText(`${F.n.replace(/^\S+\s/, '')} · ${F.d} · ${F.w}×${F.h} mm · ${cols * rows} photos · tirage 10×15 cm à 100 % · SocialPages`, SW / 2, SH - mmPx(Math.min(2.5, free / 2))); }
+  // photo numérique
+  let dig = one, q = 0.93, blob; if (F.dig) { dig = document.createElement('canvas'); dig.width = F.dig.w; dig.height = F.dig.h; phRender(dig.getContext('2d'), F, F.dig.w / F.w, false); }
+  for (;;) { blob = await new Promise(r => dig.toBlob(r, 'image/jpeg', q)); if (!F.dig || blob.size <= F.dig.kb * 1024 || q < 0.4) break; q -= 0.07; }
+  const sb2 = await new Promise(r => sheet.toBlob(r, 'image/jpeg', 0.95)), nm = `photo-${ph.fmt}-${F.w}x${F.h}mm`;
+  ph.files = { sheet: new File([sb2], nm + '-planche-10x15.jpg', { type: 'image/jpeg' }), dig: new File([blob], nm + (F.dig ? `-${F.dig.w}x${F.dig.h}` : '') + '.jpg', { type: 'image/jpeg' }) };
+  const u1 = URL.createObjectURL(ph.files.sheet), u2 = URL.createObjectURL(ph.files.dig);
+  el.innerHTML = `<div class="phhero ok"><b>🎉 Vos photos sont prêtes !</b><span>${cols * rows} photos ${F.w}×${F.h} mm sur une planche 10×15 cm.</span></div>
+    <div class="phres"><div><b>🖨️ Planche à imprimer (10 × 15 cm)</b><img src="${u1}" alt="Planche"><p class="mt" style="font-size:12px">Chez le photographe : demandez un tirage <b>10 × 15 cm</b>, « taille réelle / 100 % », sans recadrage.</p>
+      <div class="grid2"><button class="pill" onclick="phOut('sheet',1)">📤 Partager</button><a class="soft" style="text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center" href="${u1}" download="${ph.files.sheet.name}">⬇️ Télécharger</a></div></div>
+    <div><b>📱 Photo numérique${F.dig ? ` (${F.dig.w}×${F.dig.h} px, ${Math.round(blob.size / 1024)} Ko)` : ` (${one.width}×${one.height} px)`}</b><img src="${u2}" alt="Photo" style="max-width:220px;margin:8px auto;display:block;border:1px solid #E5E7EB">${F.dig ? '<p class="mt" style="font-size:12px">Pour les demandes en ligne (ex. formulaire de visa américain DS-160 : 600×600 px, 240 Ko maximum).</p>' : ''}
+      <div class="grid2"><button class="pill" onclick="phOut('dig',1)">📤 Partager</button><a class="soft" style="text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center" href="${u2}" download="${ph.files.dig.name}">⬇️ Télécharger</a></div></div></div>
+    <button class="soft" style="width:100%;margin-top:12px" onclick="phStep2()">✏️ Ajuster encore</button><button class="soft" style="width:100%;margin-top:8px" onclick="phStep1()">📸 Nouvelle photo / autre format</button>
+    <div class="phpromo" onclick="phShareApp()">💚 Ce service est gratuit. Partagez-le à vos amis qui préparent un visa !</div>`;
+}
+async function phOut(k, share) { const f = ph.files?.[k]; if (!f) return; if (share && navigator.canShare?.({ files: [f] })) { try { await navigator.share({ files: [f] }); return; } catch (e) { return; } } const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); }
 
 // Lien « rejoindre un live » (notification aux abonnés) : #/live/<id>
 function liveHash() {
@@ -2451,7 +3381,7 @@ function tryJoinLive(hid, n = 0) {
   toast('Ce live est terminé.');
 }
 addEventListener('hashchange', () => {
-  if (tvHash() || liveHash()) return;
+  if (phHash() || tvHash() || liveHash()) return;
   if (route()) go(me ? 'product' : 'pub');
   else if (cur === 'product') go(lastView || 'produits'); else if (cur === 'pub') go(me ? 'accueil' : 'explore');
 });
