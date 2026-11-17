@@ -2685,18 +2685,17 @@ async function vidMake() {
       try { blob = await stuEncode(V, cv, o.music, prog); } catch (e) { console.warn('webcodecs', e); blob = null; } }
     if (!blob) { V = stuBuild({ s: o.s, slides, tpl: o.tpl, fmt: o.fmt, slogan: o.slogan, k: 1 }); cv.width = F.W; cv.height = F.H; $('vid-msg').textContent = 'Enregistrement…'; blob = await stuRecord(V, cv, o.music, prog); }
     const type = blob.type || 'video/webm', ext = type.includes('mp4') ? 'mp4' : 'webm', url = URL.createObjectURL(blob), file = new File([blob], `pub-${o.s.username}-${o.fmt}.${ext}`, { type });
-    window.vidFile = file; const canShare = !!navigator.canShare?.({ files: [file] });
+    window.vidFile = file;
     openM(`<h3>🎉 Votre pub est prête !</h3><video class="vidout" src="${url}" controls playsinline autoplay loop></video>
-      ${canShare ? '<button class="pbtn pubgo" onclick="vidShare()">📤 Partager (statut WhatsApp, TikTok, Facebook…)</button>' : ''}
-      <a class="pbtn ${canShare ? 'gray' : 'pubgo'}" style="display:block;text-align:center;text-decoration:none" href="${url}" download="${file.name}">⬇️ Télécharger la vidéo</a>
-      ${window.Capacitor?.isNativePlatform?.() ? '<p class="mt" style="font-size:12px;color:#B45309">Dans l’application, si le téléchargement ne marche pas, ouvrez votre boutique dans Chrome.</p>' : ''}
+      <button class="pbtn pubgo" onclick="vidShare()">📤 Partager (statut WhatsApp, TikTok, Facebook…)</button>
+      <button class="pbtn gray" onclick="spSave([window.vidFile])">⬇️ Télécharger la vidéo</button>
       <p class="mt" style="font-size:12px;margin-top:8px">${ext === 'webm' ? 'Format WebM : si WhatsApp le refuse, publiez-la sur TikTok ou Facebook. ' : ''}Astuce : ajoutez le lien de votre boutique en légende : ${esc(shopUrl(o.s))}</p>
       <button class="pbtn gray" onclick="pubVideo()">✏️ Modifier et refaire</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
     $('modal-box').classList.add('mwide');
   } catch (e) { $('vid-msg') && ($('vid-msg').textContent = '⚠️ ' + (e.message || 'Erreur')); }
   vidBusy = false;
 }
-async function vidShare() { const f = window.vidFile, s = window.shopCur; if (!f) return; try { await navigator.share({ files: [f], text: `🏪 ${s?.name || ''} sur SocialPages 👉 ${s ? shopUrl(s) : location.origin}` }); } catch (e) {} }
+async function vidShare() { const f = window.vidFile, s = window.shopCur; if (!f) return; spShare([f], `🏪 ${s?.name || ''} sur SocialPages 👉 ${s ? shopUrl(s) : location.origin}`); }
 // ---------- Affiches (images) : une par produit, avec QR et lien direct ----------
 async function stuPosters() {
   if (vidBusy) return; const o = stuOpts(); if (!o.items.length) return toast('Choisissez au moins un produit.');
@@ -2710,17 +2709,36 @@ async function stuPosters() {
       const b = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.92)); files.push(new File([b], `affiche-${(slides[i].p.name || 'produit').replace(/[^\w-]+/g, '-').slice(0, 30)}.jpg`, { type: 'image/jpeg' }));
       $('vid-msg') && ($('vid-msg').textContent = `Affiche ${i + 1} / ${slides.length}…`); await new Promise(r => setTimeout(r, 0));
     }
-    window.stuFiles = files; const canShare = !!navigator.canShare?.({ files });
-    openM(`<h3>🖼️ Vos affiches sont prêtes !</h3><div class="stu-posters">${files.map((f, i) => { const u = URL.createObjectURL(f); return `<a href="${u}" download="${esc(f.name)}" title="Télécharger"><img src="${u}" alt=""><span>⬇️ ${i + 1}</span></a>`; }).join('')}</div>
-      ${canShare ? '<button class="pbtn pubgo" onclick="stuShareP()">📤 Partager toutes les affiches</button>' : ''}
+    window.stuFiles = files;
+    openM(`<h3>🖼️ Vos affiches sont prêtes !</h3><div class="stu-posters">${files.map((f, i) => { const u = URL.createObjectURL(f); return `<a href="javascript:void 0" onclick="spSave([window.stuFiles[${i}]])" title="Télécharger"><img src="${u}" alt=""><span>⬇️ ${i + 1}</span></a>`; }).join('')}</div>
+      <button class="pbtn pubgo" onclick="stuShareP()">📤 Partager toutes les affiches</button><button class="pbtn gray" onclick="spSave(window.stuFiles)">⬇️ Tout télécharger</button>
       <p class="mt" style="font-size:12px">Touchez une affiche pour la télécharger. Chaque affiche a le QR code et le lien direct du produit.</p>
       <button class="pbtn gray" onclick="pubVideo()">✏️ Modifier</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
     $('modal-box').classList.add('mwide');
   } catch (e) { $('vid-msg') && ($('vid-msg').textContent = '⚠️ ' + (e.message || 'Erreur')); }
   vidBusy = false;
 }
-async function stuShareP() { const f = window.stuFiles, s = window.shopCur; if (!f) return; try { await navigator.share({ files: f, text: `🏪 ${s?.name || ''} sur SocialPages 👉 ${s ? shopUrl(s) : location.origin}` }); } catch (e) {} }
+async function stuShareP() { const f = window.stuFiles, s = window.shopCur; if (!f) return; spShare(f, `🏪 ${s?.name || ''} sur SocialPages 👉 ${s ? shopUrl(s) : location.origin}`); }
 
+// ===== Partager / enregistrer des fichiers partout : Chrome, ordinateur et application Android =====
+const spIsApp = () => !!window.Capacitor?.isNativePlatform?.();
+function spNative(m, o) { const C = window.Capacitor; if (!C) return Promise.reject(new Error('absent')); if (C.Plugins?.SPShare) return C.Plugins.SPShare[m](o); if (C.nativePromise) return C.nativePromise('SPShare', m, o); return Promise.reject(new Error('absent')); }
+async function spB64(f) { const b = new Uint8Array(await f.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 32768) s += String.fromCharCode.apply(null, b.subarray(i, i + 32768)); return btoa(s); }
+const spPack = files => Promise.all(files.map(async f => ({ name: f.name, type: f.type || 'application/octet-stream', data: await spB64(f) })));
+function spDownload(files) { files.forEach((f, i) => setTimeout(() => { const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.rel = 'noopener'; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 1000); }, i * 500)); toast('⬇️ Téléchargement lancé (dossier Téléchargements)', 3500); }
+function spAppOld() { openM(`<h3>📲 Nouvelle version de l’application</h3><p>Pour partager ou enregistrer des fichiers (factures, photos, vidéos) depuis l’application Android, installez la nouvelle version de SocialPages.</p><p class="mt" style="font-size:13px">En attendant : « 💬 Message WhatsApp » fonctionne, ou faites une capture d’écran de l’aperçu.</p><button class="pbtn gray" onclick="closeM()">OK</button>`); }
+async function spShare(files, text, title) {
+  if (!files?.length) return false;
+  if (!spIsApp() && navigator.canShare?.({ files })) { try { await navigator.share({ files, text, title }); return true; } catch (e) { if (e?.name === 'AbortError') return false; } }
+  if (spIsApp()) { try { await spNative('shareFiles', { files: await spPack(files), text: text || '', title: title || 'Partager' }); return true; } catch (e) { if (/absent|not implemented|not available|unimplemented/i.test(String(e?.message || e))) { spAppOld(); return false; } toast('⚠️ ' + (e?.message || 'Partage impossible'), 4000); return false; } }
+  spDownload(files); return true;
+}
+async function spSave(files) {
+  if (!files?.length) return false;
+  if (spIsApp()) { let ok = 0, err = ''; for (const f of files) { try { await spNative('saveFile', { ...(await spPack([f]))[0] }); ok++; } catch (e) { err = String(e?.message || e); if (/absent|not implemented|not available|unimplemented/i.test(err)) { spAppOld(); return false; } } }
+    if (ok) { toast(`✅ Enregistré dans Téléchargements › SocialPages`, 4000); return true; } return spShare(files); }
+  spDownload(files); return true;
+}
 // ===================== 🧰 MON COMMERCE : factures, carnet de crédit, stock, caisse =====================
 // Tout est gardé sur l'appareil du vendeur (gratuit, privé). Le cachet et la signature ne quittent jamais le téléphone.
 let biz = null, bizTab = 'caisse';
@@ -2952,7 +2970,7 @@ function signPad() {
 function signSave() { const cv = $('sg-cv'), im = new Image(); im.onload = () => { biz.pro.sign = imgToData(im, 600, true); bizSave(); closeM(); bizRender(); toast('✅ Signature enregistrée'); }; im.src = cv.toDataURL('image/png'); }
 function bizExport() {
   const b = new Blob([JSON.stringify({ v: 1, app: 'SocialPages', date: new Date().toISOString(), data: biz })], { type: 'application/json' }), f = new File([b], `socialpages-commerce-${today()}.json`, { type: 'application/json' });
-  if (navigator.canShare?.({ files: [f] })) navigator.share({ files: [f], title: 'Sauvegarde SocialPages' }).catch(() => {}); else { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = f.name; a.click(); }
+  openM(`<h3>💾 Sauvegarde</h3><p class="mt">Gardez ce fichier en lieu sûr (WhatsApp « Message à moi-même », Google Drive…).</p><button class="pill" style="width:100%" onclick="spShare([window.bizBak],'Sauvegarde SocialPages')">📤 Envoyer (WhatsApp, Drive…)</button><button class="soft" style="width:100%;margin-top:8px" onclick="spSave([window.bizBak])">⬇️ Enregistrer sur l’appareil</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`); window.bizBak = f; void b;
 }
 function bizImport() {
   const i = document.createElement('input'); i.type = 'file'; i.accept = '.json,application/json';
@@ -3035,32 +3053,51 @@ async function docSave() {
 async function docView(id) {
   const d = biz.docs.find(x => x.id === id); if (!d) return; const c = docCalc(d);
   openM(`<h3>${DOCT[d.type].i} ${esc(d.num)}</h3><div class="docprev" id="docprev"><div class="spin"></div></div>
-    <div class="grid2"><button class="pill" style="background:#25D366" onclick="docShare('${id}')">📤 Partager</button><button class="pill" onclick="docPdf('${id}')">⬇️ PDF</button></div>
+    <div class="grid2"><button class="pill" style="background:#25D366" onclick="docShare('${id}')">📤 Partager l’image</button><button class="pill" onclick="docPdf('${id}',1)">📎 Envoyer le PDF</button></div>
+    <button class="soft" style="width:100%;margin-top:8px" onclick="docPdf('${id}')">⬇️ Télécharger le PDF</button>
     <div class="grid2" style="margin-top:8px">${d.type === 'FAC' && c.rest > 0 ? `<button class="soft" onclick="docPay('${id}')">💰 Paiement reçu</button>` : ''}${d.type === 'PRO' ? `<button class="soft" onclick="docConvert('${id}')">➡️ Transformer en facture</button>` : ''}
       <button class="soft" onclick="docEd=JSON.parse(JSON.stringify(biz.docs.find(x=>x.id==='${id}')));docEdit()">✏️ Modifier</button><button class="soft" onclick="docDup('${id}')">📄 Dupliquer</button>
       ${d.client.phone ? `<button class="soft" onclick="docWa('${id}')">💬 Message WhatsApp</button>` : ''}<button class="soft" style="color:#B91C1C" onclick="docDel('${id}')">🗑️ Supprimer</button></div>
     <button class="pbtn gray" onclick="closeM()">Fermer</button>`);
   $('modal-box').classList.add('mwide');
   const pages = await docRender(d); if (!$('docprev')) return; $('docprev').innerHTML = pages.map(cv => `<img src="${cv.toDataURL('image/jpeg', 0.85)}" alt="Page">`).join('');
+  docPrep(id, pages); // fichiers prêts à l'avance : les boutons répondent tout de suite
 }
-async function docFiles(id, kind) {
-  const d = biz.docs.find(x => x.id === id), pages = await docRender(d), base = `${d.num}-${(d.client.name || 'client').replace(/[^\w-]+/g, '-').slice(0, 24)}`;
-  if (kind === 'pdf') { const jp = await Promise.all(pages.map(cv => new Promise(r => cv.toBlob(b => b.arrayBuffer().then(a => r({ w: cv.width, h: cv.height, d: new Uint8Array(a) })), 'image/jpeg', 0.9)))); return [new File([pdfMake(jp)], base + '.pdf', { type: 'application/pdf' })]; }
-  return Promise.all(pages.map((cv, i) => new Promise(r => cv.toBlob(b => r(new File([b], base + (pages.length > 1 ? '-p' + (i + 1) : '') + '.jpg', { type: 'image/jpeg' })), 'image/jpeg', 0.92))));
+const docCache = {};
+function docPrep(id, pages) {
+  const d = biz.docs.find(x => x.id === id), key = id + ':' + JSON.stringify(d).length + ':' + (biz.pro.logo || '').length + (biz.pro.stamp || '').length + (biz.pro.sign || '').length + biz.pro.tpl + biz.pro.color;
+  if (docCache[id]?.key === key) return docCache[id];
+  const base = `${d.num}-${(d.client.name || 'client').replace(/[^\w-]+/g, '-').slice(0, 24)}`, pg = pages ? Promise.resolve(pages) : docRender(d);
+  const blobs = pg.then(P => Promise.all(P.map(cv => new Promise(r => cv.toBlob(b => r({ b, w: cv.width, h: cv.height }), 'image/jpeg', 0.9)))));
+  return docCache[id] = { key,
+    img: blobs.then(B => B.map((x, i) => new File([x.b], base + (B.length > 1 ? '-p' + (i + 1) : '') + '.jpg', { type: 'image/jpeg' }))),
+    pdf: blobs.then(B => Promise.all(B.map(async x => ({ w: x.w, h: x.h, d: new Uint8Array(await x.b.arrayBuffer()) })))).then(J => [new File([pdfMake(J)], base + '.pdf', { type: 'application/pdf' })]) };
 }
+async function docFiles(id, kind) { const c = docPrep(id); return kind === 'pdf' ? c.pdf : c.img; }
 async function docShare(id) {
-  const files = await docFiles(id, 'img'), d = biz.docs.find(x => x.id === id);
-  if (navigator.canShare?.({ files })) { try { await navigator.share({ files, text: `${DOCT[d.type].n} ${d.num} – ${biz.pro.name || ''}` }); } catch (e) {} }
-  else files.forEach(f => { const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); });
+  const d = biz.docs.find(x => x.id === id); toast('⏳ Préparation…', 1200);
+  try { const files = await docFiles(id, 'img'); await spShare(files, `${DOCT[d.type].n} ${d.num} – ${biz.pro.name || ''}`, d.num); } catch (e) { toast('⚠️ ' + (e.message || 'Erreur')); }
 }
-async function docPdf(id) { const [f] = await docFiles(id, 'pdf'); if (navigator.canShare?.({ files: [f] }) && /Android|iPhone|iPad/i.test(navigator.userAgent)) { try { await navigator.share({ files: [f] }); return; } catch (e) {} } const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); }
+async function docPdf(id, share) {
+  const d = biz.docs.find(x => x.id === id); toast('⏳ Préparation du PDF…', 1200);
+  try { const files = await docFiles(id, 'pdf'); if (share) await spShare(files, `${DOCT[d.type].n} ${d.num} – ${biz.pro.name || ''}`, d.num); else await spSave(files); } catch (e) { toast('⚠️ ' + (e.message || 'Erreur')); }
+}
 function docWa(id) { const d = biz.docs.find(x => x.id === id), c = docCalc(d);
   waSend(d.client.phone.replace(/\D/g, ''), `Bonjour ${d.client.name},\nVoici votre ${DOCT[d.type].n.toLowerCase()} n° ${d.num} d’un montant de ${fmtM(c.total, d.cur)}${d.type === 'FAC' && c.rest > 0 ? ` (reste à payer : ${fmtM(c.rest, d.cur)})` : ''}.\nMerci pour votre confiance !\n${biz.pro.name || ''}`); }
 function docPay(id) {
-  const d = biz.docs.find(x => x.id === id), c = docCalc(d), v = prompt(`Montant reçu (${d.cur}) – reste ${fmtM(c.rest, d.cur)} :`, String(c.rest)); if (v === null) return; const a = Math.min(c.rest, r2(v)); if (!(a > 0)) return;
+  const d = biz.docs.find(x => x.id === id), c = docCalc(d);
+  openM(`<h3>💰 Paiement reçu</h3><p class="mt">${esc(d.num)} · ${esc(d.client.name)}<br>Reste à payer : <b>${fmtM(c.rest, d.cur)}</b></p>
+    <div class="fg"><label>Montant reçu (${d.cur})</label><input id="pay-amt" type="text" inputmode="decimal" value="${String(c.rest).replace('.', ',')}"></div>
+    <div class="grid2"><button class="soft" onclick="$('pay-amt').value='${String(c.rest).replace('.', ',')}'">Tout le reste</button><button class="soft" onclick="$('pay-amt').value='${String(r2(c.rest / 2)).replace('.', ',')}'">La moitié</button></div>
+    <button class="pill" style="width:100%;margin-top:10px" onclick="docPayOk('${id}')">✅ Enregistrer le paiement</button><button class="pbtn gray" onclick="docView('${id}')">Annuler</button>`);
+  setTimeout(() => { const i = $('pay-amt'); i?.focus(); i?.select(); }, 60);
+}
+function docPayOk(id) {
+  const d = biz.docs.find(x => x.id === id), c = docCalc(d), v = parseFloat(String($('pay-amt')?.value || '').replace(/\s/g, '').replace(',', '.')), a = Math.min(c.rest, r2(v));
+  if (!(a > 0)) return toast('Entrez un montant valide (ex : 500 ou 250,50).');
   d.paid = r2((+d.paid || 0) + a); biz.cash.push({ id: bid(), type: 'in', amt: a, cur: d.cur, note: `Paiement ${d.num} – ${d.client.name}`, doc: d.num, date: new Date().toISOString() });
   const cl = cliFind(d.client.name, d.client.phone); if (cl) cl.ops.push({ id: bid(), date: new Date().toISOString(), amt: -a, cur: d.cur, note: 'Paiement', doc: d.num });
-  bizSave(); toast('✅ Paiement enregistré'); bizRender(); docView(id);
+  delete docCache[id]; bizSave(); toast(`✅ Paiement de ${fmtM(a, d.cur)} enregistré`); bizRender(); docView(id);
 }
 function docConvert(id) { const s = biz.docs.find(x => x.id === id); docEd = { ...JSON.parse(JSON.stringify(s)), id: '', num: '', type: 'FAC', date: today(), due: '', paid: 0, from: s.num }; docEdit(); }
 function docDup(id) { const s = biz.docs.find(x => x.id === id); docEd = { ...JSON.parse(JSON.stringify(s)), id: '', num: '', date: today(), paid: 0 }; docEdit(); }
@@ -3358,13 +3395,13 @@ async function phStep3() {
   const u1 = URL.createObjectURL(ph.files.sheet), u2 = URL.createObjectURL(ph.files.dig);
   el.innerHTML = `<div class="phhero ok"><b>🎉 Vos photos sont prêtes !</b><span>${cols * rows} photos ${F.w}×${F.h} mm sur une planche 10×15 cm.</span></div>
     <div class="phres"><div><b>🖨️ Planche à imprimer (10 × 15 cm)</b><img src="${u1}" alt="Planche"><p class="mt" style="font-size:12px">Chez le photographe : demandez un tirage <b>10 × 15 cm</b>, « taille réelle / 100 % », sans recadrage.</p>
-      <div class="grid2"><button class="pill" onclick="phOut('sheet',1)">📤 Partager</button><a class="soft" style="text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center" href="${u1}" download="${ph.files.sheet.name}">⬇️ Télécharger</a></div></div>
+      <div class="grid2"><button class="pill" onclick="phOut('sheet',1)">📤 Partager</button><button class="soft" onclick="phOut('sheet')">⬇️ Télécharger</button></div></div>
     <div><b>📱 Photo numérique${F.dig ? ` (${F.dig.w}×${F.dig.h} px, ${Math.round(blob.size / 1024)} Ko)` : ` (${one.width}×${one.height} px)`}</b><img src="${u2}" alt="Photo" style="max-width:220px;margin:8px auto;display:block;border:1px solid #E5E7EB">${F.dig ? '<p class="mt" style="font-size:12px">Pour les demandes en ligne (ex. formulaire de visa américain DS-160 : 600×600 px, 240 Ko maximum).</p>' : ''}
-      <div class="grid2"><button class="pill" onclick="phOut('dig',1)">📤 Partager</button><a class="soft" style="text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center" href="${u2}" download="${ph.files.dig.name}">⬇️ Télécharger</a></div></div></div>
+      <div class="grid2"><button class="pill" onclick="phOut('dig',1)">📤 Partager</button><button class="soft" onclick="phOut('dig')">⬇️ Télécharger</button></div></div></div>
     <button class="soft" style="width:100%;margin-top:12px" onclick="phStep2()">✏️ Ajuster encore</button><button class="soft" style="width:100%;margin-top:8px" onclick="phStep1()">📸 Nouvelle photo / autre format</button>
     <div class="phpromo" onclick="phShareApp()">💚 Ce service est gratuit. Partagez-le à vos amis qui préparent un visa !</div>`;
 }
-async function phOut(k, share) { const f = ph.files?.[k]; if (!f) return; if (share && navigator.canShare?.({ files: [f] })) { try { await navigator.share({ files: [f] }); return; } catch (e) { return; } } const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); }
+async function phOut(k, share) { const f = ph.files?.[k]; if (!f) return; if (share) spShare([f], 'Photo d’identité – SocialPages'); else spSave([f]); }
 
 // Lien « rejoindre un live » (notification aux abonnés) : #/live/<id>
 function liveHash() {
