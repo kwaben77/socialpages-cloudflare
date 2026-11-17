@@ -648,7 +648,7 @@ video.pm{background:#000}
 .vidout{display:block;margin:0 auto 10px;width:auto!important;max-width:100%;max-height:68vh}
 /* ===== Studio pub ===== */
 /* ===== Outils gratuits : CV, lettre, carte de visite ===== */
-.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}@media(min-width:600px){.tools{grid-template-columns:repeat(4,1fr)}}
 .tools button{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:1px solid #BFDBFE;border-radius:16px;padding:12px 6px;cursor:pointer;background:linear-gradient(160deg,#EFF6FF,#ECFDF5)}
 .tools button span{font-size:28px}.tools button b{font-size:13px;color:#1E3A8A;line-height:1.2}.tools button small{font-size:11px;color:#047857;font-weight:700}
 .toolsh{display:flex;justify-content:space-between;align-items:center;margin-top:10px}.toolsh b{font-size:15px}.toolsh small{color:#16A34A;font-weight:700}
@@ -796,6 +796,66 @@ body.noscroll{overflow:hidden}
 .lvgprev{display:block;max-width:100%;max-height:30vh;margin:0 auto 10px;border-radius:12px;object-fit:contain}
 .lvgal>span:first-child{font-size:26px}
 .lvshop .fg input,.lvshop .fg select{width:100%}
+/* ===== 💌 Invitations ===== */
+.ivedit{display:grid;gap:14px;margin-top:12px}.ivpv{text-align:center}.ivpv canvas{width:100%;max-width:340px;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.25)}
+@media(min-width:760px){.ivedit{grid-template-columns:320px 1fr;align-items:start}.ivpv{position:sticky;top:0}}
+.ivkinds{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}.ivkinds button{border:2px solid #E5E7EB;background:#fff;border-radius:12px;padding:10px 8px;font-weight:700;font-size:13px;cursor:pointer;text-align:left}.ivkinds button.on{border-color:#B45309;background:#FFFBEB}
+.ivths{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}.ivths button{border:3px solid transparent;border-radius:12px;padding:12px 6px;font-size:12px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 2px 6px rgba(0,0,0,.12)}.ivths button b{font:italic 700 22px "Playfair Display",Georgia,serif}.ivths button.on{border-color:#FACC15;box-shadow:0 0 0 2px #111}
+.ivlink{background:#F3F4F6;border-radius:10px;padding:10px;font-family:monospace;font-size:13px;word-break:break-all;margin:8px 0 12px;text-align:center}
+.ivdh{display:flex;flex-direction:column;margin:2px 0 12px}.ivdh b{font-size:20px}.ivdh small{color:#6B7280}
+.ivrow small{display:block}
+.ivchips{display:flex;gap:6px;margin:14px 0 4px;overflow-x:auto}.ivchips button{flex:none;border:1px solid #E5E7EB;background:#fff;border-radius:999px;padding:8px 14px;font-weight:700;cursor:pointer}.ivchips button.on{background:#111827;color:#fff;border-color:#111827}
+/* page publique */
+.ivp{position:fixed;inset:0;z-index:420;overflow-y:auto;background:linear-gradient(160deg,var(--bg),var(--bg2));color:var(--fg);font-family:"Playfair Display",Georgia,serif;-webkit-overflow-scrolling:touch}
+.ivp.th-or{background:radial-gradient(ellipse at 50% 0,rgba(212,175,55,.18),transparent 60%),linear-gradient(160deg,var(--bg),var(--bg2))}
+.ivp.th-wax{background:repeating-linear-gradient(45deg,rgba(217,72,15,.05) 0 14px,transparent 14px 28px),linear-gradient(160deg,var(--bg),var(--bg2))}
+.ivp.th-floral{background:radial-gradient(circle at 0 0,rgba(236,72,153,.15),transparent 40%),radial-gradient(circle at 100% 100%,rgba(236,72,153,.15),transparent 40%),linear-gradient(160deg,var(--bg),var(--bg2))}
+.ivx{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;z-index:3;width:40px;height:40px;border-radius:50%;border:none;background:rgba(0,0,0,.35);color:#fff;font-size:16px;cursor:pointer;backdrop-filter:blur(6px)}
+.ivscript{font-family:"Great Vibes","Brush Script MT",cursive;font-weight:400;font-size:clamp(52px,14vw,96px);line-height:1.05;margin:10px 0;color:var(--ac)}
+.th-sobre .ivscript,.th-moderne .ivscript{font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:clamp(34px,9vw,58px)}
+.ivgold{background:linear-gradient(90deg,#B8860B,#FFF1B8,#D4AF37,#FFF1B8,#B8860B);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:ivsh 6s linear infinite}
+.th-floral .ivgold,.th-wax .ivgold,.th-moderne .ivgold,.th-sobre .ivgold,.th-fete .ivgold{background:none;color:var(--ac);animation:none}
+@keyframes ivsh{to{background-position:200% center}}
+/* enveloppe */
+.ivenv{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;background:inherit;z-index:2;transition:opacity .6s .7s}
+.ivenvin{display:flex;flex-direction:column;align-items:center}
+.ivfor{letter-spacing:.3em;text-transform:uppercase;font-size:13px;color:var(--mu);margin:0 0 26px}
+.ivenvelope{position:relative;width:min(78vw,320px);aspect-ratio:1.45;background:linear-gradient(160deg,var(--ac),color-mix(in srgb,var(--ac) 70%,#000));border-radius:8px;box-shadow:0 30px 60px rgba(0,0,0,.4);perspective:900px;animation:ivfl 3s ease-in-out infinite}
+.ivenvelope:before{content:"";position:absolute;inset:0;border-radius:8px;background:linear-gradient(to top right,transparent 49.5%,rgba(0,0,0,.12) 50%),linear-gradient(to top left,transparent 49.5%,rgba(0,0,0,.12) 50%)}
+.ivflap{position:absolute;left:0;right:0;top:0;height:58%;transform-origin:top;background:color-mix(in srgb,var(--ac) 85%,#fff);clip-path:polygon(0 0,100% 0,50% 100%);transition:transform .8s cubic-bezier(.6,0,.3,1);z-index:2}
+.ivseal{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:66px;height:66px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#E53935,#8B0000);color:#FDE68A;display:flex;align-items:center;justify-content:center;font:italic 700 20px "Playfair Display",Georgia,serif;box-shadow:0 4px 10px rgba(0,0,0,.4),inset 0 0 0 4px rgba(0,0,0,.15);z-index:3;transition:transform .5s,opacity .5s}
+.th-sobre .ivseal{background:radial-gradient(circle at 35% 30%,#52525B,#18181B);color:#E4E4E7}
+.ivenv .ivscript{margin-top:28px;font-size:clamp(44px,12vw,72px)}
+.ivopen{margin-top:18px;border:1px solid var(--ac);background:transparent;color:var(--fg);padding:14px 26px;border-radius:999px;font:600 16px "Playfair Display",Georgia,serif;letter-spacing:.04em;cursor:pointer;animation:ivpu 2s infinite}
+@keyframes ivfl{50%{transform:translateY(-8px) rotate(-1deg)}}
+@keyframes ivpu{50%{box-shadow:0 0 0 10px transparent}0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ac) 50%,transparent)}}
+.ivenv.opening .ivflap{transform:rotateX(180deg)}.ivenv.opening .ivseal{transform:translate(-50%,-50%) scale(1.6);opacity:0}.ivenv.opening .ivenvelope{animation:none;transform:translateY(-20px) scale(1.08);transition:transform .9s}.ivenv.opening{opacity:0}
+/* contenu */
+.ivbody{max-width:620px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 60px) 20px 40px;text-align:center}
+.ivr{opacity:0;transform:translateY(30px);transition:opacity .9s,transform .9s}.ivr.in{opacity:1;transform:none}
+.ivhero{min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ivhost{font-style:italic;color:var(--mu);font-size:17px;line-height:1.5;max-width:460px;margin:0}
+.ivph{width:190px;height:190px;border-radius:50%;padding:6px;background:linear-gradient(135deg,var(--ac),transparent,var(--ac));margin:22px 0 6px}.ivph img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.ivsub{font-style:italic;font-size:18px;margin:0}
+.ivorn{display:flex;align-items:center;gap:10px;margin:22px 0 14px}.ivorn i{width:70px;height:1px;background:var(--ac)}.ivorn b{width:10px;height:10px;background:var(--ac);transform:rotate(45deg)}
+.ivdate{font-size:22px;font-weight:700;margin:0}.ivtime{margin:4px 0 0;font-size:18px;color:var(--mu)}.ivpast{color:var(--mu);margin-top:20px}
+.ivcd{display:flex;gap:10px;margin-top:28px}.ivcd div{min-width:64px;padding:12px 6px;border:1px solid color-mix(in srgb,var(--ac) 50%,transparent);border-radius:14px;background:var(--card)}.ivcd b{display:block;font-size:26px;color:var(--ac);font-variant-numeric:tabular-nums}.ivcd small{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mu)}
+.ivsec{margin:46px 0}.ivsec h2{font-size:24px;margin:0 0 16px;font-weight:700}
+.ivcard{background:var(--card);border:1px solid color-mix(in srgb,var(--ac) 35%,transparent);border-radius:18px;padding:18px;margin:10px 0;text-align:center;backdrop-filter:blur(4px);font-family:system-ui,sans-serif}
+.ivven{display:flex;flex-direction:column;gap:6px}.ivven b{color:var(--ac);text-transform:uppercase;letter-spacing:.12em;font-size:13px}.ivven span{font:italic 500 18px "Playfair Display",Georgia,serif}.ivven a{align-self:center;margin-top:6px;color:var(--fg);border:1px solid var(--ac);padding:8px 16px;border-radius:999px;text-decoration:none;font-weight:600;font-size:14px}
+.ivtl{text-align:left;max-width:420px;margin:0 auto;border-left:2px solid var(--ac);padding-left:20px}.ivtl div{position:relative;padding:10px 0;font-family:system-ui,sans-serif;font-size:15px}.ivtl i{position:absolute;left:-27px;top:15px;width:12px;height:12px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 25%,transparent)}
+.ivnote{font:italic 500 21px/1.5 "Playfair Display",Georgia,serif;color:var(--ac)}
+.ivmu{color:var(--mu);font-size:14px;font-family:system-ui,sans-serif}
+.ivform{display:flex;flex-direction:column;gap:10px;text-align:left}.ivform input,.ivform textarea,.ivform select{width:100%;box-sizing:border-box;border:1px solid color-mix(in srgb,var(--ac) 40%,transparent);background:rgba(255,255,255,.92);color:#111;border-radius:12px;padding:13px;font-size:16px;font-family:system-ui,sans-serif}.ivform select{width:auto;margin-left:8px;padding:8px}
+.ivst{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.ivst button{border:1px solid color-mix(in srgb,var(--ac) 45%,transparent);background:transparent;color:var(--fg);border-radius:12px;padding:12px 4px;font-weight:700;font-size:13px;cursor:pointer}.ivst button.on{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+.th-floral .ivst button.on,.th-wax .ivst button.on,.th-moderne .ivst button.on,.th-sobre .ivst button.on{color:#fff}
+.ivbtn{display:block;width:100%;box-sizing:border-box;border:none;border-radius:999px;padding:15px;background:var(--ac);color:var(--bg);font:700 16px system-ui,sans-serif;cursor:pointer;text-align:center;text-decoration:none;margin-top:4px}
+.th-floral .ivbtn,.th-wax .ivbtn,.th-moderne .ivbtn,.th-sobre .ivbtn{color:#fff}
+.ivbtn.ghost{background:transparent;color:var(--fg);border:1px solid var(--ac);margin-top:10px}
+.ivthanks{font-size:17px;line-height:1.6}
+.ivwall{display:flex;flex-direction:column;gap:2px}.ivwish p{font:italic 500 17px/1.5 "Playfair Display",Georgia,serif;margin:0 0 8px}.ivwish b{color:var(--ac);font-size:14px}
+.ivfoot{margin-top:50px;padding:18px;border-top:1px solid color-mix(in srgb,var(--ac) 30%,transparent);font:14px system-ui,sans-serif;color:var(--mu);cursor:pointer}.ivfoot b{color:var(--ac)}
+@media (prefers-reduced-motion:reduce){.ivr{opacity:1;transform:none;transition:none}.ivgold,.ivenvelope,.ivopen{animation:none}}
 </style>
 </head>
 <body>
@@ -841,7 +901,7 @@ body.noscroll{overflow:hidden}
   <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span><button class="pill" style="margin-left:auto" onclick="go('login')">Se connecter</button></div>
   <div class="page">
     <div class="box exhero"><b>🛍️ Achetez près de chez vous</b><span>Goma, Bukavu et ailleurs : commandez directement sur WhatsApp, sans créer de compte.</span></div>
-    <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button></div>
+    <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div>
     <div id="livebar-g" class="hidden"></div>
     <div class="filters" id="ex-f">
       <button class="on" onclick="exFilter('tous',this)">Tout</button>
@@ -864,7 +924,7 @@ body.noscroll{overflow:hidden}
     <div id="livebar" class="hidden"></div>
     <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
       <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:var(--g2)" onclick="prodModal()">🛍️ Vendre</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div>
-      <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button></div></div>
+      <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div></div>
     <div class="filters" id="feed-f">
       <button class="on" onclick="feedFilter('pourvous',this)">Pour vous</button>
       <button onclick="feedFilter('vitrine',this)">🛍️ Vitrine</button>
@@ -1000,7 +1060,7 @@ const SUPABASE_KEY = 'sb_publishable_N2mmzxODT7V09XFmdP2ZBA_IpX0Z-9j';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
 // Lien partagé ouvert directement (/p/<id>, /v/<nom>, /s/<id>) : on le transforme en adresse interne de l'app
-(() => { const m = location.pathname.match(/^\/(p|v|s|tv)\/([^\/?#]+)\/?$/); if (m) history.replaceState(null, '', '/' + location.search + '#/' + ({ p: 'p', v: 'vendeur', s: 's', tv: 'tv' })[m[1]] + '/' + m[2]); })();
+(() => { const m = location.pathname.match(/^\/(p|v|s|tv|i)\/([^\/?#]+)\/?$/); if (m) history.replaceState(null, '', '/' + location.search + '#/' + ({ p: 'p', v: 'vendeur', s: 's', tv: 'tv', i: 'i' })[m[1]] + '/' + m[2]); })();
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const APP = ['accueil','decouvrir','produits','messages','appels','mapage','settings','chat','user','product','admin'];
 try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('sp_ref', r.toLowerCase().replace(/[^a-z0-9_.]/g, '').slice(0, 30)); } catch (e) {}
@@ -3430,10 +3490,11 @@ function toolOpen(id, title, back) {
 }
 function toolClose(id) { $(id)?.remove(); if (!document.querySelector('.bizx')) document.body.classList.remove('noscroll'); }
 function toolShareApp(id) {
-  const k = { cvx: ['cv', '📄 Créez votre CV professionnel GRATUIT (avec photo, en PDF) et votre lettre de motivation'], cdx: ['carte', '🪪 Créez votre carte de visite professionnelle GRATUITE (avec QR code, prête à imprimer)'] }[id] || ['photo', 'Outils gratuits'];
+  const k = { cvx: ['cv', '📄 Créez votre CV professionnel GRATUIT (avec photo, en PDF) et votre lettre de motivation'], ivx: ['invit', '💌 Créez vos invitations de mariage, anniversaire… GRATUITES avec réponse en ligne des invités'], cdx: ['carte', '🪪 Créez votre carte de visite professionnelle GRATUITE (avec QR code, prête à imprimer)'] }[id] || ['photo', 'Outils gratuits'];
   const t = `${k[1]} sur SocialPages 👉 ${location.origin}/#/${k[0]}`; if (navigator.share && !spIsApp()) navigator.share({ text: t }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
 }
 function toolHash() {
+  if (ivHash()) return true;
   const m = location.hash.match(/^#\/(cv|carte)\/?$/); if (!m) return false;
   history.replaceState(null, '', location.pathname + location.search); m[1] === 'cv' ? cvOpen() : cdOpen(); return true;
 }
@@ -3709,6 +3770,248 @@ function liveHash() {
   if (m) history.replaceState(null, '', location.pathname + location.search);
   if (!id) return false; tryJoinLive(id); return !!m;
 }
+// ===================== 💌 INVITATIONS avec réponse en ligne (mariages, dot, anniversaires, deuils…) =====================
+const IV_KINDS = {
+  mariage: { n: '💍 Mariage', th: 'or', host: 'Les familles {fam} ont l’immense joie de vous convier au mariage de', names: 'Jean & Grâce', sub: 'Mariage civil et religieux' },
+  dot: { n: '🎁 Dot / mariage coutumier', th: 'wax', host: 'Les familles {fam} ont l’honneur de vous inviter à la cérémonie de la dot de', names: 'Jean & Grâce', sub: 'Mariage coutumier' },
+  anniv: { n: '🎂 Anniversaire', th: 'fete', host: 'Venez célébrer avec nous les 30 ans de', names: 'Grâce', sub: 'Une soirée inoubliable' },
+  bapteme: { n: '🕊️ Baptême', th: 'floral', host: 'Les parents ont la joie de vous inviter au baptême de', names: 'Petite Esther', sub: 'Baptême et réception' },
+  diplome: { n: '🎓 Remise de diplôme', th: 'royal', host: 'Vous êtes cordialement invité(e) à la cérémonie de remise de diplôme de', names: 'Jean Bisimwa', sub: 'Promotion 2026' },
+  deuil: { n: '🕯️ Deuil / veillée', th: 'sobre', host: 'La famille {fam} a la profonde douleur d’annoncer le décès de', names: 'Papa Jean Bisimwa', sub: 'Veillée et inhumation' },
+  levee: { n: '🌿 Levée de deuil', th: 'sobre', host: 'La famille {fam} vous invite à la cérémonie de levée de deuil de feu', names: 'Papa Jean Bisimwa', sub: 'Messe et réception' },
+  inaug: { n: '🎀 Inauguration', th: 'royal', host: 'Vous êtes cordialement invité(e) à l’inauguration de', names: 'Mark Market', sub: 'Cocktail d’ouverture' },
+  conf: { n: '🎤 Conférence / événement', th: 'moderne', host: 'Vous êtes invité(e) à', names: 'Forum des entrepreneurs de Goma', sub: 'Conférence et réseautage' },
+  autre: { n: '✨ Autre fête', th: 'fete', host: 'Vous êtes invité(e) à', names: 'Notre grande fête', sub: '' }
+};
+const IV_TH = {
+  or: { n: 'Or & noir', bg: '#0B0B0C', bg2: '#1C1917', fg: '#F5EBD0', ac: '#D4AF37', mu: '#BFAE85', card: 'rgba(255,255,255,.04)', dark: 1 },
+  floral: { n: 'Floral', bg: '#FFF7F5', bg2: '#FDECEC', fg: '#4A2C2A', ac: '#C2185B', mu: '#8D6E63', card: 'rgba(255,255,255,.75)', dark: 0 },
+  royal: { n: 'Bleu royal', bg: '#0B1E4A', bg2: '#13306E', fg: '#F1F5F9', ac: '#E5C158', mu: '#AFC0DE', card: 'rgba(255,255,255,.06)', dark: 1 },
+  wax: { n: 'Wax africain', bg: '#FFF8EC', bg2: '#FDEBD0', fg: '#3B1F0E', ac: '#D9480F', mu: '#7C4A1E', card: 'rgba(255,255,255,.8)', dark: 0 },
+  fete: { n: 'Fête', bg: '#2E1065', bg2: '#7C3AED', fg: '#FFFFFF', ac: '#FACC15', mu: '#E9D5FF', card: 'rgba(255,255,255,.08)', dark: 1 },
+  moderne: { n: 'Moderne', bg: '#FFFFFF', bg2: '#F3F4F6', fg: '#111827', ac: '#16A34A', mu: '#6B7280', card: '#F9FAFB', dark: 0 },
+  sobre: { n: 'Sobre (deuil)', bg: '#F4F4F5', bg2: '#E4E4E7', fg: '#27272A', ac: '#52525B', mu: '#71717A', card: '#FFFFFF', dark: 0 }
+};
+let iv = null, ivMine = [];
+const ivUrl = id => location.origin + '/i/' + id;
+const ivDate = d => { if (!d?.date) return ''; try { return new Date(d.date + 'T' + (d.time || '12:00')).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return d.date || ''; } };
+const ivCap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+const ivInit = n => String(n || '').split(/\s*(?:&|et)\s*|\s+/i).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('&');
+function ivFonts() { if (document.getElementById('ivfont')) return document.fonts?.ready; const l = document.createElement('link'); l.id = 'ivfont'; l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap'; document.head.appendChild(l); return new Promise(r => { l.onload = () => Promise.all([document.fonts.load('60px "Great Vibes"'), document.fonts.load('700 40px "Playfair Display"'), document.fonts.load('italic 500 30px "Playfair Display"')]).then(r, r); l.onerror = r; setTimeout(r, 4000); }); }
+function ivHash() {
+  let m = location.hash.match(/^#\/i\/([a-z0-9]{6,10})\/?$/); if (m) { history.replaceState(null, '', location.pathname + location.search); ivView(m[1]); return true; }
+  if (/^#\/invit\/?$/.test(location.hash)) { history.replaceState(null, '', location.pathname + location.search); ivOpen(); return true; }
+  return false;
+}
+// ---------------- Créateur ----------------
+function ivDraft() { try { return JSON.parse(localStorage.getItem('sp_inv_draft') || 'null'); } catch (e) { return null; } }
+function ivNew(kind = 'mariage') { const K = IV_KINDS[kind]; return { id: '', kind, theme: K.th, d: { fam: '', host: K.host, names: '', sub: K.sub, date: '', time: '', venues: [{ label: kind === 'deuil' ? 'Veillée' : 'Cérémonie', place: '', time: '' }], program: [], dress: '', contact: fmtPhone(me?.phone || ''), deadline: '', note: '', photo: '' } }; }
+function ivSaveDraft() { try { localStorage.setItem('sp_inv_draft', JSON.stringify(iv)); } catch (e) {} }
+function ivOpen(tab) {
+  toolOpen('ivx', '💌 Invitations', "toolClose('ivx')"); iv = ivDraft() || ivNew(); ivFonts();
+  tab === 'list' || (me && !iv.d.names && !iv.id && tab !== 'new') ? ivList() : ivForm();
+}
+function ivTabs(on) { return `<div class="biztabs" style="margin:-14px -12px 12px;border-radius:0"><button type="button" class="${on === 'new' ? 'on' : ''}" onclick="ivForm()">✏️ ${iv?.id ? 'Modifier' : 'Créer'}</button><button type="button" class="${on === 'list' ? 'on' : ''}" onclick="ivList()">📋 Mes invitations</button></div>`; }
+const ivIn = (k, label, ph, type = 'text') => `<div class="fg"><label>${label}</label><input type="${type}" value="${esc(iv.d[k] || '')}" placeholder="${esc(ph || '')}" oninput="iv.d['${k}']=this.value;ivSaveDraft();ivPrev()"></div>`;
+function ivForm() {
+  const el = $('ivx-c'); if (!el) return; const K = IV_KINDS[iv.kind];
+  el.innerHTML = ivTabs('new') + `<div class="phhero" style="background:linear-gradient(135deg,#B45309,#7C2D12)"><b>Des invitations dignes des plus grands studios</b><span>Belle page animée, image pour WhatsApp, et vos invités répondent en ligne : vous voyez qui vient, en direct.</span></div>
+    <div class="ivedit"><div class="ivpv"><canvas id="iv-cv"></canvas><small class="mt">Aperçu de l’image à partager</small></div><div class="ivfm">
+    <div class="box"><h3 class="cvh">1. Événement</h3><div class="ivkinds">${Object.entries(IV_KINDS).map(([k, v]) => `<button type="button" class="${iv.kind === k ? 'on' : ''}" onclick="ivKind('${k}')">${v.n}</button>`).join('')}</div></div>
+    <div class="box"><h3 class="cvh">2. Style</h3><div class="ivths">${Object.entries(IV_TH).map(([k, t]) => `<button type="button" class="${iv.theme === k ? 'on' : ''}" style="background:linear-gradient(135deg,${t.bg},${t.bg2});color:${t.fg}" onclick="iv.theme='${k}';ivSaveDraft();ivForm()"><b style="color:${t.ac}">Aa</b>${t.n}</button>`).join('')}</div></div>
+    <div class="box"><h3 class="cvh">3. Le texte</h3>
+      ${['mariage', 'dot', 'deuil', 'levee'].includes(iv.kind) ? ivIn('fam', 'Familles', iv.kind.match(/mariage|dot/) ? 'ex : Bisimwa et Kahindo' : 'ex : Bisimwa') : ''}
+      <div class="fg"><label>Phrase d’introduction</label><textarea rows="2" oninput="iv.d.host=this.value;ivSaveDraft();ivPrev()">${esc(ivHostTxt(iv))}</textarea></div>
+      ${ivIn('names', iv.kind === 'mariage' || iv.kind === 'dot' ? 'Prénoms des mariés' : 'Nom principal', K.names)}${ivIn('sub', 'Sous-titre (facultatif)', K.sub)}
+      <div class="cvph"><div class="cvphv">${iv.d.photo ? `<img src="${iv.d.photo}" alt="">` : '🖼️'}</div><div><button class="soft" onclick="pickPhoto(d=>{iv.d.photo=d;ivSaveDraft();ivForm()})">📷 ${iv.d.photo ? 'Changer' : 'Ajouter'} une photo</button>${iv.d.photo ? ' <button class="soft" onclick="iv.d.photo=\'\';ivSaveDraft();ivForm()">Retirer</button>' : ''}</div></div></div>
+    <div class="box"><h3 class="cvh">4. Date et lieux</h3><div class="grid2">${ivIn('date', 'Date', '', 'date')}${ivIn('time', 'Heure', '', 'time')}</div>
+      ${iv.d.venues.map((v, i) => `<div class="cvitem"><div class="cvitemh"><b>📍 Lieu ${i + 1}</b>${i ? `<button type="button" onclick="iv.d.venues.splice(${i},1);ivSaveDraft();ivForm()">🗑️</button>` : ''}</div><div class="grid2"><input value="${esc(v.label)}" placeholder="ex : Cérémonie religieuse" oninput="iv.d.venues[${i}].label=this.value;ivSaveDraft();ivPrev()"><input type="time" value="${esc(v.time)}" oninput="iv.d.venues[${i}].time=this.value;ivSaveDraft()"></div><input value="${esc(v.place)}" placeholder="ex : Cathédrale Saint-Joseph, Goma" oninput="iv.d.venues[${i}].place=this.value;ivSaveDraft();ivPrev()"></div>`).join('')}
+      ${iv.d.venues.length < 4 ? `<button class="soft" onclick="iv.d.venues.push({label:'Réception',place:'',time:''});ivSaveDraft();ivForm()">➕ Ajouter un lieu (réception, soirée…)</button>` : ''}</div>
+    <div class="box"><h3 class="cvh">5. Détails (facultatif)</h3>
+      <div class="fg"><label>Programme (une ligne par moment)</label><textarea rows="3" placeholder="10h00 – Accueil des invités&#10;11h00 – Cérémonie&#10;14h00 – Réception" oninput="iv.d.program=this.value.split('\\n').filter(Boolean);ivSaveDraft()">${esc((iv.d.program || []).join('\n'))}</textarea></div>
+      ${ivIn('dress', 'Tenue souhaitée', 'ex : Tenue de soirée · couleurs or et blanc')}<div class="grid2">${ivIn('contact', 'Contact (WhatsApp)', '+243…', 'tel')}${ivIn('deadline', 'Répondre avant le', '', 'date')}</div>
+      <div class="fg"><label>Petit mot (facultatif)</label><textarea rows="2" oninput="iv.d.note=this.value;ivSaveDraft()" placeholder="ex : Votre présence sera notre plus beau cadeau.">${esc(iv.d.note)}</textarea></div></div>
+    <button class="pill" style="width:100%;padding:16px;font-size:17px" onclick="ivPublish()">${iv.id ? '💾 Enregistrer les modifications' : '🚀 Publier et partager'}</button>
+    ${iv.id ? `<button class="pbtn gray" onclick="iv=ivNew();ivSaveDraft();ivForm()">➕ Nouvelle invitation</button>` : ''}
+    <p class="mt" style="font-size:12px;margin:8px 0 24px">Vos invités répondent sans créer de compte. Vous seul voyez la liste complète.</p></div></div>`;
+  ivPrev();
+}
+function ivKind(k) { const K = IV_KINDS[k], keep = { ...iv.d }; iv.kind = k; iv.theme = K.th; iv.d.host = K.host; iv.d.sub = K.sub; if (k === 'deuil') iv.d.venues[0].label = 'Veillée'; ivSaveDraft(); ivForm(); }
+let ivPT; function ivPrev() { clearTimeout(ivPT); ivPT = setTimeout(async () => { const cv = $('iv-cv'); if (!cv) return; await ivFonts(); const c = await ivCard(iv, 0.5, 'post'); cv.width = c.width; cv.height = c.height; cv.getContext('2d').drawImage(c, 0, 0); }, 150); }
+const ivHostTxt = x => String(x.d.host || '').replace(/\s*\{fam\}/, x.d.fam ? ' ' + x.d.fam : '');
+async function ivPublish() {
+  const d = iv.d; if (!d.names.trim()) return toast('Entrez le nom principal (ex : Jean & Grâce).'); if (!d.date) return toast('Choisissez la date.');
+  if (!me) { ivSaveDraft(); toast('🔐 Créez un compte gratuit (30 secondes) pour publier : votre invitation est gardée.', 5000); toolClose('ivx'); return go('register'); }
+  toast('⏳ Publication…', 2000);
+  let photo = d.photo; if (photo?.startsWith('data:')) { const b = await (await fetch(photo)).blob(); photo = await upload(new File([b], 'invitation.jpg', { type: 'image/jpeg' }), 'invit'); if (!photo) return; }
+  const data = { ...d, photo: photo || '', host: ivHostTxt(iv) }, event_at = new Date(d.date + 'T' + (d.time || '12:00')).toISOString();
+  if (iv.id) { const { error } = await sb.from('invitations').update({ kind: iv.kind, theme: iv.theme, data, event_at, updated_at: new Date().toISOString() }).eq('id', iv.id); if (error) return toast('⚠️ ' + error.message, 5000); }
+  else { let ok = false; for (let k = 0; k < 4 && !ok; k++) { const id = Array.from(crypto.getRandomValues(new Uint8Array(7)), b => 'abcdefghjkmnpqrstuvwxyz23456789'[b % 31]).join('');
+      const { error } = await sb.from('invitations').insert({ id, owner: me.id, kind: iv.kind, theme: iv.theme, data, event_at }); if (!error) { iv.id = id; ok = true; } else if (!/duplicate|unique/i.test(error.message)) return toast('⚠️ ' + (/relation|does not exist/i.test(error.message) ? 'La base des invitations n’est pas encore installée (SQL à lancer dans Supabase).' : error.message), 6000); } if (!ok) return toast('Réessayez.'); }
+  iv.d.photo = photo || ''; ivSaveDraft(); const id = iv.id; localStorage.removeItem('sp_inv_draft'); iv = ivNew(); ivShare(id, true);
+}
+// ---------------- Partage ----------------
+async function ivLoad(id) { const { data, error } = await sb.from('invitations').select('*').eq('id', id).maybeSingle(); if (error) throw error; return data ? { id: data.id, kind: data.kind, theme: data.theme, d: data.data || {}, open: data.open, owner: data.owner } : null; }
+async function ivShare(id, fresh) {
+  let x; try { x = await ivLoad(id); } catch (e) { return toast('⚠️ ' + e.message); } if (!x) return toast('Invitation introuvable.');
+  const url = ivUrl(id), txt = `💌 ${ivCap(IV_KINDS[x.kind]?.n.replace(/^\S+\s/, '') || 'Invitation')} – ${x.d.names}\n📅 ${ivCap(ivDate(x.d))}${x.d.time ? ' à ' + x.d.time.replace(':', 'h') : ''}\n\nVous êtes invité(e) ! Ouvrez l’invitation et confirmez votre présence ici 👉 ${url}`;
+  openM(`<h3>${fresh ? '🎉 Votre invitation est en ligne !' : '📤 Partager l’invitation'}</h3><div class="ivlink">${esc(url)}</div>
+    <button class="pill" style="width:100%;background:#25D366" onclick="window.open('https://wa.me/?text='+encodeURIComponent(window.ivTxt),'_blank')">💬 Envoyer le lien sur WhatsApp</button>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="ivImg('${id}','post')">🖼️ Image de l’invitation</button><button class="soft" onclick="ivImg('${id}','story')">📱 Image pour statut</button></div>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="copyTxt('${url}')">🔗 Copier le lien</button><button class="soft" onclick="closeM();ivView('${id}')">👀 Voir la page</button></div>
+    <button class="soft" style="width:100%;margin-top:8px" onclick="closeM();ivDash('${id}')">📋 Voir les réponses</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+  window.ivTxt = txt;
+}
+async function ivImg(id, fmt) { let x; try { x = await ivLoad(id); } catch (e) { return; } await ivFonts(); const c = await ivCard(x, 1, fmt, true); const f = await new Promise(r => c.toBlob(b => r(new File([b], `invitation-${id}-${fmt}.jpg`, { type: 'image/jpeg' })), 'image/jpeg', 0.92)); spShare([f], window.ivTxt || ivUrl(id), 'Invitation'); }
+// ---------------- Image de l'invitation (canvas) ----------------
+function ivDeco(x, T, th, W, H) {
+  const g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, T.bg); g.addColorStop(1, T.bg2); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  if (th === 'or' || th === 'royal') { const r = x.createRadialGradient(W / 2, H * 0.3, 10, W / 2, H * 0.3, W); r.addColorStop(0, th === 'or' ? 'rgba(212,175,55,.22)' : 'rgba(229,193,88,.16)'); r.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = r; x.fillRect(0, 0, W, H);
+    x.strokeStyle = T.ac; x.lineWidth = 3; x.strokeRect(36, 36, W - 72, H - 72); x.lineWidth = 1.2; x.strokeRect(52, 52, W - 104, H - 104);
+    [[52, 52, 1, 1], [W - 52, 52, -1, 1], [52, H - 52, 1, -1], [W - 52, H - 52, -1, -1]].forEach(([cx, cy, sx, sy]) => { x.beginPath(); x.moveTo(cx, cy + sy * 90); x.quadraticCurveTo(cx, cy, cx + sx * 90, cy); x.stroke(); x.beginPath(); x.arc(cx + sx * 22, cy + sy * 22, 6, 0, 7); x.fillStyle = T.ac; x.fill(); });
+    x.fillStyle = 'rgba(229,207,140,.5)'; for (let i = 0; i < 90; i++) { x.beginPath(); x.arc((i * 137) % W, (i * 263) % H, (i % 3) * 0.8 + 0.6, 0, 7); x.fill(); } }
+  else if (th === 'floral') { const fl = (cx, cy, s, c) => { for (let k = 0; k < 6; k++) { x.save(); x.translate(cx, cy); x.rotate(k * Math.PI / 3); x.fillStyle = c; x.beginPath(); x.ellipse(0, -s * 0.55, s * 0.32, s * 0.55, 0, 0, 7); x.fill(); x.restore(); } x.fillStyle = '#F6C177'; x.beginPath(); x.arc(cx, cy, s * 0.22, 0, 7); x.fill(); };
+    const leaf = (cx, cy, a, s) => { x.save(); x.translate(cx, cy); x.rotate(a); x.fillStyle = 'rgba(107,143,113,.75)'; x.beginPath(); x.ellipse(0, 0, s, s * 0.38, 0, 0, 7); x.fill(); x.restore(); };
+    [[0, 0], [W, H]].forEach(([cx, cy], q) => { const s = q ? -1 : 1; leaf(cx + s * 150, cy + s * 60, 0.5, 70); leaf(cx + s * 60, cy + s * 170, 1.2, 70); leaf(cx + s * 230, cy + s * 150, -0.4, 55); fl(cx + s * 110, cy + s * 110, 85, 'rgba(236,72,153,.55)'); fl(cx + s * 230, cy + s * 50, 55, 'rgba(251,207,232,.9)'); fl(cx + s * 50, cy + s * 240, 55, 'rgba(244,114,182,.6)'); }); }
+  else if (th === 'wax') { const b = 46, cols = ['#D9480F', '#0E7490', '#FACC15', '#3B1F0E']; const band = (x0, y0, w, h, horiz) => { x.save(); x.beginPath(); x.rect(x0, y0, w, h); x.clip(); x.fillStyle = '#3B1F0E'; x.fillRect(x0, y0, w, h); const n = Math.ceil((horiz ? w : h) / b) + 1;
+      for (let i = 0; i < n; i++) { const px = horiz ? x0 + i * b : x0, py = horiz ? y0 : y0 + i * b; x.fillStyle = cols[i % 3]; x.beginPath(); x.moveTo(px + b / 2, py + 4); x.lineTo(px + b - 4, py + b / 2); x.lineTo(px + b / 2, py + b - 4); x.lineTo(px + 4, py + b / 2); x.fill(); x.fillStyle = '#FFF8EC'; x.beginPath(); x.arc(px + b / 2, py + b / 2, 6, 0, 7); x.fill(); } x.restore(); };
+    band(0, 0, W, b, 1); band(0, H - b, W, b, 1); band(0, 0, b, H, 0); band(W - b, 0, b, H, 0); x.strokeStyle = '#D9480F'; x.lineWidth = 3; x.strokeRect(b + 14, b + 14, W - 2 * b - 28, H - 2 * b - 28); }
+  else if (th === 'fete') { for (let i = 0; i < 120; i++) { x.save(); x.translate((i * 197) % W, (i * 311) % H); x.rotate(i); x.fillStyle = ['#FACC15', '#F472B6', '#22D3EE', '#A3E635', '#FB923C'][i % 5]; x.globalAlpha = 0.75; x.fillRect(-8, -3, 16, 6); x.restore(); } x.globalAlpha = 1; }
+  else if (th === 'sobre') { x.strokeStyle = 'rgba(82,82,91,.55)'; x.lineWidth = 2; x.strokeRect(40, 40, W - 80, H - 80); x.fillStyle = 'rgba(82,82,91,.12)'; x.beginPath(); x.arc(W / 2, H * 0.12, 60, 0, 7); x.fill(); x.strokeStyle = '#52525B'; x.lineWidth = 3; x.beginPath(); x.moveTo(W / 2, H * 0.12 - 34); x.lineTo(W / 2, H * 0.12 + 34); x.moveTo(W / 2 - 22, H * 0.12 - 12); x.lineTo(W / 2 + 22, H * 0.12 - 12); x.stroke(); }
+  else { x.fillStyle = T.ac; x.fillRect(0, 0, W, 16); x.fillRect(0, H - 16, W, 16); }
+}
+async function ivCard(X, sc = 1, fmt = 'post', withQr) {
+  const W = 1080, H = fmt === 'story' ? 1920 : 1350, T = IV_TH[X.theme] || IV_TH.or, d = X.d, c = document.createElement('canvas'); c.width = Math.round(W * sc); c.height = Math.round(H * sc); const x = c.getContext('2d'); x.scale(sc, sc);
+  ivDeco(x, T, X.theme, W, H); x.textAlign = 'center'; const PF = (w, p, it) => `${it ? 'italic ' : ''}${w} ${p}px "Playfair Display", Georgia, serif`, SC = p => `${p}px "Great Vibes", "Brush Script MT", cursive`;
+  // 1) le texte est dessiné à part, puis centré et ajusté dans l'espace libre
+  const k = document.createElement('canvas'); k.width = W; k.height = 3200; const z = k.getContext('2d'); z.textAlign = 'center'; let y = 10; const MW = fmt === 'story' ? W - 320 : W - 200;
+  z.fillStyle = T.mu; z.font = PF(500, 34, 1); vidWrap(z, ivHostTxt(X), MW - 60, 3).forEach(l => { y += 40; z.fillText(l, W / 2, y); y += 6; }); y += 24;
+  const ph = await loadImg(d.photo); if (ph) { const r = fmt === 'story' ? 220 : 165, cy = y + r + 8; z.save(); z.beginPath(); z.arc(W / 2, cy, r, 0, 7); z.clip(); const s = Math.max(2 * r / ph.width, 2 * r / ph.height); z.drawImage(ph, W / 2 - ph.width * s / 2, cy - ph.height * s / 2, ph.width * s, ph.height * s); z.restore(); z.strokeStyle = T.ac; z.lineWidth = 6; z.beginPath(); z.arc(W / 2, cy, r + 8, 0, 7); z.stroke(); y = cy + r + 30; }
+  const nm = d.names || 'Vos noms', plain = X.theme === 'sobre' || X.theme === 'moderne'; let fz = plain ? 88 : 150; const fn = plain ? (p => PF(700, p)) : SC; z.font = fn(fz); while (fz > 60 && z.measureText(nm).width > MW) { fz -= 6; z.font = fn(fz); }
+  if (T.dark && X.theme !== 'fete') { const gg = z.createLinearGradient(W / 2 - 300, 0, W / 2 + 300, 0); gg.addColorStop(0, '#B8860B'); gg.addColorStop(0.5, '#FFF1B8'); gg.addColorStop(1, '#B8860B'); z.fillStyle = gg; } else z.fillStyle = T.ac;
+  vidWrap(z, nm, MW, 2).forEach(l => { y += fz * 0.8; z.fillText(l, W / 2, y); y += fz * 0.2; }); y += 10;
+  if (d.sub) { z.fillStyle = T.fg; z.font = PF(500, 34, 1); y += 34; z.fillText(d.sub, W / 2, y); y += 14; }
+  y += 30; z.strokeStyle = T.ac; z.lineWidth = 2; z.beginPath(); z.moveTo(W / 2 - 160, y); z.lineTo(W / 2 - 20, y); z.moveTo(W / 2 + 20, y); z.lineTo(W / 2 + 160, y); z.stroke(); z.fillStyle = T.ac; z.save(); z.translate(W / 2, y); z.rotate(Math.PI / 4); z.fillRect(-7, -7, 14, 14); z.restore(); y += 20;
+  z.fillStyle = T.fg; z.font = PF(700, 46); y += 46; z.fillText(ivCap(ivDate(d)) || 'Date de l’événement', W / 2, y); if (d.time) { z.font = PF(500, 36); y += 50; z.fillText('à ' + d.time.replace(':', 'h'), W / 2, y); }
+  (d.venues || []).filter(v => v.place).slice(0, fmt === 'story' ? 3 : 2).forEach(v => { y += 62; z.fillStyle = T.ac; z.font = PF(700, 28); z.fillText((v.label || '').toUpperCase() + (v.time ? ' · ' + v.time.replace(':', 'h') : ''), W / 2, y); z.fillStyle = T.fg; z.font = PF(500, 30, 1); vidWrap(z, v.place, MW - 40, 2).forEach(l => { y += 40; z.fillText(l, W / 2, y); }); });
+  y += 16;
+  // 2) espace libre selon le style, le QR et la tenue
+  const qs = fmt === 'story' ? 240 : 170, qr = withQr && X.id ? stuQR(ivUrl(X.id)) : null, dress = !qr && d.dress;
+  const top = X.theme === 'sobre' ? H * 0.12 + 90 : X.theme === 'floral' ? 190 : X.theme === 'wax' ? 120 : 100, bot = H - 110 - (qr ? qs + 90 : dress ? 60 : 0);
+  const f = Math.min(fmt === 'story' ? 1.15 : 1, (bot - top) / y), hh = y * f; x.drawImage(k, 0, 0, W, y, (W - W * f) / 2, top + (bot - top - hh) / 2, W * f, hh);
+  if (qr) { const qy = bot + 20; x.fillStyle = '#fff'; vidRR(x, W / 2 - qs / 2 - 14, qy - 14, qs + 28, qs + 28, 14); x.fill(); x.imageSmoothingEnabled = false; x.drawImage(qr, W / 2 - qs / 2, qy, qs, qs); x.imageSmoothingEnabled = true; x.fillStyle = T.fg; x.font = PF(700, 26); x.fillText('Confirmez votre présence en scannant', W / 2, qy + qs + 48); }
+  else if (dress) { x.fillStyle = T.mu; x.font = PF(500, 26, 1); x.fillText('Tenue : ' + cutT(d.dress, 50), W / 2, bot + 30); }
+  x.fillStyle = T.mu; x.font = '22px Arial'; x.globalAlpha = 0.8; x.fillText('💌 Invitation créée avec SocialPages', W / 2, H - (X.theme === 'wax' ? 74 : 70)); x.globalAlpha = 1;
+  return c;
+}
+// ---------------- Page publique de l'invitation ----------------
+async function ivView(id) {
+  $('ivp')?.remove(); document.body.insertAdjacentHTML('beforeend', '<div id="ivp" class="ivp"><div class="spin" style="margin-top:40vh"></div></div>'); document.body.classList.add('noscroll'); ivFonts();
+  let X; try { X = await ivLoad(id); } catch (e) { X = null; }
+  const el = $('ivp'); if (!el) return; if (!X) { el.innerHTML = `<div class="ivcard" style="margin-top:20vh;text-align:center"><h2>😕 Invitation introuvable</h2><button class="pill" onclick="ivClose()">Retour</button></div>`; return; }
+  window.ivCur = X; const T = IV_TH[X.theme] || IV_TH.or, d = X.d, past = new Date(d.date + 'T23:59') < new Date(), mine = me?.id === X.owner;
+  el.style.cssText = `--bg:${T.bg};--bg2:${T.bg2};--fg:${T.fg};--ac:${T.ac};--mu:${T.mu};--card:${T.card}`; el.className = 'ivp th-' + X.theme;
+  const maps = q => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+  el.innerHTML = `<button type="button" class="ivx" onclick="ivClose()" aria-label="Fermer">✖</button>
+    <div class="ivenv" id="ivenv"><div class="ivenvin"><p class="ivfor">${X.kind === 'deuil' ? 'Faire-part' : 'Vous êtes invité(e)'}</p><div class="ivenvelope"><div class="ivflap"></div><div class="ivseal">${esc(ivInit(d.names) || '♥')}</div></div>
+      <h1 class="ivscript">${esc(d.names)}</h1><button class="ivopen" onclick="ivReveal()">${X.kind === 'deuil' ? 'Ouvrir le faire-part' : '💌 Ouvrir l’invitation'}</button></div></div>
+    <div class="ivbody hidden" id="ivbody">
+      <section class="ivhero ivr"><p class="ivhost">${esc(d.host || '')}</p>${d.photo ? `<div class="ivph"><img src="${esc(d.photo)}" alt=""></div>` : ''}<h1 class="ivscript ivgold">${esc(d.names)}</h1>${d.sub ? `<p class="ivsub">${esc(d.sub)}</p>` : ''}
+        <div class="ivorn"><i></i><b></b><i></i></div><p class="ivdate">${esc(ivCap(ivDate(d)))}</p>${d.time ? `<p class="ivtime">à ${esc(d.time.replace(':', 'h'))}</p>` : ''}
+        ${past ? '<p class="ivpast">Cet événement est passé. Merci à tous !</p>' : `<div class="ivcd" id="ivcd"></div>`}</section>
+      ${(d.venues || []).filter(v => v.place).length ? `<section class="ivsec ivr"><h2>📍 Lieux</h2>${d.venues.filter(v => v.place).map(v => `<div class="ivcard ivven"><b>${esc(v.label || 'Lieu')}${v.time ? ` · ${esc(v.time.replace(':', 'h'))}` : ''}</b><span>${esc(v.place)}</span><a href="${maps(v.place)}" target="_blank" rel="noopener">🧭 Itinéraire</a></div>`).join('')}</section>` : ''}
+      ${(d.program || []).length ? `<section class="ivsec ivr"><h2>🗓️ Programme</h2><div class="ivtl">${d.program.map(p => `<div><i></i><span>${esc(p)}</span></div>`).join('')}</div></section>` : ''}
+      ${d.dress ? `<section class="ivsec ivr"><h2>👗 Tenue</h2><div class="ivcard">${esc(d.dress)}</div></section>` : ''}
+      ${d.note ? `<section class="ivsec ivr"><p class="ivnote">« ${esc(d.note)} »</p></section>` : ''}
+      <section class="ivsec ivr" id="ivrsvp"><h2>${X.kind === 'deuil' ? '🕯️ Votre présence et vos condoléances' : '✉️ Confirmez votre présence'}</h2>${d.deadline ? `<p class="ivmu">Merci de répondre avant le ${esc(new Date(d.deadline + 'T12:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }))}</p>` : ''}
+        ${X.open && !past ? `<div class="ivcard ivform"><input id="rv-name" maxlength="60" placeholder="Votre nom"><input id="rv-phone" inputmode="tel" maxlength="20" placeholder="Votre numéro WhatsApp">
+          <div class="ivst"><button type="button" data-s="yes" class="on" onclick="ivSt(this)">✅ Je viens</button><button type="button" data-s="maybe" onclick="ivSt(this)">🤔 Peut-être</button><button type="button" data-s="no" onclick="ivSt(this)">❌ Je ne peux pas</button></div>
+          <label class="ivmu" id="rv-gl">Nombre de personnes <select id="rv-g">${[1, 2, 3, 4, 5, 6, 8, 10].map(n => `<option>${n}</option>`).join('')}</select></label>
+          <textarea id="rv-msg" maxlength="300" rows="3" placeholder="${X.kind === 'deuil' ? 'Votre message de condoléances (facultatif)' : 'Un mot pour ' + esc(d.names) + ' (facultatif)'}"></textarea>
+          <button class="ivbtn" onclick="ivRsvp()">Envoyer ma réponse</button></div>` : `<div class="ivcard">${past ? 'Les réponses sont terminées.' : 'Les réponses sont fermées par l’organisateur.'}</div>`}</section>
+      <section class="ivsec ivr"><h2 id="ivwh">${X.kind === 'deuil' ? '🕊️ Messages de condoléances' : '💛 Livre d’or'}</h2><div id="ivwall" class="ivwall"><p class="ivmu">Chargement…</p></div></section>
+      <section class="ivsec ivr ivacts"><button class="ivbtn ghost" onclick="ivIcs()">📅 Ajouter à mon calendrier</button>${d.contact ? `<a class="ivbtn ghost" href="https://wa.me/${d.contact.replace(/\D/g, '')}" target="_blank" rel="noopener">💬 Contacter l’organisateur</a>` : ''}<button class="ivbtn ghost" onclick="ivShareView()">📤 Partager cette invitation</button>${mine ? `<button class="ivbtn" onclick="ivClose();ivDash('${X.id}')">📋 Voir les réponses (organisateur)</button>` : ''}</section>
+      <footer class="ivfoot" onclick="ivClose();ivOpen('new')">💌 Créez aussi votre invitation gratuite avec <b>SocialPages</b> →</footer></div>`;
+  if (sessionStorage.getItem('iv_opened_' + id)) ivReveal(true);
+  ivWall(); if (!past) { clearInterval(window.ivCdT); const tick = () => { const e = $('ivcd'); if (!e) return clearInterval(window.ivCdT); let s = Math.max(0, (new Date(d.date + 'T' + (d.time || '12:00')) - Date.now()) / 1000); const u = [Math.floor(s / 86400), Math.floor(s % 86400 / 3600), Math.floor(s % 3600 / 60), Math.floor(s % 60)];
+    e.innerHTML = [['jours', u[0]], ['heures', u[1]], ['min', u[2]], ['sec', u[3]]].map(([l, v]) => `<div><b>${String(v).padStart(2, '0')}</b><small>${l}</small></div>`).join(''); }; tick(); window.ivCdT = setInterval(tick, 1000); }
+}
+function ivReveal(fast) {
+  const e = $('ivenv'), b = $('ivbody'); if (!e || !b) return; try { sessionStorage.setItem('iv_opened_' + window.ivCur.id, 1); } catch (er) {}
+  const done = () => { e.remove(); b.classList.remove('hidden'); const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { threshold: 0.12 }); b.querySelectorAll('.ivr').forEach(s => io.observe(s)); };
+  if (fast) return done(); e.classList.add('opening'); setTimeout(done, 1300);
+}
+function ivClose() { clearInterval(window.ivCdT); $('ivp')?.remove(); if (!document.querySelector('.bizx')) document.body.classList.remove('noscroll'); }
+function ivSt(b) { b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); $('rv-gl').style.display = b.dataset.s === 'no' ? 'none' : ''; }
+async function ivRsvp() {
+  const X = window.ivCur, name = $('rv-name').value.trim(), phone = $('rv-phone').value.trim(), st = document.querySelector('.ivst .on')?.dataset.s || 'yes';
+  if (!name) return toast('Entrez votre nom.'); if (phone.replace(/\D/g, '').length < 9) return toast('Entrez votre numéro WhatsApp (pour éviter les doublons).');
+  const { data, error } = await sb.rpc('rsvp_submit', { p_inv: X.id, p_name: name, p_phone: phone, p_status: st, p_guests: +$('rv-g').value || 1, p_message: $('rv-msg').value.trim() });
+  if (error) return toast('⚠️ ' + error.message, 5000);
+  try { localStorage.setItem('iv_rsvp_' + X.id, st); } catch (e) {}
+  $('ivrsvp').querySelector('.ivform').outerHTML = `<div class="ivcard ivthanks">${st === 'yes' ? `🎉 Merci ${esc(name)} ! Votre présence est confirmée.` : st === 'maybe' ? `🙏 Merci ${esc(name)}, nous espérons vous voir !` : `💛 Merci ${esc(name)} pour votre réponse.`}${data?.updated ? '<br><small>(réponse mise à jour)</small>' : ''}<br><button class="ivbtn ghost" style="margin-top:10px" onclick="ivIcs()">📅 Ajouter à mon calendrier</button></div>`;
+  ivWall();
+}
+async function ivWall() {
+  const X = window.ivCur, el = $('ivwall'); if (!el) return; const { data } = await sb.rpc('rsvp_public', { p_inv: X.id });
+  const W = data?.wishes || [], yes = data?.yes || 0;
+  el.innerHTML = (yes && X.kind !== 'deuil' ? `<p class="ivmu">✨ ${yes} personne${yes > 1 ? 's ont' : ' a'} déjà confirmé</p>` : '') + (W.length ? W.map(w => `<div class="ivcard ivwish"><p>« ${esc(w.message)} »</p><b>— ${esc(w.name)}</b></div>`).join('') : '<p class="ivmu">Soyez le premier à laisser un message.</p>');
+}
+function ivIcs() {
+  const X = window.ivCur, d = X.d, s = new Date(d.date + 'T' + (d.time || '10:00')), e = new Date(s.getTime() + 4 * 3600e3), f = t => t.toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SocialPages//Invitation//FR', 'BEGIN:VEVENT', `UID:${X.id}@socialpages`, `DTSTAMP:${f(new Date())}`, `DTSTART:${f(s)}`, `DTEND:${f(e)}`, `SUMMARY:${(IV_KINDS[X.kind]?.n.replace(/^\S+\s/, '') || 'Invitation')} – ${d.names}`, `LOCATION:${(d.venues || []).map(v => v.place).filter(Boolean).join(' / ')}`, `DESCRIPTION:${ivUrl(X.id)}`, 'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:Rappel', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  spSave([new File([ics], `invitation-${X.id}.ics`, { type: 'text/calendar' })]);
+}
+function ivShareView() { const X = window.ivCur, t = `💌 ${X.d.names} – ${ivCap(ivDate(X.d))}\nOuvrez l’invitation 👉 ${ivUrl(X.id)}`; if (navigator.share && !spIsApp()) navigator.share({ text: t }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); }
+// ---------------- Organisateur : mes invitations et réponses ----------------
+async function ivList() {
+  if (!$('ivx')) { toolOpen('ivx', '💌 Invitations', "toolClose('ivx')"); }
+  const el = $('ivx-c'); if (!me) { el.innerHTML = ivTabs('list') + empty('🔐', 'Connectez-vous', 'Créez un compte gratuit pour publier vos invitations et voir les réponses.') + '<button class="pill" style="width:100%" onclick="toolClose(\'ivx\');go(\'register\')">Créer un compte gratuit</button>'; return; }
+  el.innerHTML = ivTabs('list') + '<div class="spin"></div>';
+  const { data, error } = await sb.from('invitations').select('id,kind,theme,data,open,created_at').eq('owner', me.id).order('created_at', { ascending: false });
+  if (error) { el.innerHTML = ivTabs('list') + empty('⚠️', 'Erreur', /relation|does not exist/i.test(error.message) ? 'La base des invitations n’est pas encore installée (SQL à lancer dans Supabase).' : esc(error.message)); return; }
+  ivMine = data || []; let stats = {}; if (ivMine.length) { const r = await sb.from('invitation_rsvps').select('inv_id,status,guests').in('inv_id', ivMine.map(x => x.id)); (r.data || []).forEach(x => { const s = stats[x.inv_id] ||= { yes: 0, n: 0 }; s.n++; if (x.status === 'yes') s.yes += x.guests; }); }
+  el.innerHTML = ivTabs('list') + `<button class="pill" style="width:100%;margin-bottom:10px" onclick="iv=ivNew();ivSaveDraft();ivForm()">➕ Nouvelle invitation</button>` + (ivMine.length ? ivMine.map(x => { const T = IV_TH[x.theme] || IV_TH.or, s = stats[x.id] || { yes: 0, n: 0 };
+    return `<div class="bizrow" onclick="ivDash('${x.id}')"><span class="bizav" style="background:linear-gradient(135deg,${T.bg},${T.bg2});color:${T.ac}">${esc(ivInit(x.data?.names) || '💌')}</span><div><b>${esc(x.data?.names || '')}</b><small>${IV_KINDS[x.kind]?.n || ''} · ${esc(ivCap(ivDate(x.data || {})))}</small></div><div style="text-align:right"><b style="color:#16A34A">${s.yes} ✅</b><small>${s.n} réponse${s.n > 1 ? 's' : ''}${x.open ? '' : ' · fermé'}</small></div></div>`; }).join('') : empty('💌', 'Aucune invitation', 'Créez votre première invitation : mariage, anniversaire, deuil…'));
+}
+async function ivDash(id) {
+  if (!$('ivx')) toolOpen('ivx', '💌 Invitations', "toolClose('ivx')"); const el = $('ivx-c'); el.innerHTML = ivTabs('list') + '<div class="spin"></div>';
+  let X; try { X = await ivLoad(id); } catch (e) {} if (!X) { el.innerHTML = ivTabs('list') + empty('😕', 'Introuvable', ''); return; }
+  const { data } = await sb.from('invitation_rsvps').select('*').eq('inv_id', id).order('created_at', { ascending: false }); const R = data || []; window.ivRows = R; window.ivDashX = X;
+  const yes = R.filter(r => r.status === 'yes'), may = R.filter(r => r.status === 'maybe'), no = R.filter(r => r.status === 'no'), sum = a => a.reduce((t, r) => t + r.guests, 0);
+  el.innerHTML = ivTabs('list') + `<div class="ivdh"><b>${esc(X.d.names)}</b><small>${IV_KINDS[X.kind]?.n} · ${esc(ivCap(ivDate(X.d)))}</small></div>
+    <div class="bizcards"><div class="bizcard g"><small>Viennent</small><b>${sum(yes)} pers.</b><small>${yes.length} réponses</small></div><div class="bizcard o"><small>Peut-être</small><b>${sum(may)}</b></div><div class="bizcard r"><small>Absents</small><b>${no.length}</b></div></div>
+    <div class="grid2"><button class="pill" onclick="ivShare('${id}')">📤 Partager</button><button class="soft" onclick="ivView('${id}')">👀 Voir la page</button></div>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="ivListPdf()">🖨️ Liste pour l’accueil (PDF)</button><button class="soft" onclick="ivCsv()">📊 Export Excel (CSV)</button></div>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="ivPoster()">🪧 Affiche QR pour l’entrée</button><button class="soft" onclick="ivEdit('${id}')">✏️ Modifier</button></div>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="ivToggle('${id}',${!X.open})">${X.open ? '🔒 Fermer les réponses' : '🔓 Rouvrir les réponses'}</button><button class="soft" style="color:#B91C1C" onclick="ivDel('${id}')">🗑️ Supprimer</button></div>
+    <div class="ivchips" id="iv-f">${[['all', 'Tous ' + R.length], ['yes', '✅ ' + yes.length], ['maybe', '🤔 ' + may.length], ['no', '❌ ' + no.length]].map(([k, n], i) => `<button type="button" class="${i ? '' : 'on'}" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===this));document.querySelectorAll('.ivrow').forEach(r=>r.style.display='${k}'==='all'||r.dataset.s==='${k}'?'':'none')">${n}</button>`).join('')}</div>
+    ${R.length ? R.map(r => `<div class="bizrow ivrow" data-s="${r.status}"><span class="bizav">${r.status === 'yes' ? '✅' : r.status === 'maybe' ? '🤔' : '❌'}</span><div><b>${esc(r.name)}${r.status !== 'no' && r.guests > 1 ? ` <small>(${r.guests} pers.)</small>` : ''}</b><small>+${esc(r.phone)} · ${new Date(r.updated_at).toLocaleDateString('fr-FR')}</small>${r.message ? `<small style="color:#374151">« ${esc(r.message)} »</small>` : ''}</div><a class="bizdel" href="https://wa.me/${esc(r.phone)}" target="_blank" rel="noopener" title="WhatsApp" onclick="event.stopPropagation()">💬</a></div>`).join('') : empty('📭', 'Pas encore de réponse', 'Partagez le lien sur WhatsApp : les réponses arrivent ici en direct.')}`;
+}
+async function ivEdit(id) { const X = await ivLoad(id); if (!X) return; iv = { id: X.id, kind: X.kind, theme: X.theme, d: { ...ivNew(X.kind).d, ...X.d } }; ivSaveDraft(); ivForm(); }
+async function ivToggle(id, open) { const { error } = await sb.from('invitations').update({ open }).eq('id', id); if (error) return toast('⚠️ ' + error.message); toast(open ? '🔓 Réponses rouvertes' : '🔒 Réponses fermées'); ivDash(id); }
+async function ivDel(id) { if (!confirm('Supprimer cette invitation et toutes ses réponses ?')) return; const { error } = await sb.from('invitations').delete().eq('id', id); if (error) return toast('⚠️ ' + error.message); toast('🗑️ Supprimée'); ivList(); }
+function ivCsv() {
+  const R = window.ivRows || [], X = window.ivDashX, L = { yes: 'Vient', maybe: 'Peut-être', no: 'Absent' }, q = s => '"' + String(s ?? '').replace(/"/g, '""') + '"';
+  const csv = '﻿' + ['Nom;Téléphone;Réponse;Personnes;Message;Date', ...R.map(r => [q(r.name), q('+' + r.phone), q(L[r.status]), r.status === 'no' ? 0 : r.guests, q(r.message || ''), q(new Date(r.updated_at).toLocaleString('fr-FR'))].join(';'))].join('\r\n');
+  spSave([new File([csv], `invites-${X.id}.csv`, { type: 'text/csv' })]);
+}
+async function ivListPdf() {
+  const R = (window.ivRows || []).filter(r => r.status !== 'no').sort((a, b) => a.name.localeCompare(b.name)), X = window.ivDashX, W = 1240, H = 1754, pages = []; let c, x, y, n = 0;
+  const head = () => { c = document.createElement('canvas'); c.width = W; c.height = H; x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = '#111827'; x.font = 'bold 40px Georgia'; x.fillText(`Liste des invités – ${cutT(X.d.names, 40)}`, 80, 100); x.font = '24px Arial'; x.fillStyle = '#4B5563';
+    x.fillText(`${ivCap(ivDate(X.d))} · ${R.length} réponses · ${R.reduce((t, r) => t + r.guests, 0)} personnes attendues`, 80, 142); y = 200; x.fillStyle = '#F3F4F6'; x.fillRect(80, y, W - 160, 50); x.fillStyle = '#111827'; x.font = 'bold 22px Arial'; ['✓', 'N°', 'Nom', 'Pers.', 'Téléphone', 'Réponse'].forEach((t, i) => x.fillText(t, [100, 150, 230, 700, 800, 1000][i], y + 33)); y += 60; pages.push(c); };
+  head(); R.forEach(r => { if (y > H - 100) head(); n++; x.strokeStyle = '#9CA3AF'; x.strokeRect(100, y + 6, 26, 26); x.fillStyle = '#111827'; x.font = '22px Arial'; x.fillText(String(n), 150, y + 28); x.fillText(cutT(r.name, 36), 230, y + 28); x.fillText(String(r.guests), 715, y + 28); x.fillText('+' + r.phone, 800, y + 28); x.fillText(r.status === 'yes' ? 'Vient' : 'Peut-être', 1000, y + 28); x.strokeStyle = '#E5E7EB'; x.beginPath(); x.moveTo(80, y + 44); x.lineTo(W - 80, y + 44); x.stroke(); y += 48; });
+  pages.forEach((p, i) => { const g = p.getContext('2d'); g.fillStyle = '#9CA3AF'; g.font = '16px Arial'; g.fillText(`Page ${i + 1}/${pages.length} · SocialPages`, 80, H - 40); });
+  spSave(await pagesFiles(pages, `liste-invites-${X.id}`, 'pdf'));
+}
+async function ivPoster() {
+  const X = window.ivDashX; await ivFonts(); const W = 1240, H = 1754, T = IV_TH[X.theme] || IV_TH.or, c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); ivDeco(x, T, X.theme, W, H); x.textAlign = 'center';
+  x.fillStyle = T.mu; x.font = 'italic 40px "Playfair Display", Georgia'; x.fillText('Bienvenue', W / 2, 260); x.fillStyle = T.ac; let fz = 150; x.font = `${fz}px "Great Vibes", cursive`; while (x.measureText(X.d.names).width > W - 240 && fz > 70) { fz -= 6; x.font = `${fz}px "Great Vibes", cursive`; } x.fillText(X.d.names, W / 2, 440);
+  x.fillStyle = T.fg; x.font = '700 40px "Playfair Display", Georgia'; x.fillText(ivCap(ivDate(X.d)), W / 2, 540); const q = stuQR(ivUrl(X.id)), qs = 520; if (q) { x.fillStyle = '#fff'; vidRR(x, W / 2 - qs / 2 - 26, 640 - 26, qs + 52, qs + 52, 26); x.fill(); x.imageSmoothingEnabled = false; x.drawImage(q, W / 2 - qs / 2, 640, qs, qs); }
+  x.fillStyle = T.fg; x.font = '700 40px "Playfair Display", Georgia'; x.fillText('📱 Scannez : programme, lieux', W / 2, 1290); x.fillText('et livre d’or', W / 2, 1345); x.font = '24px Arial'; x.fillStyle = T.mu; x.fillText('Invitation créée avec SocialPages', W / 2, H - 90);
+  spSave(await pagesFiles([c], `affiche-entree-${X.id}`, 'pdf'));
+}
+
 function tryJoinLive(hid, n = 0) {
   liveGuestListen();
   if (lives[hid]) return joinLive(hid);
