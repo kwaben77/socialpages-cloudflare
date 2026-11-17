@@ -648,7 +648,7 @@ video.pm{background:#000}
 .vidout{display:block;margin:0 auto 10px;width:auto!important;max-width:100%;max-height:68vh}
 /* ===== Studio pub ===== */
 /* ===== Outils gratuits : CV, lettre, carte de visite ===== */
-.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}@media(min-width:600px){.tools{grid-template-columns:repeat(4,1fr)}}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.tools button:last-child:nth-child(odd){grid-column:1/-1}@media(min-width:600px){.tools{grid-template-columns:repeat(5,1fr)}.tools button:last-child:nth-child(odd){grid-column:auto}}
 .tools button{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:1px solid #BFDBFE;border-radius:16px;padding:12px 6px;cursor:pointer;background:linear-gradient(160deg,#EFF6FF,#ECFDF5)}
 .tools button span{font-size:28px}.tools button b{font-size:13px;color:#1E3A8A;line-height:1.2}.tools button small{font-size:11px;color:#047857;font-weight:700}
 .toolsh{display:flex;justify-content:space-between;align-items:center;margin-top:10px}.toolsh b{font-size:15px}.toolsh small{color:#16A34A;font-weight:700}
@@ -856,6 +856,15 @@ body.noscroll{overflow:hidden}
 .ivwall{display:flex;flex-direction:column;gap:2px}.ivwish p{font:italic 500 17px/1.5 "Playfair Display",Georgia,serif;margin:0 0 8px}.ivwish b{color:var(--ac);font-size:14px}
 .ivfoot{margin-top:50px;padding:18px;border-top:1px solid color-mix(in srgb,var(--ac) 30%,transparent);font:14px system-ui,sans-serif;color:var(--mu);cursor:pointer}.ivfoot b{color:var(--ac)}
 @media (prefers-reduced-motion:reduce){.ivr{opacity:1;transform:none;transition:none}.ivgold,.ivenvelope,.ivopen{animation:none}}
+/* ⚡ Reçu rapide + 🏠 Loyers */
+.tixwrap{display:grid;gap:12px}.tixpv{text-align:center;background:#E5E7EB;border-radius:16px;padding:12px}.tixpv canvas{width:100%;max-width:300px;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+@media(min-width:760px){.tixwrap{grid-template-columns:320px 1fr;align-items:start}.tixpv{position:sticky;top:0;max-height:calc(100vh - 140px);overflow:auto}}
+@media(max-width:759px){.tixpv canvas{max-width:220px}}
+.tixit{display:grid;grid-template-columns:1fr 58px 86px 30px;gap:6px;margin-bottom:6px}.tixit input{min-width:0;padding:11px 8px;border:1px solid #D1D5DB;border-radius:10px;font-size:15px}.tixit button{border:none;background:#FEE2E2;color:#B91C1C;border-radius:8px;cursor:pointer}
+.tixtot{display:flex;align-items:center;gap:10px;background:#111827;color:#fff;border-radius:14px;padding:12px 14px;margin:10px 0 12px}.tixtot span{font-weight:800;letter-spacing:.08em;font-size:13px}.tixtot b{flex:1;text-align:right;font-size:26px}.tixtot select{border-radius:8px;padding:6px;border:none;width:auto;flex:none}.tixtot b{white-space:nowrap}
+.rmon{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:6px;margin-bottom:10px}.rmon b{font-size:18px}.rmon button{border:none;background:#F3F4F6;border-radius:10px;width:44px;height:40px;font-size:16px;cursor:pointer}
+.rst{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800}.rst-ok{background:#DCFCE7;color:#15803D}.rst-wa{background:#FEF3C7;color:#B45309}.rst-ko{background:#FEE2E2;color:#B91C1C}.rst-pe{background:#E0E7FF;color:#3730A3}.rst-na{background:#F3F4F6;color:#6B7280}
+.rgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:12px 0 6px}.rgrid div{border-radius:10px;padding:6px 2px;text-align:center;display:flex;flex-direction:column;font-size:12px}.rgrid b{text-transform:capitalize}
 </style>
 </head>
 <body>
@@ -901,7 +910,7 @@ body.noscroll{overflow:hidden}
   <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span><button class="pill" style="margin-left:auto" onclick="go('login')">Se connecter</button></div>
   <div class="page">
     <div class="box exhero"><b>🛍️ Achetez près de chez vous</b><span>Goma, Bukavu et ailleurs : commandez directement sur WhatsApp, sans créer de compte.</span></div>
-    <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div>
+    <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div>
     <div id="livebar-g" class="hidden"></div>
     <div class="filters" id="ex-f">
       <button class="on" onclick="exFilter('tous',this)">Tout</button>
@@ -924,7 +933,7 @@ body.noscroll{overflow:hidden}
     <div id="livebar" class="hidden"></div>
     <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
       <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:var(--g2)" onclick="prodModal()">🛍️ Vendre</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div>
-      <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div></div>
+      <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div></div>
     <div class="filters" id="feed-f">
       <button class="on" onclick="feedFilter('pourvous',this)">Pour vous</button>
       <button onclick="feedFilter('vitrine',this)">🛍️ Vitrine</button>
@@ -2822,7 +2831,7 @@ const BIZ_K = () => 'sp_biz_' + (me?.id || 'x');
 const bid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 function bizLoad() {
   let d = null; try { d = JSON.parse(localStorage.getItem(BIZ_K()) || 'null'); } catch (e) {}
-  d ||= {}; d.pro ||= {}; d.seq ||= {}; d.docs ||= []; d.cli ||= []; d.cash ||= [];
+  d ||= {}; d.pro ||= {}; d.seq ||= {}; d.docs ||= []; d.cli ||= []; d.cash ||= []; d.tix ||= [];
   const P = d.pro; P.name ??= me?.name || ''; P.phone ??= fmtPhone(me?.phone || ''); P.addr ??= me?.city || '';
   P.cur ||= 'USD'; P.rate ??= 2800; P.tva ??= 16; P.color ||= '#16A34A'; P.tpl ||= 'moderne'; P.city ??= me?.city || '';
   return biz = d;
@@ -2862,15 +2871,15 @@ async function bizOpen(tab) {
   if (!me) return needAuth(); bizLoad(); if (tab) bizTab = tab;
   $('bizx')?.remove();
   document.body.insertAdjacentHTML('beforeend', `<div id="bizx" class="bizx"><div class="bizh"><button type="button" class="bizb" onclick="bizClose()" aria-label="Retour">←</button><b>🧰 Mon commerce</b><button type="button" class="bizb" onclick="bizTab='pro';bizRender()" aria-label="Mon entreprise">⚙️</button></div>
-    <div class="biztabs">${[['caisse', '📊 Caisse'], ['docs', '🧾 Factures'], ['carnet', '📒 Carnet'], ['stock', '📦 Stock'], ['pro', '🏢 Entreprise']].map(([k, n]) => `<button type="button" data-k="${k}" onclick="bizTab='${k}';bizRender()">${n}</button>`).join('')}</div>
+    <div class="biztabs">${[['caisse', '📊 Caisse'], ['recu', '⚡ Reçu rapide'], ['docs', '🧾 Factures'], ['loyer', '🏠 Loyers'], ['carnet', '📒 Carnet'], ['stock', '📦 Stock'], ['pro', '🏢 Entreprise']].map(([k, n]) => `<button type="button" data-k="${k}" onclick="bizTab='${k}';bizRender()">${n}</button>`).join('')}</div>
     <div class="bizc" id="bizc"></div></div>`);
   document.body.classList.add('noscroll'); bizRender();
 }
 function bizClose() { $('bizx')?.remove(); document.body.classList.remove('noscroll'); }
 function bizRender() {
-  document.querySelectorAll('.biztabs button').forEach(b => b.classList.toggle('on', b.dataset.k === bizTab));
+  document.querySelectorAll('.biztabs button').forEach(b => { b.classList.toggle('on', b.dataset.k === bizTab); if (b.dataset.k === bizTab) b.scrollIntoView?.({ inline: 'center', block: 'nearest' }); });
   const el = $('bizc'); if (!el) return; el.scrollTop = 0;
-  ({ caisse: bizCaisse, docs: bizDocs, carnet: bizCarnet, stock: bizStock, pro: bizPro })[bizTab]?.(el);
+  ({ caisse: bizCaisse, recu: bizRecu, loyer: bizLoyer, docs: bizDocs, carnet: bizCarnet, stock: bizStock, pro: bizPro })[bizTab]?.(el);
 }
 // ---------- 📊 Caisse ----------
 function cashSum(from, to) { const C = biz.pro.cur; let i = 0, o = 0; biz.cash.forEach(x => { const d = x.date.slice(0, 10); if (d < from || d > to) return; const v = conv(x.amt, x.cur, C); if (x.type === 'in') i += v; else o += v; }); return { i: r2(i), o: r2(o), b: r2(i - o) }; }
@@ -3053,6 +3062,275 @@ function bizImport() {
   i.onchange = async () => { try { const j = JSON.parse(await i.files[0].text()); if (j.app !== 'SocialPages' || !j.data) throw 0; if (!confirm('Remplacer les données de cet appareil par cette sauvegarde ?')) return; localStorage.setItem(BIZ_K(), JSON.stringify(j.data)); bizLoad(); bizRender(); toast('✅ Sauvegarde restaurée'); } catch (e) { toast('Fichier de sauvegarde invalide.'); } };
   i.click();
 }
+// ===================== ⚡ REÇU RAPIDE (petit commerçant) =====================
+const TIX_ST = { ticket: 'Ticket de caisse', carte: 'Carte couleur', luxe: 'Luxe noir', wax: 'Wax africain' };
+const TIX_COL = ['#16A34A', '#2563EB', '#DC2626', '#7C3AED', '#EA580C', '#0F172A', '#B45309', '#DB2777', '#0891B2', '#CA8A04'];
+const PAY_MODES = ['Cash', 'M-Pesa', 'Orange Money', 'Airtel Money'];
+let tixEd = null;
+function tixNew() { const P = biz.pro; return { items: [{ name: '', qty: 1, price: '' }], client: '', phone: '', cur: P.cur, mode: 'Cash', note: '', date: new Date().toISOString() }; }
+function bizRecu(el) {
+  const P = biz.pro; P.tix ||= { st: 'ticket', col: P.color || '#16A34A' }; tixEd ||= tixNew(); const T = tixEd, names = Object.keys(biz.tixItems || {});
+  el.innerHTML = `<div class="tixwrap"><div class="tixpv"><canvas id="tix-cv"></canvas></div><div>
+    <div class="box"><h3 class="cvh">⚡ Reçu rapide</h3><p class="mt" style="font-size:12px;margin:-4px 0 10px">Pour la vente de tous les jours : en 10 secondes, un beau reçu à envoyer sur WhatsApp.</p>
+    <datalist id="tix-names">${names.map(n => `<option value="${esc(n)}">`).join('')}</datalist>
+    <div id="tix-items">${T.items.map((it, i) => `<div class="tixit"><input placeholder="Article (ex : Sac de riz 25 kg)" list="tix-names" value="${esc(it.name)}" oninput="tixSet(${i},'name',this.value,1)"><input type="number" min="0" step="any" inputmode="decimal" value="${it.qty}" title="Quantité" oninput="tixSet(${i},'qty',this.value)"><input type="number" min="0" step="any" inputmode="decimal" placeholder="Prix" value="${it.price}" oninput="tixSet(${i},'price',this.value)">${T.items.length > 1 ? `<button type="button" onclick="tixEd.items.splice(${i},1);bizRender()">✕</button>` : '<span></span>'}</div>`).join('')}</div>
+    <button class="soft" style="width:100%" onclick="tixEd.items.push({name:'',qty:1,price:''});bizRender();setTimeout(()=>document.querySelector('#tix-items .tixit:last-child input')?.focus(),50)">➕ Ajouter un article</button>
+    <div class="tixtot"><span>TOTAL</span><b id="tix-tot">${fmtM(tixSum(), T.cur)}</b><select onchange="tixEd.cur=this.value;tixUp()">${Object.keys(CUR).map(k => `<option ${k === T.cur ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
+    <label class="mt" style="font-size:13px;font-weight:700">Payé par</label><div class="vchips" style="margin:6px 0 10px">${PAY_MODES.map(m => `<button type="button" class="${T.mode === m ? 'on' : ''}" onclick="tixEd.mode='${m}';bizRender()">${m}</button>`).join('')}</div>
+    <div class="grid2"><input placeholder="Client (facultatif)" value="${esc(T.client)}" oninput="tixEd.client=this.value;tixUp()"><input placeholder="WhatsApp client (facultatif)" inputmode="tel" value="${esc(T.phone)}" oninput="tixEd.phone=this.value"></div></div>
+    <div class="box"><h3 class="cvh">🎨 Style du reçu</h3><div class="vchips">${Object.entries(TIX_ST).map(([k, n]) => `<button type="button" class="${P.tix.st === k ? 'on' : ''}" onclick="biz.pro.tix.st='${k}';bizSave();bizRender()">${n}</button>`).join('')}</div>
+    <div class="bizcols" style="margin-top:10px">${TIX_COL.map(c => `<button type="button" class="${P.tix.col === c ? 'on' : ''}" style="background:${c}" onclick="biz.pro.tix.col='${c}';bizSave();bizRender()"></button>`).join('')}</div>
+    ${!P.logo ? '<p class="bizowe" onclick="bizTab=\'pro\';bizRender()">🏢 Ajoutez votre logo et votre nom dans « Entreprise » pour un reçu encore plus pro →</p>' : ''}</div>
+    <button class="pill" style="width:100%;padding:16px;font-size:17px" onclick="tixSave()">✅ Valider et envoyer le reçu</button>
+    <p class="mt" style="font-size:12px;text-align:center">Le montant est ajouté automatiquement à votre caisse.</p>
+    ${(biz.tix || []).length ? `<h3 style="margin:18px 0 4px">Derniers reçus</h3>${biz.tix.slice(-15).reverse().map(t => `<div class="bizrow" onclick="tixView('${t.id}')"><span class="bizav">⚡</span><div><b>${esc(t.num)}</b><small>${esc(t.client || 'Client')} · ${new Date(t.date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</small></div><b>${fmtM(tixSum(t), t.cur)}</b></div>`).join('')}` : ''}
+    </div></div>`;
+  tixUp(true);
+}
+const tixSum = (t = tixEd) => r2(t.items.reduce((a, x) => a + (+x.qty || 0) * (+x.price || 0), 0));
+function tixSet(i, k, v, isName) {
+  const it = tixEd.items[i]; it[k] = v;
+  if (isName) { const p = biz.tixItems?.[v.trim().toLowerCase()]; if (p && !it.price) { it.price = p.price; const ins = document.querySelectorAll('#tix-items .tixit')[i]?.querySelectorAll('input'); if (ins) ins[2].value = p.price; } }
+  tixUp();
+}
+let tixT; function tixUp(now) { $('tix-tot') && ($('tix-tot').textContent = fmtM(tixSum(), tixEd.cur)); clearTimeout(tixT); tixT = setTimeout(async () => { const cv = $('tix-cv'); if (!cv) return; const c = await tixRender({ ...tixEd, num: 'N° …' }); cv.width = c.width; cv.height = c.height; cv.getContext('2d').drawImage(c, 0, 0); }, now ? 0 : 200); }
+async function tixSave() {
+  const T = tixEd; T.items = T.items.filter(it => String(it.name).trim() && (+it.qty || 0) > 0 && (+it.price || 0) > 0).map(it => ({ name: it.name.trim(), qty: +it.qty, price: +it.price }));
+  if (!T.items.length) { T.items = [{ name: '', qty: 1, price: '' }]; bizRender(); return toast('Ajoutez au moins un article avec son prix.'); }
+  const y = new Date().getFullYear(), k = 'T' + y; biz.seq[k] = (biz.seq[k] || 0) + 1; T.num = `R-${y}-${String(biz.seq[k]).padStart(4, '0')}`; T.id = bid(); T.date = new Date().toISOString();
+  biz.tix ||= []; biz.tix.push(T); if (biz.tix.length > 300) biz.tix.splice(0, biz.tix.length - 300);
+  biz.tixItems ||= {}; T.items.forEach(it => biz.tixItems[it.name.toLowerCase()] = { price: it.price }); const ks = Object.keys(biz.tixItems); if (ks.length > 200) ks.slice(0, ks.length - 200).forEach(x => delete biz.tixItems[x]);
+  biz.cash.push({ id: bid(), type: 'in', amt: tixSum(T), cur: T.cur, note: `Reçu ${T.num}${T.client ? ' – ' + T.client : ''} (${T.mode})`, doc: T.num, date: T.date });
+  bizSave(); tixEd = tixNew(); bizRender(); toast('✅ Reçu ' + T.num + ' enregistré (caisse mise à jour)'); tixView(T.id);
+}
+async function tixView(id) {
+  const t = (biz.tix || []).find(x => x.id === id); if (!t) return;
+  openM(`<h3>⚡ Reçu ${esc(t.num)}</h3><div class="docprev" id="tixprev" style="text-align:center"><div class="spin"></div></div>
+    <div class="grid2"><button class="pill" style="background:#25D366" onclick="tixShare('${id}')">📤 Partager l’image</button>${t.phone ? `<button class="pill" onclick="tixWa('${id}')">💬 Message au client</button>` : `<button class="soft" onclick="tixShare('${id}',1)">⬇️ Enregistrer</button>`}</div>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="tixAgain('${id}')">🔁 Refaire la même vente</button><button class="soft" style="color:#B91C1C" onclick="tixDel('${id}')">🗑️ Supprimer</button></div><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+  const c = await tixRender(t); if (!$('tixprev')) return; $('tixprev').innerHTML = `<img src="${c.toDataURL('image/jpeg', 0.9)}" alt="Reçu" style="max-width:380px;margin:auto">`;
+  window.tixFile = await new Promise(r => c.toBlob(b => r(new File([b], `recu-${t.num}.jpg`, { type: 'image/jpeg' })), 'image/jpeg', 0.92));
+}
+async function tixShare(id, save) { const t = biz.tix.find(x => x.id === id); let f = window.tixFile; if (!f || !f.name.includes(t.num)) { const c = await tixRender(t); f = await new Promise(r => c.toBlob(b => r(new File([b], `recu-${t.num}.jpg`, { type: 'image/jpeg' })), 'image/jpeg', 0.92)); }
+  save ? spSave([f]) : spShare([f], `Reçu ${t.num} – ${biz.pro.name || ''} : ${fmtM(tixSum(t), t.cur)}`, t.num); }
+function tixWa(id) { const t = biz.tix.find(x => x.id === id); waSend(t.phone.replace(/\D/g, ''), `Bonjour${t.client ? ' ' + t.client : ''},\nMerci pour votre achat chez ${biz.pro.name || me?.name || ''} ! 🙏\n🧾 Reçu ${t.num} : ${fmtM(tixSum(t), t.cur)} (${t.mode}).\n${t.items.map(i => `• ${i.qty} × ${i.name}`).join('\n')}\nÀ très bientôt !`); }
+function tixAgain(id) { const t = biz.tix.find(x => x.id === id); tixEd = { ...tixNew(), items: JSON.parse(JSON.stringify(t.items)), cur: t.cur }; closeM(); bizTab = 'recu'; bizRender(); }
+function tixDel(id) { if (!confirm('Supprimer ce reçu ? (la caisse n’est pas modifiée)')) return; biz.tix = biz.tix.filter(x => x.id !== id); bizSave(); closeM(); bizRender(); }
+async function tixRender(t) {
+  const P = biz.pro, S = P.tix || { st: 'ticket', col: P.color || '#16A34A' }, st = S.st, col = S.col, W = 760, M = 54, dark = st === 'luxe';
+  const [logo, stamp] = await Promise.all([loadImg(P.logo), loadImg(P.stamp)]), qr = me?.username ? stuQR(location.origin + '/v/' + me.username) : null;
+  const ser = st === 'luxe', F = (w, px) => `${w} ${px}px ${ser ? 'Georgia, "Times New Roman", serif' : 'Arial, Helvetica, sans-serif'}`, MONO = (w, px) => `${w} ${px}px "Courier New", Courier, monospace`;
+  const fg = dark ? '#F5F5F4' : '#111827', mu = dark ? '#A8A29E' : '#6B7280', gold = '#D4AF37', acc = dark ? gold : col;
+  let bandH = 300, hb = 300; const draw = (x, H) => {
+    // fond
+    if (dark) { x.fillStyle = '#0C0A09'; x.fillRect(0, 0, W, H); const g = x.createRadialGradient(W / 2, 0, 10, W / 2, 0, W); g.addColorStop(0, col + '55'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0, 0, W, H); x.strokeStyle = gold; x.lineWidth = 2; x.strokeRect(22, 22, W - 44, H - 44); }
+    else { x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, W, H); }
+    let y;
+    if (st === 'ticket') { x.fillStyle = col; x.fillRect(0, 0, W, 16); y = 70; }
+    else if (st === 'carte') { const g = x.createLinearGradient(0, 0, W, 300); g.addColorStop(0, col); g.addColorStop(1, col + 'CC'); x.fillStyle = g; x.fillRect(0, 0, W, bandH); x.fillStyle = 'rgba(255,255,255,.1)'; x.beginPath(); x.arc(W - 60, 30, 190, 0, 7); x.fill(); x.beginPath(); x.arc(40, bandH - 10, 120, 0, 7); x.fill(); y = 60; }
+    else if (st === 'wax') { const b = 40, cs = [col, '#FACC15', '#0E7490', '#3B1F0E']; x.fillStyle = '#3B1F0E'; x.fillRect(0, 0, W, b); x.fillRect(0, H - b, W, b); for (const yy of [0, H - b]) for (let i = 0; i * b < W; i++) { x.fillStyle = cs[i % 3]; x.beginPath(); x.moveTo(i * b + b / 2, yy + 4); x.lineTo(i * b + b - 4, yy + b / 2); x.lineTo(i * b + b / 2, yy + b - 4); x.lineTo(i * b + 4, yy + b / 2); x.fill(); x.fillStyle = '#FFF8EC'; x.beginPath(); x.arc(i * b + b / 2, yy + b / 2, 5, 0, 7); x.fill(); } x.fillStyle = '#FFF8EC'; x.fillRect(0, b, W, H - 2 * b); y = 90; }
+    else y = 80;
+    const onBand = st === 'carte', tc = onBand ? '#fff' : fg, sc = onBand ? 'rgba(255,255,255,.88)' : mu; x.textAlign = 'center';
+    if (logo) { const s = Math.min(130 / logo.width, 110 / logo.height), w = logo.width * s, h = logo.height * s; if (onBand || dark) { x.fillStyle = '#fff'; vidRR(x, W / 2 - w / 2 - 12, y - 12, w + 24, h + 24, 16); x.fill(); } x.drawImage(logo, W / 2 - w / 2, y, w, h); y += h + 30; }
+    let nm = P.name || me?.name || 'Ma boutique', fz = 46; x.font = F('bold', fz); while (fz > 26 && x.measureText(nm).width > W - 2 * M) { fz -= 2; x.font = F('bold', fz); }
+    x.fillStyle = dark ? gold : tc; y += fz * 0.8; x.fillText(nm, W / 2, y); y += 14;
+    x.font = F('normal', 22); x.fillStyle = sc; [P.act, P.addr, P.phone].filter(Boolean).forEach(l => { y += 30; x.fillText(cutT(l, 52), W / 2, y); });
+    if (onBand) { hb = y + 34; y += 74; } else y += 34;
+    // titre
+    x.fillStyle = acc; x.font = F('bold', 30); x.fillText('REÇU', W / 2, y + 10); x.font = MONO('bold', 22); x.fillStyle = fg; x.fillText(t.num, W / 2, y + 46);
+    x.font = F('normal', 21); x.fillStyle = mu; x.fillText(new Date(t.date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(' ', ' à '), W / 2, y + 80); y += 96;
+    if (t.client) { x.fillStyle = fg; x.font = F('bold', 22); x.fillText('Client : ' + cutT(t.client, 40), W / 2, y + 12); y += 30; }
+    const dash = yy => { x.strokeStyle = dark ? '#57534E' : '#CBD5E1'; x.lineWidth = 2; x.setLineDash([10, 8]); x.beginPath(); x.moveTo(M, yy); x.lineTo(W - M, yy); x.stroke(); x.setLineDash([]); };
+    y += 16; dash(y); y += 20; x.textAlign = 'left';
+    t.items.forEach(it => { x.fillStyle = fg; x.font = F('bold', 24); const L = vidWrap(x, it.name || '—', W - 2 * M - 210, 2); L.forEach((l, k) => x.fillText(l, M, y + 28 + k * 30));
+      x.textAlign = 'right'; x.font = MONO('bold', 24); x.fillText(fmtM((+it.qty || 0) * (+it.price || 0), t.cur), W - M, y + 28); x.font = MONO('normal', 20); x.fillStyle = mu; x.fillText(`${it.qty} × ${fmtM(+it.price || 0, t.cur)}`, W - M, y + 58); x.textAlign = 'left'; y += Math.max(L.length * 30 + 10, 70); });
+    y += 6; dash(y); y += 24;
+    // total
+    const tot = tixSum(t); if (st === 'ticket') { x.fillStyle = fg; x.font = F('bold', 32); x.fillText('TOTAL', M, y + 40); x.textAlign = 'right'; x.font = MONO('bold', 44); x.fillText(fmtM(tot, t.cur), W - M, y + 44); x.textAlign = 'left'; y += 70; }
+    else { x.fillStyle = dark ? gold : col; vidRR(x, M, y, W - 2 * M, 90, 20); x.fill(); x.fillStyle = dark ? '#0C0A09' : '#fff'; x.font = F('bold', 28); x.fillText('TOTAL', M + 28, y + 56); x.textAlign = 'right'; x.font = F('bold', 44); x.fillText(fmtM(tot, t.cur), W - M - 28, y + 60); x.textAlign = 'left'; y += 110; }
+    x.textAlign = 'center'; x.fillStyle = mu; x.font = F('italic', 19); vidWrap(x, mWords(tot, t.cur), W - 2 * M, 2).forEach(l => { y += 26; x.fillText(l, W / 2, y); }); y += 40;
+    x.fillStyle = fg; x.font = F('bold', 23); x.fillText(`✔ Payé par ${t.mode}`, W / 2, y); y += 20;
+    if (stamp) { const s = Math.min(170 / stamp.width, 170 / stamp.height); x.save(); x.globalAlpha = 0.85; x.translate(W - M - 90, y + 70); x.rotate(-0.15); x.drawImage(stamp, -stamp.width * s / 2, -stamp.height * s / 2, stamp.width * s, stamp.height * s); x.restore(); }
+    y += 40; x.fillStyle = acc; x.font = F('bold', 30); x.fillText('Merci pour votre achat ! 🙏', W / 2, y + 20); y += 46;
+    if (qr) { y += 20; x.fillStyle = '#fff'; vidRR(x, W / 2 - 80, y - 10, 160, 160, 12); x.fill(); x.imageSmoothingEnabled = false; x.drawImage(qr, W / 2 - 70, y, 140, 140); x.imageSmoothingEnabled = true; y += 172; x.fillStyle = mu; x.font = F('normal', 19); x.fillText('Scannez : ma boutique en ligne', W / 2, y); y += 10; }
+    x.font = F('normal', 16); x.fillStyle = mu; x.globalAlpha = 0.8; x.fillText('Reçu établi avec SocialPages', W / 2, y + 36); x.globalAlpha = 1; y += 60;
+    if (st === 'wax') y += 40; else if (st === 'ticket') y += 20;
+    if (st === 'ticket') { x.fillStyle = dark ? '#000' : '#E5E7EB'; for (let i = 0; i < W; i += 24) { x.beginPath(); x.moveTo(i, H); x.lineTo(i + 12, H - 14); x.lineTo(i + 24, H); x.fill(); } }
+    x.textAlign = 'left'; return y;
+  };
+  const tmp = document.createElement('canvas'); tmp.width = W; tmp.height = 4000; const H = Math.ceil(draw(tmp.getContext('2d'), 4000) + 10); bandH = hb;
+  const c = document.createElement('canvas'); c.width = W; c.height = H; draw(c.getContext('2d'), H); return c;
+}
+// ===================== 🏠 LOYERS : maisons, locataires, quittances, contrat de bail =====================
+const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+const ymNow = () => today().slice(0, 7), ymAdd = (m, k) => { const d = new Date(m + '-15'); d.setMonth(d.getMonth() + k); return d.toISOString().slice(0, 7); };
+const ymTxt = m => MOIS[+m.slice(5) - 1] + ' ' + m.slice(0, 4);
+let rentM = null;
+function rentData() { biz.rent ||= { units: [], pays: [] }; return biz.rent; }
+function rentPaid(u, m) { return r2(rentData().pays.filter(p => p.uid === u.id && p.months.includes(m)).reduce((a, p) => a + p.amt / p.months.length, 0)); }
+function rentStat(u, m) {
+  if (u.start && u.start.slice(0, 7) > m) return { k: 'na', t: 'Pas encore', paid: 0, rest: 0 };
+  const paid = rentPaid(u, m), rest = r2(Math.max(0, (+u.rent || 0) - paid)); if (rest <= 0.005) return { k: 'ok', t: 'Payé', paid, rest: 0 };
+  const late = m < ymNow() || (m === ymNow() && +today().slice(8) > (+u.day || 5)); return { k: paid > 0 ? 'wa' : late ? 'ko' : 'pe', t: paid > 0 ? 'Partiel' : late ? 'En retard' : 'À payer', paid, rest };
+}
+function bizLoyer(el) {
+  const R = rentData(), m = rentM ||= ymNow(), C = biz.pro.cur, U = R.units.filter(u => !u.off); let due = 0, got = 0;
+  U.forEach(u => { const s = rentStat(u, m); if (s.k === 'na') return; due += conv(+u.rent || 0, u.cur, C); got += conv(s.paid, u.cur, C); });
+  const late = U.filter(u => ['ko', 'wa'].includes(rentStat(u, m).k)).length;
+  el.innerHTML = `<div class="rmon"><button type="button" onclick="rentM=ymAdd(rentM,-1);bizRender()">◀</button><b>${ivCap(ymTxt(m))}</b><button type="button" onclick="rentM=ymAdd(rentM,1);bizRender()">▶</button></div>
+    ${U.length ? `<div class="bizcards"><div class="bizcard"><small>Attendu</small><b>${fmtM(due, C)}</b></div><div class="bizcard g"><small>Encaissé</small><b>${fmtM(got, C)}</b></div><div class="bizcard ${due - got > 0.005 ? 'r' : 'g'} wide"><small>Reste à encaisser${late ? ` · ${late} locataire${late > 1 ? 's' : ''} en retard` : ''}</small><b>${fmtM(Math.max(0, due - got), C)}</b></div></div>` : ''}
+    <button class="pill" style="width:100%;margin-top:4px" onclick="unitEdit()">➕ Ajouter une maison / un locataire</button>
+    ${U.length ? U.map(u => { const s = rentStat(u, m); return `<div class="bizrow" onclick="unitView('${u.id}')"><span class="bizav">🏠</span><div><b>${esc(u.name)}</b><small>${esc(u.tenant || 'Libre')} · ${fmtM(+u.rent || 0, u.cur)}/mois</small></div><div style="text-align:right"><span class="rst rst-${s.k}">${s.t}</span>${s.k === 'wa' ? `<small>reste ${fmtM(s.rest, u.cur)}</small>` : ''}</div></div>`; }).join('')
+      : empty('🏠', 'Aucune maison', 'Ajoutez vos maisons ou appartements et vos locataires : quittances en 1 clic, rappels WhatsApp et contrat de bail prêt à signer.')}
+    ${R.units.some(u => u.off) ? `<details class="bizdet" style="margin-top:12px"><summary>Anciens locataires / maisons archivées</summary>${R.units.filter(u => u.off).map(u => `<div class="bizrow" onclick="unitView('${u.id}')"><span class="bizav">📦</span><div><b>${esc(u.name)}</b><small>${esc(u.tenant || '')}</small></div></div>`).join('')}</details>` : ''}`;
+}
+function unitEdit(id) {
+  const u = id ? rentData().units.find(x => x.id === id) : { name: '', addr: '', tenant: '', phone: '', idno: '', rent: '', cur: biz.pro.cur, dep: '', start: today(), day: 5, dur: 12 };
+  openM(`<h3>${id ? '✏️ Modifier' : '🏠 Nouvelle location'}</h3>
+    <div class="fg"><label>Maison / appartement</label><input id="u-name" maxlength="50" value="${esc(u.name)}" placeholder="ex : Appartement A2, Maison Himbi"></div>
+    <div class="fg"><label>Adresse du bien</label><input id="u-addr" maxlength="100" value="${esc(u.addr)}" placeholder="Avenue, n°, quartier, ville"></div>
+    <div class="grid2"><div class="fg"><label>Locataire</label><input id="u-ten" maxlength="60" value="${esc(u.tenant)}" placeholder="Nom complet"></div><div class="fg"><label>WhatsApp locataire</label><input id="u-ph" inputmode="tel" value="${esc(u.phone)}" placeholder="+243…"></div></div>
+    <div class="fg"><label>Pièce d’identité du locataire (facultatif)</label><input id="u-id" maxlength="60" value="${esc(u.idno || '')}" placeholder="ex : Carte d’électeur n° …"></div>
+    <div class="grid2"><div class="fg"><label>Loyer mensuel</label><input id="u-rent" type="number" min="0" step="any" inputmode="decimal" value="${u.rent}" placeholder="ex : 150"></div><div class="fg"><label>Monnaie</label><select id="u-cur">${Object.keys(CUR).map(k => `<option ${k === u.cur ? 'selected' : ''}>${k}</option>`).join('')}</select></div></div>
+    <div class="fg"><label>Garantie / caution versée (montant)</label><input id="u-dep" type="number" min="0" step="any" inputmode="decimal" value="${u.dep}" placeholder="ex : 450 (3 mois)"></div>
+    <div class="grid2"><div class="fg"><label>Début du bail</label><input id="u-start" type="date" value="${esc(u.start)}"></div><div class="fg"><label>Payer avant le</label><select id="u-day">${[1, 5, 10, 15, 20, 25, 28].map(d => `<option value="${d}" ${+u.day === d ? 'selected' : ''}>${d} du mois</option>`).join('')}</select></div></div>
+    <div class="fg"><label>Durée du bail</label><select id="u-dur">${[[6, '6 mois'], [12, '1 an'], [24, '2 ans'], [36, '3 ans']].map(([v, n]) => `<option value="${v}" ${+u.dur === v ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+    <button class="pill" style="width:100%" onclick="unitSave('${id || ''}')">💾 Enregistrer</button><button class="pbtn gray" onclick="${id ? `unitView('${id}')` : 'closeM()'}">Annuler</button>`);
+}
+function unitSave(id) {
+  const g = k => ($(k)?.value || '').trim(), v = { name: g('u-name'), addr: g('u-addr'), tenant: g('u-ten'), phone: g('u-ph'), idno: g('u-id'), rent: r2(g('u-rent')), cur: g('u-cur'), dep: r2(g('u-dep')), start: g('u-start'), day: +g('u-day') || 5, dur: +g('u-dur') || 12 };
+  if (!v.name) return toast('Entrez le nom de la maison (ex : Appartement A2).'); if (!(v.rent > 0)) return toast('Entrez le loyer mensuel.');
+  const R = rentData(); let u = id && R.units.find(x => x.id === id); if (u) Object.assign(u, v); else { u = { id: bid(), ...v }; R.units.push(u); }
+  bizSave(); toast('✅ Enregistré'); bizRender(); unitView(u.id);
+}
+function unitView(id) {
+  const R = rentData(), u = R.units.find(x => x.id === id); if (!u) return; const P = R.pays.filter(p => p.uid === id).sort((a, b) => b.date.localeCompare(a.date));
+  const months = [...Array(12)].map((_, k) => ymAdd(ymNow(), -11 + k)).filter(m => !u.start || u.start.slice(0, 7) <= m);
+  const owe = months.reduce((a, m) => a + rentStat(u, m).rest, 0);
+  openM(`<h3>🏠 ${esc(u.name)}</h3><p class="mt" style="margin-top:-6px">${esc(u.addr || '')}</p>
+    <div class="bizrow" style="cursor:default"><span class="bizav">👤</span><div><b>${esc(u.tenant || 'Sans locataire')}</b><small>${esc(u.phone || '')}${u.start ? ' · depuis le ' + fdate(u.start) : ''}</small></div><b>${fmtM(+u.rent || 0, u.cur)}<small>/mois</small></b></div>
+    <div class="rgrid">${months.map(m => { const s = rentStat(u, m); return `<div class="rst-${s.k}" title="${s.t}"><b>${MOIS[+m.slice(5) - 1].slice(0, 3)}</b><small>${s.k === 'ok' ? '✔' : s.k === 'wa' ? '½' : s.k === 'ko' ? '✕' : '·'}</small></div>`; }).join('')}</div>
+    ${owe > 0 ? `<div class="bizcard r wide" style="margin:8px 0"><small>Arriérés (12 derniers mois)</small><b>${fmtM(owe, u.cur)}</b></div>` : ''}
+    <button class="pill" style="width:100%" onclick="rentPay('${id}')">💰 Encaisser un loyer (quittance)</button>
+    <div class="grid2" style="margin-top:8px">${u.phone ? `<button class="soft" onclick="rentRemind('${id}')">💬 Rappel WhatsApp</button>` : ''}<button class="soft" onclick="bailMake('${id}')">📄 Contrat de bail (PDF)</button><button class="soft" onclick="unitEdit('${id}')">✏️ Modifier</button><button class="soft" onclick="unitArch('${id}')">${u.off ? '♻️ Réactiver' : '📦 Archiver (départ)'}</button></div>
+    <h4 style="margin:14px 0 4px">Quittances</h4>${P.length ? P.map(p => `<div class="bizrow" onclick="quitView('${p.id}')"><span class="bizav">🧾</span><div><b>${esc(p.num)}</b><small>${p.months.map(ymTxt).join(', ')} · ${fdate(p.date)}</small></div><b>${fmtM(p.amt, p.cur)}</b></div>`).join('') : '<p class="mt">Aucune quittance pour le moment.</p>'}
+    <button class="pbtn gray" style="color:#B91C1C" onclick="unitDel('${id}')">🗑️ Supprimer définitivement</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+}
+function unitArch(id) { const u = rentData().units.find(x => x.id === id); u.off = !u.off; bizSave(); bizRender(); unitView(id); }
+function unitDel(id) { if (!confirm('Supprimer cette maison et toutes ses quittances ? (la caisse n’est pas modifiée)')) return; const R = rentData(); R.units = R.units.filter(x => x.id !== id); R.pays = R.pays.filter(p => p.uid !== id); bizSave(); closeM(); bizRender(); }
+function rentPay(id) {
+  const u = rentData().units.find(x => x.id === id), b0 = u.start && u.start.slice(0, 7) > ymAdd(ymNow(), -12) ? u.start.slice(0, 7) : ymAdd(ymNow(), -12), first = [...Array(18)].map((_, k) => ymAdd(b0, k)).find(m => rentStat(u, m).rest > 0) || ymNow(), s = rentStat(u, first);
+  const opts = [...Array(18)].map((_, k) => ymAdd(ymNow(), -12 + k)).filter(m => !u.start || u.start.slice(0, 7) <= m);
+  openM(`<h3>💰 Loyer – ${esc(u.name)}</h3><p class="mt">${esc(u.tenant || '')} · ${fmtM(+u.rent || 0, u.cur)}/mois</p>
+    <div class="grid2"><div class="fg"><label>À partir du mois</label><select id="rp-m" onchange="rentPayUp('${id}')">${opts.map(m => `<option value="${m}" ${m === first ? 'selected' : ''}>${ivCap(ymTxt(m))}${rentStat(u, m).k === 'ok' ? ' ✔' : ''}</option>`).join('')}</select></div>
+    <div class="fg"><label>Nombre de mois</label><select id="rp-n" onchange="rentPayUp('${id}')">${[1, 2, 3, 4, 5, 6, 12].map(n => `<option>${n}</option>`).join('')}</select></div></div>
+    <div class="fg"><label>Montant reçu (${u.cur})</label><input id="rp-amt" type="text" inputmode="decimal" value="${String(s.rest || u.rent).replace('.', ',')}"></div>
+    <label class="mt" style="font-size:13px;font-weight:700">Payé par</label><div class="vchips" id="rp-mode" style="margin:6px 0 10px">${PAY_MODES.concat('Banque').map((m, i) => `<button type="button" class="${i ? '' : 'on'}" onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===this))">${m}</button>`).join('')}</div>
+    <div class="fg"><label>Note (facultatif)</label><input id="rp-note" maxlength="80" placeholder="ex : payé par son frère"></div>
+    <button class="pill" style="width:100%" onclick="rentPayOk('${id}')">🧾 Enregistrer et créer la quittance</button><button class="pbtn gray" onclick="unitView('${id}')">Annuler</button>`);
+}
+function rentPayUp(id) { const u = rentData().units.find(x => x.id === id), m0 = $('rp-m').value, n = +$('rp-n').value; let t = 0; for (let k = 0; k < n; k++) t += rentStat(u, ymAdd(m0, k)).rest; $('rp-amt').value = String(r2(t || u.rent)).replace('.', ','); }
+function rentPayOk(id) {
+  const u = rentData().units.find(x => x.id === id), m0 = $('rp-m').value, n = +$('rp-n').value, amt = r2(parseFloat(String($('rp-amt').value).replace(/\s/g, '').replace(',', '.')));
+  if (!(amt > 0)) return toast('Entrez un montant valide.');
+  const y = new Date().getFullYear(), k = 'QL' + y; biz.seq[k] = (biz.seq[k] || 0) + 1;
+  const p = { id: bid(), uid: id, months: [...Array(n)].map((_, i) => ymAdd(m0, i)), amt, cur: u.cur, date: new Date().toISOString(), num: `QL-${y}-${String(biz.seq[k]).padStart(4, '0')}`, mode: document.querySelector('#rp-mode .on')?.textContent || 'Cash', note: $('rp-note').value.trim() };
+  rentData().pays.push(p); biz.cash.push({ id: bid(), type: 'in', amt, cur: u.cur, note: `Loyer ${p.months.map(ymTxt).join(', ')} – ${u.tenant || u.name}`, doc: p.num, date: p.date });
+  bizSave(); bizRender(); toast('✅ Loyer encaissé · quittance ' + p.num); quitView(p.id);
+}
+function rentRemind(id) {
+  const u = rentData().units.find(x => x.id === id), P = biz.pro, months = [...Array(12)].map((_, k) => ymAdd(ymNow(), -11 + k)).filter(m => rentStat(u, m).rest > 0);
+  const tot = months.reduce((a, m) => a + rentStat(u, m).rest, 0);
+  waSend(String(u.phone).replace(/\D/g, ''), `Bonjour ${u.tenant},\nJ’espère que vous allez bien. Petit rappel amical concernant le loyer de « ${u.name} »${months.length ? ` : ${months.map(ymTxt).join(', ')} – reste à payer ${fmtM(tot, u.cur)}` : ''}.\nMerci de régler avant le ${u.day} du mois.${P.pay ? '\nPaiement : ' + P.pay.split('\n').join(' · ') : ''}\nMerci beaucoup ! 🙏\n${P.name || me?.name || ''}`);
+}
+async function quitView(pid) {
+  const p = rentData().pays.find(x => x.id === pid); if (!p) return;
+  openM(`<h3>🧾 Quittance ${esc(p.num)}</h3><div class="docprev" id="qprev"><div class="spin"></div></div>
+    <div class="grid2"><button class="pill" style="background:#25D366" onclick="quitOut('${pid}','img',1)">📤 Partager l’image</button><button class="pill" onclick="quitOut('${pid}','pdf',1)">📎 Envoyer le PDF</button></div>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="quitOut('${pid}','pdf')">⬇️ Télécharger le PDF</button><button class="soft" style="color:#B91C1C" onclick="quitDel('${pid}')">🗑️ Annuler la quittance</button></div><button class="pbtn gray" onclick="unitView('${p.uid}')">← Retour</button>`);
+  $('modal-box').classList.add('mwide'); const c = await quitRender(p); if (!$('qprev')) return; $('qprev').innerHTML = `<img src="${c.toDataURL('image/jpeg', 0.85)}" alt="Quittance">`;
+  window.qFiles = { id: pid, img: pagesFiles([c], `quittance-${p.num}`, 'img'), pdf: pagesFiles([c], `quittance-${p.num}`, 'pdf') };
+}
+async function quitOut(pid, kind, share) {
+  const p = rentData().pays.find(x => x.id === pid), u = rentData().units.find(x => x.id === p.uid); let F = window.qFiles?.id === pid ? window.qFiles[kind] : null; if (!F) F = pagesFiles([await quitRender(p)], `quittance-${p.num}`, kind); const files = await F;
+  share ? spShare(files, `Quittance de loyer ${p.num} – ${u?.name || ''}`, p.num) : spSave(files);
+}
+function quitDel(pid) { const R = rentData(), p = R.pays.find(x => x.id === pid); if (!confirm('Annuler cette quittance ? (le montant est retiré de la caisse)')) return; R.pays = R.pays.filter(x => x.id !== pid); biz.cash = biz.cash.filter(c => c.doc !== p.num); bizSave(); bizRender(); unitView(p.uid); }
+async function quitRender(p) {
+  const P = biz.pro, u = rentData().units.find(x => x.id === p.uid) || {}, W = 1240, H = 1754, M = 90, col = P.color || '#16A34A', F = (w, px) => `${w} ${px}px Georgia, "Times New Roman", serif`, A = (w, px) => `${w} ${px}px Arial, Helvetica, sans-serif`;
+  const [logo, stamp, sign] = await Promise.all([loadImg(P.logo), loadImg(P.stamp), loadImg(P.sign)]);
+  const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H);
+  // cadre guilloché
+  x.strokeStyle = col; x.lineWidth = 6; x.strokeRect(40, 40, W - 80, H - 80); x.lineWidth = 1.5; x.strokeRect(56, 56, W - 112, H - 112);
+  x.save(); x.globalAlpha = 0.05; x.strokeStyle = col; x.lineWidth = 2; for (let r = 60; r < 900; r += 26) { x.beginPath(); x.arc(W / 2, 760, r, 0, 7); x.stroke(); } x.restore();
+  // en-tête
+  let y = 110; if (logo) { const s = Math.min(150 / logo.width, 120 / logo.height); x.drawImage(logo, M, y, logo.width * s, logo.height * s); }
+  x.textAlign = 'right'; x.fillStyle = '#111827'; x.font = A('bold', 34); x.fillText(cutT(P.name || me?.name || '', 40), W - M, y + 34); x.font = A('normal', 22); x.fillStyle = '#4B5563';
+  [P.addr, P.phone, P.mail].filter(Boolean).forEach((t, k) => x.fillText(cutT(t, 60), W - M, y + 72 + k * 30));
+  y = 300; x.textAlign = 'center'; x.fillStyle = col; x.font = F('bold', 64); x.fillText('QUITTANCE DE LOYER', W / 2, y); x.fillStyle = '#111827'; x.font = A('bold', 26); x.fillText('N° ' + p.num, W / 2, y + 50);
+  const per = p.months.length > 1 ? `${ymTxt(p.months[0])} à ${ymTxt(p.months[p.months.length - 1])}` : ymTxt(p.months[0]);
+  x.font = A('normal', 24); x.fillStyle = '#4B5563'; x.fillText('Période : ' + ivCap(per), W / 2, y + 90);
+  // montant
+  y = 450; x.fillStyle = col; vidRR(x, W / 2 - 300, y, 600, 120, 24); x.fill(); x.fillStyle = '#fff'; x.font = A('bold', 64); x.fillText(fmtM(p.amt, p.cur), W / 2, y + 82);
+  // texte
+  y = 650; x.textAlign = 'left'; x.fillStyle = '#111827'; x.font = F('normal', 29);
+  const txt = `Je soussigné(e) ${P.name || me?.name || '…'}, bailleur du logement « ${u.name || ''} »${u.addr ? ' situé ' + u.addr : ''}, déclare avoir reçu de M. / Mme ${u.tenant || '…'} la somme de ${fmtM(p.amt, p.cur)} (${mWords(p.amt, p.cur).toLowerCase()}) au titre du loyer de ${per}.`;
+  vidWrap(x, txt, W - 2 * M, 8).forEach(l => { x.fillText(l, M, y); y += 44; }); y += 20;
+  // détail
+  const rows = [['Loyer mensuel', fmtM(+u.rent || 0, u.cur)], ['Période', ivCap(per)], ['Montant payé', fmtM(p.amt, p.cur)]], due = r2((+u.rent || 0) * p.months.length), rest = r2(p.months.reduce((a, m) => a + rentStat(u, m).rest, 0));
+  rows.push(['Reste à payer sur la période', rest > 0 ? fmtM(rest, u.cur) : 'Néant – soldé ✔']); rows.push(['Mode de paiement', p.mode]); if (p.note) rows.push(['Note', p.note]);
+  rows.forEach(([a, b], k) => { if (k % 2 === 0) { x.fillStyle = '#F3F4F6'; x.fillRect(M, y, W - 2 * M, 58); } x.fillStyle = '#374151'; x.font = A('normal', 24); x.fillText(a, M + 20, y + 38); x.textAlign = 'right'; x.fillStyle = '#111827'; x.font = A('bold', 24); x.fillText(cutT(b, 50), W - M - 20, y + 38); x.textAlign = 'left'; y += 58; });
+  x.strokeStyle = col; x.lineWidth = 2; x.strokeRect(M, y - rows.length * 58, W - 2 * M, rows.length * 58);
+  // tampon PAYÉ
+  if (rest <= 0.005 && due > 0) { x.save(); x.translate(W - 205, 512); x.rotate(-0.3); x.scale(0.72, 0.72); x.strokeStyle = x.fillStyle = 'rgba(22,163,74,.55)'; x.lineWidth = 8; vidRR(x, -150, -60, 300, 120, 20); x.stroke(); x.font = 'bold 76px Arial'; x.textAlign = 'center'; x.fillText('PAYÉ', 0, 28); x.restore(); }
+  // fait à + signatures
+  y += 70; x.font = F('italic', 26); x.fillStyle = '#111827'; x.fillText(`Fait à ${P.city || 'Goma'}, le ${fdate(p.date.slice(0, 10))}`, M, y);
+  y += 60; x.font = A('bold', 24); x.fillText('Le locataire', M + 40, y); x.textAlign = 'right'; x.fillText('Le bailleur (signature et cachet)', W - M - 20, y); x.textAlign = 'left';
+  if (stamp) { const s = Math.min(230 / stamp.width, 230 / stamp.height); x.save(); x.globalAlpha = 0.9; x.translate(W - M - 290, y + 140); x.rotate(-0.12); x.drawImage(stamp, -stamp.width * s / 2, -stamp.height * s / 2, stamp.width * s, stamp.height * s); x.restore(); }
+  if (sign) { const s = Math.min(300 / sign.width, 130 / sign.height); x.drawImage(sign, W - M - 330, y + 60, sign.width * s, sign.height * s); }
+  // mentions
+  x.font = A('italic', 19); x.fillStyle = '#6B7280'; vidWrap(x, 'Le paiement de la présente quittance n’emporte pas présomption de paiement des termes antérieurs. Cette quittance annule tous les reçus qui auraient pu être donnés pour acompte sur la même période.', W - 2 * M, 3).forEach((l, k) => x.fillText(l, M, H - 190 + k * 26));
+  x.fillStyle = '#9CA3AF'; x.font = A('normal', 17); x.fillText('Quittance établie avec SocialPages', M, H - 90); return c;
+}
+async function bailMake(id) {
+  const u = rentData().units.find(x => x.id === id), P = biz.pro; toast('⏳ Préparation du contrat…', 1500);
+  const [logo, stamp, sign] = await Promise.all([loadImg(P.logo), loadImg(P.stamp), loadImg(P.sign)]), W = 1240, H = 1754, M = 110, col = P.color || '#16A34A', F = (w, px) => `${w} ${px}px Georgia, "Times New Roman", serif`;
+  const dur = +u.dur || 12, end = u.start ? (() => { const d = new Date(u.start + 'T12:00'); d.setMonth(d.getMonth() + dur); d.setDate(d.getDate() - 1); return d.toISOString().slice(0, 10); })() : '';
+  const depM = u.dep && u.rent ? Math.round(u.dep / u.rent) : 0, durT = dur % 12 ? dur + ' mois' : (dur / 12) + ' an' + (dur > 12 ? 's' : '');
+  const A = [['Article 1 – Objet', `Le bailleur donne en location au locataire, qui accepte, le bien suivant : « ${u.name} »${u.addr ? ', situé ' + u.addr : ''}, à usage d’habitation. Le locataire déclare l’avoir visité et le prendre dans l’état où il se trouve.`],
+    ['Article 2 – Durée', `Le présent bail est conclu pour une durée de ${durT}${u.start ? `, prenant cours le ${fdate(u.start)} pour se terminer le ${fdate(end)}` : ''}. Il est renouvelable par tacite reconduction, sauf préavis donné par l’une des parties.`],
+    ['Article 3 – Loyer', `Le loyer mensuel est fixé à ${fmtM(+u.rent || 0, u.cur)} (${mWords(+u.rent || 0, u.cur).toLowerCase()}), payable d’avance au plus tard le ${u.day || 5} de chaque mois. Chaque paiement donne lieu à une quittance.${P.pay ? ' Moyens de paiement : ' + P.pay.split('\n').join(', ') + '.' : ''}`],
+    ['Article 4 – Garantie locative', u.dep ? `Le locataire verse une garantie de ${fmtM(u.dep, u.cur)}${depM ? ` (${depM} mois de loyer)` : ''}, qui ne produit pas d’intérêts. Elle sera restituée à la fin du bail, déduction faite des sommes éventuellement dues et du coût des réparations locatives.` : 'Aucune garantie locative n’est demandée.'],
+    ['Article 5 – Obligations du locataire', 'Le locataire s’engage à : payer le loyer aux dates convenues ; utiliser le logement en bon père de famille ; ne pas sous-louer ni céder le bail sans accord écrit du bailleur ; ne faire aucune transformation sans autorisation ; assurer les petites réparations et l’entretien courant ; laisser visiter le logement en cas de nécessité, après information préalable.'],
+    ['Article 6 – Obligations du bailleur', 'Le bailleur s’engage à : délivrer un logement en bon état d’usage ; assurer au locataire la jouissance paisible des lieux ; effectuer les grosses réparations qui ne sont pas à la charge du locataire ; délivrer une quittance pour chaque paiement.'],
+    ['Article 7 – Charges', 'Sauf accord contraire écrit, les consommations d’eau, d’électricité et les autres charges liées à l’usage du logement sont à la charge du locataire.'],
+    ['Article 8 – Résiliation', 'Chacune des parties peut mettre fin au bail moyennant un préavis écrit de trois (3) mois. En cas de non-paiement du loyer pendant deux (2) mois consécutifs ou de manquement grave, le bailleur peut résilier le bail après mise en demeure restée sans suite.'],
+    ['Article 9 – État des lieux', 'Un état des lieux contradictoire est établi à l’entrée et à la sortie du locataire. À défaut, le logement est présumé avoir été remis en bon état.'],
+    ['Article 10 – Litiges', `Les parties s’engagent à régler à l’amiable tout différend. À défaut, les juridictions compétentes de ${P.city || 'Goma'} seront saisies.`]];
+  const pages = []; let c, x, y;
+  const page = () => { c = document.createElement('canvas'); c.width = W; c.height = H; x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = col; x.fillRect(0, 0, W, 12); y = 110; pages.push(c); };
+  const para = (t, font, lh, gap = 0) => { x.font = font; vidWrap(x, t, W - 2 * M, 40).forEach(l => { if (y > H - 170) { page(); x.font = font; } x.fillStyle = '#111827'; x.fillText(l, M, y); y += lh; }); y += gap; };
+  page(); if (logo) { const s = Math.min(130 / logo.width, 110 / logo.height); x.drawImage(logo, W / 2 - logo.width * s / 2, 60, logo.width * s, logo.height * s); y = 220; }
+  x.textAlign = 'center'; x.fillStyle = col; x.font = F('bold', 58); x.fillText('CONTRAT DE BAIL', W / 2, y + 20); x.fillStyle = '#4B5563'; x.font = F('italic', 26); x.fillText('à usage d’habitation', W / 2, y + 62); x.textAlign = 'left'; y += 130;
+  x.fillStyle = '#111827'; x.font = F('bold', 26); x.fillText('ENTRE LES SOUSSIGNÉS :', M, y); y += 50;
+  para(`${P.name || me?.name || '…'}${P.addr ? ', domicilié(e) ' + P.addr : ''}${P.phone ? ', téléphone ' + P.phone : ''}, ci-après dénommé(e) « le bailleur »,`, F('normal', 25), 36, 14);
+  para('ET', F('bold', 25), 36, 6);
+  para(`${u.tenant || '…………………………………'}${u.idno ? ', ' + u.idno : ''}${u.phone ? ', téléphone ' + u.phone : ''}, ci-après dénommé(e) « le locataire ».`, F('normal', 25), 36, 14);
+  para('Il a été convenu ce qui suit :', F('italic', 25), 36, 20);
+  A.forEach(([t, b]) => { if (y > H - 300) page(); x.fillStyle = col; x.font = F('bold', 26); x.fillText(t, M, y); y += 40; para(b, F('normal', 24), 35, 22); });
+  if (y > H - 520) page(); y += 10; para(`Fait à ${P.city || 'Goma'}, le ${fdate(today())}, en deux exemplaires originaux, chaque partie reconnaissant avoir reçu le sien.`, F('italic', 24), 34, 30);
+  x.font = F('bold', 25); x.fillStyle = '#111827'; x.fillText('Le locataire', M, y); x.textAlign = 'right'; x.fillText('Le bailleur', W - M, y); x.textAlign = 'left';
+  x.font = F('italic', 19); x.fillStyle = '#6B7280'; x.fillText('(« Lu et approuvé », signature)', M, y + 30); x.textAlign = 'right'; x.fillText('(« Lu et approuvé », signature et cachet)', W - M, y + 30); x.textAlign = 'left';
+  if (stamp) { const s = Math.min(220 / stamp.width, 220 / stamp.height); x.save(); x.globalAlpha = 0.9; x.translate(W - M - 250, y + 150); x.rotate(-0.12); x.drawImage(stamp, -stamp.width * s / 2, -stamp.height * s / 2, stamp.width * s, stamp.height * s); x.restore(); }
+  if (sign) { const s = Math.min(280 / sign.width, 120 / sign.height); x.drawImage(sign, W - M - sign.width * s, y + 70, sign.width * s, sign.height * s); }
+  pages.forEach((p, i) => { const g = p.getContext('2d'); g.fillStyle = '#9CA3AF'; g.font = '17px Arial'; g.fillText(`Contrat de bail – ${u.name} · Page ${i + 1}/${pages.length} · Paraphes : ______ / ______`, M, H - 60); g.textAlign = 'right'; g.fillText('Modèle SocialPages – à adapter si besoin', W - M, H - 30); });
+  const files = await pagesFiles(pages, `contrat-bail-${(u.name || 'logement').replace(/[^\w-]+/g, '-')}`, 'pdf');
+  openM(`<h3>📄 Contrat de bail prêt</h3><p class="mt">${pages.length} page${pages.length > 1 ? 's' : ''} · ${esc(u.name)} · ${esc(u.tenant || '')}</p><div class="docprev">${pages.map(p => `<img src="${p.toDataURL('image/jpeg', 0.8)}" alt="">`).join('')}</div>
+    <div class="grid2"><button class="pill" onclick="spShare(window.bailF,'Contrat de bail')">📤 Partager le PDF</button><button class="soft" onclick="spSave(window.bailF)">⬇️ Télécharger</button></div>
+    <p class="mt" style="font-size:12px">Modèle simple à imprimer en 2 exemplaires et à signer. Pour un cas particulier, faites-le relire par un juriste.</p><button class="pbtn gray" onclick="unitView('${id}')">← Retour</button>`);
+  $('modal-box').classList.add('mwide'); window.bailF = files;
+}
+
 // ---------- 🧾 Factures, proformas, reçus ----------
 let docEd = null;
 function bizDocs(el) {
