@@ -647,6 +647,22 @@ video.pm{background:#000}
 .vidwrap canvas{width:min(70vw,300px)!important}.vidwrap.sq canvas{aspect-ratio:1/1!important;width:min(70vw,380px)!important}
 .vidout{display:block;margin:0 auto 10px;width:auto!important;max-width:100%;max-height:68vh}
 /* ===== Studio pub ===== */
+/* ===== Outils gratuits : CV, lettre, carte de visite ===== */
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.tools button{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:1px solid #BFDBFE;border-radius:16px;padding:12px 6px;cursor:pointer;background:linear-gradient(160deg,#EFF6FF,#ECFDF5)}
+.tools button span{font-size:28px}.tools button b{font-size:13px;color:#1E3A8A;line-height:1.2}.tools button small{font-size:11px;color:#047857;font-weight:700}
+.toolsh{display:flex;justify-content:space-between;align-items:center;margin-top:10px}.toolsh b{font-size:15px}.toolsh small{color:#16A34A;font-weight:700}
+.cvbar{display:flex;gap:8px;margin:12px 0}.cvbar>*{flex:1}
+.cvh{margin:0 0 10px;font-size:17px}
+.cvph{display:flex;gap:12px;align-items:center;margin-bottom:10px}.cvphv{width:84px;height:84px;border-radius:50%;background:#E5E7EB;display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden;flex:none}.cvphv img{width:100%;height:100%;object-fit:cover}
+.cvchips{display:flex;flex-wrap:wrap;gap:6px}.cvchips span{background:#EFF6FF;color:#1E3A8A;border-radius:999px;padding:6px 6px 6px 12px;font-size:13px;display:flex;align-items:center;gap:4px}.cvchips button{border:none;background:none;cursor:pointer;color:#6B7280}
+.cvsug{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.cvsug button{border:1px dashed #93C5FD;background:#fff;color:#2563EB;border-radius:999px;padding:5px 10px;font-size:12px;cursor:pointer}
+.cvlang{display:grid;grid-template-columns:1fr 150px 36px;gap:6px;margin-bottom:6px}.cvlang input,.cvlang select{margin:0}.cvlang button{border:none;background:#FEE2E2;color:#B91C1C;border-radius:10px;cursor:pointer}
+.cvitem{border:1px solid #E5E7EB;border-radius:12px;padding:10px;margin-bottom:10px;background:#FAFAFA}.cvitem input,.cvitem textarea{margin:0 0 6px;width:100%;box-sizing:border-box}
+.cvitemh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.cvitemh button{border:none;background:none;font-size:16px;cursor:pointer}
+.cdprev{display:flex;flex-direction:column;gap:10px;align-items:center;margin:12px 0}.cdprev canvas{width:min(100%,420px);aspect-ratio:85/55;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+@media (min-width:860px){.cdprev{flex-direction:row;justify-content:center}.cdprev canvas{width:min(48%,420px)}}
+
 /* ===== Studio photo d'identité ===== */
 .phentry{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:linear-gradient(135deg,#EFF6FF,#ECFDF5);border:1px solid #BFDBFE;border-radius:16px;padding:12px 14px;margin:10px 0;cursor:pointer}
 .phentry span{font-size:30px}.phentry div{flex:1;display:flex;flex-direction:column}.phentry b{font-size:15px;color:#1E3A8A}.phentry small{color:#4B5563;font-size:12px}.phentry i{font-style:normal;font-size:26px;color:#2563EB}
@@ -825,7 +841,7 @@ body.noscroll{overflow:hidden}
   <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span><button class="pill" style="margin-left:auto" onclick="go('login')">Se connecter</button></div>
   <div class="page">
     <div class="box exhero"><b>🛍️ Achetez près de chez vous</b><span>Goma, Bukavu et ailleurs : commandez directement sur WhatsApp, sans créer de compte.</span></div>
-    <button type="button" class="phentry" onclick="phOpen()"><span>📸</span><div><b>Photo d’identité &amp; visa GRATUITE</b><small>États-Unis, Canada, Schengen, Royaume-Uni, Chine… fond blanc automatique, prête à imprimer</small></div><i>›</i></button>
+    <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button></div>
     <div id="livebar-g" class="hidden"></div>
     <div class="filters" id="ex-f">
       <button class="on" onclick="exFilter('tous',this)">Tout</button>
@@ -848,7 +864,7 @@ body.noscroll{overflow:hidden}
     <div id="livebar" class="hidden"></div>
     <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
       <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:var(--g2)" onclick="prodModal()">🛍️ Vendre</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div>
-      <button type="button" class="phentry" style="margin-top:10px" onclick="phOpen()"><span>📸</span><div><b>Photo d’identité &amp; visa gratuite</b><small>Fond blanc automatique, planche prête à imprimer</small></div><i>›</i></button></div>
+      <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button></div></div>
     <div class="filters" id="feed-f">
       <button class="on" onclick="feedFilter('pourvous',this)">Pour vous</button>
       <button onclick="feedFilter('vitrine',this)">🛍️ Vitrine</button>
@@ -1095,7 +1111,7 @@ async function logout() {
 }
 async function boot() {
   const { data: { session } } = await sb.auth.getSession();
-  if (!session) { go(route() ? 'pub' : 'explore'); liveHash(); tvHash(); phHash(); return; }
+  if (!session) { go(route() ? 'pub' : 'explore'); liveHash(); tvHash(); phHash(); toolHash(); return; }
   const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
   if (!data) { await sb.auth.signOut(); return go('landing'); }
   me = { ...data, email: session.user.email };
@@ -1109,7 +1125,7 @@ async function boot() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.id}` }, ev => onNotif(ev.new))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ev => { handleRealtimePost(ev.new); }).subscribe();
   sigListen(); liveDirListen(); setTimeout(() => { registerNative(); checkNativePending(); }, 300); checkAdmin(); presStart(); setTimeout(checkInvites, 1200);
-  go(route() ? 'product' : 'accueil'); liveHash(); tvHash(); phHash();
+  go(route() ? 'product' : 'accueil'); liveHash(); tvHash(); phHash(); toolHash();
   setTimeout(welcome, 1500);
 }
 
@@ -2958,7 +2974,7 @@ function stampDraw() {
   const d = x.getImageData(0, 0, 440, 440), a = d.data; for (let i = 3; i < a.length; i += 4) if (a[i] && Math.random() < 0.07) a[i] = a[i] * 0.35; x.putImageData(d, 0, 0);
 }
 // Signature au doigt
-function signPad() {
+function signPad(cb) { window._sgCb = typeof cb === 'function' ? cb : null;
   openM(`<h3>✍️ Votre signature</h3><p class="mt" style="font-size:13px">Signez avec le doigt (ou la souris) dans le cadre.</p><canvas id="sg-cv" class="sgpad" width="900" height="400"></canvas>
     <div class="grid2" style="margin-top:10px"><button class="soft" onclick="const c=$('sg-cv');c.getContext('2d').clearRect(0,0,c.width,c.height)">Effacer</button><button class="pill" onclick="signSave()">Utiliser</button></div><button class="pbtn gray" onclick="closeM()">Annuler</button>`);
   const cv = $('sg-cv'), x = cv.getContext('2d'); x.lineWidth = 6; x.lineCap = x.lineJoin = 'round'; x.strokeStyle = '#0B1F5C'; let dn = false, lp = null;
@@ -2967,7 +2983,7 @@ function signPad() {
   cv.onpointermove = e => { if (!dn) return; const p = pt(e); x.beginPath(); x.moveTo(...lp); x.quadraticCurveTo(lp[0], lp[1], (lp[0] + p[0]) / 2, (lp[1] + p[1]) / 2); x.lineTo(...p); x.stroke(); lp = p; e.preventDefault(); };
   cv.onpointerup = cv.onpointercancel = () => dn = false;
 }
-function signSave() { const cv = $('sg-cv'), im = new Image(); im.onload = () => { biz.pro.sign = imgToData(im, 600, true); bizSave(); closeM(); bizRender(); toast('✅ Signature enregistrée'); }; im.src = cv.toDataURL('image/png'); }
+function signSave() { const c = $('sg-cv'), im = new Image(); im.onload = () => { const d = imgToData(im, 600, true), cb = window._sgCb; window._sgCb = null; if (cb) { closeM(); cb(d); toast('✅ Signature enregistrée'); return; } biz.pro.sign = d; bizSave(); closeM(); bizRender(); toast('✅ Signature enregistrée'); }; im.src = c.toDataURL('image/png'); }
 function bizExport() {
   const b = new Blob([JSON.stringify({ v: 1, app: 'SocialPages', date: new Date().toISOString(), data: biz })], { type: 'application/json' }), f = new File([b], `socialpages-commerce-${today()}.json`, { type: 'application/json' });
   openM(`<h3>💾 Sauvegarde</h3><p class="mt">Gardez ce fichier en lieu sûr (WhatsApp « Message à moi-même », Google Drive…).</p><button class="pill" style="width:100%" onclick="spShare([window.bizBak],'Sauvegarde SocialPages')">📤 Envoyer (WhatsApp, Drive…)</button><button class="soft" style="width:100%;margin-top:8px" onclick="spSave([window.bizBak])">⬇️ Enregistrer sur l’appareil</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`); window.bizBak = f; void b;
@@ -3403,6 +3419,288 @@ async function phStep3() {
 }
 async function phOut(k, share) { const f = ph.files?.[k]; if (!f) return; if (share) spShare([f], 'Photo d’identité – SocialPages'); else spSave([f]); }
 
+// ===================== 📄 STUDIO CV, LETTRE DE MOTIVATION et 🪪 CARTES DE VISITE (gratuits, ouverts à tous) =====================
+// Tout reste dans le téléphone de l'utilisateur. Rien n'est envoyé sur Internet.
+const noAcc = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '');
+const TOOL_COLS = ['#16A34A', '#2563EB', '#0F172A', '#7C3AED', '#DC2626', '#B45309', '#0E7490', '#DB2777'];
+function toolOpen(id, title, back) {
+  $(id)?.remove();
+  document.body.insertAdjacentHTML('beforeend', `<div id="${id}" class="bizx"><div class="bizh"><button type="button" class="bizb" onclick="${back}" aria-label="Retour">←</button><b>${title}</b><button type="button" class="bizb" onclick="toolShareApp('${id}')" aria-label="Partager">↗️</button></div><div class="bizc" id="${id}-c"></div></div>`);
+  document.body.classList.add('noscroll');
+}
+function toolClose(id) { $(id)?.remove(); if (!document.querySelector('.bizx')) document.body.classList.remove('noscroll'); }
+function toolShareApp(id) {
+  const k = { cvx: ['cv', '📄 Créez votre CV professionnel GRATUIT (avec photo, en PDF) et votre lettre de motivation'], cdx: ['carte', '🪪 Créez votre carte de visite professionnelle GRATUITE (avec QR code, prête à imprimer)'] }[id] || ['photo', 'Outils gratuits'];
+  const t = `${k[1]} sur SocialPages 👉 ${location.origin}/#/${k[0]}`; if (navigator.share && !spIsApp()) navigator.share({ text: t }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
+}
+function toolHash() {
+  const m = location.hash.match(/^#\/(cv|carte)\/?$/); if (!m) return false;
+  history.replaceState(null, '', location.pathname + location.search); m[1] === 'cv' ? cvOpen() : cdOpen(); return true;
+}
+// Photo carrée recadrée au centre (pour CV et carte)
+function pickPhoto(cb, square = true) {
+  const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*';
+  i.onchange = async () => { const f = i.files[0]; if (!f) return; const im = new Image(); im.src = URL.createObjectURL(f); try { await im.decode(); } catch (e) { return toast('Photo illisible.'); }
+    const s = square ? Math.min(im.width, im.height) : 0, c = document.createElement('canvas'), M = 600;
+    if (square) { c.width = c.height = Math.min(M, s); c.getContext('2d').drawImage(im, (im.width - s) / 2, Math.max(0, (im.height - s) * 0.3), s, s, 0, 0, c.width, c.height); cb(c.toDataURL('image/jpeg', 0.9)); }
+    else cb(imgToData(im, 500, false)); };
+  i.click();
+}
+// =============================== 📄 CV ===============================
+const CV_K = 'sp_cv';
+let cv = null;
+const CV_LEV = ['Langue maternelle', 'Courant', 'Bon niveau', 'Intermédiaire', 'Notions'];
+const CV_SECT = {
+  vente: { n: '🛍️ Commerce / Vente', p: 'Commercial(e) dynamique et persuasif(ve), doté(e) d’un excellent sens du contact et de la négociation. Habitué(e) à atteindre des objectifs de vente et à fidéliser la clientèle, je souhaite mettre mon énergie au service de votre entreprise.', s: ['Négociation commerciale', 'Service client', 'Gestion de caisse', 'Prospection', 'Gestion de stock', 'Vente en ligne et réseaux sociaux'] },
+  info: { n: '💻 Informatique', p: 'Passionné(e) d’informatique, rigoureux(se) et autonome, je maîtrise la maintenance, les réseaux et les outils bureautiques. Je souhaite contribuer à la fiabilité et à la modernisation de vos systèmes.', s: ['Maintenance informatique', 'Réseaux (LAN, Wi-Fi)', 'Microsoft Office (Word, Excel)', 'Développement web', 'Support utilisateurs', 'Sécurité informatique'] },
+  admin: { n: '📊 Administration / Comptabilité', p: 'Professionnel(le) organisé(e) et méthodique, avec une bonne maîtrise de la comptabilité et de la gestion administrative. Discret(e) et fiable, je souhaite apporter rigueur et efficacité à votre équipe.', s: ['Comptabilité générale', 'Excel avancé', 'Gestion de trésorerie', 'Rédaction administrative', 'Archivage', 'Logiciels de comptabilité'] },
+  sante: { n: '🩺 Santé', p: 'Professionnel(le) de santé consciencieux(se) et à l’écoute, attaché(e) à la qualité des soins et au bien-être des patients. Je souhaite mettre mes compétences au service de votre structure.', s: ['Soins infirmiers', 'Accueil des patients', 'Hygiène et prévention', 'Gestion des dossiers médicaux', 'Premiers secours', 'Travail en équipe'] },
+  edu: { n: '📚 Enseignement', p: 'Enseignant(e) motivé(e) et pédagogue, attentif(ve) à la progression de chaque élève. Je sais rendre les apprentissages vivants et je souhaite rejoindre votre établissement.', s: ['Pédagogie', 'Préparation des cours', 'Gestion de classe', 'Évaluation des élèves', 'Communication avec les parents', 'Outils numériques'] },
+  ong: { n: '🤝 ONG / Humanitaire', p: 'Professionnel(le) engagé(e) dans l’action humanitaire, habitué(e) au travail de terrain et aux communautés locales. Je souhaite contribuer à vos projets avec rigueur, éthique et sens du résultat.', s: ['Gestion de projets', 'Collecte de données (Kobo)', 'Rédaction de rapports', 'Mobilisation communautaire', 'Suivi et évaluation', 'Protection'] },
+  logi: { n: '🚚 Logistique / Chauffeur', p: 'Professionnel(le) sérieux(se) et ponctuel(le), expérimenté(e) dans la logistique et le transport. Respectueux(se) des règles de sécurité, je souhaite garantir des livraisons fiables pour votre entreprise.', s: ['Conduite sécurisée', 'Permis de conduire', 'Gestion des livraisons', 'Entretien des véhicules', 'Gestion d’entrepôt', 'Ponctualité'] },
+  hotel: { n: '🏨 Hôtellerie / Restauration', p: 'Souriant(e), accueillant(e) et rigoureux(se), j’ai le sens du service et de l’hospitalité. Je souhaite offrir à vos clients une expérience de qualité.', s: ['Accueil et réception', 'Service en salle', 'Cuisine', 'Hygiène alimentaire', 'Gestion des réservations', 'Anglais professionnel'] }
+};
+function cvLoad() {
+  try { cv = JSON.parse(localStorage.getItem(CV_K) || 'null'); } catch (e) {}
+  cv ||= { tpl: 'moderne', col: '#2563EB', name: me?.name || '', title: '', phone: fmtPhone(me?.phone || ''), mail: '', city: me?.city || '', addr: '', birth: '', nat: '', permis: '', photo: '', profile: '', exp: [], edu: [], skills: [], langs: [{ n: 'Français', l: 'Courant' }, { n: 'Swahili', l: 'Courant' }], hobbies: '', refs: 'Disponibles sur demande', sect: 'vente', letter: { co: '', to: '', addr: '', poste: '', body: '' } };
+  cv.exp ||= []; cv.edu ||= []; cv.skills ||= []; cv.langs ||= []; cv.letter ||= {};
+  return cv;
+}
+function cvSave() { try { localStorage.setItem(CV_K, JSON.stringify(cv)); } catch (e) { toast('⚠️ Mémoire pleine : utilisez une photo plus petite.'); } }
+function cvOpen() { cvLoad(); toolOpen('cvx', '📄 Mon CV &amp; lettre', "toolClose('cvx')"); cvForm(); }
+const cvIn = (k, label, ph, type = 'text', extra = '') => `<div class="fg"><label>${label}</label><input type="${type}" value="${esc(cv[k] || '')}" placeholder="${esc(ph || '')}" oninput="cv['${k}']=this.value;cvSave()" ${extra}></div>`;
+function cvForm() {
+  const el = $('cvx-c'); if (!el) return; const sc = CV_SECT[cv.sect] || CV_SECT.vente;
+  el.innerHTML = `<div class="phhero" style="background:linear-gradient(135deg,#2563EB,#1E3A8A)"><b>Votre CV professionnel en 5 minutes</b><span>Gratuit, avec votre photo, en PDF prêt à envoyer. Tout est enregistré dans votre téléphone.</span></div>
+    <div class="cvbar"><button class="pill" onclick="cvPreview()">👀 Aperçu &amp; PDF</button><button class="soft" onclick="lmOpen()">✉️ Lettre de motivation</button></div>
+    <div class="box"><h3 class="cvh">🎨 Modèle</h3><div class="vchips" id="cv-tpl">${[['moderne', 'Moderne'], ['classique', 'Classique'], ['elegant', 'Élégant']].map(([k, n]) => `<button type="button" class="${cv.tpl === k ? 'on' : ''}" onclick="cv.tpl='${k}';cvSave();cvForm()">${n}</button>`).join('')}</div>
+      <div class="bizcols" style="margin-top:10px">${TOOL_COLS.map(c => `<button type="button" class="${cv.col === c ? 'on' : ''}" style="background:${c}" onclick="cv.col='${c}';cvSave();cvForm()"></button>`).join('')}</div></div>
+    <div class="box"><h3 class="cvh">👤 Identité</h3>
+      <div class="cvph"><div class="cvphv">${cv.photo ? `<img src="${cv.photo}" alt="">` : '👤'}</div><div><button class="soft" onclick="pickPhoto(d=>{cv.photo=d;cvSave();cvForm()})">📷 ${cv.photo ? 'Changer' : 'Ajouter'} ma photo</button>${cv.photo ? '<button class="soft" style="margin-left:6px" onclick="cv.photo=\'\';cvSave();cvForm()">Retirer</button>' : ''}<small class="mt" style="display:block;margin-top:4px">Astuce : faites-la dans « 📸 Photo d’identité ».</small></div></div>
+      ${cvIn('name', 'Nom complet', 'ex : Bisimwa Mukendi Jean')}${cvIn('title', 'Poste recherché / métier', 'ex : Comptable, Infirmière, Développeur web')}
+      <div class="grid2">${cvIn('phone', 'Téléphone', '+243…', 'tel')}${cvIn('mail', 'E-mail', 'nom@exemple.com', 'email')}</div>
+      <div class="grid2">${cvIn('city', 'Ville', 'Goma')}${cvIn('addr', 'Adresse (facultatif)', 'Quartier, avenue')}</div>
+      <details class="bizdet"><summary>Plus d’informations (facultatif)</summary><div class="grid2">${cvIn('birth', 'Date de naissance', 'ex : 12/05/1998')}${cvIn('nat', 'Nationalité', 'Congolaise')}</div>${cvIn('permis', 'Permis de conduire', 'ex : Permis B')}</details></div>
+    <div class="box"><h3 class="cvh">💡 Profil</h3><div class="fg"><label>Votre domaine (pour des suggestions)</label><select onchange="cv.sect=this.value;cvSave();cvForm()">${Object.entries(CV_SECT).map(([k, v]) => `<option value="${k}" ${cv.sect === k ? 'selected' : ''}>${v.n}</option>`).join('')}</select></div>
+      <div class="fg"><label>Quelques lignes sur vous</label><textarea rows="4" oninput="cv.profile=this.value;cvSave()" placeholder="Qui êtes-vous ? Que pouvez-vous apporter ?">${esc(cv.profile)}</textarea></div>
+      <button class="soft" onclick="cv.profile=CV_SECT[cv.sect].p;cvSave();cvForm()">✨ Utiliser un exemple de profil</button></div>
+    <div class="box"><h3 class="cvh">💼 Expériences</h3>${cv.exp.map((x, i) => cvItem('exp', i, [['role', 'Poste'], ['org', 'Employeur'], ['place', 'Lieu'], ['from', 'Début (ex : 2022)'], ['to', 'Fin (ou « Aujourd’hui »)']], ['desc', 'Missions (une par ligne)'])).join('') || '<p class="mt" style="font-size:13px">Pas d’expérience ? Mettez vos stages, bénévolats ou petits boulots.</p>'}
+      <button class="soft" onclick="cv.exp.push({role:'',org:'',place:cv.city||'',from:'',to:'',desc:''});cvSave();cvForm()">➕ Ajouter une expérience</button></div>
+    <div class="box"><h3 class="cvh">🎓 Formation</h3>${cv.edu.map((x, i) => cvItem('edu', i, [['deg', 'Diplôme / formation'], ['school', 'Établissement'], ['place', 'Lieu'], ['from', 'Début'], ['to', 'Fin / année']], ['desc', 'Détails (mention, option…)'])).join('')}
+      <button class="soft" onclick="cv.edu.push({deg:'',school:'',place:cv.city||'',from:'',to:'',desc:''});cvSave();cvForm()">➕ Ajouter une formation</button></div>
+    <div class="box"><h3 class="cvh">⭐ Compétences</h3><div class="cvchips">${cv.skills.map((s, i) => `<span>${esc(s)}<button type="button" onclick="cv.skills.splice(${i},1);cvSave();cvForm()">✖</button></span>`).join('')}</div>
+      <div style="display:flex;gap:8px;margin-top:8px"><input id="cv-sk" placeholder="Ajouter une compétence" style="flex:1;margin:0" onkeypress="if(event.key==='Enter')cvAddSk()"><button class="soft" onclick="cvAddSk()">➕</button></div>
+      <div class="cvsug">${sc.s.filter(s => !cv.skills.includes(s)).map(s => `<button type="button" onclick="cv.skills.push(this.textContent.slice(2));cvSave();cvForm()">+ ${esc(s)}</button>`).join('')}</div></div>
+    <div class="box"><h3 class="cvh">🗣️ Langues</h3>${cv.langs.map((l, i) => `<div class="cvlang"><input value="${esc(l.n)}" oninput="cv.langs[${i}].n=this.value;cvSave()"><select onchange="cv.langs[${i}].l=this.value;cvSave()">${CV_LEV.map(v => `<option ${l.l === v ? 'selected' : ''}>${v}</option>`).join('')}</select><button type="button" onclick="cv.langs.splice(${i},1);cvSave();cvForm()">✖</button></div>`).join('')}
+      <div class="cvsug">${['Français', 'Swahili', 'Lingala', 'Anglais', 'Kinyarwanda', 'Mashi', 'Kinande'].filter(n => !cv.langs.some(l => l.n === n)).map(n => `<button type="button" onclick="cv.langs.push({n:'${n}',l:'Courant'});cvSave();cvForm()">+ ${n}</button>`).join('')}</div></div>
+    <div class="box"><h3 class="cvh">➕ Autres</h3><div class="fg"><label>Centres d’intérêt</label><input value="${esc(cv.hobbies)}" placeholder="ex : Lecture, football, bénévolat" oninput="cv.hobbies=this.value;cvSave()"></div>
+      <div class="fg"><label>Références</label><textarea rows="2" oninput="cv.refs=this.value;cvSave()" placeholder="Nom, fonction, téléphone">${esc(cv.refs)}</textarea></div></div>
+    <div class="cvbar" style="margin-bottom:20px"><button class="pill" onclick="cvPreview()">👀 Aperçu &amp; PDF</button><button class="soft" onclick="lmOpen()">✉️ Lettre de motivation</button></div>`;
+}
+function cvItem(k, i, fields, area) {
+  const x = cv[k][i];
+  return `<div class="cvitem"><div class="cvitemh"><b>${k === 'exp' ? '💼' : '🎓'} ${esc(x[fields[0][0]] || 'Nouveau')}</b><span>${i ? `<button type="button" onclick="cvMove('${k}',${i},-1)">↑</button>` : ''}<button type="button" onclick="cv['${k}'].splice(${i},1);cvSave();cvForm()">🗑️</button></span></div>
+    <div class="grid2">${fields.map(([f, l]) => `<input value="${esc(x[f] || '')}" placeholder="${l}" oninput="cv['${k}'][${i}]['${f}']=this.value;cvSave()">`).join('')}</div>
+    <textarea rows="3" placeholder="${area[1]}" oninput="cv['${k}'][${i}]['${area[0]}']=this.value;cvSave()">${esc(x[area[0]] || '')}</textarea></div>`;
+}
+function cvMove(k, i, d) { const a = cv[k], j = i + d; if (j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; cvSave(); cvForm(); }
+function cvAddSk() { const i = $('cv-sk'), v = i.value.trim(); if (!v) return; cv.skills.push(v.slice(0, 40)); cvSave(); cvForm(); setTimeout(() => $('cv-sk')?.focus(), 30); }
+// ---------- Dessin du CV (A4, 150 dpi, pagination automatique) ----------
+async function cvRender() {
+  const W = 1240, H = 1754, C = cv.col || '#2563EB', T = cv.tpl, serif = T === 'elegant', pages = [];
+  const F = (w, px) => `${w} ${px}px ${serif ? 'Georgia, "Times New Roman", serif' : 'Arial, Helvetica, sans-serif'}`;
+  const photo = await loadImg(cv.photo); let cvs, x;
+  const newPage = () => { cvs = document.createElement('canvas'); cvs.width = W; cvs.height = H; x = cvs.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); pages.push(cvs); x.textBaseline = 'alphabetic'; };
+  const circle = (cx, cy, r) => { if (!photo) return; x.save(); x.beginPath(); x.arc(cx, cy, r, 0, 7); x.clip(); x.drawImage(photo, cx - r, cy - r, 2 * r, 2 * r); x.restore(); x.strokeStyle = '#fff'; x.lineWidth = 6; x.beginPath(); x.arc(cx, cy, r, 0, 7); x.stroke(); };
+  const wrapDraw = (txt, X, Y, w, font, col, lh, draw = true, max = 30) => { x.font = font; const L = []; String(txt || '').split('\n').forEach(p => { if (!p.trim()) return; L.push(...vidWrap(x, p.trim(), w, max)); }); if (draw) { x.fillStyle = col; L.forEach((l, i) => x.fillText(l, X, Y + i * lh)); } return L.length * lh; };
+  const contacts = [['📞', cv.phone], ['✉️', cv.mail], ['📍', [cv.addr, cv.city].filter(Boolean).join(', ')], ['🎂', cv.birth], ['🌍', cv.nat], ['🚗', cv.permis]].filter(c => c[1]);
+  // --- colonne principale (sections avec pagination)
+  let mx, mw, my, bottom = H - 90, side = T === 'moderne';
+  const sectTitle = (t, draw = true) => { if (!draw) return 70; x.fillStyle = C; x.font = F('bold', 30); x.fillText(t.toUpperCase(), mx, my + 34); x.fillRect(mx, my + 48, serif ? mw : 70, serif ? 1.5 : 5); return 70; };
+  const ensure = h => { if (my + h <= bottom) return; newPage(); if (side) { x.fillStyle = C; x.fillRect(0, 0, 40, H); } my = 90; };
+  const entry = (it, draw) => { // expérience / formation
+    let h = 0; const t1 = it.role || it.deg || '', t2 = [it.org || it.school, it.place].filter(Boolean).join(' · '), dt = [it.from, it.to].filter(Boolean).join(' – ');
+    x.font = F('bold', 21); const dw = dt ? x.measureText(dt).width + 24 : 0; x.font = F('bold', 26); const tl = vidWrap(x, t1, mw - dw, 2);
+    if (draw) { x.fillStyle = '#111827'; tl.forEach((l, k) => x.fillText(l, mx, my + 28 + k * 32)); if (dt) { x.fillStyle = C; x.font = F('bold', 21); x.textAlign = 'right'; x.fillText(dt, mx + mw, my + 28); x.textAlign = 'left'; } }
+    h += 38 + (tl.length - 1) * 32; if (t2) { if (draw) { x.fillStyle = '#4B5563'; x.font = F('italic', 22); x.fillText(cutT(t2, 70), mx, my + h + 18); } h += 32; }
+    const lines = String(it.desc || '').split('\n').map(s => s.replace(/^[-•*]\s*/, '').trim()).filter(Boolean);
+    lines.forEach(l => { const hh = wrapDraw(l, mx + 26, my + h + 20, mw - 26, F('normal', 22), '#374151', 30, false); if (draw) { x.fillStyle = C; x.beginPath(); x.arc(mx + 8, my + h + 12, 4, 0, 7); x.fill(); wrapDraw(l, mx + 26, my + h + 20, mw - 26, F('normal', 22), '#374151', 30, true); } h += hh + 4; });
+    return h + 22; };
+  newPage();
+  if (T === 'moderne') {
+    const SW = 420; x.fillStyle = C; x.fillRect(0, 0, SW, H); x.fillStyle = 'rgba(255,255,255,.07)'; x.beginPath(); x.arc(SW, 0, 260, 0, 7); x.fill();
+    let sy = 70; if (photo) { circle(SW / 2, 200, 130); sy = 370; } else sy = 90;
+    const sh = (t) => { x.fillStyle = '#fff'; x.font = F('bold', 26); x.fillText(t, 50, sy); x.fillStyle = 'rgba(255,255,255,.5)'; x.fillRect(50, sy + 12, SW - 100, 2); sy += 50; };
+    if (contacts.length) { sh('CONTACT'); contacts.forEach(([i, t]) => { x.font = F('normal', 21); const L = vidWrap(x, t, SW - 130, 2); x.fillStyle = '#fff'; x.fillText(i, 50, sy); L.forEach((l, k) => x.fillText(l, 92, sy + k * 28)); sy += L.length * 28 + 16; }); sy += 20; }
+    if (cv.skills.length) { sh('COMPÉTENCES'); cv.skills.slice(0, 14).forEach(s => { x.font = F('normal', 21); x.fillStyle = '#fff'; const L = vidWrap(x, s, SW - 120, 2); x.beginPath(); x.arc(58, sy - 7, 4, 0, 7); x.fill(); L.forEach((l, k) => x.fillText(l, 76, sy + k * 27)); sy += L.length * 27 + 10; }); sy += 20; }
+    if (cv.langs.length) { sh('LANGUES'); cv.langs.forEach(l => { const lv = 5 - Math.max(0, CV_LEV.indexOf(l.l)); x.fillStyle = '#fff'; x.font = F('bold', 21); x.fillText(cutT(l.n, 18), 50, sy); for (let k = 0; k < 5; k++) { x.fillStyle = k < lv ? '#fff' : 'rgba(255,255,255,.3)'; x.beginPath(); x.arc(260 + k * 24, sy - 7, 8, 0, 7); x.fill(); } sy += 40; }); sy += 20; }
+    if (cv.hobbies && sy < H - 200) { sh('CENTRES D’INTÉRÊT'); x.font = F('normal', 21); x.fillStyle = '#fff'; vidWrap(x, cv.hobbies, SW - 100, 4).forEach((l, k) => x.fillText(l, 50, sy + k * 28)); }
+    mx = SW + 60; mw = W - mx - 70; my = 90;
+    x.fillStyle = '#111827'; x.font = F('bold', 54); vidWrap(x, cv.name || 'Votre nom', mw, 2).forEach((l, k) => { x.fillText(l, mx, my + 50 + k * 60); my += k ? 60 : 0; }); my += 70;
+    if (cv.title) { x.fillStyle = C; x.font = F('bold', 30); x.fillText(cutT(cv.title.toUpperCase(), 40), mx, my + 20); my += 50; }
+    my += 30;
+  } else {
+    mx = 90; mw = W - 180; my = 80;
+    if (T === 'elegant') { x.fillStyle = C; x.fillRect(0, 0, W, 12); if (photo) { circle(W / 2, my + 110, 105); my += 240; }
+      x.textAlign = 'center'; x.fillStyle = '#111827'; x.font = F('bold', 54); x.fillText(cutT(cv.name || 'Votre nom', 34), W / 2, my + 40); x.fillStyle = C; x.font = F('italic', 30); if (cv.title) x.fillText(cutT(cv.title, 50), W / 2, my + 88);
+      x.fillStyle = '#4B5563'; x.font = F('normal', 21); const ct = contacts.slice(0, 4).map(c => c[0] + ' ' + c[1]).join('   ·   '); vidWrap(x, ct, W - 200, 2).forEach((l, k) => x.fillText(l, W / 2, my + 130 + k * 28)); x.textAlign = 'left';
+      my += 175; x.fillStyle = C; x.fillRect(mx, my, mw, 1.5); my += 30; }
+    else { x.fillStyle = C; x.fillRect(0, 0, W, 250); const px = photo ? 300 : 90; if (photo) { x.save(); vidRR(x, 90, 45, 170, 170, 20); x.clip(); x.drawImage(photo, 90, 45, 170, 170); x.restore(); }
+      x.fillStyle = '#fff'; x.font = F('bold', 52); x.fillText(cutT(cv.name || 'Votre nom', 30), px, 110); x.font = F('normal', 28); if (cv.title) x.fillText(cutT(cv.title, 48), px, 156);
+      x.font = F('normal', 20); x.fillStyle = 'rgba(255,255,255,.92)'; vidWrap(x, contacts.slice(0, 4).map(c => c[0] + ' ' + c[1]).join('    '), W - px - 70, 2).forEach((l, k) => x.fillText(l, px, 200 + k * 26)); my = 300; }
+  }
+  // sections principales
+  if (cv.profile) { const h = 70 + wrapDraw(cv.profile, mx, 0, mw, F('normal', 23), '', 33, false) + 30; ensure(h); sectTitle('Profil'); my += 70; my += wrapDraw(cv.profile, mx, my + 10, mw, F('normal', 23), '#374151', 33) + 30; }
+  const block = (title, arr) => { if (!arr.length) return; ensure(70 + entry(arr[0], false)); sectTitle(title); my += 70; arr.forEach(it => { const h = entry(it, false); ensure(h); entry(it, true); my += h; }); my += 10; };
+  block('Expériences professionnelles', cv.exp.filter(e => e.role || e.org)); block('Formation', cv.edu.filter(e => e.deg || e.school));
+  if (T !== 'moderne') {
+    if (cv.skills.length) { ensure(140); sectTitle('Compétences'); my += 70; x.font = F('normal', 22); let cx2 = mx; cv.skills.forEach(s => { const w = x.measureText(s).width + 36; if (cx2 + w > mx + mw) { cx2 = mx; my += 52; ensure(52); } x.fillStyle = C + '1F'; vidRR(x, cx2, my, w, 40, 20); x.fill(); x.fillStyle = '#111827'; x.fillText(s, cx2 + 18, my + 28); cx2 += w + 10; }); my += 70; }
+    if (cv.langs.length) { ensure(60 + cv.langs.length * 38); sectTitle('Langues'); my += 70; cv.langs.forEach(l => { x.fillStyle = '#111827'; x.font = F('bold', 22); x.fillText(l.n, mx, my + 24); x.fillStyle = '#4B5563'; x.font = F('normal', 22); x.fillText(l.l, mx + 260, my + 24); my += 38; }); my += 20; }
+    if (cv.hobbies) { ensure(110); sectTitle('Centres d’intérêt'); my += 70; my += wrapDraw(cv.hobbies, mx, my + 10, mw, F('normal', 22), '#374151', 30) + 20; }
+  }
+  if (cv.refs) { ensure(130); sectTitle('Références'); my += 70; my += wrapDraw(cv.refs, mx, my + 10, mw, F('normal', 22), '#374151', 30) + 20; }
+  pages.forEach((p, i) => { const c = p.getContext('2d'); c.fillStyle = '#9CA3AF'; c.font = '16px Arial'; c.textAlign = 'right'; c.fillText(`${pages.length > 1 ? `Page ${i + 1}/${pages.length} · ` : ''}CV créé avec SocialPages`, W - 60, H - 34); });
+  return pages;
+}
+async function cvPreview() {
+  if (!cv.name) return toast('Entrez au moins votre nom.');
+  openM(`<h3>📄 Votre CV</h3><div class="docprev" id="cvprev"><div class="spin"></div></div>
+    <div class="grid2"><button class="pill" style="background:#25D366" onclick="cvOut('pdf',1)">📎 Envoyer le PDF</button><button class="pill" onclick="cvOut('pdf')">⬇️ Télécharger le PDF</button></div>
+    <button class="soft" style="width:100%;margin-top:8px" onclick="cvOut('img',1)">🖼️ Partager en image</button><button class="pbtn gray" onclick="closeM()">Modifier</button>`);
+  $('modal-box').classList.add('mwide');
+  const P = await cvRender(); window.cvPages = P; if ($('cvprev')) $('cvprev').innerHTML = P.map(c => `<img src="${c.toDataURL('image/jpeg', 0.85)}" alt="">`).join('');
+}
+async function pagesFiles(P, base, kind) {
+  const B = await Promise.all(P.map(c => new Promise(r => c.toBlob(b => r({ b, w: c.width, h: c.height }), 'image/jpeg', 0.92))));
+  if (kind === 'pdf') { const J = await Promise.all(B.map(async x => ({ w: x.w, h: x.h, d: new Uint8Array(await x.b.arrayBuffer()) }))); return [new File([pdfMake(J)], base + '.pdf', { type: 'application/pdf' })]; }
+  return B.map((x, i) => new File([x.b], base + (B.length > 1 ? '-p' + (i + 1) : '') + '.jpg', { type: 'image/jpeg' }));
+}
+async function cvOut(kind, share) { const P = window.cvPages || await cvRender(), f = await pagesFiles(P, 'CV-' + noAcc(cv.name).replace(/[^\w-]+/g, '-').slice(0, 30), kind); share ? spShare(f, 'Mon CV') : spSave(f); }
+// ---------- ✉️ Lettre de motivation ----------
+function lmOpen() {
+  const L = cv.letter;
+  openM(`<h3>✉️ Lettre de motivation</h3>
+    <div class="fg"><label>Entreprise / organisation</label><input id="lm-co" value="${esc(L.co || '')}" placeholder="ex : Hôpital Heal Africa"></div>
+    <div class="grid2"><div class="fg"><label>À l’attention de (facultatif)</label><input id="lm-to" value="${esc(L.to || '')}" placeholder="Monsieur le Directeur"></div><div class="fg"><label>Adresse de l’entreprise</label><input id="lm-ad" value="${esc(L.addr || '')}" placeholder="Goma"></div></div>
+    <div class="fg"><label>Poste visé</label><input id="lm-po" value="${esc(L.poste || cv.title || '')}" placeholder="ex : Infirmière"></div>
+    <div class="fg"><label>Texte de la lettre</label><textarea id="lm-bd" rows="9" placeholder="Touchez « Rédiger un modèle » pour commencer.">${esc(L.body || '')}</textarea></div>
+    <button class="soft" style="width:100%" onclick="lmSync();$('lm-bd').value=lmModel();lmSync()">✨ Rédiger un modèle avec mes informations</button>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="lmSync();signPad(d=>{cv.sign=d;cvSave();lmOpen()})">✍️ ${cv.sign ? 'Changer la signature' : 'Ajouter ma signature'}</button><button class="pill" onclick="lmSync();lmPreview()">👀 Aperçu &amp; PDF</button></div>
+    <button class="pbtn gray" onclick="lmSync();closeM()">Fermer</button>`);
+  $('modal-box').classList.add('mwide');
+}
+function lmSync() { const g = id => ($(id)?.value ?? '').trim(); if (!$('lm-co')) return; Object.assign(cv.letter, { co: g('lm-co'), to: g('lm-to'), addr: g('lm-ad'), poste: g('lm-po'), body: $('lm-bd').value }); cvSave(); }
+function lmModel() {
+  const L = cv.letter, e = cv.exp.find(x => x.role || x.org), sk = cv.skills.slice(0, 3).join(', ').toLowerCase(), co = L.co || 'votre entreprise';
+  return `Par la présente, j’ai l’honneur de vous présenter ma candidature au poste de ${L.poste || cv.title || '…'} au sein de ${co}.
+
+${e ? `Fort(e) d’une expérience en tant que ${e.role || '…'}${e.org ? ' chez ' + e.org : ''}, j’ai développé` : 'Au cours de ma formation, j’ai développé'} de solides compétences${sk ? ' en ' + sk : ''}. Rigoureux(se), ponctuel(le) et doté(e) d’un bon esprit d’équipe, je suis convaincu(e) de pouvoir contribuer efficacement à vos activités.
+
+Rejoindre ${co} représente pour moi une réelle opportunité de mettre mes compétences au service d’une structure reconnue, tout en continuant à progresser.
+
+Je me tiens à votre entière disposition pour un entretien afin de vous exposer plus en détail mes motivations.
+
+Dans l’attente d’une suite favorable, je vous prie d’agréer, ${L.to || 'Madame, Monsieur'}, l’expression de mes salutations distinguées.`;
+}
+async function lmRender() {
+  const W = 1240, H = 1754, C = cv.col || '#2563EB', L = cv.letter, c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'), F = (w, p) => `${w} ${p}px ${cv.tpl === 'elegant' ? 'Georgia, serif' : 'Arial, sans-serif'}`;
+  x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = C; x.fillRect(0, 0, W, 12); const M = 110; let y = 120;
+  x.fillStyle = '#111827'; x.font = F('bold', 30); x.fillText(cv.name || '', M, y); x.font = F('normal', 22); x.fillStyle = '#374151';
+  [cv.addr, cv.city, cv.phone, cv.mail].filter(Boolean).forEach((t, i) => x.fillText(t, M, y + 40 + i * 30));
+  x.textAlign = 'right'; let ry = y + 150; x.fillStyle = '#111827'; x.font = F('bold', 24); [L.to, L.co, L.addr].filter(Boolean).forEach((t, i) => { x.font = F(i === 0 ? 'normal' : 'bold', 23); x.fillText(t, W - M, ry + i * 32); });
+  x.font = F('normal', 22); x.fillStyle = '#374151'; x.fillText(`${cv.city ? cv.city + ', le ' : 'Le '}${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`, W - M, ry + 140); x.textAlign = 'left';
+  y = ry + 230; x.fillStyle = '#111827'; x.font = F('bold', 24); x.fillText(`Objet : Candidature au poste de ${L.poste || cv.title || '…'}`, M, y); y += 70;
+  x.font = F('normal', 24); x.fillText(L.to ? L.to + ',' : 'Madame, Monsieur,', M, y); y += 56;
+  x.font = F('normal', 23); x.fillStyle = '#1F2937'; String(L.body || '').split('\n').forEach(p => { if (!p.trim()) { y += 18; return; } vidWrap(x, p.trim(), W - 2 * M, 30).forEach(l => { x.fillText(l, M, y); y += 34; }); });
+  y += 40; x.textAlign = 'right'; x.font = F('bold', 24); x.fillStyle = '#111827';
+  const sg = await loadImg(cv.sign); if (sg) { const s = Math.min(320 / sg.width, 140 / sg.height); x.drawImage(sg, W - M - sg.width * s, y, sg.width * s, sg.height * s); y += sg.height * s + 10; }
+  x.fillText(cv.name || '', W - M, y + 20); x.textAlign = 'left'; x.fillStyle = '#9CA3AF'; x.font = '16px Arial'; x.textAlign = 'right'; x.fillText('Lettre créée avec SocialPages', W - 60, H - 34);
+  return [c];
+}
+async function lmPreview() {
+  if (!cv.letter.body?.trim()) return toast('Écrivez la lettre ou touchez « Rédiger un modèle ».');
+  openM(`<h3>✉️ Votre lettre</h3><div class="docprev" id="lmprev"><div class="spin"></div></div>
+    <div class="grid2"><button class="pill" style="background:#25D366" onclick="lmOut(1)">📎 Envoyer le PDF</button><button class="pill" onclick="lmOut()">⬇️ Télécharger le PDF</button></div><button class="pbtn gray" onclick="lmOpen()">Modifier</button>`);
+  $('modal-box').classList.add('mwide'); const P = await lmRender(); window.lmPages = P; if ($('lmprev')) $('lmprev').innerHTML = `<img src="${P[0].toDataURL('image/jpeg', 0.85)}" alt="">`;
+}
+async function lmOut(share) { const P = window.lmPages || await lmRender(), f = await pagesFiles(P, 'Lettre-motivation-' + noAcc(cv.name).replace(/[^\w-]+/g, '-').slice(0, 30), 'pdf'); share ? spShare(f, 'Lettre de motivation') : spSave(f); }
+// =============================== 🪪 CARTES DE VISITE ===============================
+const CD_K = 'sp_card';
+let cd = null;
+function cdLoad() {
+  try { cd = JSON.parse(localStorage.getItem(CD_K) || 'null'); } catch (e) {}
+  const P = (() => { try { return JSON.parse(localStorage.getItem('sp_biz_' + (me?.id || 'x')) || 'null')?.pro || {}; } catch (e) { return {}; } })();
+  cd ||= { tpl: 'moderne', col: '#16A34A', name: me?.name || '', title: '', co: P.name || '', slogan: P.act || '', phone: P.phone || fmtPhone(me?.phone || ''), wa: '', mail: P.mail || '', addr: P.addr || me?.city || '', web: me?.username ? location.origin + '/v/' + me.username : '', logo: P.logo || '', photo: '' };
+  return cd;
+}
+function cdSave() { try { localStorage.setItem(CD_K, JSON.stringify(cd)); } catch (e) { toast('⚠️ Mémoire pleine : utilisez un logo plus petit.'); } }
+function cdOpen() { cdLoad(); toolOpen('cdx', '🪪 Ma carte de visite', "toolClose('cdx')"); cdForm(); }
+const cdIn = (k, label, ph, type = 'text') => `<div class="fg"><label>${label}</label><input type="${type}" value="${esc(cd[k] || '')}" placeholder="${esc(ph || '')}" oninput="cd['${k}']=this.value;cdSave();cdLive()"></div>`;
+function cdForm() {
+  const el = $('cdx-c'); if (!el) return;
+  el.innerHTML = `<div class="phhero" style="background:linear-gradient(135deg,#0F172A,#334155)"><b>Votre carte de visite pro, gratuite</b><span>Recto-verso, avec QR code « enregistrer mon contact », prête à imprimer ou à envoyer sur WhatsApp.</span></div>
+    <div class="cdprev"><canvas id="cd-r"></canvas><canvas id="cd-v"></canvas></div>
+    <div class="box"><h3 class="cvh">🎨 Style</h3><div class="vchips">${[['moderne', 'Moderne'], ['minimal', 'Minimal'], ['luxe', 'Luxe noir & or']].map(([k, n]) => `<button type="button" class="${cd.tpl === k ? 'on' : ''}" onclick="cd.tpl='${k}';cdSave();cdForm()">${n}</button>`).join('')}</div>
+      <div class="bizcols" style="margin-top:10px">${TOOL_COLS.map(c => `<button type="button" class="${cd.col === c ? 'on' : ''}" style="background:${c}" onclick="cd.col='${c}';cdSave();cdForm()"></button>`).join('')}</div>
+      <div class="bizimg"><div class="bizimgv">${cd.logo ? `<img src="${cd.logo}" alt="">` : '<span>Logo</span>'}</div><div><b>Logo ou photo</b><div class="bizimgb"><button type="button" class="soft" onclick="pickPhoto(d=>{cd.logo=d;cdSave();cdForm()},false)">📷 Importer</button>${cd.logo ? '<button type="button" class="soft" onclick="cd.logo=\'\';cdSave();cdForm()">Retirer</button>' : ''}</div></div></div></div>
+    <div class="box"><h3 class="cvh">✏️ Informations</h3>${cdIn('name', 'Nom', 'ex : Mark Bisimwa')}${cdIn('title', 'Fonction', 'ex : Directeur commercial')}
+      ${cdIn('co', 'Entreprise', 'ex : Mark Market')}${cdIn('slogan', 'Slogan / activité', 'ex : Machines et équipements')}
+      <div class="grid2">${cdIn('phone', 'Téléphone', '+243…', 'tel')}${cdIn('wa', 'WhatsApp (si différent)', '+243…', 'tel')}</div>
+      ${cdIn('mail', 'E-mail', 'contact@exemple.com', 'email')}${cdIn('addr', 'Adresse', 'Av. du Lac 12, Goma')}${cdIn('web', 'Site / boutique en ligne', 'https://…')}</div>
+    <div class="cvbar" style="flex-direction:column"><button class="pill" onclick="cdOut('share')">📤 Envoyer sur WhatsApp (image)</button><button class="soft" onclick="cdOut('pdf')">🖨️ Planche à imprimer (10 cartes, PDF A4)</button><button class="soft" onclick="cdOut('vcf')">👤 Fichier contact (.vcf)</button><button class="soft" onclick="cdOut('png')">⬇️ Recto et verso en images</button></div>
+    <p class="mt" style="font-size:12px;margin:8px 0 20px">Format standard 8,5 × 5,5 cm. Le QR code du verso enregistre directement votre contact dans le téléphone de vos clients.</p>`;
+  cdLive();
+}
+let cdT; function cdLive() { clearTimeout(cdT); cdT = setTimeout(async () => { const [r, v] = await cdRender(0.6); [['cd-r', r], ['cd-v', v]].forEach(([id, c]) => { const e = $(id); if (!e) return; e.width = c.width; e.height = c.height; e.getContext('2d').drawImage(c, 0, 0); }); }, 120); }
+function cdVcard(ascii) {
+  const nm = cd.name.trim().split(/\s+/), last = nm.length > 1 ? nm.slice(1).join(' ') : nm[0] || '', first = nm.length > 1 ? nm[0] : '', A = s => (ascii ? noAcc(s) : s).replace(/[;,\n]/g, ' ');
+  return ['BEGIN:VCARD', 'VERSION:3.0', `N:${A(last)};${A(first)};;;`, `FN:${A(cd.name)}`, cd.co && `ORG:${A(cd.co)}`, cd.title && `TITLE:${A(cd.title)}`, cd.phone && `TEL;TYPE=CELL:${cd.phone.replace(/\s/g, '')}`, cd.wa && `TEL;TYPE=WORK:${cd.wa.replace(/\s/g, '')}`, cd.mail && `EMAIL:${cd.mail}`, cd.addr && `ADR;TYPE=WORK:;;${A(cd.addr)};;;;`, cd.web && `URL:${cd.web}`, 'END:VCARD'].filter(Boolean).join('\n');
+}
+async function cdRender(sc = 1) { // 85 × 55 mm à 300 dpi
+  const W = Math.round(1004 * sc), H = Math.round(650 * sc), C = cd.col, T = cd.tpl, logo = await loadImg(cd.logo), dark = T === 'luxe', gold = '#D4AF37', ac = dark ? gold : C;
+  const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.scale(sc, sc); return [c, x]; };
+  const [r, x] = mk(), w = 1004, h = 650, F = (wt, p) => `${wt} ${p}px ${dark ? 'Georgia, serif' : 'Arial, Helvetica, sans-serif'}`;
+  x.fillStyle = dark ? '#0B0B0C' : '#fff'; x.fillRect(0, 0, w, h);
+  const drawLogo = (cx, cy, max) => { if (!logo) return false; const s = Math.min(max / logo.width, max / logo.height); x.drawImage(logo, cx - logo.width * s / 2, cy - logo.height * s / 2, logo.width * s, logo.height * s); return true; };
+  const lines = [['📞', cd.phone], ['💬', cd.wa], ['✉️', cd.mail], ['📍', cd.addr], ['🌐', cd.web.replace(/^https?:\/\//, '')]].filter(l => l[1]);
+  let tx = 70;
+  if (T === 'moderne') { x.fillStyle = C; x.beginPath(); x.moveTo(0, 0); x.lineTo(380, 0); x.lineTo(300, h); x.lineTo(0, h); x.fill(); x.fillStyle = 'rgba(255,255,255,.12)'; x.beginPath(); x.arc(40, h, 200, 0, 7); x.fill();
+    if (logo) { x.fillStyle = '#fff'; x.beginPath(); x.arc(170, 230, 115, 0, 7); x.fill(); drawLogo(170, 230, 170); } x.fillStyle = '#fff'; x.font = F('bold', 30); x.textAlign = 'center'; vidWrap(x, cd.co || '', 280, 2).forEach((l, k) => x.fillText(l, 165, (logo ? 420 : 280) + k * 36)); x.textAlign = 'left'; tx = 400; }
+  else if (T === 'luxe') { x.strokeStyle = gold; x.lineWidth = 2; x.strokeRect(24, 24, w - 48, h - 48); x.lineWidth = 0.8; x.strokeRect(34, 34, w - 68, h - 68); if (drawLogo(w - 150, 150, 150)) {} tx = 80; }
+  else { x.fillStyle = C; x.fillRect(0, h - 22, w, 22); drawLogo(w - 140, 130, 150); tx = 70; }
+  const tw = (T === 'moderne' ? w - tx - 50 : w - tx - (logo && T !== 'moderne' ? 270 : 70));
+  x.fillStyle = dark ? '#fff' : '#111827'; x.font = F('bold', 54); const nmL = vidWrap(x, cd.name || 'Votre nom', tw, 2); nmL.forEach((l, k) => x.fillText(l, tx, 130 + k * 60));
+  let y = 130 + (nmL.length - 1) * 60; x.fillStyle = ac; x.font = F(dark ? 'italic' : 'bold', 28); if (cd.title) { x.fillText(cutT(cd.title, 40), tx, y + 48); y += 48; }
+  if (T !== 'moderne' && cd.co) { x.fillStyle = dark ? '#E5E7EB' : '#4B5563'; x.font = F('normal', 26); x.fillText(cutT(cd.co, 38), tx, y + 40); y += 40; }
+  x.fillStyle = ac; x.fillRect(tx, y + 30, 90, 4); y += 80;
+  x.font = F('normal', 25); const step = Math.min(48, (h - 50 - y) / Math.max(1, lines.length)); lines.forEach(([i, t]) => { x.font = F('normal', 25); x.fillStyle = ac; x.fillText(i, tx, y + 8); let fz = 25; const mw2 = (T === 'moderne' ? w - tx - 40 : w - tx - 60) - 46; while (fz > 17 && x.measureText(t).width > mw2) { fz--; x.font = F('normal', fz); } x.fillStyle = dark ? '#E5E7EB' : '#1F2937'; x.fillText(x.measureText(t).width > mw2 ? cutT(t, 44) : t, tx + 46, y + 8); y += step; });
+  // verso
+  const [v, z] = mk(); const bg = z.createLinearGradient(0, 0, w, h); bg.addColorStop(0, dark ? '#1C1917' : C); bg.addColorStop(1, dark ? '#000' : shade(C, -0.35)); z.fillStyle = bg; z.fillRect(0, 0, w, h);
+  if (dark) { z.strokeStyle = gold; z.lineWidth = 2; z.strokeRect(24, 24, w - 48, h - 48); }
+  z.fillStyle = 'rgba(255,255,255,.07)'; z.beginPath(); z.arc(w, 0, 300, 0, 7); z.fill();
+  let lx = 300; if (logo) { z.fillStyle = '#fff'; z.beginPath(); z.arc(250, 250, 120, 0, 7); z.fill(); const s = Math.min(180 / logo.width, 180 / logo.height); z.drawImage(logo, 250 - logo.width * s / 2, 250 - logo.height * s / 2, logo.width * s, logo.height * s); }
+  z.fillStyle = dark ? gold : '#fff'; z.textAlign = 'center'; z.font = F('bold', 40); vidWrap(z, cd.co || cd.name || '', 420, 2).forEach((l, k) => z.fillText(l, 250, (logo ? 430 : 300) + k * 46)); z.font = F('italic', 24); z.fillStyle = 'rgba(255,255,255,.9)'; if (cd.slogan) vidWrap(z, cd.slogan, 420, 2).forEach((l, k) => z.fillText(l, 250, (logo ? 520 : 400) + k * 30)); void lx;
+  const qr = stuQR(cdVcard(true)); if (qr) { const qs = 300, qx = w - qs - 90, qy = 120; z.fillStyle = '#fff'; vidRR(z, qx - 18, qy - 18, qs + 36, qs + 36, 18); z.fill(); z.imageSmoothingEnabled = false; z.drawImage(qr, qx, qy, qs, qs); z.imageSmoothingEnabled = true; z.fillStyle = '#fff'; z.font = F('bold', 22); z.fillText('📲 Scannez pour', qx + qs / 2, qy + qs + 62); z.fillText('m’enregistrer', qx + qs / 2, qy + qs + 92); }
+  z.textAlign = 'left'; return [r, v];
+}
+function shade(hex, p) { const n = parseInt(hex.slice(1), 16), f = c => Math.max(0, Math.min(255, Math.round(c * (1 + p)))); return '#' + [f(n >> 16), f((n >> 8) & 255), f(n & 255)].map(c => c.toString(16).padStart(2, '0')).join(''); }
+async function cdOut(kind) {
+  if (!cd.name) return toast('Entrez au moins votre nom.'); const base = 'carte-' + noAcc(cd.name).replace(/[^\w-]+/g, '-').slice(0, 30);
+  if (kind === 'vcf') return spShare([new File([cdVcard(false)], base + '.vcf', { type: 'text/vcard' })], 'Mon contact');
+  const [r, v] = await cdRender(1), blob = c => new Promise(res => c.toBlob(res, 'image/png'));
+  if (kind === 'png') return spSave([new File([await blob(r)], base + '-recto.png', { type: 'image/png' }), new File([await blob(v)], base + '-verso.png', { type: 'image/png' })]);
+  if (kind === 'share') { const c = document.createElement('canvas'); c.width = 1080; c.height = 1350; const x = c.getContext('2d'), g = x.createLinearGradient(0, 0, 0, 1350); g.addColorStop(0, '#F3F4F6'); g.addColorStop(1, '#D1D5DB'); x.fillStyle = g; x.fillRect(0, 0, 1080, 1350);
+    [[r, 90, -0.04], [v, 720, 0.03]].forEach(([cc, y, a]) => { x.save(); x.translate(540, y + 260); x.rotate(a); x.shadowColor = 'rgba(0,0,0,.35)'; x.shadowBlur = 40; x.shadowOffsetY = 18; x.drawImage(cc, -460, -298, 920, 596); x.restore(); });
+    x.fillStyle = '#6B7280'; x.font = '24px Arial'; x.textAlign = 'center'; x.fillText('Carte créée gratuitement avec SocialPages', 540, 1325);
+    return spShare([await new Promise(res => c.toBlob(b => res(new File([b], base + '.jpg', { type: 'image/jpeg' })), 'image/jpeg', 0.92))], `${cd.name}${cd.co ? ' – ' + cd.co : ''}`); }
+  // planche A4 (150 dpi) : 10 cartes recto + 10 verso (page 2, miroir pour impression recto-verso)
+  const PW = 1240, PH = 1754, cw = Math.round(85 / 25.4 * 150), ch = Math.round(55 / 25.4 * 150), gx = (PW - 2 * cw) / 3, gy = (PH - 5 * ch) / 6, pages = [];
+  for (const [side, mir] of [[r, 0], [v, 1]]) { const c = document.createElement('canvas'); c.width = PW; c.height = PH; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, PW, PH); x.strokeStyle = '#C0C0C0'; x.lineWidth = 1;
+    for (let i = 0; i < 2; i++) for (let j = 0; j < 5; j++) { const col = mir ? 1 - i : i, X = gx + col * (cw + gx), Y = gy + j * (ch + gy); x.drawImage(side, X, Y, cw, ch); x.setLineDash([6, 6]); x.strokeRect(X - 0.5, Y - 0.5, cw + 1, ch + 1); x.setLineDash([]); }
+    x.fillStyle = '#9CA3AF'; x.font = '16px Arial'; x.fillText(mir ? 'Verso (imprimer au dos de la page 1)' : 'Recto · 10 cartes 8,5 × 5,5 cm · imprimer à 100 % · SocialPages', 40, PH - 20); pages.push(c); }
+  return spSave(await pagesFiles(pages, base + '-planche-A4', 'pdf'));
+}
+
 // Lien « rejoindre un live » (notification aux abonnés) : #/live/<id>
 function liveHash() {
   const m = location.hash.match(/^#\/live\/([0-9a-f-]{36})/i);
@@ -3418,7 +3716,7 @@ function tryJoinLive(hid, n = 0) {
   toast('Ce live est terminé.');
 }
 addEventListener('hashchange', () => {
-  if (phHash() || tvHash() || liveHash()) return;
+  if (toolHash() || phHash() || tvHash() || liveHash()) return;
   if (route()) go(me ? 'product' : 'pub');
   else if (cur === 'product') go(lastView || 'produits'); else if (cur === 'pub') go(me ? 'accueil' : 'explore');
 });
