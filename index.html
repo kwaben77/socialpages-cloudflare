@@ -907,6 +907,8 @@ body.noscroll{overflow:hidden}
 .svplay{position:absolute;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;border:none;background:rgba(255,255,255,.92);font-size:24px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4)}
 .svsc{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px}.svsc>div{flex:none;display:flex;flex-direction:column;gap:4px;align-items:center;background:#fff;border-radius:12px;padding:6px}.svsc canvas{border-radius:6px;max-height:110px}.svsc select{width:auto;padding:4px;border-radius:8px}.svsc span{display:flex;gap:4px}.svsc span button{border:none;background:#F3F4F6;border-radius:8px;padding:4px 8px;cursor:pointer}
 .svprog{height:12px;background:#E5E7EB;border-radius:999px;overflow:hidden}.svprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#DC2626,#7C3AED);transition:width .2s}
+.cbprev{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.cbprev canvas{width:100%;height:auto;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.15);background:#fff}
+.cbinfo{margin-top:10px;background:#ECFDF5;color:#065F46;border-radius:12px;padding:10px 12px;font-size:14px}.cbinfo.warn{background:#FEF3C7;color:#92400E}
 </style>
 </head>
 <body>
@@ -952,7 +954,7 @@ body.noscroll{overflow:hidden}
   <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span><button class="pill" style="margin-left:auto" onclick="go('login')">Se connecter</button></div>
   <div class="page">
     <div class="box exhero"><b>🛍️ Achetez près de chez vous</b><span>Goma, Bukavu et ailleurs : commandez directement sur WhatsApp, sans créer de compte.</span></div>
-    <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="skOpen()" style="border-color:#C4B5FD;background:linear-gradient(160deg,#EDE9FE,#FCE7F3)"><span>✨</span><b>Studio créatif Pro</b><small>Gratuit · calques</small></button><button type="button" onclick="afOpen()" style="border-color:#DDD6FE;background:linear-gradient(160deg,#F5F3FF,#FDF2F8)"><span>🎨</span><b>Affiches &amp; miniatures</b><small>Gratuit · Pro</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div>
+    <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="cbOpen()" style="border-color:#BAE6FD;background:linear-gradient(160deg,#F0F9FF,#EDE9FE)"><span>🖍️</span><b>Livres à colorier (Amazon KDP)</b><small>Gratuit</small></button><button type="button" onclick="skOpen()" style="border-color:#C4B5FD;background:linear-gradient(160deg,#EDE9FE,#FCE7F3)"><span>✨</span><b>Studio créatif Pro</b><small>Gratuit · calques</small></button><button type="button" onclick="afOpen()" style="border-color:#DDD6FE;background:linear-gradient(160deg,#F5F3FF,#FDF2F8)"><span>🎨</span><b>Affiches &amp; miniatures</b><small>Gratuit · Pro</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div>
     <div id="livebar-g" class="hidden"></div>
     <div class="filters" id="ex-f">
       <button class="on" onclick="exFilter('tous',this)">Tout</button>
@@ -975,7 +977,7 @@ body.noscroll{overflow:hidden}
     <div id="livebar" class="hidden"></div>
     <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
       <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:var(--g2)" onclick="prodModal()">🛍️ Vendre</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div>
-      <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="skOpen()" style="border-color:#C4B5FD;background:linear-gradient(160deg,#EDE9FE,#FCE7F3)"><span>✨</span><b>Studio créatif Pro</b><small>Gratuit · calques</small></button><button type="button" onclick="afOpen()" style="border-color:#DDD6FE;background:linear-gradient(160deg,#F5F3FF,#FDF2F8)"><span>🎨</span><b>Affiches &amp; miniatures</b><small>Gratuit · Pro</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div></div>
+      <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="cbOpen()" style="border-color:#BAE6FD;background:linear-gradient(160deg,#F0F9FF,#EDE9FE)"><span>🖍️</span><b>Livres à colorier (Amazon KDP)</b><small>Gratuit</small></button><button type="button" onclick="skOpen()" style="border-color:#C4B5FD;background:linear-gradient(160deg,#EDE9FE,#FCE7F3)"><span>✨</span><b>Studio créatif Pro</b><small>Gratuit · calques</small></button><button type="button" onclick="afOpen()" style="border-color:#DDD6FE;background:linear-gradient(160deg,#F5F3FF,#FDF2F8)"><span>🎨</span><b>Affiches &amp; miniatures</b><small>Gratuit · Pro</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div></div>
     <div class="filters" id="feed-f">
       <button class="on" onclick="feedFilter('pourvous',this)">Pour vous</button>
       <button onclick="feedFilter('vitrine',this)">🛍️ Vitrine</button>
@@ -3585,13 +3587,13 @@ async function docRender(d) {
   return pages;
 }
 // PDF minimal (pages = images JPEG), sans bibliothèque
-function pdfMake(pages) {
+function pdfMake(pages, PWf, PHf) {
   const enc = new TextEncoder(), parts = [], offs = []; let len = 0;
   const add = p => { const u = typeof p === 'string' ? enc.encode(p) : p; parts.push(u); len += u.length; };
   const obj = (n, body, stream) => { offs[n] = len; add(`${n} 0 obj\n${body}\n`); if (stream) { add('stream\n'); add(stream); add('\nendstream\n'); } add('endobj\n'); };
-  const N = pages.length, PW = 595.28, PH = 841.89; add('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  const N = pages.length; add('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
   obj(1, '<< /Type /Catalog /Pages 2 0 R >>'); obj(2, `<< /Type /Pages /Count ${N} /Kids [${pages.map((_, i) => (3 + i * 3) + ' 0 R').join(' ')}] >>`);
-  pages.forEach((p, i) => { const b = 3 + i * 3, cs = `q ${PW} 0 0 ${PH} 0 0 cm /Im0 Do Q`;
+  pages.forEach((p, i) => { const PW = +(PWf || 595.28).toFixed(2), PH = +(PHf || (Math.abs(p.h / p.w - 841.89 / 595.28) < 0.01 ? 841.89 : 595.28 * p.h / p.w)).toFixed(2), b = 3 + i * 3, cs = `q ${PW} 0 0 ${PH} 0 0 cm /Im0 Do Q`;
     obj(b, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /XObject << /Im0 ${b + 2} 0 R >> >> /Contents ${b + 1} 0 R >>`);
     obj(b + 1, `<< /Length ${cs.length} >>`, enc.encode(cs));
     obj(b + 2, `<< /Type /XObject /Subtype /Image /Width ${p.w} /Height ${p.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${p.d.length} >>`, p.d); });
@@ -3810,11 +3812,11 @@ function toolOpen(id, title, back) {
 }
 function toolClose(id) { $(id)?.remove(); if (!document.querySelector('.bizx')) document.body.classList.remove('noscroll'); }
 function toolShareApp(id) {
-  const k = { cvx: ['cv', '📄 Créez votre CV professionnel GRATUIT (avec photo, en PDF) et votre lettre de motivation'], skx: ['studio', '✨ Créez vos designs PRO (affiches, logos, miniatures) avec des éléments déplaçables, GRATUIT'], afx: ['affiche', '🎨 Créez vos affiches publicitaires et miniatures YouTube GRATUITES (statut, Facebook, impression)'], ivx: ['invit', '💌 Créez vos invitations de mariage, anniversaire… GRATUITES avec réponse en ligne des invités'], cdx: ['carte', '🪪 Créez votre carte de visite professionnelle GRATUITE (avec QR code, prête à imprimer)'] }[id] || ['photo', 'Outils gratuits'];
+  const k = { cvx: ['cv', '📄 Créez votre CV professionnel GRATUIT (avec photo, en PDF) et votre lettre de motivation'], cbx: ['coloriage', '🖍️ Créez vos livres à colorier prêts pour Amazon KDP, GRATUIT'], skx: ['studio', '✨ Créez vos designs PRO (affiches, logos, miniatures) avec des éléments déplaçables, GRATUIT'], afx: ['affiche', '🎨 Créez vos affiches publicitaires et miniatures YouTube GRATUITES (statut, Facebook, impression)'], ivx: ['invit', '💌 Créez vos invitations de mariage, anniversaire… GRATUITES avec réponse en ligne des invités'], cdx: ['carte', '🪪 Créez votre carte de visite professionnelle GRATUITE (avec QR code, prête à imprimer)'] }[id] || ['photo', 'Outils gratuits'];
   const t = `${k[1]} sur SocialPages 👉 ${location.origin}/#/${k[0]}`; if (navigator.share && !spIsApp()) navigator.share({ text: t }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
 }
 function toolHash() {
-  if (ivHash() || afHash() || skHash()) return true;
+  if (ivHash() || afHash() || skHash() || cbHash()) return true;
   const m = location.hash.match(/^#\/(cv|carte)\/?$/); if (!m) return false;
   history.replaceState(null, '', location.pathname + location.search); m[1] === 'cv' ? cvOpen() : cdOpen(); return true;
 }
@@ -4057,6 +4059,9 @@ function skDrawNow() {
   x.save(); x.shadowColor = 'rgba(0,0,0,.25)'; x.shadowBlur = 18; x.fillStyle = '#fff'; x.fillRect(ox, oy, D.w * k, D.h * k); x.restore();
   if (D.bg.t === 'none') { x.save(); x.beginPath(); x.rect(ox, oy, D.w * k, D.h * k); x.clip(); for (let i = 0; i * 12 < D.w * k; i++) for (let j = 0; j * 12 < D.h * k; j++) if ((i + j) % 2) { x.fillStyle = '#E5E7EB'; x.fillRect(ox + i * 12, oy + j * 12, 12, 12); } x.restore(); }
   x.save(); x.beginPath(); x.rect(ox, oy, D.w * k, D.h * k); x.clip(); x.translate(ox, oy); x.scale(k, k); skPaint(x, D, false); x.restore();
+  const G = D.guide; if (G) { x.save(); x.beginPath(); x.rect(ox, oy, D.w * k, D.h * k); x.clip(); x.translate(ox, oy); x.scale(k, k); x.lineWidth = 2 / k; x.setLineDash([8 / k, 6 / k]); const d = G.safe - G.bleed;
+    x.fillStyle = 'rgba(250,204,21,.45)'; x.fillRect(...G.barcode); x.strokeStyle = '#DC2626'; x.strokeRect(G.bleed, G.bleed, D.w - 2 * G.bleed, D.h - 2 * G.bleed); x.strokeStyle = '#16A34A'; x.strokeRect(G.safe, G.safe, G.spine[0] - G.safe - d, D.h - 2 * G.safe); x.strokeRect(G.spine[1] + d, G.safe, D.w - G.safe - G.spine[1] - d, D.h - 2 * G.safe);
+    x.strokeStyle = '#2563EB'; x.setLineDash([]); G.spine.forEach(v => { x.beginPath(); x.moveTo(v, 0); x.lineTo(v, D.h); x.stroke(); }); x.restore(); }
   // repères magnétiques
   x.strokeStyle = '#EC4899'; x.lineWidth = 1; x.setLineDash([6, 4]); sk.guides.forEach(g => { x.beginPath(); if (g.v !== undefined) { x.moveTo(ox + g.v * k, oy); x.lineTo(ox + g.v * k, oy + D.h * k); } else { x.moveTo(ox, oy + g.h * k); x.lineTo(ox + D.w * k, oy + g.h * k); } x.stroke(); }); x.setLineDash([]);
   const o = skSel(); if (!o) return; const P = skCorners(o); x.strokeStyle = o.lock ? '#9CA3AF' : '#7C3AED'; x.lineWidth = 2; x.beginPath(); P.forEach((p, i) => i ? x.lineTo(p.x, p.y) : x.moveTo(p.x, p.y)); x.closePath(); x.stroke();
@@ -4228,9 +4233,9 @@ async function skExport() {
     <button class="pbtn gray" onclick="closeM()">Fermer</button>`);
 }
 async function skOut(kind, share) {
-  toast('⏳ Préparation…', 1500); await skFontsLoad(); await skPreload(sk.doc); await skBgPrep(sk.doc); const D = sk.doc, c = document.createElement('canvas'); c.width = D.w; c.height = D.h; const x = c.getContext('2d'); if (kind !== 'png' || D.bg.t !== 'none') { x.fillStyle = '#fff'; x.fillRect(0, 0, D.w, D.h); } skPaint(x, D, true);
+  toast('⏳ Préparation…', 1500); await skFontsLoad(); await skPreload(sk.doc); await skBgPrep(sk.doc); const D = sk.doc, K = D.xs || 1, c = document.createElement('canvas'); c.width = Math.round(D.w * K); c.height = Math.round(D.h * K); const x = c.getContext('2d'); if (kind !== 'png' || D.bg.t !== 'none') { x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); } x.scale(K, K); skPaint(x, D, !D.guide);
   const base = (D.name || 'design').replace(/[^\w-]+/g, '-').slice(0, 40) || 'design';
-  if (kind === 'pdf') { const f = await pagesFiles([c], base, 'pdf'); return share ? spShare(f, D.name) : spSave(f); }
+  if (kind === 'pdf') { const f = await pagesFiles([c], base, 'pdf', D.pt); return share ? spShare(f, D.name) : spSave(f); }
   const f = await new Promise(r => c.toBlob(b => r(new File([b], base + '.' + (kind === 'png' ? 'png' : 'jpg'), { type: kind === 'png' ? 'image/png' : 'image/jpeg' })), kind === 'png' ? 'image/png' : 'image/jpeg', 0.93));
   share ? spShare([f], D.name, D.name) : spSave([f]);
 }
@@ -4406,9 +4411,12 @@ const SV_AN = { auto: 'Auto', up: 'Glisser', left: 'De côté', zoom: 'Zoom', po
 let skv = null;
 const svEase = p => 1 - Math.pow(1 - p, 3), svBack = p => { const c = 1.70158, q = p - 1; return 1 + (c + 1) * q * q * q + c * q * q; }, svEl = p => p <= 0 ? 0 : p >= 1 ? 1 : Math.pow(2, -9 * p) * Math.sin((p * 10 - 0.75) * (2 * Math.PI) / 3) + 1;
 function svSnap(doc) { const d = JSON.parse(JSON.stringify({ ...doc, assets: undefined })); d.assets = {}; [...d.objs.flatMap(o => [o.aid]), d.bg.aid].filter(Boolean).forEach(a => d.assets[a] = doc.assets?.[a] || skImgs[a]?.src0); return d; }
+const SV_F = { story: { n: '📱 Statut / TikTok', w: 1080, h: 1920 }, post: { n: '▭ Facebook / Insta', w: 1080, h: 1350 }, carre: { n: '⬜ Carré', w: 1080, h: 1080 }, yt: { n: '🖥️ Ordinateur / YouTube', w: 1920, h: 1080 } };
+const svFmtOf = d => { const r = d.w / d.h; return r > 1.3 ? 'yt' : r > 0.95 ? 'carre' : r > 0.7 ? 'post' : 'story'; };
 function svOpen(scenes) {
   if (scenes) skv = { scenes: scenes.map(d => ({ doc: svSnap(d), dur: 4 })), st: 'dyn', tr: 'fade', mus: true };
   else if (!skv) skv = { scenes: [{ doc: svSnap(sk.doc), dur: 4 }], st: 'dyn', tr: 'fade', mus: true };
+  skv.fmt ||= svFmtOf(skv.scenes[0].doc);
   $('skv')?.remove(); document.querySelector('.skmain').insertAdjacentHTML('beforeend', '<div id="skv" class="skg"></div>'); svForm();
 }
 function svClose() { skv && (skv.play = false); $('skv')?.remove(); }
@@ -4416,14 +4424,15 @@ function svForm() {
   const el = $('skv'); if (!el) return; const S = skv; svStop();
   el.innerHTML = `<div class="skph"><b>🎬 Vidéo animée</b><button type="button" onclick="svClose()">✕</button></div>
   <div class="svpv"><canvas id="sv-cv"></canvas><button type="button" class="svplay" id="sv-play" onclick="svPlay()">▶️</button></div>
+  <div class="box" style="margin-top:10px"><h3 class="cvh">Format de la vidéo</h3><div class="afchips">${Object.entries(SV_F).map(([k, f]) => `<button type="button" class="${S.fmt === k ? 'on' : ''}" onclick="skv.fmt='${k}';svForm()"><i style="aspect-ratio:${f.w}/${f.h}"></i>${f.n}</button>`).join('')}</div><small class="mt">Si une scène n’a pas la même forme, elle est centrée sur son propre fond.</small></div>
   <p class="mt" style="font-weight:700">Scènes (${S.scenes.length}) · ${svTotal().toFixed(1)} s</p><div class="svsc">${S.scenes.map((s, i) => `<div><canvas id="svt${i}"></canvas><select onchange="skv.scenes[${i}].dur=+this.value;svForm()">${[2, 3, 4, 5, 6, 8, 10].map(d => `<option value="${d}" ${s.dur === d ? 'selected' : ''}>${d} s</option>`).join('')}</select><span>${i ? `<button type="button" onclick="svMove(${i},-1)">◀</button>` : ''}<button type="button" onclick="skv.scenes.splice(${i},1);skv.scenes.length?svForm():svClose()">✕</button></span></div>`).join('')}
     ${S.scenes.length < 8 ? `<button type="button" class="gadd" onclick="svAdd()">➕<br>Scène</button>` : ''}</div>
   <div class="box"><h3 class="cvh">Style d’animation</h3><div class="afchips">${Object.entries(SV_ST).map(([k, v]) => `<button type="button" class="${S.st === k ? 'on' : ''}" onclick="skv.st='${k}';svForm()">${v.n}</button>`).join('')}</div>
     <p class="mt" style="font-weight:700;margin-top:10px">Passage entre les scènes</p><div class="afchips">${[['fade', 'Fondu'], ['slide', 'Glisser'], ['zoom', 'Zoom']].map(([k, n]) => `<button type="button" class="${S.tr === k ? 'on' : ''}" onclick="skv.tr='${k}';svForm()">${n}</button>`).join('')}</div>
     <label class="afchk" style="margin-top:10px"><input type="checkbox" ${S.mus ? 'checked' : ''} onchange="skv.mus=this.checked"> 🎵 Musique rythmée</label>
     <small class="mt">Astuce : dans le studio, chaque élément a son réglage « 🎬 Animation ».</small></div>
-  <button class="pill" style="width:100%;padding:16px;font-size:17px;background:linear-gradient(135deg,#DC2626,#7C3AED)" onclick="svMake()">🎬 Créer la vidéo MP4</button><div id="sv-out" style="margin:10px 0 24px"></div>`;
-  svPrep().then(() => { const cv = $('sv-cv'); if (!cv) return; const D = S.scenes[0].doc, s = Math.min(1, 520 / Math.max(D.w, D.h)); cv.width = Math.round(D.w * s); cv.height = Math.round(D.h * s); svFrame(cv.getContext('2d'), Math.max(0.1, S.scenes[0].dur - SV_TR - 0.15), s);
+  <button class="pill" style="width:100%;padding:16px;font-size:17px;background:linear-gradient(135deg,#DC2626,#7C3AED)" onclick="svMake()">🎬 Créer la vidéo MP4</button><div style="height:24px"></div>`;
+  svPrep().then(() => { const cv = $('sv-cv'); if (!cv) return; const D = SV_F[S.fmt], s = Math.min(1, 520 / Math.max(D.w, D.h)); cv.width = Math.round(D.w * s); cv.height = Math.round(D.h * s); svFrame(cv.getContext('2d'), Math.max(0.1, S.scenes[0].dur - SV_TR - 0.15), s);
     S.scenes.forEach((sc, i) => { const c = $('svt' + i); if (!c) return; const d = sc.doc, k = 110 / Math.max(d.w, d.h); c.width = Math.round(d.w * k); c.height = Math.round(d.h * k); const x = c.getContext('2d'); x.scale(k, k); skPaint(x, d, false); }); });
 }
 function svMove(i, d) { const A = skv.scenes, [s] = A.splice(i, 1); A.splice(i + d, 0, s); svForm(); }
@@ -4469,9 +4478,9 @@ function svScene(x, sc, t, s) {
 }
 function skObjK(x, r) { if (!r._k || r._k === 1) return skObj(x, r); x.save(); x.translate(r.x, r.y); x.scale(r._k, r._k); x.translate(-r.x, -r.y); skObj(x, r); x.restore(); }
 function svFrame(x, t, s) {
-  const S = skv.scenes, D0 = S[0].doc, W = D0.w * s, H = D0.h * s; x.fillStyle = '#000'; x.fillRect(0, 0, W, H); let acc = 0, i = 0;
+  const S = skv.scenes, D0 = SV_F[skv.fmt] || S[0].doc, W = D0.w * s, H = D0.h * s; x.fillStyle = '#000'; x.fillRect(0, 0, W, H); let acc = 0, i = 0;
   for (; i < S.length - 1 && t >= acc + S[i].dur; i++) acc += S[i].dur;
-  const lt = t - acc, sc = S[i], draw = (scn, tt) => { const d = scn.doc, f = Math.max(W / (d.w * s), H / (d.h * s)); x.save(); x.translate((W - d.w * s * f) / 2, (H - d.h * s * f) / 2); svScene(x, scn, tt, s * f); x.restore(); };
+  const lt = t - acc, sc = S[i], draw = (scn, tt) => { const d = scn.doc, fc = Math.max(W / (d.w * s), H / (d.h * s)), f = Math.min(W / (d.w * s), H / (d.h * s)); if (Math.abs(fc - f) > 0.01) { x.save(); x.translate((W - d.w * s * fc) / 2, (H - d.h * s * fc) / 2); x.scale(s * fc, s * fc); skBgDraw(x, d); x.restore(); x.fillStyle = 'rgba(0,0,0,.35)'; x.fillRect(0, 0, W, H); } x.save(); x.translate((W - d.w * s * f) / 2, (H - d.h * s * f) / 2); svScene(x, scn, tt, s * f); x.restore(); };
   const next = S[i + 1], tin = sc.dur - lt; draw(sc, lt + (i ? SV_TR : 0));
   if (next && tin < SV_TR) { const p = svEase(1 - tin / SV_TR); x.save(); if (skv.tr === 'fade') x.globalAlpha = p; else if (skv.tr === 'slide') x.translate(W * (1 - p), 0); else { x.globalAlpha = p; x.translate(W / 2, H / 2); x.scale(0.7 + 0.3 * p, 0.7 + 0.3 * p); x.translate(-W / 2, -H / 2); } draw(next, SV_TR - tin); x.restore(); }
   const u = Math.min(W, H) / 100; x.font = `600 ${Math.max(9, 1.9 * u)}px Arial`; x.textAlign = 'center'; x.fillStyle = 'rgba(255,255,255,.7)'; x.fillText('Créé avec SocialPages', W / 2, H - u); x.textAlign = 'left';
@@ -4479,18 +4488,196 @@ function svFrame(x, t, s) {
 let svRaf = 0; function svStop() { cancelAnimationFrame(svRaf); if (skv) skv.play = false; svAud?.stop?.(); svAud = null; }
 let svAud = null;
 function svPlay() {
-  if (skv.play) { svStop(); $('sv-play') && ($('sv-play').textContent = '▶️'); return; } const cv = $('sv-cv'), x = cv.getContext('2d'), D = skv.scenes[0].doc, s = cv.width / D.w, T = svTotal(), t0 = performance.now(); skv.play = true; $('sv-play').textContent = '⏸️';
+  if (skv.play) { svStop(); $('sv-play') && ($('sv-play').textContent = '▶️'); return; } const cv = $('sv-cv'), x = cv.getContext('2d'), D = SV_F[skv.fmt], s = cv.width / D.w, T = svTotal(), t0 = performance.now(); skv.play = true; $('sv-play').textContent = '⏸️';
   if (skv.mus) { try { svAud = pubAudio(false); if (svAud) vidMusic(svAud, T, skv.scenes.length, SV_ST[skv.st], false, svCuts()); } catch (e) {} }
   const f = () => { if (!skv?.play) return; const t = (performance.now() - t0) / 1000; svFrame(x, Math.min(t, T), s); if (t >= T) { svStop(); $('sv-play') && ($('sv-play').textContent = '▶️'); return; } svRaf = requestAnimationFrame(f); }; f();
 }
 function svCuts() { const c = []; let a = 0; skv.scenes.forEach(s => { c.push(a + 0.15); a += s.dur; }); c.push(a - 0.2); return c; }
 async function svMake() {
-  svStop(); const out = $('sv-out'), D = skv.scenes[0].doc, s = Math.min(1, 1280 / Math.max(D.w, D.h)), cv = document.createElement('canvas'); cv.width = Math.round(D.w * s / 2) * 2; cv.height = Math.round(D.h * s / 2) * 2;
+  svStop(); openM('<h3>🎬 Votre vidéo</h3><div id="sv-out"></div><button class="pbtn gray" onclick="closeM()">Fermer</button>'); const out = $('sv-out'), D = SV_F[skv.fmt], s = Math.min(1, 1280 / Math.max(D.w, D.h)), cv = document.createElement('canvas'); cv.width = Math.round(D.w * s / 2) * 2; cv.height = Math.round(D.h * s / 2) * 2;
   out.innerHTML = '<div class="svprog"><i id="sv-bar"></i></div><p class="mt" id="sv-msg">🎬 Fabrication de la vidéo… gardez l’écran allumé.</p>'; await svPrep();
   const V = { total: svTotal(), draw: (ctx, t) => svFrame(ctx, t, s), slides: { length: skv.scenes.length }, T: SV_ST[skv.st], cuts: svCuts() }, prog = p => { const b = $('sv-bar'); if (b) b.style.width = Math.round(p * 100) + '%'; };
   let blob = null; try { blob = await stuEncode(V, cv, skv.mus, prog); if (!blob) blob = await stuRecord(V, cv, skv.mus, prog); } catch (e) { out.innerHTML = `<p class="mt">⚠️ ${esc(e.message || 'Erreur')}</p>`; return; }
   const ext = /webm/.test(blob.type) ? 'webm' : 'mp4', name = (sk.doc.name || 'video').replace(/[^\w-]+/g, '-').slice(0, 40) + '.' + ext, f = new File([blob], name, { type: blob.type || 'video/mp4' }); window.svFile = f;
-  out.innerHTML = `<video src="${URL.createObjectURL(blob)}" controls playsinline style="width:100%;max-height:50vh;border-radius:12px;background:#000"></video><div class="grid2" style="margin-top:8px"><button class="pill" style="background:#25D366" onclick="spShare([window.svFile],'Ma vidéo','Vidéo')">📤 Partager</button><button class="soft" onclick="spSave([window.svFile])">⬇️ Enregistrer</button></div><p class="mt" style="font-size:12px">${(f.size / 1048576).toFixed(1)} Mo · ${V.total.toFixed(0)} secondes</p>`;
+  out.innerHTML = `<video src="${URL.createObjectURL(blob)}" controls playsinline style="width:100%;max-height:50vh;border-radius:12px;background:#000"></video><div class="grid2" style="margin-top:8px"><button class="pill" style="background:#25D366" onclick="spShare([window.svFile],'Ma vidéo','Vidéo')">📤 Partager</button><button class="pill" onclick="spSave([window.svFile])">⬇️ Télécharger</button></div><p class="mt" style="font-size:12px">${(f.size / 1048576).toFixed(1)} Mo · ${V.total.toFixed(0)} secondes</p>`;
+}
+
+// ===================== 🖍️ LIVRES À COLORIER (prêts pour Amazon KDP) =====================
+const CB_SIZE = { us85: { n: '21,6 × 27,9 cm (8,5 × 11") – le plus vendu', w: 8.5, h: 11 }, us8x10: { n: '20,3 × 25,4 cm (8 × 10")', w: 8, h: 10 }, a4: { n: 'A4 (21 × 29,7 cm)', w: 8.27, h: 11.69 }, sq: { n: 'Carré 21,6 × 21,6 cm (8,5 × 8,5")', w: 8.5, h: 8.5 }, us6x9: { n: '15,2 × 22,9 cm (6 × 9")', w: 6, h: 9 } };
+const CB_TYPE = { mandala: '🌀 Mandalas', motif: '🌸 Fleurs & cercles (zen)', abc: '🔤 Alphabet ABC', num: '🔢 Chiffres 1 à 10', photo: '📷 Mes photos en dessins', mix: '🎲 Mélange' };
+const CB_LVL = { facile: { n: 'Facile (enfants)', rings: [4, 5], lw: 9, kMax: 12, pk: 6 }, moyen: { n: 'Moyen', rings: [6, 7], lw: 6, kMax: 20, pk: 14 }, expert: { n: 'Expert (adultes, antistress)', rings: [9, 11], lw: 4, kMax: 32, pk: 32 } };
+const CB_LANG = { fr: 'Français', en: 'English', sw: 'Kiswahili', es: 'Español', pt: 'Português', de: 'Deutsch' };
+const CB_ABC = {
+  fr: 'Ananas Ballon Chat Dauphin Éléphant Fleur Girafe Hibou Igloo Jardin Koala Lion Maison Nuage Orange Papillon Quatre Robot Soleil Tortue Uniforme Voiture Wagon Xylophone Yaourt Zèbre',
+  en: 'Apple Ball Cat Dolphin Elephant Flower Giraffe House Igloo Juice Kite Lion Moon Nest Orange Pencil Queen Rainbow Sun Turtle Umbrella Van Whale Xylophone Yoyo Zebra',
+  sw: 'Ananasi Bata Chui Dubu Embe Farasi Gari Hema Inzi Jua Kuku Limau Mbwa Nyumba Okapi Paka - Redio Samaki Tembo Ua Viatu Watoto - Yai Ziwa',
+  es: 'Abeja Barco Casa Dado Estrella Flor Gato Helado Iglú Jirafa Koala León Manzana Nube Oso Pato Queso Ratón Sol Tortuga Uva Vaca Wafle Xilófono Yoyó Zapato',
+  pt: 'Abelha Bola Casa Dado Elefante Flor Gato Hipopótamo Ilha Janela Kiwi Leão Maçã Navio Ovo Pato Queijo Rato Sol Tartaruga Uva Vaca Waffle Xícara Yoga Zebra',
+  de: 'Apfel Ball Clown Delfin Elefant Fisch Giraffe Haus Igel Jacke Katze Löwe Maus Nest Orange Pinguin Qualle Rakete Sonne Tiger Uhr Vogel Wal Xylofon Yak Zebra' };
+const CB_NUM = { fr: 'un deux trois quatre cinq six sept huit neuf dix', en: 'one two three four five six seven eight nine ten', sw: 'moja mbili tatu nne tano sita saba nane tisa kumi', es: 'uno dos tres cuatro cinco seis siete ocho nueve diez', pt: 'um dois três quatro cinco seis sete oito nove dez', de: 'eins zwei drei vier fünf sechs sieben acht neun zehn' };
+const CB_TXT = { fr: { own: 'Ce livre appartient à :', test: 'Testez vos couleurs ici', copy: 'Tous droits réservés.', as: 'comme' }, en: { own: 'This book belongs to:', test: 'Test your colors here', copy: 'All rights reserved.', as: 'is for' }, sw: { own: 'Kitabu hiki ni cha:', test: 'Jaribu rangi zako hapa', copy: 'Haki zote zimehifadhiwa.', as: '–' }, es: { own: 'Este libro pertenece a:', test: 'Prueba tus colores aquí', copy: 'Todos los derechos reservados.', as: 'de' }, pt: { own: 'Este livro pertence a:', test: 'Teste suas cores aqui', copy: 'Todos os direitos reservados.', as: 'de' }, de: { own: 'Dieses Buch gehört:', test: 'Teste hier deine Farben', copy: 'Alle Rechte vorbehalten.', as: 'wie' } };
+let cbk = null; const CB_DPI = 300;
+function cbHash() { if (!/^#\/coloriage\/?$/.test(location.hash)) return false; history.replaceState(null, '', location.pathname + location.search); cbOpen(); return true; }
+function cbNew() { return { title: 'Mandalas magiques', sub: 'Livre de coloriage antistress', author: me?.name || '', type: 'mandala', lvl: 'moyen', lang: 'fr', n: 20, size: 'us85', backs: true, front: true, test: true, seed: Math.floor(Math.random() * 1e6), photos: [] }; }
+function cbOpen() { toolOpen('cbx', '🖍️ Livres à colorier', "toolClose('cbx')"); try { cbk = { ...cbNew(), ...JSON.parse(localStorage.getItem('sp_cb') || '{}'), photos: [] }; } catch (e) { cbk = cbNew(); } skFontsLoad(); cbForm(); }
+function cbSave() { try { localStorage.setItem('sp_cb', JSON.stringify({ ...cbk, photos: [] })); } catch (e) {} }
+const cbIn = (k, label, ph) => `<div class="fg"><label>${label}</label><input value="${esc(cbk[k] || '')}" placeholder="${esc(ph || '')}" oninput="cbk['${k}']=this.value;cbSave()"></div>`;
+function cbPlan() { // liste des pages du livre
+  const K = cbk, D = [], T = K.type, n = Math.max(1, Math.min(200, +K.n || 1)); let rnd = gRnd(K.seed);
+  const abc = (CB_ABC[K.lang] || CB_ABC.fr).split(' '), letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((l, i) => ({ l, w: abc[i] })).filter(o => o.w !== '-');
+  if (T === 'abc') letters.forEach(o => D.push({ t: 'abc', ...o }));
+  else if (T === 'num') for (let i = 1; i <= 10; i++) D.push({ t: 'num', v: i });
+  else if (T === 'photo') K.photos.forEach((p, i) => D.push({ t: 'photo', i }));
+  else for (let i = 0; i < n; i++) { const t = T === 'mix' ? ['mandala', 'motif'][i % 2] : T; D.push({ t, s: Math.floor(rnd() * 1e9) }); }
+  return D;
+}
+function cbCount(D) { let p = (cbk.front ? 3 : 0) + D.length * (cbk.backs ? 2 : 1) + (cbk.test ? 1 : 0); if (p % 2) p++; return p; }
+function cbForm() {
+  const el = $('cbx-c'); if (!el) return; const K = cbk, D = cbPlan(), pages = cbCount(D);
+  el.innerHTML = `<div class="phhero" style="background:linear-gradient(135deg,#0EA5E9,#7C3AED)"><b>Votre livre à colorier, prêt pour Amazon</b><span>Des dessins uniques à l’infini, un PDF intérieur aux normes KDP et la couverture dans le Studio créatif.</span></div>
+  <div class="box"><h3 class="cvh">1. Type de dessins</h3><div class="ivkinds">${Object.entries(CB_TYPE).map(([k, n]) => `<button type="button" class="${K.type === k ? 'on' : ''}" onclick="cbk.type='${k}';cbSave();cbForm()">${n}</button>`).join('')}</div>
+    ${K.type === 'photo' ? `<div class="gphs" style="margin-top:10px">${K.photos.map((p, i) => `<div><img src="${p.src}" alt=""><button type="button" onclick="cbk.photos.splice(${i},1);cbForm()">✕</button></div>`).join('')}<button type="button" class="gadd" onclick="cbAddPh()">➕<br>Photos</button></div><small class="mt">Les photos simples (animal, objet, visage bien éclairé, fond uni) donnent les plus beaux dessins.</small>` : ''}</div>
+  <div class="box"><h3 class="cvh">2. Niveau</h3><div class="afchips">${Object.entries(CB_LVL).map(([k, v]) => `<button type="button" class="${K.lvl === k ? 'on' : ''}" onclick="cbk.lvl='${k}';cbSave();cbForm()">${v.n}</button>`).join('')}</div>
+    ${['mandala', 'motif', 'mix'].includes(K.type) ? `<div class="fg" style="margin-top:10px"><label>Nombre de dessins</label><input type="number" min="1" max="200" value="${K.n}" onchange="cbk.n=Math.max(1,Math.min(200,+this.value||1));cbSave();cbForm()"></div>` : ''}
+    ${['abc', 'num'].includes(K.type) ? `<p class="mt" style="font-weight:700;margin-top:10px">Langue des mots</p><div class="afchips">${Object.entries(CB_LANG).map(([k, n]) => `<button type="button" class="${K.lang === k ? 'on' : ''}" onclick="cbk.lang='${k}';cbSave();cbForm()">${n}</button>`).join('')}</div>` : `<p class="mt" style="font-weight:700;margin-top:10px">Langue des pages de début</p><div class="afchips">${Object.entries(CB_LANG).map(([k, n]) => `<button type="button" class="${K.lang === k ? 'on' : ''}" onclick="cbk.lang='${k}';cbSave();cbForm()">${n}</button>`).join('')}</div>`}</div>
+  <div class="box"><h3 class="cvh">3. Le livre</h3>${cbIn('title', 'Titre', 'ex : Mandalas magiques')}${cbIn('sub', 'Sous-titre', 'ex : 50 dessins antistress')}${cbIn('author', 'Auteur', 'Votre nom')}
+    <div class="fg"><label>Format (taille du livre)</label><select onchange="cbk.size=this.value;cbSave();cbForm()">${Object.entries(CB_SIZE).map(([k, v]) => `<option value="${k}" ${K.size === k ? 'selected' : ''}>${v.n}</option>`).join('')}</select></div>
+    <label class="afchk"><input type="checkbox" ${K.backs ? 'checked' : ''} onchange="cbk.backs=this.checked;cbSave();cbForm()"> Page blanche au dos de chaque dessin (conseillé : les feutres ne traversent pas)</label>
+    <label class="afchk"><input type="checkbox" ${K.front ? 'checked' : ''} onchange="cbk.front=this.checked;cbSave();cbForm()"> Pages de début (titre, « ce livre appartient à », droits)</label>
+    <label class="afchk"><input type="checkbox" ${K.test ? 'checked' : ''} onchange="cbk.test=this.checked;cbSave();cbForm()"> Page « testez vos couleurs » à la fin</label>
+    <div class="cbinfo ${pages < 24 ? 'warn' : ''}">📖 <b>${pages} pages</b> · ${D.length} dessin${D.length > 1 ? 's' : ''}${pages < 24 ? ' · ⚠️ Amazon KDP demande au moins 24 pages : ajoutez des dessins.' : ' · ✅ conforme au minimum KDP (24 pages)'}</div></div>
+  <div class="box"><h3 class="cvh">Aperçu</h3><div class="cbprev" id="cb-prev"></div><button class="soft" style="width:100%;margin-top:8px" onclick="cbk.seed=Math.floor(Math.random()*1e6);cbSave();cbForm()">🎲 Autres dessins</button></div>
+  <button class="pill" style="width:100%;padding:16px;font-size:17px;background:linear-gradient(135deg,#0EA5E9,#7C3AED)" onclick="cbMake()">📘 Créer le PDF intérieur (KDP)</button>
+  <button class="pill" style="width:100%;margin-top:8px;background:#111827" onclick="cbCover()">🎨 Créer la couverture KDP (Studio)</button>
+  <p class="mt" style="font-size:12px;margin:10px 0 24px">Tout est fabriqué dans votre téléphone. Avant de publier, vérifiez toujours votre fichier avec l’aperçu d’Amazon KDP.</p>`;
+  cbPrev(D);
+}
+async function cbPrev(D) { await skFontsLoad(); const el = $('cb-prev'); if (!el) return; const S = CB_SIZE[cbk.size], W = S.w * CB_DPI, H = S.h * CB_DPI, sc = 150 / W;
+  for (const pg of D.slice(0, 6)) { const c = document.createElement('canvas'); c.width = Math.round(W * sc); c.height = Math.round(H * sc); const x = c.getContext('2d'); x.scale(sc, sc); await cbDraw(x, pg, W, H, false); el.appendChild(c); await new Promise(r => setTimeout(r, 0)); } }
+function cbAddPh() { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.multiple = true;
+  i.onchange = async () => { for (const f of [...i.files].slice(0, 60)) { const im = new Image(); im.src = URL.createObjectURL(f); try { await im.decode(); } catch (e) { continue; } const s = Math.min(1, 1600 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); cbk.photos.push({ src: c.toDataURL('image/jpeg', 0.85), im: c }); } cbForm(); }; i.click(); }
+// ---------- dessin d’une page
+async function cbDraw(x, pg, W, H, bleedBack) {
+  x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); const L = CB_LVL[cbk.lvl], m = 0.6 * CB_DPI, rnd = gRnd(pg.s || 7); x.lineJoin = 'round'; x.lineCap = 'round'; x.strokeStyle = '#000';
+  if (pg.t === 'mandala') { const R = Math.min(W, H) / 2 - m; if (cbk.lvl !== 'facile') { x.save(); x.beginPath(); x.rect(m * 0.6, m * 0.6, W - m * 1.2, H - m * 1.2); x.clip(); [[m * 0.6, m * 0.6], [W - m * 0.6, m * 0.6], [m * 0.6, H - m * 0.6], [W - m * 0.6, H - m * 0.6]].forEach(([cx, cy]) => cbMandala(x, cx, cy, Math.min(W, H) * 0.3, gRnd(pg.s + 3), { ...L, rings: [3, 4] })); x.restore(); x.lineWidth = L.lw; x.strokeRect(m * 0.6, m * 0.6, W - m * 1.2, H - m * 1.2); }
+    else { x.lineWidth = L.lw; vidRR(x, m * 0.6, m * 0.6, W - m * 1.2, H - m * 1.2, m * 0.4); x.stroke(); }
+    cbMandala(x, W / 2, H / 2, R * (cbk.lvl === 'facile' ? 0.9 : 0.93), rnd, L); }
+  else if (pg.t === 'motif') cbMotif(x, W, H, m, rnd, L);
+  else if (pg.t === 'abc') cbAbc(x, pg, W, H, m, L);
+  else if (pg.t === 'num') cbNum(x, pg, W, H, m, L);
+  else if (pg.t === 'photo') { const p = cbk.photos[pg.i]; if (p) { const c = cbLine(p.im, L); const s = Math.min((W - 2 * m) / c.width, (H - 2 * m) / c.height); x.drawImage(c, (W - c.width * s) / 2, (H - c.height * s) / 2, c.width * s, c.height * s); x.lineWidth = L.lw; vidRR(x, m * 0.7, m * 0.7, W - m * 1.4, H - m * 1.4, m * 0.3); x.stroke(); } }
+}
+function cbMandala(x, cx, cy, R, rnd, L, pal) {
+  const nR = L.rings[0] + Math.floor(rnd() * (L.rings[1] - L.rings[0] + 1)), w = Array.from({ length: nR }, () => 0.6 + rnd()), sum = w.reduce((a, b) => a + b, 0); let r = R; const rings = [];
+  w.forEach(v => { const th = R * 0.86 * v / sum; rings.push([r, r - th]); r -= th; });
+  x.lineWidth = L.lw; x.strokeStyle = '#000'; let ci = 0; const F = () => pal ? pal[(ci++) % pal.length] : '#fff', P = (a, d) => [cx + Math.cos(a) * d, cy + Math.sin(a) * d], fs = () => { x.fillStyle = F(); x.fill(); x.stroke(); };
+  const mot = ['petal', 'circles', 'spikes', 'scallop', 'leaf', 'double', 'lattice', 'drops'];
+  rings.forEach(([ro, ri], i) => {
+    const mid = (ro + ri) / 2, th = ro - ri; let k = Math.round(2 * Math.PI * mid / (th * 1.15) / 2) * 2; k = Math.max(6, Math.min(L.kMax, k)); const st = Math.PI * 2 / k, off = (i % 2) * st / 2, M = mot[Math.floor(rnd() * mot.length)];
+    x.beginPath(); x.arc(cx, cy, ro, 0, 7); fs();
+    for (let j = 0; j < k; j++) { const a = j * st + off; x.beginPath();
+      if (M === 'petal' || M === 'double' || M === 'leaf') { const wa = st / 2 * 0.96; x.moveTo(...P(a, ri)); if (M === 'leaf') { x.quadraticCurveTo(...P(a - wa * 1.3, mid), ...P(a, ro)); x.quadraticCurveTo(...P(a + wa * 1.3, mid), ...P(a, ri)); } else { x.bezierCurveTo(...P(a - wa, ri + th * 0.35), ...P(a - wa * 0.7, ro), ...P(a, ro)); x.bezierCurveTo(...P(a + wa * 0.7, ro), ...P(a + wa, ri + th * 0.35), ...P(a, ri)); } fs();
+        if (M === 'leaf' && cbk.lvl !== 'facile') { x.beginPath(); x.moveTo(...P(a, ri + th * 0.12)); x.lineTo(...P(a, ro - th * 0.12)); x.stroke(); }
+        if (M === 'double') { const r2 = ri + th * 0.62, w2 = wa * 0.5; x.beginPath(); x.moveTo(...P(a, ri)); x.bezierCurveTo(...P(a - w2, ri + th * 0.25), ...P(a - w2 * 0.7, r2), ...P(a, r2)); x.bezierCurveTo(...P(a + w2 * 0.7, r2), ...P(a + w2, ri + th * 0.25), ...P(a, ri)); fs(); } }
+      else if (M === 'circles' || M === 'drops') { const cr = Math.min(th / 2 * 0.86, Math.PI * mid / k * 0.86); if (M === 'drops') { x.moveTo(...P(a, ri + th * 0.05)); x.quadraticCurveTo(...P(a - st * 0.45, mid + cr * 0.3), ...P(a, ro - th * 0.04)); x.quadraticCurveTo(...P(a + st * 0.45, mid + cr * 0.3), ...P(a, ri + th * 0.05)); fs(); x.beginPath(); }
+        const [px, py] = P(a, M === 'drops' ? mid + th * 0.12 : mid); x.arc(px, py, M === 'drops' ? cr * 0.45 : cr, 0, 7); fs(); if (cbk.lvl !== 'facile' && M === 'circles') { x.beginPath(); x.arc(px, py, cr * 0.42, 0, 7); fs(); } }
+      else if (M === 'spikes') { x.moveTo(...P(a - st / 2, ri)); x.lineTo(...P(a, ro)); x.lineTo(...P(a + st / 2, ri)); x.closePath(); fs(); if (cbk.lvl !== 'facile') { x.beginPath(); x.moveTo(...P(a - st / 4, ri)); x.lineTo(...P(a, ri + th * 0.55)); x.lineTo(...P(a + st / 4, ri)); x.closePath(); fs(); } }
+      else if (M === 'scallop') { x.save(); x.beginPath(); x.arc(cx, cy, ro, 0, 7); x.clip(); x.beginPath(); const [px, py] = P(a, ri); x.arc(px, py, Math.min(th * 0.95, Math.PI * ri / k * 1.15), 0, 7); fs(); x.restore(); }
+      else if (M === 'lattice') { x.moveTo(...P(a, ri)); x.lineTo(...P(a + st / 2, ro)); x.lineTo(...P(a + st, ri)); x.stroke(); x.beginPath(); x.moveTo(...P(a, ro)); x.lineTo(...P(a + st / 2, ri)); x.lineTo(...P(a + st, ro)); x.stroke(); }
+    }
+    x.beginPath(); x.arc(cx, cy, ri, 0, 7); x.stroke();
+  });
+  x.beginPath(); x.arc(cx, cy, r, 0, 7); fs(); const k = 6 + 2 * Math.floor(rnd() * 3); for (let j = 0; j < k; j++) { const a = j * 2 * Math.PI / k; x.beginPath(); x.moveTo(cx, cy); x.bezierCurveTo(...P(a - 0.5, r * 0.6), ...P(a - 0.25, r * 0.95), ...P(a, r * 0.95)); x.bezierCurveTo(...P(a + 0.25, r * 0.95), ...P(a + 0.5, r * 0.6), cx, cy); fs(); }
+  x.beginPath(); x.arc(cx, cy, r * 0.22, 0, 7); fs();
+}
+function cbMotif(x, W, H, m, rnd, L) {
+  const C = [], n = L.pk, rmax = Math.min(W, H) * (cbk.lvl === 'facile' ? 0.22 : cbk.lvl === 'moyen' ? 0.16 : 0.12), rmin = rmax * 0.35, g = L.lw * 2.5;
+  for (let t = 0; t < 4000 && C.length < n * 3; t++) { const r = rmin + (rmax - rmin) * Math.pow(rnd(), 1.5) * (C.length < n ? 1 : 0.6), cx = m + r + rnd() * (W - 2 * m - 2 * r), cy = m + r + rnd() * (H - 2 * m - 2 * r); if (C.every(c => Math.hypot(c.x - cx, c.y - cy) > c.r + r + g)) C.push({ x: cx, y: cy, r }); }
+  C.sort((a, b) => b.r - a.r).forEach(c => cbMandala(x, c.x, c.y, c.r, gRnd(Math.floor(rnd() * 1e9)), { ...L, rings: c.r > rmax * 0.6 ? [3, 4] : [2, 3], kMax: Math.min(L.kMax, 16) }));
+  x.lineWidth = L.lw; x.strokeRect(m * 0.6, m * 0.6, W - m * 1.2, H - m * 1.2);
+}
+function cbOutline(x, txt, X, Y, font, lw, dash) { x.font = font; x.textAlign = 'center'; x.lineJoin = 'round'; x.fillStyle = '#fff'; x.fillText(txt, X, Y); x.lineWidth = lw; x.strokeStyle = '#000'; if (dash) x.setLineDash(dash); x.strokeText(txt, X, Y); x.setLineDash([]); }
+function cbFitFont(x, txt, maxW, sz, fam) { x.font = `900 ${sz}px ${fam}`; while (x.measureText(txt).width > maxW && sz > 20) { sz *= 0.94; x.font = `900 ${sz}px ${fam}`; } return sz; }
+function cbStars(x, W, H, m, rnd, n, L, avoid) { for (let i = 0; i < n; i++) { const r = (0.25 + rnd() * 0.3) * CB_DPI, cx = m + r + rnd() * (W - 2 * m - 2 * r), cy = m + r + rnd() * (H - 2 * m - 2 * r); if (avoid.some(a => cx > a[0] - r && cx < a[2] + r && cy > a[1] - r && cy < a[3] + r)) continue; x.beginPath(); if (i % 2) vidStar(x, cx, cy, r, 5, -Math.PI / 2); else { x.arc(cx, cy, r * 0.8, 0, 7); } x.fillStyle = '#fff'; x.fill(); x.lineWidth = L.lw * 0.8; x.stroke(); } }
+function cbTrace(x, s, W, y0, m, L) { const h = 0.75 * CB_DPI; x.strokeStyle = '#9CA3AF'; x.lineWidth = 3; for (let r = 0; r < 2; r++) { const y = y0 + r * h * 1.35; x.beginPath(); x.moveTo(m, y); x.lineTo(W - m, y); x.moveTo(m, y - h); x.lineTo(W - m, y - h); x.stroke(); x.setLineDash([12, 12]); x.beginPath(); x.moveTo(m, y - h / 2); x.lineTo(W - m, y - h / 2); x.stroke(); x.setLineDash([]);
+    const t = r ? s.toLowerCase() : s.toUpperCase(), fz = h * (r ? 1.25 : 1.0); x.font = `700 ${fz}px Poppins, Arial, sans-serif`; const w = x.measureText(t + '  ').width, n = Math.floor((W - 2 * m) / w); x.textAlign = 'left'; x.lineWidth = 4; x.strokeStyle = '#6B7280'; x.setLineDash([14, 12]); for (let i = 0; i < n; i++) x.strokeText(t, m + i * w + w * 0.1, y - (r ? h * 0.02 : 0)); x.setLineDash([]); } x.strokeStyle = '#000'; }
+function cbAbc(x, pg, W, H, m, L) {
+  const rnd = gRnd(pg.l.charCodeAt(0) * 97 + 3), T = CB_TXT[cbk.lang] || CB_TXT.fr; let sz = cbFitFont(x, pg.l + pg.l.toLowerCase(), W - 2 * m, H * 0.36, 'Poppins, Arial Black, sans-serif');
+  cbOutline(x, pg.l + pg.l.toLowerCase(), W / 2, m + sz * 0.92, `900 ${sz}px Poppins, Arial Black, sans-serif`, L.lw * 1.6);
+  const wy = m + sz * 1.25, wz = cbFitFont(x, pg.w, W - 2 * m, H * 0.12, 'Poppins, Arial Black, sans-serif'); cbOutline(x, pg.w, W / 2, wy + wz * 0.85, `900 ${wz}px Poppins, Arial Black, sans-serif`, L.lw * 1.3);
+  x.font = `600 ${0.28 * CB_DPI}px Poppins, Arial, sans-serif`; x.fillStyle = '#374151'; x.textAlign = 'center'; x.fillText(`${pg.l} ${T.as} ${pg.w}`, W / 2, wy + wz * 1.35);
+  cbStars(x, W, H, m, rnd, cbk.lvl === 'facile' ? 6 : 12, L, [[m, m, W - m, wy + wz * 1.4], [m, H - m - 2.2 * CB_DPI, W - m, H]]);
+  cbTrace(x, pg.l, W, H - m - 1.35 * CB_DPI, m, L);
+}
+function cbNum(x, pg, W, H, m, L) {
+  const words = (CB_NUM[cbk.lang] || CB_NUM.fr).split(' '), rnd = gRnd(pg.v * 131); let sz = H * 0.3; cbOutline(x, String(pg.v), W / 2, m + sz * 0.88, `900 ${sz}px Poppins, Arial Black, sans-serif`, L.lw * 1.6);
+  const wz = cbFitFont(x, words[pg.v - 1], W - 2 * m, H * 0.1, 'Poppins, Arial Black, sans-serif'), wy = m + sz + wz * 0.9; cbOutline(x, words[pg.v - 1], W / 2, wy, `900 ${wz}px Poppins, Arial Black, sans-serif`, L.lw * 1.2);
+  const top = wy + wz * 0.5, bot = H - m - 2.4 * CB_DPI, n = pg.v, cols = Math.min(5, n), rows = Math.ceil(n / cols), cw = (W - 2 * m) / cols, rh = (bot - top) / rows, r = Math.min(cw, rh) * 0.36, kinds = ['star', 'heart', 'ball', 'flower'], kd = kinds[pg.v % 4];
+  for (let i = 0; i < n; i++) { const cx = m + cw * (i % cols + 0.5), cy = top + rh * (Math.floor(i / cols) + 0.5); x.beginPath();
+    if (kd === 'star') vidStar(x, cx, cy, r, 5, -Math.PI / 2); else if (kd === 'heart') { x.moveTo(cx, cy + r * 0.8); x.bezierCurveTo(cx - r * 1.4, cy - r * 0.1, cx - r * 0.7, cy - r * 1.2, cx, cy - r * 0.45); x.bezierCurveTo(cx + r * 0.7, cy - r * 1.2, cx + r * 1.4, cy - r * 0.1, cx, cy + r * 0.8); } else if (kd === 'ball') { x.arc(cx, cy, r * 0.85, 0, 7); } else { for (let j = 0; j < 6; j++) { const a = j * Math.PI / 3; x.moveTo(cx, cy); x.ellipse(cx + Math.cos(a) * r * 0.55, cy + Math.sin(a) * r * 0.55, r * 0.45, r * 0.28, a, 0, 7); } }
+    x.fillStyle = '#fff'; x.fill(); x.lineWidth = L.lw; x.stroke(); if (kd === 'ball') { x.beginPath(); x.arc(cx, cy, r * 0.85, Math.PI * 1.1, Math.PI * 1.9); x.moveTo(cx - r * 0.85, cy); x.quadraticCurveTo(cx, cy + r * 0.5, cx + r * 0.85, cy); x.stroke(); } if (kd === 'flower') { x.beginPath(); x.arc(cx, cy, r * 0.25, 0, 7); x.fill(); x.stroke(); } }
+  cbTrace(x, String(pg.v), W, H - m - 1.35 * CB_DPI, m, L);
+}
+function cbLine(src, L) { // photo -> dessin au trait (différence de flous + épaississement)
+  const S = Math.min(1, 1400 / Math.max(src.width, src.height)), w = Math.round(src.width * S), h = Math.round(src.height * S), c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.drawImage(src, 0, 0, w, h);
+  const id = x.getImageData(0, 0, w, h), d = id.data, g = new Float32Array(w * h); for (let i = 0; i < w * h; i++) g[i] = d[i * 4] * 0.299 + d[i * 4 + 1] * 0.587 + d[i * 4 + 2] * 0.114;
+  const blur = (a, r) => { const t = new Float32Array(w * h), o = new Float32Array(w * h); for (let y = 0; y < h; y++) { let s = 0; for (let xx = -r; xx <= r; xx++) s += a[y * w + Math.min(w - 1, Math.max(0, xx))]; for (let xx = 0; xx < w; xx++) { t[y * w + xx] = s / (2 * r + 1); s += a[y * w + Math.min(w - 1, xx + r + 1)] - a[y * w + Math.max(0, xx - r)]; } }
+    for (let xx = 0; xx < w; xx++) { let s = 0; for (let y = -r; y <= r; y++) s += t[Math.min(h - 1, Math.max(0, y)) * w + xx]; for (let y = 0; y < h; y++) { o[y * w + xx] = s / (2 * r + 1); s += t[Math.min(h - 1, y + r + 1) * w + xx] - t[Math.max(0, y - r) * w + xx]; } } return o; };
+  const lv = cbk.lvl, b1 = blur(g, 1), b2 = blur(g, lv === 'facile' ? 6 : lv === 'moyen' ? 4 : 3), th = lv === 'facile' ? 9 : lv === 'moyen' ? 6 : 4; let e = new Uint8Array(w * h); for (let i = 0; i < w * h; i++) e[i] = b1[i] - b2[i] < -th ? 1 : 0;
+  // nettoyage des petits points et épaississement
+  const cl = new Uint8Array(w * h); for (let y = 1; y < h - 1; y++) for (let xx = 1; xx < w - 1; xx++) { const i = y * w + xx; if (!e[i]) continue; let n = 0; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) n += e[i + dy * w + dx]; cl[i] = n >= 4 ? 1 : 0; }
+  const R = lv === 'facile' ? 2 : 1; for (let y = 0; y < h; y++) for (let xx = 0; xx < w; xx++) { let on = 0; for (let dy = -R; dy <= R && !on; dy++) for (let dx = -R; dx <= R; dx++) { const yy = y + dy, x2 = xx + dx; if (yy >= 0 && yy < h && x2 >= 0 && x2 < w && cl[yy * w + x2]) { on = 1; break; } } const v = on ? 0 : 255, j = (y * w + xx) * 4; d[j] = d[j + 1] = d[j + 2] = v; d[j + 3] = 255; }
+  x.putImageData(id, 0, 0); return c;
+}
+function cbFront(x, kind, W, H) {
+  const T = CB_TXT[cbk.lang] || CB_TXT.fr, m = 0.75 * CB_DPI; x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = '#111'; x.textAlign = 'center';
+  if (kind === 'title') { cbMandala(x, W / 2, H * 0.62, Math.min(W, H) * 0.3, gRnd(cbk.seed + 11), CB_LVL[cbk.lvl]); const fz = cbFitFont(x, cbk.title, W - 2 * m, 0.7 * CB_DPI, 'Poppins, Arial Black, sans-serif'); cbOutline(x, cbk.title, W / 2, m + fz, `900 ${fz}px Poppins, Arial Black, sans-serif`, 6);
+    x.fillStyle = '#374151'; x.font = `600 ${0.26 * CB_DPI}px Poppins, Arial, sans-serif`; x.fillText(cbk.sub || '', W / 2, m + fz + 0.45 * CB_DPI); x.font = `700 ${0.24 * CB_DPI}px Poppins, Arial, sans-serif`; x.fillText(cbk.author || '', W / 2, H - m); }
+  else if (kind === 'own') { x.lineWidth = 6; x.strokeStyle = '#000'; vidRR(x, m, H * 0.3, W - 2 * m, H * 0.3, 0.3 * CB_DPI); x.stroke(); x.font = `800 ${0.4 * CB_DPI}px Poppins, Arial, sans-serif`; x.fillText(T.own, W / 2, H * 0.3 + 0.9 * CB_DPI); x.lineWidth = 4; x.beginPath(); x.moveTo(m + 0.6 * CB_DPI, H * 0.5); x.lineTo(W - m - 0.6 * CB_DPI, H * 0.5); x.stroke();
+    [[m * 1.6, H * 0.3], [W - m * 1.6, H * 0.3], [m * 1.6, H * 0.6], [W - m * 1.6, H * 0.6]].forEach(([cx, cy]) => { x.beginPath(); vidStar(x, cx, cy, 0.35 * CB_DPI, 5, -Math.PI / 2); x.fillStyle = '#fff'; x.fill(); x.lineWidth = 5; x.stroke(); }); }
+  else if (kind === 'copy') { x.font = `500 ${0.13 * CB_DPI}px Arial, sans-serif`; x.fillStyle = '#374151'; [cbk.title, `© ${new Date().getFullYear()} ${cbk.author || ''}`, T.copy].forEach((l, i) => x.fillText(l, W / 2, H - m - (2 - i) * 0.22 * CB_DPI)); }
+  else if (kind === 'test') { x.font = `800 ${0.4 * CB_DPI}px Poppins, Arial, sans-serif`; x.fillText(T.test, W / 2, m + 0.4 * CB_DPI); const cols = 5, rows = 7, cw = (W - 2 * m) / cols, rh = (H - 2 * m - 0.9 * CB_DPI) / rows; x.lineWidth = 4; x.strokeStyle = '#000';
+    for (let i = 0; i < cols * rows; i++) { const cx = m + cw * (i % cols + 0.5), cy = m + 0.9 * CB_DPI + rh * (Math.floor(i / cols) + 0.5); x.beginPath(); x.arc(cx, cy, Math.min(cw, rh) * 0.38, 0, 7); x.stroke(); } }
+}
+// ---------- fabrication du PDF intérieur
+async function cbMake() {
+  const D = cbPlan(); if (!D.length) return toast(cbk.type === 'photo' ? 'Ajoutez des photos.' : 'Aucun dessin.'); const S = CB_SIZE[cbk.size], W = Math.round(S.w * CB_DPI), H = Math.round(S.h * CB_DPI), total = cbCount(D);
+  if (total < 24 && !confirm(`Votre livre fait ${total} pages. Amazon KDP demande au moins 24 pages. Continuer quand même ?`)) return;
+  openM(`<h3>📘 Fabrication du livre</h3><div class="svprog"><i id="cb-bar"></i></div><p class="mt" id="cb-msg">Page 0 / ${total}… gardez l’écran allumé.</p><div id="cb-out"></div>`);
+  await skFontsLoad(); const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'), J = []; let blank = null;
+  const push = async () => { const b = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.9)); J.push({ w: W, h: H, d: new Uint8Array(await b.arrayBuffer()) }); const bar = $('cb-bar'); if (bar) bar.style.width = Math.round(J.length / total * 100) + '%'; const msg = $('cb-msg'); if (msg) msg.textContent = `Page ${J.length} / ${total}… gardez l’écran allumé.`; await new Promise(r => setTimeout(r, 0)); };
+  const pushBlank = async () => { if (!blank) { x.setTransform(1, 0, 0, 1, 0, 0); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); const b = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.9)); blank = new Uint8Array(await b.arrayBuffer()); } J.push({ w: W, h: H, d: blank }); };
+  try {
+    if (cbk.front) { for (const k of ['title', 'copy', 'own']) { x.setTransform(1, 0, 0, 1, 0, 0); cbFront(x, k, W, H); await push(); } }
+    for (const pg of D) { x.setTransform(1, 0, 0, 1, 0, 0); await cbDraw(x, pg, W, H); await push(); if (cbk.backs) await pushBlank(); }
+    if (cbk.test) { x.setTransform(1, 0, 0, 1, 0, 0); cbFront(x, 'test', W, H); await push(); }
+    if (J.length % 2) await pushBlank();
+  } catch (e) { $('cb-msg').textContent = '⚠️ ' + (e.message || 'Erreur (mémoire du téléphone ?). Essayez moins de dessins.'); return; }
+  const name = (cbk.title || 'livre-coloriage').replace(/[^\w-]+/g, '-').slice(0, 40) + '-interieur-KDP.pdf', f = new File([pdfMake(J, S.w * 72, S.h * 72)], name, { type: 'application/pdf' }); window.cbFile = f; window.cbPages = J.length;
+  $('cb-msg').textContent = `✅ ${J.length} pages · ${(f.size / 1048576).toFixed(1)} Mo · ${S.w}" × ${S.h}" · 300 DPI`;
+  $('cb-out').innerHTML = `<div class="grid2" style="margin-top:8px"><button class="pill" onclick="spSave([window.cbFile])">⬇️ Télécharger le PDF</button><button class="soft" onclick="spShare([window.cbFile],'Mon livre')">📤 Partager</button></div>
+    <button class="pill" style="width:100%;margin-top:8px;background:#111827" onclick="closeM();cbCover()">🎨 Faire la couverture (${J.length} pages)</button>
+    <p class="mt" style="font-size:12px">Sur Amazon KDP : choisissez « Sans fond perdu », papier blanc, encre noire, format ${S.w}" × ${S.h}".</p><button class="pbtn gray" onclick="closeM()">Fermer</button>`;
+}
+// ---------- couverture KDP (dans le Studio créatif)
+async function cbCover() {
+  const D = cbPlan(), S = CB_SIZE[cbk.size], pages = window.cbPages || cbCount(D), spine = pages * 0.002252, bl = 0.125, Win = 2 * S.w + spine + 2 * bl, Hin = S.h + 2 * bl, dpi = 150, W = Math.round(Win * dpi), H = Math.round(Hin * dpi), P = v => Math.round(v * dpi);
+  toolClose('cbx'); await skOpen(); const doc = skNewDoc(W, H); doc.name = (cbk.title || 'Couverture') + ' – couverture'; doc.xs = 2; doc.pt = { w: Win * 72, h: Hin * 72 }; doc.bg = { t: 'grad', a: '#0EA5E9', b: '#7C3AED' };
+  const s1 = P(bl + S.w), s2 = P(bl + S.w + spine); doc.guide = { bleed: P(bl), safe: P(bl + 0.25), spine: [s1, s2], barcode: [s1 - P(0.25 + 2), H - P(bl + 0.25 + 1.2), P(2), P(1.2)] };
+  // illustration : un mandala en couleurs
+  const c = document.createElement('canvas'), sz = P(S.w * 0.78); c.width = c.height = sz; const x = c.getContext('2d'); cbMandala(x, sz / 2, sz / 2, sz / 2 - 6, gRnd(cbk.seed + 5), { ...CB_LVL[cbk.lvl], lw: Math.max(2, sz / 300) }, ['#FDE68A', '#F9A8D4', '#A5F3FC', '#C4B5FD', '#86EFAC', '#FDBA74', '#FFFFFF']);
+  sk.doc = doc; const aid = skAsset(c.toDataURL('image/png')); await skPreload(doc);
+  const fx = s2 + P(S.w / 2), bx = P(bl + S.w / 2), u = P(0.01);
+  doc.objs.push({ t: 'img', aid, w: sz, h: sz, x: fx, y: P(bl + S.h * 0.56), shd: 1 },
+    { t: 'text', text: cbk.title || 'Mon livre', ff: 'Anton', fw: 400, s: P(0.75), c: '#FFFFFF', hc: '#FDE047', sw: 0.1, sc: '#111827', al: 'center', x: fx, y: P(bl + 1.1) },
+    { t: 'text', text: cbk.sub || '', ff: 'Montserrat', fw: 800, s: P(0.3), c: '#FFFFFF', bg: '#111827', al: 'center', x: fx, y: P(bl + 1.9) },
+    { t: 'text', text: cbk.author || '', ff: 'Montserrat', fw: 700, s: P(0.28), c: '#FFFFFF', al: 'center', x: fx, y: P(bl + S.h - 0.55), shd: 1 },
+    { t: 'text', text: `${cbk.title || ''}\n\n${D.length} dessins à colorier, niveau ${CB_LVL[cbk.lvl].n.toLowerCase()}.\nImprimés sur une seule face.\nPour se détendre et laisser parler sa créativité.`, ff: 'Montserrat', fw: 600, s: P(0.2), lh: 1.35, c: '#FFFFFF', al: 'center', x: bx, y: P(bl + 2.4) });
+  if (pages >= 80) doc.objs.push({ t: 'text', text: `${cbk.title || ''} · ${cbk.author || ''}`, ff: 'Montserrat', fw: 800, s: Math.min(P(spine) * 0.5, P(0.22)), c: '#FFFFFF', al: 'center', x: (s1 + s2) / 2, y: H / 2, rot: Math.PI / 2 });
+  doc.objs.forEach(o => { o.id = skId(); o.rot ||= 0; });
+  sk.sel = null; sk.hist = []; skHist(true); $('sk-name').value = doc.name; await skBgPrep(doc); skFit(); skPanel(); skSave();
+  openM(`<h3>🎨 Couverture KDP prête à personnaliser</h3><p>Taille totale : <b>${Win.toFixed(3)}" × ${Hin.toFixed(3)}"</b> (dos de ${spine.toFixed(3)}" pour ${pages} pages, fond perdu 0,125").</p>
+    <ul class="mt" style="font-size:13px;line-height:1.6"><li>À droite : la face avant. À gauche : la 4e de couverture.</li><li>Lignes <b style="color:#2563EB">bleues</b> : le dos. Cadre <b style="color:#DC2626">rouge</b> : zone coupée. Gardez les textes dans le cadre <b style="color:#16A34A">vert</b>.</li><li>Le rectangle jaune : emplacement du code-barres ajouté par Amazon, laissez-le vide.</li><li>${pages >= 80 ? 'Texte sur le dos ajouté.' : 'Pas de texte sur le dos : il faut au moins 80 pages environ.'}</li><li>Exportez en <b>PDF</b> (📤 Exporter) : il sort à 300 DPI.</li></ul><button class="pill" style="width:100%" onclick="closeM()">OK</button>`);
 }
 
 // Photo carrée recadrée au centre (pour CV et carte)
@@ -4626,9 +4813,9 @@ async function cvPreview() {
   $('modal-box').classList.add('mwide');
   const P = await cvRender(); window.cvPages = P; if ($('cvprev')) $('cvprev').innerHTML = P.map(c => `<img src="${c.toDataURL('image/jpeg', 0.85)}" alt="">`).join('');
 }
-async function pagesFiles(P, base, kind) {
+async function pagesFiles(P, base, kind, pt) {
   const B = await Promise.all(P.map(c => new Promise(r => c.toBlob(b => r({ b, w: c.width, h: c.height }), 'image/jpeg', 0.92))));
-  if (kind === 'pdf') { const J = await Promise.all(B.map(async x => ({ w: x.w, h: x.h, d: new Uint8Array(await x.b.arrayBuffer()) }))); return [new File([pdfMake(J)], base + '.pdf', { type: 'application/pdf' })]; }
+  if (kind === 'pdf') { const J = await Promise.all(B.map(async x => ({ w: x.w, h: x.h, d: new Uint8Array(await x.b.arrayBuffer()) }))); return [new File([pdfMake(J, pt?.w, pt?.h)], base + '.pdf', { type: 'application/pdf' })]; }
   return B.map((x, i) => new File([x.b], base + (B.length > 1 ? '-p' + (i + 1) : '') + '.jpg', { type: 'image/jpeg' }));
 }
 async function cvOut(kind, share) { const P = window.cvPages || await cvRender(), f = await pagesFiles(P, 'CV-' + noAcc(cv.name).replace(/[^\w-]+/g, '-').slice(0, 30), kind); share ? spShare(f, 'Mon CV') : spSave(f); }
