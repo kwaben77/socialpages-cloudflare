@@ -648,7 +648,7 @@ video.pm{background:#000}
 .vidout{display:block;margin:0 auto 10px;width:auto!important;max-width:100%;max-height:68vh}
 /* ===== Studio pub ===== */
 /* ===== Outils gratuits : CV, lettre, carte de visite ===== */
-.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.tools button:last-child:nth-child(odd){grid-column:1/-1}@media(min-width:600px){.tools{grid-template-columns:repeat(5,1fr)}.tools button:last-child:nth-child(odd){grid-column:auto}}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.tools button:last-child:nth-child(odd){grid-column:1/-1}@media(min-width:600px){.tools{grid-template-columns:repeat(3,1fr)}.tools button:last-child:nth-child(odd){grid-column:auto}}@media(min-width:1000px){.tools{grid-template-columns:repeat(6,1fr)}}
 .tools button{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:1px solid #BFDBFE;border-radius:16px;padding:12px 6px;cursor:pointer;background:linear-gradient(160deg,#EFF6FF,#ECFDF5)}
 .tools button span{font-size:28px}.tools button b{font-size:13px;color:#1E3A8A;line-height:1.2}.tools button small{font-size:11px;color:#047857;font-weight:700}
 .toolsh{display:flex;justify-content:space-between;align-items:center;margin-top:10px}.toolsh b{font-size:15px}.toolsh small{color:#16A34A;font-weight:700}
@@ -865,6 +865,14 @@ body.noscroll{overflow:hidden}
 .rmon{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:6px;margin-bottom:10px}.rmon b{font-size:18px}.rmon button{border:none;background:#F3F4F6;border-radius:10px;width:44px;height:40px;font-size:16px;cursor:pointer}
 .rst{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800}.rst-ok{background:#DCFCE7;color:#15803D}.rst-wa{background:#FEF3C7;color:#B45309}.rst-ko{background:#FEE2E2;color:#B91C1C}.rst-pe{background:#E0E7FF;color:#3730A3}.rst-na{background:#F3F4F6;color:#6B7280}
 .rgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:12px 0 6px}.rgrid div{border-radius:10px;padding:6px 2px;text-align:center;display:flex;flex-direction:column;font-size:12px}.rgrid b{text-transform:capitalize}
+/* 🎨 Affiches */
+.afedit{display:grid;gap:14px;margin-top:12px}.afpv{text-align:center;background:#E5E7EB;border-radius:16px;padding:12px}.afpv canvas{width:100%;max-height:62vh;object-fit:contain;border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+@media(min-width:760px){.afedit{grid-template-columns:minmax(300px,420px) 1fr;align-items:start}.afpv{position:sticky;top:0}}
+.afout{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.afchips{display:flex;flex-wrap:wrap;gap:6px}.afchips button{border:2px solid #E5E7EB;background:#fff;border-radius:12px;padding:9px 12px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}.afchips button.on{border-color:#7C3AED;background:#F5F3FF}.afchips i{display:inline-block;height:18px;background:#9CA3AF;border-radius:3px}
+.afph{display:flex;gap:12px;align-items:center}.afph>img,.afph>span{width:84px;height:84px;border-radius:12px;object-fit:contain;background:repeating-conic-gradient(#E5E7EB 0 25%,#fff 0 50%) 0 0/16px 16px;display:flex;align-items:center;justify-content:center;font-size:34px;flex:none}.afph>div{display:flex;flex-wrap:wrap;gap:6px}
+.afemo{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.afemo button{width:44px;height:44px;border-radius:12px;border:2px solid #E5E7EB;background:#fff;font-size:22px;cursor:pointer}.afemo button.on{border-color:#7C3AED;background:#F5F3FF}
+.afchk{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:600;margin-top:6px}
 </style>
 </head>
 <body>
@@ -910,7 +918,7 @@ body.noscroll{overflow:hidden}
   <div class="header"><div class="logo">S</div><span class="logo-text">SocialPages</span><button class="pill" style="margin-left:auto" onclick="go('login')">Se connecter</button></div>
   <div class="page">
     <div class="box exhero"><b>🛍️ Achetez près de chez vous</b><span>Goma, Bukavu et ailleurs : commandez directement sur WhatsApp, sans créer de compte.</span></div>
-    <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div>
+    <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="afOpen()" style="border-color:#DDD6FE;background:linear-gradient(160deg,#F5F3FF,#FDF2F8)"><span>🎨</span><b>Affiches &amp; miniatures</b><small>Gratuit · Pro</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div>
     <div id="livebar-g" class="hidden"></div>
     <div class="filters" id="ex-f">
       <button class="on" onclick="exFilter('tous',this)">Tout</button>
@@ -933,7 +941,7 @@ body.noscroll{overflow:hidden}
     <div id="livebar" class="hidden"></div>
     <div class="box"><button class="soft" style="width:100%;text-align:left;background:#F0F2F5;color:#6B7280" onclick="postModal()">Quoi de neuf ?</button>
       <div style="display:flex;gap:8px;margin-top:10px"><button class="soft" style="flex:1;color:var(--g2)" onclick="postModal()">🖼️ Médias</button><button class="soft" style="flex:1;color:var(--g2)" onclick="prodModal()">🛍️ Vendre</button><button class="soft" style="flex:1;color:#DC2626" onclick="startLive()">🔴 Live</button></div>
-      <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div></div>
+      <div class="toolsh"><b>🧰 Outils gratuits</b><small>100 % gratuits</small></div><div class="tools"><button type="button" onclick="phOpen()"><span>📸</span><b>Photo d’identité &amp; visa</b><small>Gratuit</small></button><button type="button" onclick="cvOpen()"><span>📄</span><b>CV &amp; lettre de motivation</b><small>Gratuit</small></button><button type="button" onclick="cdOpen()"><span>🪪</span><b>Carte de visite</b><small>Gratuit</small></button><button type="button" onclick="bizOpen('recu')"><span>⚡</span><b>Reçus &amp; quittances de loyer</b><small>Gratuit</small></button><button type="button" onclick="afOpen()" style="border-color:#DDD6FE;background:linear-gradient(160deg,#F5F3FF,#FDF2F8)"><span>🎨</span><b>Affiches &amp; miniatures</b><small>Gratuit · Pro</small></button><button type="button" onclick="ivOpen()" style="border-color:#FCD34D;background:linear-gradient(160deg,#FFFBEB,#FDF2F8)"><span>💌</span><b>Invitations mariage, fête…</b><small>Gratuit · réponses en ligne</small></button></div></div>
     <div class="filters" id="feed-f">
       <button class="on" onclick="feedFilter('pourvous',this)">Pour vous</button>
       <button onclick="feedFilter('vitrine',this)">🛍️ Vitrine</button>
@@ -3187,18 +3195,18 @@ function bizLoyer(el) {
 function unitEdit(id) {
   const u = id ? rentData().units.find(x => x.id === id) : { name: '', addr: '', tenant: '', phone: '', idno: '', rent: '', cur: biz.pro.cur, dep: '', start: today(), day: 5, dur: 12 };
   openM(`<h3>${id ? '✏️ Modifier' : '🏠 Nouvelle location'}</h3>
-    <div class="fg"><label>Maison / appartement</label><input id="u-name" maxlength="50" value="${esc(u.name)}" placeholder="ex : Appartement A2, Maison Himbi"></div>
-    <div class="fg"><label>Adresse du bien</label><input id="u-addr" maxlength="100" value="${esc(u.addr)}" placeholder="Avenue, n°, quartier, ville"></div>
-    <div class="grid2"><div class="fg"><label>Locataire</label><input id="u-ten" maxlength="60" value="${esc(u.tenant)}" placeholder="Nom complet"></div><div class="fg"><label>WhatsApp locataire</label><input id="u-ph" inputmode="tel" value="${esc(u.phone)}" placeholder="+243…"></div></div>
-    <div class="fg"><label>Pièce d’identité du locataire (facultatif)</label><input id="u-id" maxlength="60" value="${esc(u.idno || '')}" placeholder="ex : Carte d’électeur n° …"></div>
-    <div class="grid2"><div class="fg"><label>Loyer mensuel</label><input id="u-rent" type="number" min="0" step="any" inputmode="decimal" value="${u.rent}" placeholder="ex : 150"></div><div class="fg"><label>Monnaie</label><select id="u-cur">${Object.keys(CUR).map(k => `<option ${k === u.cur ? 'selected' : ''}>${k}</option>`).join('')}</select></div></div>
-    <div class="fg"><label>Garantie / caution versée (montant)</label><input id="u-dep" type="number" min="0" step="any" inputmode="decimal" value="${u.dep}" placeholder="ex : 450 (3 mois)"></div>
-    <div class="grid2"><div class="fg"><label>Début du bail</label><input id="u-start" type="date" value="${esc(u.start)}"></div><div class="fg"><label>Payer avant le</label><select id="u-day">${[1, 5, 10, 15, 20, 25, 28].map(d => `<option value="${d}" ${+u.day === d ? 'selected' : ''}>${d} du mois</option>`).join('')}</select></div></div>
-    <div class="fg"><label>Durée du bail</label><select id="u-dur">${[[6, '6 mois'], [12, '1 an'], [24, '2 ans'], [36, '3 ans']].map(([v, n]) => `<option value="${v}" ${+u.dur === v ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+    <div class="fg"><label>Maison / appartement</label><input id="lo-name" maxlength="50" value="${esc(u.name)}" placeholder="ex : Appartement A2, Maison Himbi"></div>
+    <div class="fg"><label>Adresse du bien</label><input id="lo-addr" maxlength="100" value="${esc(u.addr)}" placeholder="Avenue, n°, quartier, ville"></div>
+    <div class="grid2"><div class="fg"><label>Locataire</label><input id="lo-ten" maxlength="60" value="${esc(u.tenant)}" placeholder="Nom complet"></div><div class="fg"><label>WhatsApp locataire</label><input id="lo-ph" inputmode="tel" value="${esc(u.phone)}" placeholder="+243…"></div></div>
+    <div class="fg"><label>Pièce d’identité du locataire (facultatif)</label><input id="lo-id" maxlength="60" value="${esc(u.idno || '')}" placeholder="ex : Carte d’électeur n° …"></div>
+    <div class="grid2"><div class="fg"><label>Loyer mensuel</label><input id="lo-rent" type="number" min="0" step="any" inputmode="decimal" value="${u.rent}" placeholder="ex : 150"></div><div class="fg"><label>Monnaie</label><select id="lo-cur">${Object.keys(CUR).map(k => `<option ${k === u.cur ? 'selected' : ''}>${k}</option>`).join('')}</select></div></div>
+    <div class="fg"><label>Garantie / caution versée (montant)</label><input id="lo-dep" type="number" min="0" step="any" inputmode="decimal" value="${u.dep}" placeholder="ex : 450 (3 mois)"></div>
+    <div class="grid2"><div class="fg"><label>Début du bail</label><input id="lo-start" type="date" value="${esc(u.start)}"></div><div class="fg"><label>Payer avant le</label><select id="lo-day">${[1, 5, 10, 15, 20, 25, 28].map(d => `<option value="${d}" ${+u.day === d ? 'selected' : ''}>${d} du mois</option>`).join('')}</select></div></div>
+    <div class="fg"><label>Durée du bail</label><select id="lo-dur">${[[6, '6 mois'], [12, '1 an'], [24, '2 ans'], [36, '3 ans']].map(([v, n]) => `<option value="${v}" ${+u.dur === v ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
     <button class="pill" style="width:100%" onclick="unitSave('${id || ''}')">💾 Enregistrer</button><button class="pbtn gray" onclick="${id ? `unitView('${id}')` : 'closeM()'}">Annuler</button>`);
 }
 function unitSave(id) {
-  const g = k => ($(k)?.value || '').trim(), v = { name: g('u-name'), addr: g('u-addr'), tenant: g('u-ten'), phone: g('u-ph'), idno: g('u-id'), rent: r2(g('u-rent')), cur: g('u-cur'), dep: r2(g('u-dep')), start: g('u-start'), day: +g('u-day') || 5, dur: +g('u-dur') || 12 };
+  const g = k => ($(k)?.value || '').trim(), v = { name: g('lo-name'), addr: g('lo-addr'), tenant: g('lo-ten'), phone: g('lo-ph'), idno: g('lo-id'), rent: r2(g('lo-rent')), cur: g('lo-cur'), dep: r2(g('lo-dep')), start: g('lo-start'), day: +g('lo-day') || 5, dur: +g('lo-dur') || 12 };
   if (!v.name) return toast('Entrez le nom de la maison (ex : Appartement A2).'); if (!(v.rent > 0)) return toast('Entrez le loyer mensuel.');
   const R = rentData(); let u = id && R.units.find(x => x.id === id); if (u) Object.assign(u, v); else { u = { id: bid(), ...v }; R.units.push(u); }
   bizSave(); toast('✅ Enregistré'); bizRender(); unitView(u.id);
@@ -3768,14 +3776,159 @@ function toolOpen(id, title, back) {
 }
 function toolClose(id) { $(id)?.remove(); if (!document.querySelector('.bizx')) document.body.classList.remove('noscroll'); }
 function toolShareApp(id) {
-  const k = { cvx: ['cv', '📄 Créez votre CV professionnel GRATUIT (avec photo, en PDF) et votre lettre de motivation'], ivx: ['invit', '💌 Créez vos invitations de mariage, anniversaire… GRATUITES avec réponse en ligne des invités'], cdx: ['carte', '🪪 Créez votre carte de visite professionnelle GRATUITE (avec QR code, prête à imprimer)'] }[id] || ['photo', 'Outils gratuits'];
+  const k = { cvx: ['cv', '📄 Créez votre CV professionnel GRATUIT (avec photo, en PDF) et votre lettre de motivation'], afx: ['affiche', '🎨 Créez vos affiches publicitaires et miniatures YouTube GRATUITES (statut, Facebook, impression)'], ivx: ['invit', '💌 Créez vos invitations de mariage, anniversaire… GRATUITES avec réponse en ligne des invités'], cdx: ['carte', '🪪 Créez votre carte de visite professionnelle GRATUITE (avec QR code, prête à imprimer)'] }[id] || ['photo', 'Outils gratuits'];
   const t = `${k[1]} sur SocialPages 👉 ${location.origin}/#/${k[0]}`; if (navigator.share && !spIsApp()) navigator.share({ text: t }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
 }
 function toolHash() {
-  if (ivHash()) return true;
+  if (ivHash() || afHash()) return true;
   const m = location.hash.match(/^#\/(cv|carte)\/?$/); if (!m) return false;
   history.replaceState(null, '', location.pathname + location.search); m[1] === 'cv' ? cvOpen() : cdOpen(); return true;
 }
+// ===================== 🎨 STUDIO AFFICHES & MINIATURES (tout dans le téléphone) =====================
+const AF_K = {
+  promo: { n: '🔥 Promotion', st: 'pop', t: { kick: 'GRANDE PROMOTION', title: 'Tout à *-30 %*', sub: 'Sur toute la boutique', l1: '📅 Du 1er au 15 décembre', l2: '📍 Avenue du Lac, Goma', l3: '', price: '', badge: '-30%', cta: 'Venez vite, stock limité !' } },
+  ouverture: { n: '🎀 Ouverture', st: 'luxe', t: { kick: 'GRANDE OUVERTURE', title: 'Votre nouvelle *boutique*', sub: 'Venez découvrir nos produits', l1: '📅 Samedi 5 décembre dès 9h', l2: '📍 Avenue du Lac, Goma', l3: '🎁 Cadeaux pour les 50 premiers', price: '', badge: 'NOUVEAU', cta: 'Vous êtes tous invités' } },
+  event: { n: '🎤 Concert / soirée', st: 'neon', t: { kick: 'EN CONCERT LIVE', title: 'La grande *soirée* de fin d’année', sub: 'Avec les meilleurs artistes de Goma', l1: '📅 Samedi 20 décembre · 20h', l2: '📍 Salle Ihusi, Goma', l3: '🎟️ Entrée 10 $ · VIP 25 $', price: '', badge: '', cta: 'Réservez votre place' } },
+  eglise: { n: '⛪ Église', st: 'royal', t: { kick: 'GRANDE CROISADE', title: 'Jésus *sauve* et guérit', sub: 'Avec le Pasteur Jean Bisimwa', l1: '📅 Du 12 au 14 décembre · 15h', l2: '📍 Stade de l’Unité, Goma', l3: '🎶 Louange avec la chorale', price: '', badge: '', cta: 'Entrée libre · Venez nombreux' } },
+  resto: { n: '🍽️ Restaurant', st: 'pop', t: { kick: 'PLAT DU JOUR', title: 'Poulet *braisé* & frites', sub: 'Fait maison, avec amour', l1: '🛵 Livraison à domicile', l2: '🕙 Ouvert 7j/7 · 10h – 22h', l3: '', price: '8 $', badge: '', cta: 'Commandez sur WhatsApp' } },
+  recrute: { n: '💼 On recrute', st: 'moderne', t: { kick: 'ON RECRUTE !', title: 'Vendeur(se) *motivé(e)*', sub: 'Poste à pourvoir immédiatement', l1: '✔ 1 an d’expérience minimum', l2: '✔ Bonne présentation', l3: '📩 CV par WhatsApp avant le 30/12', price: '', badge: '', cta: 'Postulez maintenant' } },
+  immo: { n: '🏠 À louer / à vendre', st: 'moderne', t: { kick: 'À LOUER', title: 'Belle *maison* à Himbi', sub: 'Quartier calme et sécurisé', l1: '🛏️ 3 chambres · 2 salons', l2: '🚿 Eau et électricité', l3: '📍 Himbi, Goma', price: '350 $/mois', badge: '', cta: 'Visite sur rendez-vous' } },
+  ecole: { n: '🎓 École', st: 'royal', t: { kick: 'INSCRIPTIONS OUVERTES', title: 'Année scolaire *2026 – 2027*', sub: 'Complexe scolaire Les Étoiles', l1: '📚 Maternelle · Primaire · Secondaire', l2: '🚌 Transport scolaire disponible', l3: '📍 Quartier Les Volcans, Goma', price: '', badge: '', cta: 'Places limitées' } },
+  avis: { n: '📢 Communiqué', st: 'sobre', t: { kick: 'COMMUNIQUÉ', title: 'Avis *important*', sub: 'La direction informe sa clientèle que la boutique sera fermée le lundi 8 décembre pour inventaire.', l1: '', l2: '', l3: '', price: '', badge: '', cta: 'Merci de votre compréhension' } },
+  mini: { n: '▶️ Miniature vidéo', st: 'mini', fmt: 'yt', emo: '😱', t: { kick: '', title: 'Comment *gagner* de l’argent à Goma', sub: '', l1: '', l2: '', l3: '', price: '', badge: '', cta: '' } }
+};
+const AF_S = {
+  pop: { n: 'Pop', dark: 1, stroke: 1 }, luxe: { n: 'Luxe', dark: 1, serif: 1 }, neon: { n: 'Néon', dark: 1, glow: 1 }, royal: { n: 'Royal', dark: 1, serif: 1 },
+  moderne: { n: 'Moderne', dark: 0 }, wax: { n: 'Wax', dark: 0 }, sobre: { n: 'Sobre', dark: 0, serif: 1 }, mini: { n: 'YouTube', dark: 1, stroke: 1 }
+};
+const AF_F = { story: { n: 'Statut / TikTok', w: 1080, h: 1920 }, post: { n: 'Facebook / Insta', w: 1080, h: 1350 }, carre: { n: 'Carré', w: 1080, h: 1080 }, yt: { n: 'Miniature YouTube', w: 1280, h: 720 }, cover: { n: 'Couverture Facebook', w: 1640, h: 624 }, a4: { n: 'Imprimer A4 / A3 (PDF)', w: 1654, h: 2339 } };
+const AF_COL = ['#DC2626', '#EA580C', '#CA8A04', '#16A34A', '#0891B2', '#2563EB', '#7C3AED', '#DB2777', '#0F172A', '#B45309'];
+const AF_EMO = ['', '😱', '🔥', '😂', '💰', '❤️', '👉', '✅', '🤯', '🙏', '🎉', '⚡'];
+let af = null; const afImgs = {};
+function afHash() { if (!/^#\/affiche\/?$/.test(location.hash)) return false; history.replaceState(null, '', location.pathname + location.search); afOpen(); return true; }
+function afNew(k = 'promo') { const K = AF_K[k]; return { kind: k, st: K.st, col: k === 'mini' ? '#DC2626' : AF_COL[[3, 0, 6, 5, 1, 5, 3, 5, 8, 0][Object.keys(AF_K).indexOf(k)] || 0], fmt: K.fmt || 'post', t: { ...K.t, contact: fmtPhone(me?.phone || '') }, photo: '', cut: '', emo: K.emo || '', qr: !!me?.username }; }
+function afSaveD() { try { localStorage.setItem('sp_af', JSON.stringify(af)); } catch (e) { try { localStorage.setItem('sp_af', JSON.stringify({ ...af, photo: '', cut: '' })); } catch (er) {} } }
+function afFonts() { if (document.getElementById('affont')) return document.fonts?.ready; const l = document.createElement('link'); l.id = 'affont'; l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:wght@700;900&display=swap'; document.head.appendChild(l);
+  return new Promise(r => { l.onload = () => Promise.all([document.fonts.load('60px Anton'), document.fonts.load('900 60px "Playfair Display"')]).then(r, r); l.onerror = r; setTimeout(r, 4000); }); }
+function afOpen() { toolOpen('afx', '🎨 Affiches & miniatures', "toolClose('afx')"); try { af = JSON.parse(localStorage.getItem('sp_af') || 'null'); } catch (e) {} af ||= afNew(); afFonts()?.then?.(() => afPrev()); afForm(); }
+const afIn = (k, label, ph, help) => `<div class="fg"><label>${label}</label><input value="${esc(af.t[k] || '')}" placeholder="${esc(ph || '')}" oninput="af.t['${k}']=this.value;afSaveD();afPrev()">${help ? `<small class="mt">${help}</small>` : ''}</div>`;
+function afForm() {
+  const el = $('afx-c'); if (!el) return; const land = AF_F[af.fmt].w > AF_F[af.fmt].h;
+  el.innerHTML = `<div class="phhero" style="background:linear-gradient(135deg,#DB2777,#7C3AED)"><b>Affiches et miniatures dignes d’une agence</b><span>Choisissez un modèle, changez le texte : votre affiche est prête pour WhatsApp, Facebook, YouTube… ou l’imprimeur.</span></div>
+  <div class="afedit"><div class="afpv"><canvas id="af-cv"></canvas>
+    <div class="afout"><button class="pill" style="background:#25D366" onclick="afOut('share')">📤 Partager</button><button class="soft" onclick="afOut('save')">⬇️ Enregistrer</button></div>
+    <button class="soft" style="width:100%;margin-top:6px" onclick="afOut('all')">📦 Tous les formats d’un coup (statut, post, carré, YouTube)</button></div><div>
+  <div class="box"><h3 class="cvh">1. Modèle</h3><div class="ivkinds">${Object.entries(AF_K).map(([k, v]) => `<button type="button" class="${af.kind === k ? 'on' : ''}" onclick="afKind('${k}')">${v.n}</button>`).join('')}</div></div>
+  <div class="box"><h3 class="cvh">2. Format</h3><div class="afchips">${Object.entries(AF_F).map(([k, f]) => `<button type="button" class="${af.fmt === k ? 'on' : ''}" onclick="af.fmt='${k}';afSaveD();afForm()"><i style="aspect-ratio:${f.w}/${f.h}"></i>${f.n}</button>`).join('')}</div></div>
+  <div class="box"><h3 class="cvh">3. Le texte</h3>
+    ${afIn('title', 'Grand titre', 'ex : Tout à *-30 %*', 'Astuce : mettez un mot *entre étoiles* pour le colorer.')}
+    ${afIn('kick', 'Petit titre au-dessus', 'ex : GRANDE PROMOTION')}${af.kind === 'avis' ? `<div class="fg"><label>Texte</label><textarea rows="4" oninput="af.t.sub=this.value;afSaveD();afPrev()">${esc(af.t.sub)}</textarea></div>` : afIn('sub', 'Sous-titre', 'ex : Sur toute la boutique')}
+    ${land && af.kind === 'mini' ? '' : `${afIn('l1', 'Ligne 1', 'ex : 📅 Samedi 5 décembre')}${afIn('l2', 'Ligne 2', 'ex : 📍 Avenue du Lac, Goma')}${afIn('l3', 'Ligne 3', 'ex : 🎟️ Entrée 10 $')}`}
+    <div class="grid2">${afIn('price', 'Prix (facultatif)', 'ex : 25 $')}${afIn('badge', 'Pastille (facultatif)', 'ex : -30%')}</div>
+    ${afIn('cta', 'Appel à l’action', 'ex : Commandez sur WhatsApp')}${afIn('contact', 'Contact', '+243…')}
+    <label class="afchk"><input type="checkbox" ${af.qr ? 'checked' : ''} onchange="af.qr=this.checked;afSaveD();afPrev()"> QR code vers ma boutique en ligne${me?.username ? '' : ' (connectez-vous)'}</label></div>
+  <div class="box"><h3 class="cvh">4. Photo</h3><div class="afph">${af.photo ? `<img src="${af.cut || af.photo}" alt="">` : '<span>🖼️</span>'}<div>
+    <button class="soft" onclick="afPick()">📷 ${af.photo ? 'Changer' : 'Ajouter'} la photo</button>
+    ${af.photo ? `<button class="soft" onclick="afCut()">${af.cut ? '↩️ Remettre le fond' : '✂️ Enlever le fond (personne)'}</button><button class="soft" onclick="af.photo='';af.cut='';afSaveD();afForm()">Retirer</button>` : ''}</div></div>
+    <label class="mt" style="font-size:13px;font-weight:700;display:block;margin-top:10px">Émoji géant (idéal pour les miniatures)</label><div class="afemo">${AF_EMO.map(e => `<button type="button" class="${af.emo === e ? 'on' : ''}" onclick="af.emo='${e}';afSaveD();afForm()">${e || '∅'}</button>`).join('')}</div></div>
+  <div class="box"><h3 class="cvh">5. Style et couleur</h3><div class="afchips">${Object.entries(AF_S).map(([k, s]) => `<button type="button" class="${af.st === k ? 'on' : ''}" onclick="af.st='${k}';afSaveD();afForm()">${s.n}</button>`).join('')}</div>
+    <div class="bizcols" style="margin-top:10px">${AF_COL.map(c => `<button type="button" class="${af.col === c ? 'on' : ''}" style="background:${c}" onclick="af.col='${c}';afSaveD();afForm()"></button>`).join('')}</div></div>
+  <p class="mt" style="font-size:12px;text-align:center;margin-bottom:24px">Tout est fabriqué dans votre téléphone : rien n’est envoyé sur Internet.</p></div></div>`;
+  afPrev();
+}
+function afKind(k) { const keep = { photo: af.photo, cut: af.cut, contact: af.t.contact, col: af.col }; af = afNew(k); af.photo = keep.photo; af.cut = keep.cut; af.t.contact = keep.contact; afSaveD(); afForm(); }
+let afT; function afPrev() { clearTimeout(afT); afT = setTimeout(async () => { const cv = $('af-cv'); if (!cv) return; const F = AF_F[af.fmt], sc = Math.min(1, 640 / Math.max(F.w, F.h)); const c = await afRender(af, sc); cv.width = c.width; cv.height = c.height; cv.getContext('2d').drawImage(c, 0, 0); }, 120); }
+function afPick() {
+  const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*';
+  i.onchange = async () => { const f = i.files[0]; if (!f) return; const im = new Image(); im.src = URL.createObjectURL(f); try { await im.decode(); } catch (e) { return toast('Photo illisible.'); }
+    const s = Math.min(1, 1400 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+    af.photo = c.toDataURL('image/jpeg', 0.88); af.cut = ''; afSaveD(); afForm(); };
+  i.click();
+}
+async function afCut() {
+  if (af.cut) { af.cut = ''; afSaveD(); return afForm(); }
+  toast('✂️ Détourage en cours… (10 à 30 secondes la première fois)', 6000); const im = await loadImg(af.photo); if (!im) return;
+  const keep = ph; let cut = null; try { ph = { src: im }; await phCutBg(); cut = ph.cut; } catch (e) { console.warn(e); } ph = keep;
+  if (!cut) return toast('😕 Impossible d’enlever le fond de cette photo. Essayez une photo de personne bien éclairée.', 5000);
+  const s = Math.min(1, 1100 / Math.max(cut.width, cut.height)), c = document.createElement('canvas'); c.width = Math.round(cut.width * s); c.height = Math.round(cut.height * s); c.getContext('2d').drawImage(cut, 0, 0, c.width, c.height);
+  // recadre sur la personne
+  const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0;
+  for (let y = 0; y < c.height; y += 2) for (let x = 0; x < c.width; x += 2) if (d[(y * c.width + x) * 4 + 3] > 60) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 > x0 && y1 > y0) { const t = document.createElement('canvas'); t.width = x1 - x0 + 4; t.height = y1 - y0 + 4; t.getContext('2d').drawImage(c, x0 - 2, y0 - 2, t.width, t.height, 0, 0, t.width, t.height); af.cut = t.toDataURL('image/png'); } else af.cut = c.toDataURL('image/png');
+  afSaveD(); afForm(); toast('✅ Fond enlevé');
+}
+async function afImg(src) { if (!src) return null; if (afImgs[src]) return afImgs[src]; const i = await loadImg(src); if (i) { const k = Object.keys(afImgs); if (k.length > 6) delete afImgs[k[0]]; afImgs[src] = i; } return i; }
+// --- texte avec mots colorés (*mot*)
+function afTok(s) { const o = []; let hi = false; String(s || '').replace(/ ([%!?:;»])/g, '\u00A0$1').replace(/([«]) /g, '$1\u00A0').split(/(\*)/).forEach(p => { if (p === '*') { hi = !hi; return; } p.split(/[ \t\n]+/).filter(Boolean).forEach(w => o.push({ w, hi })); }); return o; }
+function afWrap(x, toks, maxW, maxL) { const L = []; let cur = []; const wd = a => x.measureText(a.map(t => t.w).join(' ')).width;
+  for (const t of toks) { if (x.measureText(t.w).width > maxW) return null; if (cur.length && wd([...cur, t]) > maxW) { L.push(cur); cur = [t]; } else cur.push(t); } if (cur.length) L.push(cur); return L.length > maxL ? null : L; }
+async function afRender(A, sc = 1) {
+  const F = AF_F[A.fmt], W = F.w, H = F.h, S = AF_S[A.st] || AF_S.pop, col = A.col, t = A.t, land = W > H, u = (land ? H : W) / 100;
+  const c = document.createElement('canvas'); c.width = Math.round(W * sc); c.height = Math.round(H * sc); const x = c.getContext('2d'); x.scale(sc, sc);
+  const [photo, qr] = await Promise.all([afImg(A.cut || A.photo), Promise.resolve(A.qr && me?.username ? stuQR(location.origin + '/v/' + me.username) : null)]), cut = !!A.cut && !!photo;
+  const fg = S.dark ? '#FFFFFF' : A.st === 'wax' ? '#3B1F0E' : '#111827', mu = S.dark ? 'rgba(255,255,255,.82)' : A.st === 'wax' ? '#7C4A1E' : '#4B5563';
+  const hiC = A.st === 'pop' || A.st === 'mini' ? '#FDE047' : A.st === 'luxe' ? '#E9C46A' : A.st === 'royal' ? '#E5C158' : col, bg0 = { pop: col, luxe: '#0B0B0C', neon: '#070714', royal: '#0B1E4A', moderne: '#FFFFFF', wax: '#FFF8EC', sobre: '#F4F4F5', mini: '#111' }[A.st] || '#111';
+  const TF = sz => S.serif ? `900 ${sz}px "Playfair Display", Georgia, serif` : `${sz}px Anton, "Arial Black", Impact, sans-serif`, BF = (w, sz) => `${w} ${sz}px "Segoe UI", Roboto, Arial, sans-serif`;
+  // ---------- fond
+  if (A.st === 'pop' || A.st === 'mini') { x.fillStyle = A.st === 'mini' ? '#0F0F10' : col; x.fillRect(0, 0, W, H); const cx = land ? W * 0.72 : W / 2, cy = land ? H / 2 : H * 0.42; x.save(); x.translate(cx, cy); for (let i = 0; i < 24; i++) { x.rotate(Math.PI / 12); x.fillStyle = A.st === 'mini' ? col + '33' : 'rgba(255,255,255,.08)'; x.beginPath(); x.moveTo(0, 0); x.lineTo(Math.max(W, H) * 1.2, -Math.max(W, H) * 0.12); x.lineTo(Math.max(W, H) * 1.2, Math.max(W, H) * 0.12); x.fill(); } x.restore();
+    x.fillStyle = 'rgba(0,0,0,.12)'; for (let i = 0; i < 14; i++) for (let j = 0; j < 14 - i; j++) { x.beginPath(); x.arc(i * 3.2 * u, j * 3.2 * u, (14 - i - j) * 0.09 * u, 0, 7); x.fill(); } }
+  else if (A.st === 'luxe') { const g = x.createRadialGradient(W / 2, H * 0.25, 10, W / 2, H * 0.3, Math.max(W, H)); g.addColorStop(0, '#2A2420'); g.addColorStop(1, '#0B0B0C'); x.fillStyle = g; x.fillRect(0, 0, W, H); x.strokeStyle = '#D4AF37'; x.lineWidth = 0.5 * u; x.strokeRect(3 * u, 3 * u, W - 6 * u, H - 6 * u); x.lineWidth = 0.2 * u; x.strokeRect(4.4 * u, 4.4 * u, W - 8.8 * u, H - 8.8 * u); x.fillStyle = 'rgba(233,196,106,.45)'; for (let i = 0; i < 70; i++) { x.beginPath(); x.arc((i * 137) % W, (i * 263) % H, (i % 3) * 0.12 * u + 0.1 * u, 0, 7); x.fill(); } }
+  else if (A.st === 'neon') { x.fillStyle = '#070714'; x.fillRect(0, 0, W, H); const g = x.createRadialGradient(W * 0.5, H * 0.2, 10, W * 0.5, H * 0.2, Math.max(W, H) * 0.8); g.addColorStop(0, col + '55'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+    x.strokeStyle = col + '66'; x.lineWidth = 0.25 * u; const hz = H * 0.7; for (let i = -12; i <= 12; i++) { x.beginPath(); x.moveTo(W / 2 + i * W * 0.02, hz); x.lineTo(W / 2 + i * W * 0.2, H); x.stroke(); } for (let k = 0; k < 8; k++) { const yy = hz + (H - hz) * Math.pow(k / 8, 1.8); x.beginPath(); x.moveTo(0, yy); x.lineTo(W, yy); x.stroke(); } }
+  else if (A.st === 'royal') { const g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, '#0B1E4A'); g.addColorStop(1, '#1E3A8A'); x.fillStyle = g; x.fillRect(0, 0, W, H); x.strokeStyle = '#E5C158'; x.lineWidth = 0.35 * u; x.strokeRect(3 * u, 3 * u, W - 6 * u, H - 6 * u); [[3, 3, 1, 1], [W / u - 3, 3, -1, 1], [3, H / u - 3, 1, -1], [W / u - 3, H / u - 3, -1, -1]].forEach(([a, b, sx, sy]) => { x.beginPath(); x.moveTo(a * u, (b + sy * 9) * u); x.quadraticCurveTo(a * u, b * u, (a + sx * 9) * u, b * u); x.lineWidth = 0.6 * u; x.stroke(); }); }
+  else if (A.st === 'moderne') { x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.fillStyle = col; x.beginPath(); if (land) { x.moveTo(W * 0.55, 0); x.lineTo(W, 0); x.lineTo(W, H); x.lineTo(W * 0.42, H); } else { x.moveTo(0, 0); x.lineTo(W, 0); x.lineTo(W, H * 0.07); x.lineTo(0, H * 0.12); } x.fill(); x.fillStyle = col + '22'; for (let i = 0; i < 6; i++) for (let j = 0; j < 6; j++) { x.beginPath(); x.arc(W - (i + 2) * 2.4 * u, H - (j + 2) * 2.4 * u, 0.45 * u, 0, 7); x.fill(); } x.fillStyle = col; x.fillRect(0, H - 1.2 * u, W, 1.2 * u); }
+  else if (A.st === 'wax') { x.fillStyle = '#FFF8EC'; x.fillRect(0, 0, W, H); const b = 6 * u, cs = [col, '#FACC15', '#0E7490']; for (const yy of [0, H - b]) { x.fillStyle = '#3B1F0E'; x.fillRect(0, yy, W, b); for (let i = 0; i * b < W; i++) { x.fillStyle = cs[i % 3]; x.beginPath(); x.moveTo(i * b + b / 2, yy + b * 0.1); x.lineTo(i * b + b * 0.9, yy + b / 2); x.lineTo(i * b + b / 2, yy + b * 0.9); x.lineTo(i * b + b * 0.1, yy + b / 2); x.fill(); x.fillStyle = '#FFF8EC'; x.beginPath(); x.arc(i * b + b / 2, yy + b / 2, b * 0.12, 0, 7); x.fill(); } } }
+  else { x.fillStyle = '#F4F4F5'; x.fillRect(0, 0, W, H); x.strokeStyle = '#52525B'; x.lineWidth = 0.25 * u; x.strokeRect(3 * u, 3 * u, W - 6 * u, H - 6 * u); x.fillStyle = col; x.fillRect(3 * u, 3 * u, W - 6 * u, 1.2 * u); }
+  // ---------- photo
+  let top = (A.st === 'wax' ? 9 : A.st === 'moderne' && !land ? H * 0.13 / u : 6) * u, colW = W; if (t.badge && !land && !(photo && !cut)) top += 17 * u;
+  if (photo) {
+    if (land) { if (cut) { const h = H * 0.98, w = Math.min(W * 0.5, photo.width * h / photo.height), hh = w * photo.height / photo.width; x.save(); x.fillStyle = (S.dark ? col : col) + '55'; x.beginPath(); x.arc(W - w / 2 - 2 * u, H * 0.55, Math.min(w, hh) * 0.48, 0, 7); x.fill(); x.restore(); x.save(); x.shadowColor = 'rgba(0,0,0,.45)'; x.shadowBlur = 4 * u; x.drawImage(photo, W - w - 1 * u, H - hh, w, hh); x.restore(); colW = W - w * 0.9; }
+      else { const pw = W * 0.48, s = Math.max(pw / photo.width, H / photo.height); x.save(); x.beginPath(); x.rect(W - pw, 0, pw, H); x.clip(); x.drawImage(photo, W - pw + (pw - photo.width * s) / 2, (H - photo.height * s) / 2, photo.width * s, photo.height * s); x.restore(); const g = x.createLinearGradient(W - pw, 0, W - pw + pw * 0.45, 0); g.addColorStop(0, bg0); g.addColorStop(1, bg0 + '00'); x.fillStyle = g; x.fillRect(W - pw - 1, 0, pw * 0.45 + 2, H); colW = W - pw * 0.88; } }
+    else if (cut) { const h = H * 0.5, w = Math.min(W * 0.66, photo.width * h / photo.height), hh = w * photo.height / photo.width; x.save(); x.fillStyle = col + '44'; x.beginPath(); x.arc(W - w / 2, H - hh * 0.5 - 10 * u, w * 0.5, 0, 7); x.fill(); x.shadowColor = 'rgba(0,0,0,.4)'; x.shadowBlur = 4 * u; x.drawImage(photo, W - w + 2 * u, H - hh - (A.st === 'wax' ? 6 * u : 0), w, hh); x.restore(); A._cutTop = H - hh; A._cutW = w; }
+    else { const ph = H * (H / W > 1.5 ? 0.36 : 0.4), s = Math.max(W / photo.width, ph / photo.height); x.save(); x.beginPath(); x.rect(0, 0, W, ph); x.clip(); x.drawImage(photo, (W - photo.width * s) / 2, (ph - photo.height * s) * 0.35, photo.width * s, photo.height * s); x.restore();
+      const g = x.createLinearGradient(0, ph * 0.55, 0, ph); g.addColorStop(0, bg0 + '00'); g.addColorStop(1, bg0); x.fillStyle = g; x.fillRect(0, ph * 0.55, W, ph * 0.45 + 1); top = ph - 4 * u; }
+  }
+  // ---------- texte (mise en page avec réduction automatique si trop long)
+  const lines = [t.l1, t.l2, t.l3].filter(Boolean), hiW = (tok, base) => tok.hi ? hiC : base;
+  const drawT = (str, X, Y, fz, fill, align, sizeFn = TF) => { x.font = sizeFn(fz); x.textAlign = align; if (S.stroke) { x.lineJoin = 'round'; x.lineWidth = fz * 0.16; x.strokeStyle = '#000'; x.strokeText(str, X, Y); } if (S.glow) { x.shadowColor = col; x.shadowBlur = fz * 0.5; } x.fillStyle = fill; x.fillText(str, X, Y); x.shadowBlur = 0; };
+  const rich = (L, X, Y, fz, align, maxW) => { x.font = TF(fz); const sp = x.measureText(' ').width, wd = L.reduce((a, tk) => a + x.measureText(tk.w).width, 0) + sp * (L.length - 1); let cx = align === 'center' ? X - wd / 2 : X; L.forEach(tk => { drawT(tk.w, cx, Y, fz, hiW(tk, fg), 'left'); x.font = TF(fz); cx += x.measureText(tk.w).width + sp; }); };
+  const pill = (txt, X, Y, fz, bgc, fc, align, maxW = 1e9) => { x.font = BF(800, fz); while (fz > 8 && x.measureText(txt).width + fz * 1.6 > maxW) { fz *= 0.94; x.font = BF(800, fz); } const w = x.measureText(txt).width + fz * 1.6, h = fz * 1.9, x0 = align === 'center' ? X - w / 2 : X; x.fillStyle = bgc; vidRR(x, x0, Y, w, h, h / 2); x.fill(); x.fillStyle = fc; x.textAlign = 'left'; x.fillText(txt, x0 + fz * 0.8, Y + h * 0.66); return h; };
+  const lay = (k, dry) => {
+    const al = land ? 'left' : 'center', m = (land ? 6 : 7) * u, X = land ? m : W / 2, maxW = land ? colW - 2 * m : W - 2 * m, cutCol = cut && !land, cw = cutCol ? Math.max(W * 0.42, W - (A._cutW || 0) * 0.72 - 2 * m) : maxW, sx = cutCol ? m : X, sa = cutCol ? 'left' : al; let y = land ? 0 : top + (A.st === 'moderne' && !photo ? 0 : 0);
+    const ops = []; const add = (h, fn) => { ops.push([y, fn]); y += h; };
+    if (t.kick) { const fz = (land ? 4.6 : 4) * u * k; add(fz * 1.9 + 2.4 * u * k, yy => pill(t.kick, X, yy, fz, A.st === 'pop' ? '#111' : A.st === 'luxe' ? '#D4AF37' : col, A.st === 'luxe' ? '#111' : '#fff', al)); }
+    const tok = afTok(t.title); let fz = (land ? 24 : (H / W > 1.5 ? 17 : 15)) * u * k, L = null; x.font = TF(fz); while (fz > 4 * u && !(L = afWrap(x, tok, maxW, land ? 3 : 4))) { fz *= 0.93; x.font = TF(fz); }
+    if (L) { const lh = fz * (S.serif ? 1.08 : 1.02); y += fz * 0.82; L.forEach((ln, i) => { const yy = y + i * lh; ops.push([yy, () => rich(ln, X, yy, fz, al, maxW)]); }); y += lh * (L.length - 1) + fz * 0.35; }
+    if (t.sub) { const sz = (land ? 6 : (A.kind === 'avis' ? 5 : 4.6)) * u * k; x.font = BF(600, sz); const SL = vidWrap(x, t.sub, cw, A.kind === 'avis' ? 7 : 3); y += 1.5 * u * k; SL.forEach(l => { y += sz * 1.3; const yy = y; ops.push([yy, () => { x.font = BF(600, sz); x.fillStyle = mu; x.textAlign = sa; if (S.stroke) { x.lineWidth = sz * 0.18; x.strokeStyle = 'rgba(0,0,0,.55)'; x.strokeText(l, sx, yy); } x.fillText(l, sx, yy); }]); }); y += 1.5 * u * k; }
+    if (t.price) { const sz = (land ? 10 : 8.5) * u * k; y += 2 * u * k; const yy = y; add(sz * 1.6 + 2 * u * k, () => { x.save(); x.font = TF(sz); const w = x.measureText(t.price).width + sz * 0.9, h = sz * 1.45, cx = sa === 'center' ? X : sx + w / 2; x.translate(cx, yy + h / 2); x.rotate(-0.04); x.fillStyle = A.st === 'pop' || A.st === 'mini' ? '#FDE047' : A.st === 'luxe' ? '#D4AF37' : col; vidRR(x, -w / 2, -h / 2, w, h, sz * 0.3); x.fill(); x.fillStyle = A.st === 'pop' || A.st === 'luxe' || A.st === 'mini' ? '#111' : '#fff'; x.textAlign = 'center'; x.font = TF(sz); x.fillText(t.price, 0, sz * 0.36); x.restore(); }); }
+    if (lines.length && !(land && A.kind === 'mini')) { const sz = (land ? 5 : 4.3) * u * k; y += 1.5 * u * k; const lw = cw, lx = sx, la = sa;
+      lines.forEach(l => { x.font = BF(700, sz); const tl = vidWrap(x, l, lw, 2); tl.forEach(s2 => { y += sz * 1.45; const yy = y; ops.push([yy, () => { x.font = BF(700, sz); x.textAlign = la; if (S.stroke) { x.lineWidth = sz * 0.2; x.strokeStyle = 'rgba(0,0,0,.6)'; x.strokeText(s2, lx, yy); } x.fillStyle = fg; x.fillText(s2, lx, yy); }]); }); }); y += 1 * u * k; }
+    if (t.cta) { const sz = (land ? 4.6 : 4.4) * u * k; y += 3 * u * k; const yy = y, cx = sx, ca = sa; add(sz * 1.9, () => { x.save(); if (S.glow) { x.shadowColor = col; x.shadowBlur = sz; } pill('👉 ' + t.cta, cx, yy, sz, A.st === 'pop' || A.st === 'mini' ? '#FDE047' : A.st === 'luxe' ? '#D4AF37' : col, A.st === 'pop' || A.st === 'luxe' || A.st === 'mini' ? '#111' : '#fff', ca, cw); x.restore(); }); }
+    return { y, ops };
+  };
+  const foot = (t.contact ? (land ? 8 : 7) * u : 0) + (qr ? 0 : 0) + 3 * u + (A.st === 'wax' ? 6 * u : 0), avail = H - foot - (qr && !land ? 4 * u : 0);
+  let k = 1, R = lay(k); const lim = land ? H - foot : (cut ? H - 3 * u - foot : avail); while (R.y > lim - top * (land ? 0 : 0) && k > 0.5) { k -= 0.05; R = lay(k); }
+  const off = land ? Math.max(4 * u, (H - foot - R.y) / 2) : Math.max(0, Math.min((lim - R.y) * 0.35, 6 * u));
+  x.save(); x.translate(0, off); R.ops.forEach(([yy, fn]) => fn(yy)); x.restore();
+  // ---------- pastille, émoji, contact, QR, signature
+  if (t.badge) { const r = (land ? 15 : 12) * u, cx = land ? (photo ? W * 0.55 : W - r - 5 * u) : W - r - 4 * u, cy = land ? r + 5 * u : (photo && !cut ? top - r * 0.2 : r + 6 * u); x.save(); x.translate(cx, cy); x.rotate(-0.2); x.fillStyle = A.st === 'pop' || A.st === 'mini' ? '#FDE047' : A.st === 'luxe' ? '#D4AF37' : col; vidStar(x, 0, 0, r, 14, 0); x.fill(); x.fillStyle = A.st === 'pop' || A.st === 'luxe' || A.st === 'mini' ? '#111' : '#fff'; x.textAlign = 'center'; let bz = r * 0.62; x.font = TF(bz); while (x.measureText(t.badge).width > r * 1.5 && bz > 8) { bz -= 2; x.font = TF(bz); } x.fillText(t.badge, 0, bz * 0.36); x.restore(); }
+  if (A.emo) { const sz = (land ? 30 : 20) * u; x.save(); x.font = `${sz}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`; x.textAlign = 'center'; x.translate(land ? (photo ? W * 0.5 : W - sz * 0.7) : W - sz * 0.6, land ? H - sz * 0.55 : (cut ? (A._cutTop || H * 0.5) + sz * 0.2 : H * 0.62)); x.rotate(0.15); x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = 2 * u; x.fillText(A.emo, 0, 0); x.restore(); }
+  const by = H - (A.st === 'wax' ? 6 * u : 0) - 2.2 * u;
+  if (t.contact) { const sz = (land ? 4.6 : 3.6) * u; x.font = BF(800, sz); x.textAlign = land ? 'left' : (cut ? 'left' : 'center'); const tx = '📞 ' + t.contact + ' (WhatsApp)', X = land ? 6 * u : (cut ? 7 * u : W / 2), Y = by - 2.4 * u; if (S.stroke || S.dark) { x.lineWidth = sz * 0.25; x.strokeStyle = 'rgba(0,0,0,.55)'; x.strokeText(tx, X, Y); } x.fillStyle = fg; x.fillText(tx, X, Y); }
+  if (qr && !(land && A.kind === 'mini')) { const qs = (land ? 16 : 11) * u, qx = land ? W - qs - 3 * u : (cut ? W - qs - 3 * u : 4 * u), qy = land ? 3 * u : (cut ? 3 * u : H - qs - (A.st === 'wax' ? 8 : 4) * u); if (!(t.badge && ((land && !photo) || (!land && cut)))) { x.fillStyle = '#fff'; vidRR(x, qx - 1 * u, qy - 1 * u, qs + 2 * u, qs + 2 * u, 1.4 * u); x.fill(); x.imageSmoothingEnabled = false; x.drawImage(qr, qx, qy, qs, qs); x.imageSmoothingEnabled = true; } }
+  x.font = BF(600, (land ? 2.4 : 1.9) * u); x.textAlign = 'center'; x.fillStyle = S.dark ? 'rgba(255,255,255,.55)' : 'rgba(0,0,0,.4)'; x.fillText('Créé avec SocialPages', land ? W / 2 : W / 2, H - (A.st === 'wax' ? 6.8 : 0.9) * u);
+  x.textAlign = 'left'; return c;
+}
+async function afOut(kind) {
+  toast('⏳ Préparation…', 1500); await afFonts(); const base = 'affiche-' + (af.kind || 'sp') + '-';
+  const one = async fmt => { const c = await afRender({ ...af, fmt }, 1); return new Promise(r => c.toBlob(b => r(new File([b], base + fmt + '.jpg', { type: 'image/jpeg' })), 'image/jpeg', 0.93)); };
+  try {
+    if (kind === 'all') { const files = []; for (const f of ['story', 'post', 'carre', 'yt']) files.push(await one(f)); return spShare(files, 'Mes affiches – SocialPages', 'Affiches'); }
+    if (af.fmt === 'a4') { const c = await afRender(af, 1), files = await pagesFiles([c], base + 'A4', 'pdf'); return kind === 'share' ? spShare(files, 'Affiche à imprimer', 'Affiche') : spSave(files); }
+    const f = await one(af.fmt); kind === 'share' ? spShare([f], af.t.title.replace(/\*/g, ''), 'Affiche') : spSave([f]);
+  } catch (e) { toast('⚠️ ' + (e.message || 'Erreur')); }
+}
+
 // Photo carrée recadrée au centre (pour CV et carte)
 function pickPhoto(cb, square = true) {
   const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*';
