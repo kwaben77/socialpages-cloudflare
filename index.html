@@ -897,6 +897,16 @@ body.noscroll{overflow:hidden}
 .skpanel textarea{width:100%;box-sizing:border-box;border:1px solid #D1D5DB;border-radius:10px;padding:10px;font-size:16px}
 .skacts{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px;border-top:1px solid #E5E7EB;padding-top:10px}.skacts button{border:none;background:#F9FAFB;border-radius:10px;padding:6px 2px;font-size:18px;cursor:pointer;display:flex;flex-direction:column;align-items:center}.skacts small{font-size:9px;font-weight:700;color:#4B5563}
 .skproj{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin:10px 0;max-height:55vh;overflow:auto}.skproj>div{display:flex;flex-direction:column;gap:2px}.skproj img{width:100%;aspect-ratio:1;object-fit:contain;background:#F3F4F6;border-radius:10px;cursor:pointer}.skproj small{color:#6B7280}.skproj span{display:flex;gap:4px}.skproj span button{flex:1;border:none;background:#F3F4F6;border-radius:8px;padding:4px;cursor:pointer}
+.skg{position:absolute;inset:0;z-index:5;background:#F3F4F6;overflow-y:auto;padding:14px;-webkit-overflow-scrolling:touch}
+@media(min-width:900px){.skg{padding:20px max(20px,calc(50% - 420px))}}
+.gphs{display:flex;gap:8px;flex-wrap:wrap}.gphs>div{width:96px;display:flex;flex-direction:column;gap:4px}.gphs img{width:96px;height:96px;object-fit:contain;border-radius:12px;background:repeating-conic-gradient(#E5E7EB 0 25%,#fff 0 50%) 0 0/14px 14px}.gphs button{border:none;background:#EDE9FE;color:#5B21B6;border-radius:8px;padding:5px;font-size:11px;font-weight:700;cursor:pointer}
+.gadd{width:96px;height:96px;border:2px dashed #C4B5FD!important;background:#F5F3FF!important;border-radius:12px;font-weight:800;color:#7C3AED;cursor:pointer}
+.ggrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:700px){.ggrid{grid-template-columns:repeat(4,1fr)}}
+.ggrid button{border:none;background:#fff;border-radius:12px;padding:6px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center}.ggrid canvas{width:100%;height:auto;border-radius:6px}.ggrid button:active{transform:scale(.97)}
+.svpv{position:relative;background:#111;border-radius:14px;padding:10px;text-align:center}.svpv canvas{max-width:100%;max-height:44vh;border-radius:6px}
+.svplay{position:absolute;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;border:none;background:rgba(255,255,255,.92);font-size:24px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.svsc{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px}.svsc>div{flex:none;display:flex;flex-direction:column;gap:4px;align-items:center;background:#fff;border-radius:12px;padding:6px}.svsc canvas{border-radius:6px;max-height:110px}.svsc select{width:auto;padding:4px;border-radius:8px}.svsc span{display:flex;gap:4px}.svsc span button{border:none;background:#F3F4F6;border-radius:8px;padding:4px 8px;cursor:pointer}
+.svprog{height:12px;background:#E5E7EB;border-radius:999px;overflow:hidden}.svprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#DC2626,#7C3AED);transition:width .2s}
 </style>
 </head>
 <body>
@@ -2632,7 +2642,7 @@ function stuEnd(ctx, V, t) {
   ctx.globalAlpha = 1; ctx.textAlign = 'left';
 }
 // ---------- Musique (créée par le code, sans droits d'auteur), rythme selon le modèle ----------
-function vidMusic(A, total, n, T, offline) {
+function vidMusic(A, total, n, T, offline, cuts) {
   const C = A.C, T0 = C.currentTime + 0.02, out = A.out, bt = T.beat || 0.5, soft = T.serif ? 0.55 : 1; if (!offline) { try { C.resume().catch(() => {}); } catch (e) {} }
   const nzb = (() => { const b = C.createBuffer(1, Math.round(C.sampleRate * 0.6), C.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; })();
   const osc = (t, f1, f2, dur, vol, type = 'sine') => { const o = C.createOscillator(), g = C.createGain(); o.type = type; o.frequency.setValueAtTime(f1, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur * 0.8); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); o.connect(g); g.connect(out); o.start(t); o.stop(t + dur + 0.02); };
@@ -2647,7 +2657,7 @@ function vidMusic(A, total, n, T, offline) {
     if (b % 4 === 0) CH[bar].forEach(f => { const o = C.createOscillator(), g = C.createGain(); o.type = 'triangle'; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.035, t + 0.2); g.gain.linearRampToValueAtTime(0.0001, t + bt * 3.9); o.connect(g); g.connect(out); o.start(t); o.stop(t + bt * 4); });
   }
   osc(T0 + 0.4, 90, 30, 0.9, 0.7 * soft); noise(T0 + 0.4, 'lowpass', 1200, 0.55, 0.3 * soft);
-  for (let k = 0; k <= n; k++) { const ts = T0 + STU_INTRO + k * STU_SL; noise(ts - 0.3, 'bandpass', 300, 0.4, 0.28, 3500);
+  for (let k = 0; k <= n; k++) { const ts = T0 + (cuts ? cuts[k] : STU_INTRO + k * STU_SL); noise(ts - 0.3, 'bandpass', 300, 0.4, 0.28, 3500);
     if (k < n) [1046.5, 1568].forEach((f, j) => osc(ts + 0.5 + j * 0.08, f, 0, 0.6, 0.15)); else [784, 1046.5, 1318.5].forEach((f, j) => osc(ts + 0.2 + j * 0.12, f, 0, 0.9, 0.17)); }
 }
 // ---------- Fabrication du fichier MP4 (H.264 + AAC), sans bibliothèque externe ----------
@@ -2699,7 +2709,7 @@ async function stuEncode(V, cv, music, onProg) {
   enc.configure(cfg);
   for (let i = 0; i < N; i++) {
     if (err) throw err;
-    stuFrame(ctx, V, Math.min(i / FPS, V.total));
+    (V.draw ? V.draw(ctx, Math.min(i / FPS, V.total)) : stuFrame(ctx, V, Math.min(i / FPS, V.total)));
     const f = new VideoFrame(cv, { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) }); enc.encode(f, { keyFrame: i % 60 === 0 }); f.close();
     while (enc.encodeQueueSize > 4) await new Promise(r => setTimeout(r, 4));
     if (i % 5 === 0) { onProg?.(i / N * (music ? 0.9 : 1)); await new Promise(r => setTimeout(r, 0)); }
@@ -2708,7 +2718,7 @@ async function stuEncode(V, cv, music, onProg) {
   let aud = null;
   if (acfg) {
     const SR = 48000, len = Math.ceil(N / FPS * SR), off = new OfflineAudioContext(2, len, SR), out = off.createGain(); out.gain.value = 0.55; out.connect(off.destination);
-    vidMusic({ C: off, out }, V.total, V.slides.length, V.T, true); const buf = await off.startRendering(); onProg?.(0.95);
+    vidMusic({ C: off, out }, V.total, V.slides.length, V.T, true, V.cuts); const buf = await off.startRendering(); onProg?.(0.95);
     const ach = []; let adesc = null, aerr = null;
     const aenc = new AudioEncoder({ output: (ch, meta) => { const d = new Uint8Array(ch.byteLength); ch.copyTo(d); ach.push({ data: d, dur: ch.duration }); const ds = meta?.decoderConfig?.description; if (ds && !adesc) adesc = new Uint8Array(ds.buffer ? ds.buffer.slice(ds.byteOffset, ds.byteOffset + ds.byteLength) : ds); }, error: e => aerr = e });
     aenc.configure(acfg); const L0 = buf.getChannelData(0), R0 = buf.getChannelData(1);
@@ -2728,9 +2738,9 @@ async function stuRecord(V, cv, music, onProg) {
   A?.dest?.stream.getAudioTracks().forEach(t => stream.addTrack(t));
   const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 5e6 } : { videoBitsPerSecond: 5e6 }), chunks = [];
   rec.ondataavailable = e => e.data.size && chunks.push(e.data); const stopped = new Promise(r => rec.onstop = r);
-  stuFrame(ctx, V, 0); track.requestFrame?.(); rec.start(250); await new Promise(r => setTimeout(r, 350));
-  const t0 = performance.now(); if (A) vidMusic(A, V.total, V.slides.length, V.T);
-  await new Promise(done => { const fr = () => { const t = (performance.now() - t0) / 1000; stuFrame(ctx, V, Math.min(t, V.total)); track.requestFrame?.(); onProg?.(Math.min(1, t / V.total)); if (t >= V.total + 1) return done(); requestAnimationFrame(fr); }; requestAnimationFrame(fr); });
+  (V.draw ? V.draw(ctx, 0) : stuFrame(ctx, V, 0)); track.requestFrame?.(); rec.start(250); await new Promise(r => setTimeout(r, 350));
+  const t0 = performance.now(); if (A) vidMusic(A, V.total, V.slides.length, V.T, false, V.cuts);
+  await new Promise(done => { const fr = () => { const t = (performance.now() - t0) / 1000; (V.draw ? V.draw(ctx, Math.min(t, V.total)) : stuFrame(ctx, V, Math.min(t, V.total))); track.requestFrame?.(); onProg?.(Math.min(1, t / V.total)); if (t >= V.total + 1) return done(); requestAnimationFrame(fr); }; requestAnimationFrame(fr); });
   rec.requestData?.(); rec.stop(); await stopped; A?.stop();
   return new Blob(chunks, { type: (mime || 'video/webm').split(';')[0] });
 }
@@ -3841,7 +3851,7 @@ function afForm() {
   el.innerHTML = `<div class="phhero" style="background:linear-gradient(135deg,#DB2777,#7C3AED)"><b>Affiches et miniatures dignes d’une agence</b><span>Choisissez un modèle, changez le texte : votre affiche est prête pour WhatsApp, Facebook, YouTube… ou l’imprimeur.</span></div>
   <div class="afedit"><div class="afpv"><canvas id="af-cv"></canvas>
     <div class="afout"><button class="pill" style="background:#25D366" onclick="afOut('share')">📤 Partager</button><button class="soft" onclick="afOut('save')">⬇️ Enregistrer</button></div>
-    <button class="pill" style="width:100%;margin-top:6px;background:linear-gradient(135deg,#7C3AED,#DB2777)" onclick="afEditFree()">✋ Modifier librement (déplacer les éléments)</button><button class="soft" style="width:100%;margin-top:6px" onclick="afOut('all')">📦 Tous les formats d’un coup (statut, post, carré, YouTube)</button></div><div>
+    <button class="pill" style="width:100%;margin-top:6px;background:linear-gradient(135deg,#7C3AED,#DB2777)" onclick="afEditFree()">✋ Modifier librement (déplacer les éléments)</button><button class="pill" style="width:100%;margin-top:6px;background:#111827" onclick="afGen()">🪄 Générer 16 propositions automatiques</button><button class="soft" style="width:100%;margin-top:6px" onclick="afOut('all')">📦 Tous les formats d’un coup (statut, post, carré, YouTube)</button></div><div>
   <div class="box"><h3 class="cvh">1. Modèle</h3><div class="ivkinds">${Object.entries(AF_K).map(([k, v]) => `<button type="button" class="${af.kind === k ? 'on' : ''}" onclick="afKind('${k}')">${v.n}</button>`).join('')}</div></div>
   <div class="box"><h3 class="cvh">2. Format</h3><div class="afchips">${Object.entries(AF_F).map(([k, f]) => `<button type="button" class="${af.fmt === k ? 'on' : ''}" onclick="af.fmt='${k}';afSaveD();afForm()"><i style="aspect-ratio:${f.w}/${f.h}"></i>${f.n}</button>`).join('')}</div></div>
   <div class="box"><h3 class="cvh">3. Le texte</h3>
@@ -3971,17 +3981,17 @@ const skFont = o => o.ff === 'emoji' ? `${o.s}px "Apple Color Emoji","Segoe UI E
 function skNewDoc(w = 1080, h = 1350) { return { id: skId(), name: 'Mon design', w, h, bg: { t: 'grad', a: '#7C3AED', b: '#DB2777' }, objs: [], assets: {} }; }
 // ---------- images et QR (cache)
 function skAsset(data) { const id = 'a' + skId(); sk.doc.assets[id] = data; return id; }
-function skImgC(aid) { const src = sk?.doc.assets[aid]; if (!src) return null; const c = skImgs[aid]; if (c && c.src0 === src) return c.im; const im = new Image(); im.onload = () => skDraw(); im.src = src; skImgs[aid] = { src0: src, im }; return im.complete && im.naturalWidth ? im : null; }
+function skImgC(aid) { const src = sk?.doc?.assets?.[aid]; if (!src) return skImgs[aid]?.im || null; const c = skImgs[aid]; if (c && c.src0 === src) return c.im; const im = new Image(); im.onload = () => skDraw(); im.src = src; skImgs[aid] = { src0: src, im }; return im.complete && im.naturalWidth ? im : null; }
 async function skPreload(doc) { await Promise.all(Object.entries(doc.assets).map(async ([k, v]) => { if (skImgs[k]?.src0 === v) return; const im = await loadImg(v); if (im) skImgs[k] = { src0: v, im }; })); }
 function skQr(url) { if (!skQrs[url]) skQrs[url] = stuQR(url); return skQrs[url]; }
 // ---------- fond (couleur, dégradé, photo, styles d’affiche)
-let skBgC = { k: '', c: null };
-async function skBgPrep(doc) { const b = doc.bg; if (b.t !== 'af') return; const k = JSON.stringify(b) + doc.w + 'x' + doc.h; if (skBgC.k === k) return; skBgC = { k, c: await afRender({ ...afNew(), st: b.st, col: b.col, W: doc.w, H: doc.h, bgOnly: 1, photo: '', cut: '', qr: false, emo: '' }, 1) }; }
+const skBgM = {}, skBgK = d => JSON.stringify(d.bg) + d.w + 'x' + d.h;
+async function skBgPrep(doc) { const b = doc.bg; if (b.t !== 'af') return; const k = skBgK(doc); if (skBgM[k]) return; const ks = Object.keys(skBgM); if (ks.length > 24) delete skBgM[ks[0]]; skBgM[k] = await afRender({ ...afNew(), st: b.st, col: b.col, W: doc.w, H: doc.h, bgOnly: 1, photo: '', cut: '', qr: false, emo: '' }, 1); }
 function skBgDraw(x, doc) { const b = doc.bg, W = doc.w, H = doc.h;
   if (b.t === 'color') { x.fillStyle = b.a; x.fillRect(0, 0, W, H); }
   else if (b.t === 'grad') { const g = x.createLinearGradient(0, 0, W * 0.6, H); g.addColorStop(0, b.a); g.addColorStop(1, b.b); x.fillStyle = g; x.fillRect(0, 0, W, H); }
   else if (b.t === 'img') { x.fillStyle = '#111'; x.fillRect(0, 0, W, H); const im = skImgC(b.aid); if (im) { const s = Math.max(W / im.width, H / im.height); x.drawImage(im, (W - im.width * s) / 2, (H - im.height * s) / 2, im.width * s, im.height * s); if (b.dim) { x.fillStyle = `rgba(0,0,0,${b.dim})`; x.fillRect(0, 0, W, H); } } }
-  else if (b.t === 'af' && skBgC.c) x.drawImage(skBgC.c, 0, 0, W, H);
+  else if (b.t === 'af' && skBgM[skBgK(doc)]) x.drawImage(skBgM[skBgK(doc)], 0, 0, W, H);
   else if (b.t === 'none') { /* transparent */ } else { x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); } }
 // ---------- texte : mise en page
 function skLay(x, o) {
@@ -4001,10 +4011,10 @@ function skObj(x, o) {
         if (o.glow) { x.shadowColor = o.glow; x.shadowBlur = s * 0.45; } else if (o.shd) { x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = s * 0.18; x.shadowOffsetY = s * 0.06; }
         x.fillStyle = t.hi ? (o.hc || '#FDE047') : (o.c || '#fff'); x.fillText(t.w, cx, by); x.shadowBlur = 0; x.shadowOffsetY = 0; cx += l.ws[j] + M.sp; }); });
   } else if (o.t === 'img') {
-    const im = skImgC(o.aid), w = o.w, h = o.h; if (!im) { x.fillStyle = 'rgba(0,0,0,.08)'; x.fillRect(-w / 2, -h / 2, w, h); x.restore(); return; }
+    const im = o.aid ? skImgC(o.aid) : null, w = o.w, h = o.h; if (!im) { x.beginPath(); if (o.mask === 'circle') x.ellipse(0, 0, w / 2, h / 2, 0, 0, 7); else vidRR(x, -w / 2, -h / 2, w, h, o.mask === 'round' ? Math.min(w, h) * 0.12 : 0); x.fillStyle = 'rgba(255,255,255,.35)'; x.fill(); x.setLineDash([Math.min(w, h) * 0.04, Math.min(w, h) * 0.03]); x.lineWidth = Math.max(2, Math.min(w, h) * 0.012); x.strokeStyle = 'rgba(0,0,0,.45)'; x.stroke(); x.setLineDash([]); const fz = Math.min(w, h) * 0.16; x.font = `${fz}px sans-serif`; x.textAlign = 'center'; x.fillStyle = 'rgba(0,0,0,.6)'; x.fillText('📷', 0, fz * 0.2); x.font = `700 ${fz * 0.38}px Arial`; x.fillText('Touchez pour mettre une photo', 0, fz * 0.85); x.restore(); return; }
     const path = () => { x.beginPath(); if (o.mask === 'circle') x.ellipse(0, 0, w / 2, h / 2, 0, 0, 7); else vidRR(x, -w / 2, -h / 2, w, h, o.mask === 'round' ? Math.min(w, h) * 0.12 : 0); };
     if (o.shd) { x.save(); x.shadowColor = 'rgba(0,0,0,.45)'; x.shadowBlur = Math.min(w, h) * 0.06; x.shadowOffsetY = Math.min(w, h) * 0.02; if (o.mask || !o.cutout) { path(); x.fillStyle = '#000'; x.fill(); } x.restore(); }
-    const C = o.crop || { sx: 0, sy: 0, sw: im.width, sh: im.height }; let src = im;
+    let C = o.crop || { sx: 0, sy: 0, sw: im.width, sh: im.height }; if (o.fit === 'cover') { const z = o.z || 1, ar = w / h; let sw = im.width / z, sh = sw / ar; if (sh > im.height / z) { sh = im.height / z; sw = sh * ar; } C = { sx: (im.width - sw) * (o.fx ?? 0.5), sy: (im.height - sh) * (o.fy ?? 0.5), sw, sh }; } let src = im;
     if (o.fade || o.flt) { const tc = document.createElement('canvas'); tc.width = Math.max(1, Math.round(Math.min(w, 1600))); tc.height = Math.max(1, Math.round(tc.width * h / w)); const tx = tc.getContext('2d'); if (o.flt) tx.filter = skFlt(o.flt); tx.drawImage(im, C.sx, C.sy, C.sw, C.sh, 0, 0, tc.width, tc.height); tx.filter = 'none';
       if (o.fade) { tx.globalCompositeOperation = 'destination-out'; const f = o.fade, g = f === 'left' ? tx.createLinearGradient(0, 0, tc.width * 0.45, 0) : tx.createLinearGradient(0, tc.height, 0, tc.height * 0.55); g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)'); tx.fillStyle = g; tx.fillRect(0, 0, tc.width, tc.height); }
       src = tc; x.save(); path(); x.clip(); x.drawImage(tc, -w / 2, -h / 2, w, h); x.restore(); }
@@ -4034,7 +4044,7 @@ async function skOpen(doc) {
   document.body.insertAdjacentHTML('beforeend', `<div id="skx" class="skx"><div class="skbar"><button type="button" class="bizb" onclick="skClose()" aria-label="Fermer">←</button><input id="sk-name" value="${esc(sk.doc.name)}" onchange="sk.doc.name=this.value;skSave()" aria-label="Nom du projet">
     <button type="button" class="bizb" onclick="skUndo()" title="Annuler">↶</button><button type="button" class="bizb" onclick="skRedo()" title="Refaire">↷</button><button type="button" class="bizb" onclick="skProjects()" title="Mes projets">📁</button><button type="button" class="skexp" onclick="skExport()">📤 Exporter</button></div>
     <div class="skmain"><div class="skstage" id="sk-st"><canvas id="sk-cv"></canvas></div><div class="skpanel" id="sk-pn"></div></div>
-    <div class="sktools">${[['text', '🔤', 'Texte'], ['img', '🖼️', 'Photo'], ['shape', '⬛', 'Forme'], ['emo', '😀', 'Émoji'], ['stk', '🏷️', 'Étiquette'], ['qr', '🔳', 'QR'], ['bg', '🎨', 'Fond'], ['fmt', '📐', 'Format'], ['tpl', '🧩', 'Modèles']].map(([k, i, n]) => `<button type="button" onclick="skTool('${k}')"><span>${i}</span>${n}</button>`).join('')}</div></div>`);
+    <div class="sktools">${[['gen', '🪄', 'Générer'], ['vid', '🎬', 'Vidéo'], ['text', '🔤', 'Texte'], ['img', '🖼️', 'Photo'], ['shape', '⬛', 'Forme'], ['emo', '😀', 'Émoji'], ['stk', '🏷️', 'Étiquette'], ['qr', '🔳', 'QR'], ['bg', '🎨', 'Fond'], ['fmt', '📐', 'Format'], ['tpl', '🧩', 'Modèles']].map(([k, i, n]) => `<button type="button" onclick="skTool('${k}')"><span>${i}</span>${n}</button>`).join('')}</div></div>`);
   document.body.classList.add('noscroll'); await skPreload(sk.doc); await skBgPrep(sk.doc); skBind(); skFit(); skPanel(); await skFontsLoad(); skDraw(); skHist(true);
 }
 function skClose() { skSave(); $('skx')?.remove(); if (!document.querySelector('.bizx')) document.body.classList.remove('noscroll'); window.removeEventListener('resize', skFit); }
@@ -4075,7 +4085,7 @@ function skBind() {
       const P = skCorners(o); if (P.some(q => Math.hypot(p.x - q.x, p.y - q.y) < 22)) { const c = skS(o.x, o.y); G = { m: 'scale', d0: Math.hypot(p.x - c.x, p.y - c.y), s0: { s: o.s, w: o.w, h: o.h }, moved: false }; return; }
       if (o.t !== 'text' && o.t !== 'qr') { const S2 = skSides(o); const i = S2.findIndex(q => Math.hypot(p.x - q.x, p.y - q.y) < 20); if (i >= 0) { G = { m: i ? 'sh' : 'sw', s0: { w: o.w, h: o.h, x: o.x, y: o.y }, p0: toD(p), moved: false }; return; } } }
     const d = toD(p), h = skHit(d.x, d.y);
-    if (h) { const was = sk.sel === h.id; sk.sel = h.id; if (!was) skPanel(); G = { m: h.lock ? 'none' : 'move', o0: { x: h.x, y: h.y }, p0: d, moved: false, tapId: h.id }; }
+    if (h) { const was = sk.sel === h.id; sk.sel = h.id; if (!was) skPanel(); if (was && h.t === 'img' && !h.aid) { skImgReplace(); } G = { m: h.lock ? 'none' : 'move', o0: { x: h.x, y: h.y }, p0: d, moved: false, tapId: h.id }; }
     else { if (sk.sel) { sk.sel = null; skPanel(); } G = null; } skDraw();
   });
   cv.addEventListener('pointermove', e => {
@@ -4111,6 +4121,8 @@ function skTool(k) {
   const u = skU(), D = sk.doc;
   if (k === 'text') return skAdd({ t: 'text', text: 'Votre *texte* ici', ff: 'Anton', fw: 400, s: 9 * u, c: '#FFFFFF', hc: '#FDE047', sw: 0.12, sc: '#000000', al: 'center', lh: 1.1 }) && setTimeout(skEditText, 50);
   if (k === 'img') return skPickImg(aid => { const im = skImgs[aid].im, s = Math.min(D.w * 0.6 / im.width, D.h * 0.6 / im.height); skAdd({ t: 'img', aid, w: im.width * s, h: im.height * s, shd: 0 }); });
+  if (k === 'gen') return genOpen();
+  if (k === 'vid') return svOpen();
   if (k === 'qr') return skAdd({ t: 'qr', url: me?.username ? location.origin + '/v/' + me.username : location.origin, w: 18 * u, h: 18 * u });
   skSheet(k);
 }
@@ -4123,7 +4135,7 @@ function skPickImg(cb, maxS = 1600) { const i = document.createElement('input');
 function skSheet(k) {
   const u = skU(), D = sk.doc, P = $('sk-pn'); sk.sel = null; skDraw(); P.classList.add('open');
   const head = t => `<div class="skph"><b>${t}</b><button type="button" onclick="skPanelClose()">✕</button></div>`;
-  if (k === 'shape') P.innerHTML = head('Formes') + `<div class="skgrid">${[['rect', '▬', 'Rectangle'], ['round', '▢', 'Arrondi'], ['ellipse', '⬤', 'Rond'], ['star', '★', 'Étoile'], ['burst', '✹', 'Éclat'], ['tri', '▲', 'Triangle'], ['arrow', '➜', 'Flèche'], ['line', '━', 'Ligne'], ['heart', '♥', 'Cœur'], ['banner', '🎗', 'Bannière']].map(([s, i, n]) => `<button type="button" onclick="skAddShape('${s}')"><span>${i}</span>${n}</button>`).join('')}</div>`;
+  if (k === 'shape') P.innerHTML = head('Formes') + `<div class="skgrid">${[['frame', '📷', 'Cadre photo'], ['frameo', '🟣', 'Cadre rond'], ['rect', '▬', 'Rectangle'], ['round', '▢', 'Arrondi'], ['ellipse', '⬤', 'Rond'], ['star', '★', 'Étoile'], ['burst', '✹', 'Éclat'], ['tri', '▲', 'Triangle'], ['arrow', '➜', 'Flèche'], ['line', '━', 'Ligne'], ['heart', '♥', 'Cœur'], ['banner', '🎗', 'Bannière']].map(([s, i, n]) => `<button type="button" onclick="skAddShape('${s}')"><span>${i}</span>${n}</button>`).join('')}</div>`;
   if (k === 'emo') P.innerHTML = head('Émojis') + `<div class="skemo">${SK_EMO.map(e => `<button type="button" onclick="skAdd({t:'text',text:'${e}',ff:'emoji',s:${(16 * u).toFixed(1)},c:'#000',al:'center'})">${e}</button>`).join('')}</div>`;
   if (k === 'stk') P.innerHTML = head('Étiquettes') + `<div class="skgrid">${SK_STK.map(([t, b, c]) => `<button type="button" style="background:${b};color:${c}" onclick="skAdd({t:'shape',k:'burst',c:'${b}',lc:'${c}',label:'${t}',lf:'Anton',w:${(24 * u).toFixed(1)},h:${(24 * u).toFixed(1)},rot:-0.2})"><b>${t}</b></button>`).join('')}
     ${SK_STK.slice(0, 4).map(([t, b, c]) => `<button type="button" style="background:${b};color:${c}" onclick="skAdd({t:'text',text:'${t}',ff:'Montserrat',fw:900,s:${(5 * u).toFixed(1)},c:'${c}',bg:'${b}',al:'center'})"><b>${t}</b><small>pastille</small></button>`).join('')}</div>`;
@@ -4139,7 +4151,7 @@ function skSheet(k) {
     <div class="grid2" style="margin-top:10px"><button class="soft" onclick="skNewBlank()">➕ Page vierge</button><button class="soft" onclick="skProjects()">📁 Mes projets</button></div>`;
 }
 function skPanelClose() { $('sk-pn')?.classList.remove('open'); sk.sel = null; skDraw(); skPanel(); }
-function skAddShape(s) { const u = skU(); const o = { t: 'shape', k: s === 'round' ? 'rect' : s, r: s === 'round' ? 18 : 0, c: '#FACC15', w: 40 * u, h: s === 'line' ? 1.2 * u : s === 'arrow' ? 14 * u : s === 'banner' ? 14 * u : 40 * u, bw: 0, bc: '#000000' }; if (s === 'line' || s === 'arrow' || s === 'banner') o.w = 60 * u; skAdd(o); }
+function skAddShape(s) { const u = skU(); if (s === 'frame' || s === 'frameo') return skAdd({ t: 'img', aid: null, ph: 1, fit: 'cover', w: 50 * u, h: s === 'frameo' ? 50 * u : 62 * u, mask: s === 'frameo' ? 'circle' : 'round', bw: 0, bc: '#ffffff' }); const o = { t: 'shape', k: s === 'round' ? 'rect' : s, r: s === 'round' ? 18 : 0, c: '#FACC15', w: 40 * u, h: s === 'line' ? 1.2 * u : s === 'arrow' ? 14 * u : s === 'banner' ? 14 * u : 40 * u, bw: 0, bc: '#000000' }; if (s === 'line' || s === 'arrow' || s === 'banner') o.w = 60 * u; skAdd(o); }
 async function skBg(b) { sk.doc.bg = b; await skBgPrep(sk.doc); skCommit(); skSheet('bg'); }
 async function skFormat(w, h) { w = Math.round(Math.min(5000, Math.max(100, w))); h = Math.round(Math.min(5000, Math.max(100, h))); const D = sk.doc, fx = w / D.w, fy = h / D.h, f = Math.min(fx, fy);
   D.objs.forEach(o => { o.x *= fx; o.y *= fy; if (o.t === 'text') o.s *= f; else { o.w *= f; o.h *= f; } }); D.w = w; D.h = h; await skBgPrep(D); skFit(); skCommit(); skSheet('fmt'); }
@@ -4162,9 +4174,10 @@ function skPanel() {
     <p class="mt">Contour</p>${cols('sc', o.sc)}${rng('Épaisseur du contour', 'sw', 0, 0.3, 0.01, o.sw || 0)}
     <p class="mt">Fond du texte</p>${cols('bg', o.bg, `<button type="button" class="${!o.bg ? 'on' : ''}" onclick="skSet('bg','')">∅</button>`)}
     ${rng('Taille', 's', 6, Math.min(sk.doc.w, sk.doc.h) * 0.4, 1, o.s)}${rng('Interligne', 'lh', 0.8, 2, 0.02, o.lh || 1.12)}${rng('Opacité', 'op', 0.1, 1, 0.05, o.op ?? 1)}`;
+  else if (o.t === 'img' && !o.aid) h = `<div class="skph"><b>Cadre photo</b><button type="button" onclick="skPanelClose()">✕</button></div><button class="pill" style="width:100%" onclick="skImgReplace()">📷 Choisir la photo</button><p class="mt">Forme</p><div class="sktog">${[['', 'Normale'], ['round', 'Arrondie'], ['circle', 'Ronde']].map(([m, n]) => `<button type="button" class="${(o.mask || '') === m ? 'on' : ''}" onclick="skSet('mask','${m}')">${n}</button>`).join('')}</div>`;
   else if (o.t === 'img') { const f = o.flt || {}; h = `<div class="skph"><b>Photo</b><button type="button" onclick="skPanelClose()">✕</button></div>
     <div class="grid2"><button class="soft" onclick="skImgReplace()">🔁 Remplacer</button><button class="soft" onclick="skImgCut()">${o.cutout ? '↩️ Remettre le fond' : '✂️ Enlever le fond'}</button></div>
-    <p class="mt">Forme</p><div class="sktog">${[['', 'Normale'], ['round', 'Arrondie'], ['circle', 'Ronde']].map(([m, n]) => `<button type="button" class="${(o.mask || '') === m ? 'on' : ''}" onclick="skSet('mask','${m}')">${n}</button>`).join('')}<button type="button" class="${o.shd ? 'on' : ''}" onclick="skSet('shd',!skSel().shd)">Ombre</button>${o.fade ? `<button type="button" class="on" onclick="skSet('fade','')">Fondu ✕</button>` : `<button type="button" onclick="skSet('fade','bottom')">Fondu</button>`}</div>
+    ${o.fit === 'cover' ? `<p class="mt">Cadrage de la photo dans le cadre</p>${rng('Zoom', 'z', 1, 3, 0.02, o.z || 1)}${rng('Gauche ↔ droite', 'fx', 0, 1, 0.01, o.fx ?? 0.5)}${rng('Haut ↕ bas', 'fy', 0, 1, 0.01, o.fy ?? 0.5)}` : ''}<p class="mt">Forme</p><div class="sktog">${[['', 'Normale'], ['round', 'Arrondie'], ['circle', 'Ronde']].map(([m, n]) => `<button type="button" class="${(o.mask || '') === m ? 'on' : ''}" onclick="skSet('mask','${m}')">${n}</button>`).join('')}<button type="button" class="${o.shd ? 'on' : ''}" onclick="skSet('shd',!skSel().shd)">Ombre</button>${o.fade ? `<button type="button" class="on" onclick="skSet('fade','')">Fondu ✕</button>` : `<button type="button" onclick="skSet('fade','bottom')">Fondu</button>`}</div>
     <p class="mt">Filtres</p><div class="sktog">${[['Normal', {}], ['Vif', { s: 150, c: 112 }], ['N&B', { g: 100, c: 115 }], ['Vintage', { p: 60, c: 95, b: 105 }], ['Lumineux', { b: 120 }], ['Dramatique', { c: 140, s: 80, b: 90 }]].map(([n, v]) => `<button type="button" onclick='skSet("flt",${JSON.stringify(v)})'>${n}</button>`).join('')}</div>
     ${[['Luminosité', 'b', 40, 180, f.b ?? 100], ['Contraste', 'c', 40, 180, f.c ?? 100], ['Saturation', 's', 0, 220, f.s ?? 100], ['Flou', 'bl', 0, 12, f.bl ?? 0]].map(([n, k2, a, b, v]) => `<label class="skrng">${n}<input type="range" min="${a}" max="${b}" value="${v}" oninput="skFlt2('${k2}',+this.value)" onchange="skCommit()"></label>`).join('')}
     <p class="mt">Bordure</p>${cols('bc', o.bc)}${rng('Épaisseur', 'bw', 0, 10, 0.5, o.bw || 0)}${rng('Opacité', 'op', 0.1, 1, 0.05, o.op ?? 1)}`; }
@@ -4173,7 +4186,7 @@ function skPanel() {
     ${o.k === 'rect' ? rng('Coins arrondis', 'r', 0, 50, 1, o.r || 0) : ''}<div class="fg"><label>Texte dans la forme</label><input value="${esc(o.label || '')}" oninput="skSet('label',this.value,1)" onchange="skCommit()" placeholder="ex : -50%"></div>${o.label ? `<p class="mt">Couleur du texte</p>${cols('lc', o.lc)}` : ''}
     <div class="sktog"><button type="button" class="${o.shd ? 'on' : ''}" onclick="skSet('shd',!skSel().shd)">Ombre</button></div>${rng('Opacité', 'op', 0.05, 1, 0.05, o.op ?? 1)}`;
   else if (o.t === 'qr') h = `<div class="skph"><b>QR code</b><button type="button" onclick="skPanelClose()">✕</button></div><div class="fg"><label>Lien du QR code</label><input value="${esc(o.url)}" onchange="skSet('url',this.value)"></div><small class="mt">Par défaut : votre boutique SocialPages.</small>`;
-  P.innerHTML = h + acts;
+  P.innerHTML = h + `<p class="mt">🎬 Animation (vidéo)</p><div class="sktog">${Object.entries(SV_AN).filter(([k]) => k !== 'type' || o.t === 'text').map(([k, n]) => `<button type="button" class="${(o.anim || 'auto') === k ? 'on' : ''}" onclick="skSet('anim','${k}')">${n}</button>`).join('')}</div>` + acts;
 }
 function skPanelSync() { const o = skSel(), r = document.querySelector('#sk-pn input[type=range][oninput*="\'s\'"]'); if (o?.t === 'text' && r) r.value = o.s; }
 function skSet(k, v, live) { const o = skSel(); if (!o) return; o[k] = v; if (o.t === 'text' && (k === 'text' || k === 'ff' || k === 'fw')) { skMeasure(o); const mw = sk.doc.w * 0.94; if (o.w > mw) o.s = Math.max(6, o.s * mw / o.w); } if (k === 'c' && o.glow) o.glow = v; skDraw(); if (!live) { skCommit(); if (!['text', 'label'].includes(k)) skPanel(); } }
@@ -4183,7 +4196,7 @@ function skDup() { const o = skSel(); if (!o) return; const c = JSON.parse(JSON.
 function skCenter() { const o = skSel(); if (!o) return; o.x = sk.doc.w / 2; skCommit(); }
 function skDel() { sk.doc.objs = sk.doc.objs.filter(o => o.id !== sk.sel); sk.sel = null; skCommit(); skPanel(); }
 function skEditText() { const t = $('sk-txt'); if (!t) { skPanel(); } setTimeout(() => { const e = $('sk-txt'); if (e) { e.focus(); e.select(); } }, 30); }
-function skImgReplace() { const o = skSel(); skPickImg(aid => { o.aid = aid; o.crop = null; o.cutout = false; const im = skImgs[aid].im; o.h = o.w * im.height / im.width; skCommit(); skPanel(); }); }
+function skImgReplace() { const o = skSel(); skPickImg(aid => { o.aid = aid; o.crop = null; o.cutout = false; o.aid0 = null; const im = skImgs[aid].im; if (!o.fit && !o.ph) o.h = o.w * im.height / im.width; else { o.fit = 'cover'; o.z = 1; o.fx = 0.5; o.fy = 0.5; } skCommit(); skPanel(); }); }
 async function skImgCut() {
   const o = skSel(); if (o.cutout) { if (o.aid0) { o.aid = o.aid0; o.cutout = false; o.crop = o.crop0 || null; skCommit(); skPanel(); } return; }
   toast('✂️ Détourage en cours… (10 à 30 secondes la première fois)', 6000); const im = skImgs[o.aid]?.im; if (!im) return; const keep = ph; let cut = null;
@@ -4232,6 +4245,253 @@ async function afToDoc(A) {
   sk = prev; return D;
 }
 async function afEditFree() { const d = await afToDoc(af); toolClose('afx'); skOpen(d); toast('✋ Touchez un élément pour le déplacer, l’agrandir ou le modifier', 4000); }
+
+// ===================== 🪄 GÉNÉRATEUR AUTOMATIQUE D’AFFICHES (dans le Studio créatif) =====================
+const G_FONT = [{ t: 'Anton', tw: 400, b: 'Montserrat' }, { t: 'Bebas Neue', tw: 400, b: 'Poppins' }, { t: 'Playfair Display', tw: 900, b: 'Montserrat' }, { t: 'Oswald', tw: 700, b: 'Roboto' }, { t: 'Poppins', tw: 900, b: 'Poppins' }, { t: 'Montserrat', tw: 900, b: 'Montserrat' }];
+const G_PLACE = { auto: '✨ Automatique', top: '⬆️ En haut', right: '➡️ À droite', center: '⭕ Au centre', bg: '🖼️ En fond', split: '◧ Côte à côte' };
+function gPal(col) {
+  const W = '#FFFFFF';
+  return [
+    { n: 'pop', bg: { t: 'af', st: 'pop', col }, fg: W, mu: 'rgba(255,255,255,.92)', hi: '#FDE047', ac: '#111827', pf: W, cb: '#FDE047', cf: '#111', st: 1, dark: 1 },
+    { n: 'luxe', bg: { t: 'af', st: 'luxe', col }, fg: W, mu: '#D6CFC4', hi: '#E9C46A', ac: '#D4AF37', pf: '#111', cb: '#D4AF37', cf: '#111', dark: 1, serif: 1 },
+    { n: 'neon', bg: { t: 'af', st: 'neon', col }, fg: W, mu: '#E0E7FF', hi: col, ac: col, pf: W, cb: col, cf: W, glow: 1, dark: 1 },
+    { n: 'royal', bg: { t: 'af', st: 'royal', col }, fg: W, mu: '#BFDBFE', hi: '#E5C158', ac: '#E5C158', pf: '#0B1E4A', cb: '#E5C158', cf: '#0B1E4A', dark: 1, serif: 1 },
+    { n: 'moderne', bg: { t: 'color', a: '#FFFFFF' }, deco: 'band', fg: '#111827', mu: '#4B5563', hi: col, ac: col, pf: W, cb: col, cf: W },
+    { n: 'wax', bg: { t: 'af', st: 'wax', col }, fg: '#3B1F0E', mu: '#7C4A1E', hi: col, ac: col, pf: W, cb: col, cf: W, wax: 1 },
+    { n: 'sunset', bg: { t: 'grad', a: '#F97316', b: '#DB2777' }, fg: W, mu: 'rgba(255,255,255,.92)', hi: '#FDE047', ac: '#111827', pf: W, cb: '#FDE047', cf: '#111', shd: 1, dark: 1 },
+    { n: 'ocean', bg: { t: 'grad', a: '#0EA5E9', b: '#1E3A8A' }, fg: W, mu: '#E0F2FE', hi: '#FDE047', ac: '#FDE047', pf: '#0B1E4A', cb: '#FDE047', cf: '#0B1E4A', shd: 1, dark: 1 },
+    { n: 'nuit', bg: { t: 'color', a: '#0F172A' }, deco: 'rings', fg: W, mu: '#CBD5E1', hi: col, ac: col, pf: W, cb: col, cf: W, dark: 1 },
+    { n: 'couleur', bg: { t: 'grad', a: col, b: '#111827' }, fg: W, mu: 'rgba(255,255,255,.9)', hi: '#FDE047', ac: '#FFFFFF', pf: '#111', cb: '#FFFFFF', cf: '#111', st: 1, dark: 1 },
+    { n: 'rose', bg: { t: 'grad', a: '#FFF1F2', b: '#FBCFE8' }, deco: 'dots', fg: '#831843', mu: '#9D174D', hi: '#DB2777', ac: '#DB2777', pf: W, cb: '#DB2777', cf: W, serif: 1 },
+    { n: 'menthe', bg: { t: 'grad', a: '#064E3B', b: '#10B981' }, fg: W, mu: '#D1FAE5', hi: '#FDE047', ac: '#FDE047', pf: '#064E3B', cb: '#FDE047', cf: '#064E3B', dark: 1 }
+  ];
+}
+let gen = null;
+function gRnd(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+// --- texte : retour à la ligne automatique et réduction
+function gWrapStr(raw, o, maxW, maxL) { skMx ||= document.createElement('canvas').getContext('2d'); skMx.font = skFont(o); const sp = skMx.measureText(' ').width, out = [];
+  for (const para of String(raw).split('\n')) { const tk = afTok(para); let cur = [], cw = 0; for (const t of tk) { const w = skMx.measureText(t.w).width; if (w > maxW) return null; if (cur.length && cw + sp + w > maxW) { out.push(cur); cur = [t]; cw = w; } else { cw += (cur.length ? sp : 0) + w; cur.push(t); } } out.push(cur); }
+  return out.length > maxL ? null : out.map(l => l.map(t => t.hi ? '*' + t.w + '*' : t.w).join(' ')).join('\n'); }
+function gFit(o, maxW, maxL, minS) { const raw = o.text, pad = o.bg ? 2 * (o.px ?? 0.8) : 0; let s = o.s;
+  for (let i = 0; i < 40; i++) { o.s = s; const r = gWrapStr(raw, o, maxW - pad * s, maxL); if (r !== null) { o.text = r; break; } s *= 0.93; if (s < minS) { o.s = minS; o.text = gWrapStr(raw, o, maxW - pad * minS, 99) || raw; break; } }
+  skMeasure(o); return o; }
+// --- blocs de texte empilés
+function gBlocks(g, P, F, k, u, maxW, al, which) {
+  const t = g.t, B = [], txt = (p) => ({ t: 'text', al, lh: 1.1, ...p }), body = F.b;
+  const want = w => !which || which.includes(w);
+  if (t.kick && want('kick')) B.push({ g: 2.2, o: gFit(txt({ text: t.kick.toUpperCase(), ff: body, fw: 800, s: 3.6 * u * k, c: P.pf, bg: P.ac }), maxW, 1, 1.8 * u) });
+  if (t.title && want('title')) B.push({ g: 2, o: gFit(txt({ text: t.title, ff: F.t, fw: F.tw, s: (g.land ? (g.kind === 'mini' ? 26 : 20) : 14) * u * k, lh: F.t === 'Playfair Display' ? 1.05 : 1.0, c: P.fg, hc: P.hi, sw: P.st ? 0.13 : 0, sc: '#000000', glow: P.glow ? P.ac : '', shd: P.shd ? 1 : 0 }), maxW, g.land ? 3 : 4, 4 * u) });
+  if (t.sub && want('sub')) B.push({ g: 1.6, o: gFit(txt({ text: t.sub, ff: body, fw: 600, s: (g.land ? 5.4 : 4.3) * u * k, lh: 1.25, c: P.mu, sw: P.st ? 0.16 : 0, sc: 'rgba(0,0,0,.55)' }), maxW, g.kind === 'avis' ? 7 : 3, 2.2 * u) });
+  if (t.price && want('price')) B.push({ g: 2.4, o: gFit(txt({ text: t.price, ff: F.t, fw: F.tw, s: (g.land ? 9 : 8) * u * k, c: P.cf, bg: P.cb, px: 0.45, py: 0.22, br: 2 * u, rot: -0.04, al: 'center' }), maxW, 1, 3 * u) });
+  const L = [t.l1, t.l2, t.l3].filter(Boolean); if (L.length && want('lines')) B.push({ g: 2, o: gFit(txt({ text: L.join('\n'), ff: body, fw: 700, s: (g.land ? 4.6 : 3.8) * u * k, lh: 1.4, c: P.fg, sw: P.st ? 0.18 : 0, sc: 'rgba(0,0,0,.6)', shd: P.shd ? 1 : 0 }), maxW, 6, 2 * u) });
+  if (t.cta && want('cta')) B.push({ g: 3, o: gFit(txt({ text: '👉 ' + t.cta, ff: body, fw: 800, s: (g.land ? 4.4 : 4) * u * k, c: P.cf, bg: P.cb, al: 'center', shd: 1 }), maxW, 1, 2 * u) });
+  return B;
+}
+function gStack(g, P, F, u, box, al, which, objs) {
+  // box : {x0,x1,y0,y1} ; réduit tout jusqu’à ce que ça tienne, puis centre verticalement
+  let k = 1, B, H; for (; k > 0.4; k -= 0.05) { B = gBlocks(g, P, F, k, u, box.x1 - box.x0, al, which); H = B.reduce((a, b, i) => a + b.o.h + (i ? b.g * u * k : 0), 0); if (H <= box.y1 - box.y0) break; }
+  let y = box.y0 + Math.max(0, (box.y1 - box.y0 - H) * (box.va ?? 0.5));
+  B.forEach((b, i) => { if (i) y += b.g * u * k; const o = b.o; o.x = al === 'left' ? box.x0 + o.w / 2 : (box.x0 + box.x1) / 2; o.y = y + o.h / 2; y += o.h; objs.push(o); });
+}
+// --- recettes de mise en page
+function gDoc(g, rec, P, F) {
+  const Fm = AF_F[g.fmt], W = Fm.w, H = Fm.h, land = W > H, u = (land ? H : W) / 100; g.land = land; const objs = [], ph = g.ph[0], cut = ph?.cutA, pA = ph?.aid, extra = g.ph.slice(1);
+  if (rec === 'bg') P = { ...P, fg: '#FFFFFF', mu: 'rgba(255,255,255,.92)', shd: 1, st: P.st || g.kind === 'mini' ? 1 : 0 }; if (g.kind === 'mini') P = { ...P, st: 1 };
+  const doc = { id: skId(), name: (g.t.title || 'Affiche').replace(/\*/g, '').slice(0, 40), w: W, h: H, bg: { ...P.bg }, objs, assets: {} };
+  const has = g.t.contact || g.qr, foot = has ? (land ? 12 : 9) * u : 3 * u, top = (P.wax ? 9 : 6) * u, bot = H - foot - (P.wax ? 6 * u : 0);
+  // décor
+  if (P.deco === 'band') objs.push({ t: 'shape', k: 'rect', c: P.ac, w: W * 1.5, h: land ? H * 0.16 : H * 0.12, x: W / 2, y: 0, rot: -0.07 }, { t: 'shape', k: 'rect', c: P.ac, w: W, h: 1.2 * u, x: W / 2, y: H - 0.6 * u });
+  if (P.deco === 'rings') objs.push({ t: 'shape', k: 'ellipse', c: 'none', bc: P.ac, bw: 1.2, w: 70 * u, h: 70 * u, x: W * 0.95, y: H * 0.05, op: 0.6 }, { t: 'shape', k: 'ellipse', c: 'none', bc: P.ac, bw: 1.6, w: 45 * u, h: 45 * u, x: W * 0.02, y: H * 0.92, op: 0.5 });
+  if (P.deco === 'dots') for (let i = 0; i < 6; i++) objs.push({ t: 'shape', k: 'ellipse', c: P.ac, w: (6 + i * 3) * u, h: (6 + i * 3) * u, x: (i % 2 ? W * 0.95 : W * 0.04), y: H * (0.08 + i * 0.17), op: 0.12 });
+  const photo = (p) => objs.push({ t: 'img', aid: pA, fit: 'cover', ...p });
+  const cutImg = (hMax, wMax, cx, by) => { const im = skImgs[cut]?.im; if (!im) return null; let h = hMax, w = im.width * h / im.height; if (w > wMax) { w = wMax; h = im.height * w / im.width; } const o = { t: 'img', aid: cut, cutout: true, w, h, x: cx ?? W - w / 2 + 2 * u, y: (by ?? H) - h / 2, shd: 1 }; return o; };
+  const badge = (x, y, r = 11 * u) => { if (g.t.badge) objs.push({ t: 'shape', k: 'burst', c: P.cb, lc: P.cf, label: g.t.badge, lf: F.t, w: 2 * r, h: 2 * r, x, y, rot: -0.2, shd: 1 }); };
+  const thumbs = (y, size) => { extra.forEach((e, i) => { const n = extra.length, gap = size * 1.15, x = W / 2 + (i - (n - 1) / 2) * gap; objs.push({ t: 'img', aid: e.aid, fit: 'cover', mask: 'round', w: size, h: size, x, y, bw: 3, bc: '#ffffff', shd: 1 }); }); };
+  const ex = extra.length && !land ? 24 * u : 0;
+  if (!land) {
+    if (rec === 'top') { const h = H * (H / W > 1.5 ? 0.4 : 0.42); photo({ x: W / 2, y: h / 2, w: W, h, fade: 'bottom' }); badge(W - 15 * u, h - 10 * u); if (ex) thumbs(bot - 12 * u, 20 * u); gStack(g, P, F, u, { x0: 7 * u, x1: W - 7 * u, y0: h - 4 * u, y1: bot - ex }, 'center', null, objs); }
+    else if (rec === 'right') { const o = cut ? cutImg(H * 0.52, W * 0.6, null, bot + (has ? 2 * u : 0)) : null; const pw = o ? o.w : W * 0.5, phh = o ? o.h : H * 0.4;
+      if (o) objs.push({ t: 'shape', k: 'ellipse', c: (P.dark ? P.ac : P.ac), op: 0.35, w: pw * 1.05, h: pw * 1.05, x: o.x, y: o.y + o.h * 0.1 }, o); else photo({ x: W - pw / 2 - 5 * u, y: bot - phh / 2 - 2 * u, w: pw, h: phh, mask: 'round', bw: 4, bc: '#fff', shd: 1, rot: 0.04 });
+      badge(W - 14 * u, top + 12 * u); gStack(g, P, F, u, { x0: 7 * u, x1: W - (g.t.badge ? 27 : 7) * u, y0: top, y1: bot - phh - 2 * u, va: 0.4 }, 'center', ['kick', 'title'], objs);
+      gStack(g, P, F, u, { x0: 6 * u, x1: Math.max(W * 0.45, W - pw * 0.85 - 8 * u), y0: bot - phh, y1: bot }, 'left', ['sub', 'price', 'lines', 'cta'], objs); }
+    else if (rec === 'center' || rec === 'polaroid') { const d = Math.min(W * 0.56, H * 0.32), cy = H * (H / W > 1.5 ? 0.42 : 0.44);
+      if (rec === 'center') { objs.push({ t: 'shape', k: 'ellipse', c: P.ac, op: 0.9, w: d + 3 * u, h: d + 3 * u, x: W / 2, y: cy }); photo({ x: W / 2, y: cy, w: d, h: d, mask: 'circle', shd: 1 }); badge(W / 2 + d * 0.5, cy - d * 0.38, 9 * u); }
+      else { photo({ x: W / 2, y: cy, w: d * 0.95, h: d * 1.1, mask: 'round', bw: 5, bc: '#fff', shd: 1, rot: -0.05 }); badge(W / 2 + d * 0.5, cy - d * 0.5, 9 * u); }
+      gStack(g, P, F, u, { x0: 7 * u, x1: W - 7 * u, y0: top, y1: cy - d * 0.58 - 2 * u }, 'center', ['kick', 'title'], objs);
+      gStack(g, P, F, u, { x0: 7 * u, x1: W - 7 * u, y0: cy + d * 0.6 + 2 * u, y1: bot }, 'center', ['sub', 'price', 'lines', 'cta'], objs); }
+    else if (rec === 'bg') { doc.bg = { t: 'img', aid: pA, dim: 0.55 }; badge(W - 14 * u, top + 12 * u); if (ex) thumbs(bot - 12 * u, 20 * u); gStack(g, P, F, u, { x0: 7 * u, x1: W - 7 * u, y0: top + (g.t.badge ? 20 * u : 0), y1: bot - ex }, 'center', null, objs); }
+    else if (rec === 'split') { photo({ x: W * 0.24, y: H / 2, w: W * 0.48, h: H }); badge(W * 0.46, top + 12 * u, 9 * u); gStack(g, P, F, u, { x0: W * 0.53, x1: W - 5 * u, y0: top, y1: bot }, 'left', null, objs); }
+    else { badge(W - 14 * u, top + 12 * u); if (ex) thumbs(bot - 12 * u, 20 * u); gStack(g, P, F, u, { x0: 7 * u, x1: W - 7 * u, y0: top + (g.t.badge ? 18 * u : 0), y1: bot - ex }, 'center', null, objs); }
+  } else {
+    const L = { x0: 6 * u, y0: 6 * u, y1: H - foot };
+    if (rec === 'right' && cut) { const o = cutImg(H * 0.98, W * 0.48, null, H); objs.push({ t: 'shape', k: 'ellipse', c: P.ac, op: 0.35, w: o.h * 0.9, h: o.h * 0.9, x: o.x, y: H * 0.55 }, o); gStack(g, P, F, u, { ...L, x1: W - o.w * 0.9 }, 'left', null, objs); badge(W - o.w - 2 * u, 16 * u, 13 * u); }
+    else if (rec === 'right' || rec === 'split' || rec === 'top') { photo({ x: W * 0.74, y: H / 2, w: W * 0.52, h: H, fade: 'left' }); gStack(g, P, F, u, { ...L, x1: W * 0.56 }, 'left', null, objs); badge(W * 0.55, 16 * u, 13 * u); }
+    else if (rec === 'center' || rec === 'polaroid') { const d = H * 0.72; objs.push({ t: 'shape', k: 'ellipse', c: P.ac, w: d + 3 * u, h: d + 3 * u, x: W - d / 2 - 6 * u, y: H / 2 }); photo({ x: W - d / 2 - 6 * u, y: H / 2, w: d, h: d, mask: 'circle', shd: 1 }); gStack(g, P, F, u, { ...L, x1: W - d - 12 * u }, 'left', null, objs); badge(W - d - 8 * u, 16 * u, 12 * u); }
+    else if (rec === 'bg') { doc.bg = { t: 'img', aid: pA, dim: 0.55 }; gStack(g, P, F, u, { ...L, x1: W * 0.7 }, 'left', null, objs); badge(W - 18 * u, 18 * u, 14 * u); }
+    else { gStack(g, P, F, u, { x0: 8 * u, x1: W - 8 * u, y0: 6 * u, y1: H - foot }, 'center', null, objs); badge(W - 16 * u, 16 * u, 13 * u); }
+  }
+  // pied : contact + QR
+  if (g.t.contact) { const o = { t: 'text', text: '📞 ' + g.t.contact, ff: F.b, fw: 800, s: (land ? 4.4 : 3.3) * u, c: P.fg, sw: P.st ? 0.2 : 0, sc: 'rgba(0,0,0,.55)', shd: P.dark && !P.st ? 1 : 0, al: 'center' }; skMeasure(o); const right = rec === 'split' && !land; o.x = land ? 6 * u + o.w / 2 : right ? W * 0.53 + o.w / 2 : W / 2; o.y = H - (P.wax ? 9 : 4.2) * u - (land ? 2 * u : 0); if (rec === 'bg' || P.dark) o.c = P.fg; objs.push(o); }
+  if (g.qr && me?.username) { const q = (land ? 15 : 11) * u; objs.push({ t: 'qr', url: location.origin + '/v/' + me.username, w: q, h: q, x: land ? W - q / 2 - 3 * u : (rec === 'right' ? q / 2 + 4 * u : W - q / 2 - 4 * u), y: land ? (rec === 'bg' || !g.ph.length ? H - q / 2 - 3 * u : q / 2 + 3 * u) : H - q / 2 - (P.wax ? 8 : 3) * u }); }
+  objs.forEach(o => { o.id = skId(); o.rot ||= 0; });
+  return doc;
+}
+function gMake(g, seed) {
+  const rnd = gRnd(seed), pals = gPal(g.col), hasP = g.ph.length > 0;
+  let recs = !hasP ? ['type'] : g.place === 'auto' ? ['top', 'right', 'center', 'polaroid', 'bg', 'split', 'type'] : { top: ['top'], right: ['right'], center: ['center', 'polaroid'], bg: ['bg'], split: ['split'] }[g.place];
+  if (hasP && g.place === 'auto' && !g.ph[0].cutA) recs = recs.filter(r => r !== 'type' || rnd() < 0.3);
+  const fonts = G_FONT.slice(), out = [], used = new Set();
+  for (let i = 0; out.length < 16 && i < 400; i++) {
+    const rec = recs[out.length % recs.length], P = pals[Math.floor(rnd() * pals.length)]; let F = fonts[Math.floor(rnd() * fonts.length)]; if (P.serif && rnd() < 0.6) F = G_FONT[2];
+    const key = i < 250 ? rec + P.n : rec + P.n + F.t; if (used.has(key)) continue; used.add(key); out.push(gDoc(g, rec, P, F));
+  }
+  return out;
+}
+// --- interface
+function genDefault() {
+  const A = (() => { try { return JSON.parse(localStorage.getItem('sp_af') || 'null'); } catch (e) { return null; } })() || afNew('promo');
+  return { kind: A.kind || 'promo', t: { ...A.t }, col: A.col || '#DC2626', fmt: A.fmt === 'a4' ? 'post' : A.fmt || 'post', place: 'auto', qr: !!me?.username, ph: [] };
+}
+function genOpen(fromAf) {
+  gen ||= genDefault(); if (fromAf && af) { gen.kind = af.kind; gen.t = { ...af.t }; gen.col = af.col; gen.fmt = af.fmt === 'a4' ? 'post' : af.fmt; }
+  $('skg')?.remove(); document.querySelector('.skmain').insertAdjacentHTML('beforeend', '<div id="skg" class="skg"></div>'); genForm();
+}
+function genClose() { $('skg')?.remove(); }
+const gIn = (k, label, ph) => `<div class="fg"><label>${label}</label><input value="${esc(gen.t[k] || '')}" placeholder="${esc(ph || '')}" oninput="gen.t['${k}']=this.value"></div>`;
+function genForm() {
+  const el = $('skg'); if (!el) return; const g = gen;
+  el.innerHTML = `<div class="skph"><b>🪄 Générateur automatique</b><button type="button" onclick="genClose()">✕</button></div>
+  <p class="mt" style="margin-top:-4px">Remplissez une fois : le studio crée <b>16 propositions</b>. Touchez celle que vous aimez, tout reste déplaçable.</p>
+  <div class="box"><h3 class="cvh">1. Type d’affiche</h3><div class="ivkinds">${Object.entries(AF_K).map(([k, v]) => `<button type="button" class="${g.kind === k ? 'on' : ''}" onclick="genKind('${k}')">${v.n}</button>`).join('')}</div></div>
+  <div class="box"><h3 class="cvh">2. Vos photos (jusqu’à 3)</h3><div class="gphs">${g.ph.map((p, i) => `<div><img src="${p.cutA ? skAssetSrc(p.cutA) : skAssetSrc(p.aid)}" alt=""><button type="button" onclick="genCut(${i})">${p.cutA ? '↩️ Fond' : '✂️ Détourer'}</button><button type="button" onclick="gen.ph.splice(${i},1);genForm()">✕</button></div>`).join('')}${g.ph.length < 3 ? `<button type="button" class="gadd" onclick="genAddPh()">➕<br>Photo</button>` : ''}</div>
+    ${g.ph.length ? `<p class="mt" style="font-weight:700">Où placer la photo principale ?</p><div class="afchips">${Object.entries(G_PLACE).map(([k, n]) => `<button type="button" class="${g.place === k ? 'on' : ''}" onclick="gen.place='${k}';genForm()">${n}</button>`).join('')}</div><small class="mt">« À droite » est encore plus beau avec une photo détourée ✂️.</small>` : '<small class="mt">Sans photo : affiches typographiques. Avec photo : bien plus de styles.</small>'}</div>
+  <div class="box"><h3 class="cvh">3. Le texte</h3>${gIn('title', 'Grand titre (*mot* = en couleur)', 'ex : Tout à *-30 %*')}${gIn('kick', 'Petit titre', 'ex : GRANDE PROMOTION')}${gIn('sub', 'Sous-titre', '')}${gIn('l1', 'Ligne 1', '📅 …')}${gIn('l2', 'Ligne 2', '📍 …')}${gIn('l3', 'Ligne 3', '')}
+    <div class="grid2">${gIn('price', 'Prix', 'ex : 25 $')}${gIn('badge', 'Pastille', 'ex : -30%')}</div>${gIn('cta', 'Appel à l’action', '')}${gIn('contact', 'Contact', '+243…')}
+    <label class="afchk"><input type="checkbox" ${g.qr ? 'checked' : ''} onchange="gen.qr=this.checked"> QR code vers ma boutique</label></div>
+  <div class="box"><h3 class="cvh">4. Couleur et format</h3><div class="bizcols">${AF_COL.map(c => `<button type="button" class="${g.col === c ? 'on' : ''}" style="background:${c}" onclick="gen.col='${c}';genForm()"></button>`).join('')}</div>
+    <div class="afchips" style="margin-top:10px">${Object.entries(AF_F).filter(([k]) => k !== 'a4').map(([k, f]) => `<button type="button" class="${g.fmt === k ? 'on' : ''}" onclick="gen.fmt='${k}';genForm()"><i style="aspect-ratio:${f.w}/${f.h}"></i>${f.n}</button>`).join('')}</div></div>
+  <button class="pill" style="width:100%;padding:16px;font-size:17px;background:linear-gradient(135deg,#7C3AED,#DB2777)" onclick="genRun()">🪄 Générer 16 propositions</button><div style="height:20px"></div>`;
+}
+const skAssetSrc = aid => skImgs[aid]?.src0 || '';
+function genKind(k) { const keep = gen.t.contact; gen.kind = k; gen.t = { ...AF_K[k].t, contact: keep }; gen.col = afNew(k).col; if (AF_K[k].fmt) gen.fmt = AF_K[k].fmt; genForm(); }
+function genAddPh() { skPickImg(aid => { gen.ph.push({ aid }); genForm(); }); }
+async function genCut(i) {
+  const p = gen.ph[i]; if (p.cutA) { p.cutA = null; return genForm(); } toast('✂️ Détourage en cours… (10 à 30 secondes la première fois)', 6000);
+  const im = skImgs[p.aid]?.im; const keep = ph; let cut = null; try { ph = { src: im }; await phCutBg(); cut = ph.cut; } catch (e) { console.warn(e); } ph = keep;
+  if (!cut) return toast('😕 Impossible d’enlever le fond de cette photo. Essayez une photo de personne bien éclairée.', 5000);
+  const c = cut, d = c.getContext ? c.getContext('2d').getImageData(0, 0, c.width, c.height).data : null; let src = c.toDataURL('image/png');
+  if (d) { let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0; for (let y = 0; y < c.height; y += 2) for (let x = 0; x < c.width; x += 2) if (d[(y * c.width + x) * 4 + 3] > 60) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x1 > x0) { const t = document.createElement('canvas'); t.width = x1 - x0 + 4; t.height = y1 - y0 + 4; t.getContext('2d').drawImage(c, x0 - 2, y0 - 2, t.width, t.height, 0, 0, t.width, t.height); src = t.toDataURL('image/png'); } }
+  const aid = 'a' + skId(); const im2 = await loadImg(src); skImgs[aid] = { src0: src, im: im2 }; p.cutA = aid; if (gen.place === 'auto') gen.place = 'right'; genForm(); toast('✅ Fond enlevé');
+}
+async function genRun(again) {
+  const el = $('skg'); if (!gen.t.title?.trim()) return toast('Écrivez au moins le grand titre.');
+  el.innerHTML = '<div class="skph"><b>🪄 Création en cours…</b></div><div class="spin"></div>'; await skFontsLoad();
+  gen.seed = again ? (gen.seed || 1) + 7919 : Date.now() % 100000; const docs = gMake(gen, gen.seed); gen.docs = docs;
+  for (const d of docs) await skBgPrep(d);
+  el.innerHTML = `<div class="skph"><b>🪄 16 propositions</b><button type="button" onclick="genClose()">✕</button></div><p class="mt" style="margin-top:-4px">Touchez celle que vous préférez pour la finir dans le studio.</p>
+    <div class="ggrid">${docs.map((d, i) => `<button type="button" onclick="genPick(${i})"><canvas id="gcv${i}"></canvas></button>`).join('')}</div>
+    <div class="grid2" style="margin:10px 0 20px"><button class="pill" onclick="genRun(1)">🔄 Autres idées</button><button class="soft" onclick="genForm()">✏️ Modifier les infos</button></div><button class="pill" style="width:100%;margin:-10px 0 24px;background:linear-gradient(135deg,#DC2626,#7C3AED)" onclick="genClose();svOpen(gen.docs.slice(0,4))">🎬 Faire une vidéo avec 4 propositions</button>`;
+  for (let i = 0; i < docs.length; i++) { const d = docs[i], cv = $('gcv' + i); if (!cv) return; const s = 300 / Math.max(d.w, d.h); cv.width = Math.round(d.w * s); cv.height = Math.round(d.h * s); const x = cv.getContext('2d'); x.scale(s, s); skPaint(x, d, false); await new Promise(r => setTimeout(r, 0)); }
+}
+async function genPick(i) {
+  const d = JSON.parse(JSON.stringify(gen.docs[i])); const aids = new Set([...d.objs.map(o => o.aid), d.bg.aid].filter(Boolean)); d.assets = {}; aids.forEach(a => d.assets[a] = skImgs[a]?.src0);
+  await skSave(); sk.doc = d; sk.sel = null; sk.hist = []; skHist(true); $('sk-name').value = d.name; await skBgPrep(d); genClose(); skFit(); skPanel(); skSave(); toast('✋ Touchez un élément pour le déplacer ou le modifier', 3500);
+}
+async function afGen() { const keep = af; toolClose('afx'); await skOpen(); af = keep; genOpen(true); }
+
+// ===================== 🎬 VIDÉOS ANIMÉES depuis le Studio créatif =====================
+const SV_ST = { dyn: { n: '⚡ Dynamique', beat: 0.5, stag: 0.14 }, ele: { n: '✨ Élégant', beat: 0.75, serif: 1, stag: 0.26 }, tik: { n: '🔥 TikTok', beat: 0.375, stag: 0.1 }, typ: { n: '⌨️ Machine à écrire', beat: 0.5, stag: 0.2 } };
+const SV_AN = { auto: 'Auto', up: 'Glisser', left: 'De côté', zoom: 'Zoom', pop: 'Rebond', fade: 'Apparaître', spin: 'Tourner', type: 'Écrire', none: 'Aucune' };
+let skv = null;
+const svEase = p => 1 - Math.pow(1 - p, 3), svBack = p => { const c = 1.70158, q = p - 1; return 1 + (c + 1) * q * q * q + c * q * q; }, svEl = p => p <= 0 ? 0 : p >= 1 ? 1 : Math.pow(2, -9 * p) * Math.sin((p * 10 - 0.75) * (2 * Math.PI) / 3) + 1;
+function svSnap(doc) { const d = JSON.parse(JSON.stringify({ ...doc, assets: undefined })); d.assets = {}; [...d.objs.flatMap(o => [o.aid]), d.bg.aid].filter(Boolean).forEach(a => d.assets[a] = doc.assets?.[a] || skImgs[a]?.src0); return d; }
+function svOpen(scenes) {
+  if (scenes) skv = { scenes: scenes.map(d => ({ doc: svSnap(d), dur: 4 })), st: 'dyn', tr: 'fade', mus: true };
+  else if (!skv) skv = { scenes: [{ doc: svSnap(sk.doc), dur: 4 }], st: 'dyn', tr: 'fade', mus: true };
+  $('skv')?.remove(); document.querySelector('.skmain').insertAdjacentHTML('beforeend', '<div id="skv" class="skg"></div>'); svForm();
+}
+function svClose() { skv && (skv.play = false); $('skv')?.remove(); }
+function svForm() {
+  const el = $('skv'); if (!el) return; const S = skv; svStop();
+  el.innerHTML = `<div class="skph"><b>🎬 Vidéo animée</b><button type="button" onclick="svClose()">✕</button></div>
+  <div class="svpv"><canvas id="sv-cv"></canvas><button type="button" class="svplay" id="sv-play" onclick="svPlay()">▶️</button></div>
+  <p class="mt" style="font-weight:700">Scènes (${S.scenes.length}) · ${svTotal().toFixed(1)} s</p><div class="svsc">${S.scenes.map((s, i) => `<div><canvas id="svt${i}"></canvas><select onchange="skv.scenes[${i}].dur=+this.value;svForm()">${[2, 3, 4, 5, 6, 8, 10].map(d => `<option value="${d}" ${s.dur === d ? 'selected' : ''}>${d} s</option>`).join('')}</select><span>${i ? `<button type="button" onclick="svMove(${i},-1)">◀</button>` : ''}<button type="button" onclick="skv.scenes.splice(${i},1);skv.scenes.length?svForm():svClose()">✕</button></span></div>`).join('')}
+    ${S.scenes.length < 8 ? `<button type="button" class="gadd" onclick="svAdd()">➕<br>Scène</button>` : ''}</div>
+  <div class="box"><h3 class="cvh">Style d’animation</h3><div class="afchips">${Object.entries(SV_ST).map(([k, v]) => `<button type="button" class="${S.st === k ? 'on' : ''}" onclick="skv.st='${k}';svForm()">${v.n}</button>`).join('')}</div>
+    <p class="mt" style="font-weight:700;margin-top:10px">Passage entre les scènes</p><div class="afchips">${[['fade', 'Fondu'], ['slide', 'Glisser'], ['zoom', 'Zoom']].map(([k, n]) => `<button type="button" class="${S.tr === k ? 'on' : ''}" onclick="skv.tr='${k}';svForm()">${n}</button>`).join('')}</div>
+    <label class="afchk" style="margin-top:10px"><input type="checkbox" ${S.mus ? 'checked' : ''} onchange="skv.mus=this.checked"> 🎵 Musique rythmée</label>
+    <small class="mt">Astuce : dans le studio, chaque élément a son réglage « 🎬 Animation ».</small></div>
+  <button class="pill" style="width:100%;padding:16px;font-size:17px;background:linear-gradient(135deg,#DC2626,#7C3AED)" onclick="svMake()">🎬 Créer la vidéo MP4</button><div id="sv-out" style="margin:10px 0 24px"></div>`;
+  svPrep().then(() => { const cv = $('sv-cv'); if (!cv) return; const D = S.scenes[0].doc, s = Math.min(1, 520 / Math.max(D.w, D.h)); cv.width = Math.round(D.w * s); cv.height = Math.round(D.h * s); svFrame(cv.getContext('2d'), Math.max(0.1, S.scenes[0].dur - SV_TR - 0.15), s);
+    S.scenes.forEach((sc, i) => { const c = $('svt' + i); if (!c) return; const d = sc.doc, k = 110 / Math.max(d.w, d.h); c.width = Math.round(d.w * k); c.height = Math.round(d.h * k); const x = c.getContext('2d'); x.scale(k, k); skPaint(x, d, false); }); });
+}
+function svMove(i, d) { const A = skv.scenes, [s] = A.splice(i, 1); A.splice(i + d, 0, s); svForm(); }
+async function svAdd() {
+  let L = []; try { L = await skDBdo('readonly', st => st.getAll()) || []; } catch (e) {} L.sort((a, b) => b.updated - a.updated);
+  openM(`<h3>➕ Ajouter une scène</h3><button class="pill" style="width:100%" onclick="closeM();skv.scenes.push({doc:svSnap(sk.doc),dur:4});svForm()">🖼️ Le design ouvert maintenant</button>
+    <p class="mt" style="margin-top:12px">Ou un de mes projets :</p><div class="skproj">${L.map(p => `<div><img src="${p.thumb}" alt="" onclick="closeM();svAddP('${p.id}')"><b>${esc(p.name)}</b></div>`).join('') || '<p class="mt">Aucun projet.</p>'}</div>
+    <small class="mt">Pour créer une nouvelle scène : fermez la vidéo, faites un nouveau design (📁 → Nouveau design), puis revenez ici.</small><button class="pbtn gray" onclick="closeM()">Fermer</button>`);
+}
+async function svAddP(id) { const p = await skDBdo('readonly', st => st.get(id)); if (!p) return; skv.scenes.push({ doc: p.doc, dur: 4 }); svForm(); }
+async function svPrep() { for (const s of skv.scenes) { const d = s.doc; await Promise.all(Object.entries(d.assets || {}).map(async ([k, v]) => { if (v && skImgs[k]?.src0 !== v) { const im = await loadImg(v); if (im) skImgs[k] = { src0: v, im }; } })); await skBgPrep(d); } await skFontsLoad(); }
+const SV_TR = 0.5;
+function svTotal() { return skv.scenes.reduce((a, s) => a + s.dur, 0) + 0.3; }
+// --- calcul de l’animation d’un calque à l’instant t (secondes dans la scène)
+function svAnim(o, t, rank, D, dur) {
+  const st = SV_ST[skv.st], u = Math.min(D.w, D.h) / 100; let a = o.anim || 'auto';
+  if (a === 'auto') { const big = o.t === 'shape' && o.w > D.w * 0.8; if (big) a = 'fade';
+    else if (skv.st === 'ele') a = o.t === 'img' ? 'zoom' : 'fade';
+    else if (skv.st === 'typ') a = o.t === 'text' && o.ff !== 'emoji' && !o.bg ? 'type' : 'fade';
+    else if (skv.st === 'tik') a = o.t === 'shape' && o.k === 'burst' ? 'spin' : 'pop';
+    else a = o.t === 'img' ? 'zoom' : o.t === 'shape' && (o.k === 'burst' || o.k === 'star') ? 'spin' : o.t === 'text' && o.s > u * 9 ? 'pop' : o.t === 'qr' ? 'fade' : 'up'; }
+  const del = (o.t === 'shape' && o.w > D.w * 0.8) ? 0 : 0.2 + rank * st.stag, ed = a === 'type' ? Math.min(1.6, 0.05 * String(o.text || '').length + 0.3) : skv.st === 'ele' ? 0.9 : 0.6, p = Math.max(0, Math.min(1, (t - del) / ed));
+  const r = { ...o }; let k = 1;
+  if (a !== 'none' && p < 1) {
+    if (a === 'up') { const e = svEase(p); r.y += (1 - e) * 8 * u; r.op = (o.op ?? 1) * e; }
+    else if (a === 'left') { const e = svEase(p); r.x -= (1 - e) * D.w * 0.4; r.op = (o.op ?? 1) * Math.min(1, p * 2); }
+    else if (a === 'zoom') { const e = svEase(p); k = 0.6 + 0.4 * e; r.op = (o.op ?? 1) * e; }
+    else if (a === 'pop') { k = Math.max(0.01, svEl(p)); r.op = (o.op ?? 1) * Math.min(1, p * 3); }
+    else if (a === 'fade') { r.op = (o.op ?? 1) * svEase(p); if (skv.st === 'ele') r.y += (1 - svEase(p)) * 2 * u; }
+    else if (a === 'spin') { const e = svBack(p); k = Math.max(0.01, e); r.rot = (o.rot || 0) - (1 - p) * 2.5; r.op = (o.op ?? 1) * Math.min(1, p * 3); }
+    else if (a === 'type' && o.bg) r.op = (o.op ?? 1) * svEase(p);
+    else if (a === 'type') { const plain = String(o.text || '').replace(/\*/g, ''), n = Math.floor(plain.length * p); let c = 0, out = ''; for (const ch of String(o.text || '')) { if (ch === '*') { out += ch; continue; } if (c >= n) break; out += ch; c++; } if ((out.match(/\*/g) || []).length % 2) out += '*'; r.text = out || ' '; r._keepW = 1; }
+  }
+  if (p >= 1 || a === 'none') { if (o.t === 'img') k = 1 + 0.05 * Math.max(0, t - del - ed) / Math.max(1, dur); if (o.t === 'shape' && o.k === 'burst') k = 1 + 0.05 * Math.sin((t - del) * 6); }
+  r._k = k; return r;
+}
+function svScene(x, sc, t, s) {
+  const D = sc.doc; x.save(); x.scale(s, s);
+  if (D.bg.t === 'img') { const kb = 1 + 0.06 * t / sc.dur; x.save(); x.translate(D.w / 2, D.h / 2); x.scale(kb, kb); x.translate(-D.w / 2, -D.h / 2); skBgDraw(x, D); x.restore(); } else skBgDraw(x, D);
+  const order = D.objs.map((o, i) => ({ o, i, y: o.y - (o.h || 0) / 2 })).sort((a, b) => a.y - b.y); const rank = {}; order.forEach((e, j) => rank[e.o.id] = j);
+  D.objs.forEach(o => { const r = svAnim(o, t, rank[o.id], D, sc.dur); if (r._keepW) { skMeasure(o); skMeasure(r); if (o.al === 'left') r.x = o.x - (o.w - r.w) / 2; else if (o.al === 'right') r.x = o.x + (o.w - r.w) / 2; } skObjK(x, r); });
+  x.restore();
+}
+function skObjK(x, r) { if (!r._k || r._k === 1) return skObj(x, r); x.save(); x.translate(r.x, r.y); x.scale(r._k, r._k); x.translate(-r.x, -r.y); skObj(x, r); x.restore(); }
+function svFrame(x, t, s) {
+  const S = skv.scenes, D0 = S[0].doc, W = D0.w * s, H = D0.h * s; x.fillStyle = '#000'; x.fillRect(0, 0, W, H); let acc = 0, i = 0;
+  for (; i < S.length - 1 && t >= acc + S[i].dur; i++) acc += S[i].dur;
+  const lt = t - acc, sc = S[i], draw = (scn, tt) => { const d = scn.doc, f = Math.max(W / (d.w * s), H / (d.h * s)); x.save(); x.translate((W - d.w * s * f) / 2, (H - d.h * s * f) / 2); svScene(x, scn, tt, s * f); x.restore(); };
+  const next = S[i + 1], tin = sc.dur - lt; draw(sc, lt + (i ? SV_TR : 0));
+  if (next && tin < SV_TR) { const p = svEase(1 - tin / SV_TR); x.save(); if (skv.tr === 'fade') x.globalAlpha = p; else if (skv.tr === 'slide') x.translate(W * (1 - p), 0); else { x.globalAlpha = p; x.translate(W / 2, H / 2); x.scale(0.7 + 0.3 * p, 0.7 + 0.3 * p); x.translate(-W / 2, -H / 2); } draw(next, SV_TR - tin); x.restore(); }
+  const u = Math.min(W, H) / 100; x.font = `600 ${Math.max(9, 1.9 * u)}px Arial`; x.textAlign = 'center'; x.fillStyle = 'rgba(255,255,255,.7)'; x.fillText('Créé avec SocialPages', W / 2, H - u); x.textAlign = 'left';
+}
+let svRaf = 0; function svStop() { cancelAnimationFrame(svRaf); if (skv) skv.play = false; svAud?.stop?.(); svAud = null; }
+let svAud = null;
+function svPlay() {
+  if (skv.play) { svStop(); $('sv-play') && ($('sv-play').textContent = '▶️'); return; } const cv = $('sv-cv'), x = cv.getContext('2d'), D = skv.scenes[0].doc, s = cv.width / D.w, T = svTotal(), t0 = performance.now(); skv.play = true; $('sv-play').textContent = '⏸️';
+  if (skv.mus) { try { svAud = pubAudio(false); if (svAud) vidMusic(svAud, T, skv.scenes.length, SV_ST[skv.st], false, svCuts()); } catch (e) {} }
+  const f = () => { if (!skv?.play) return; const t = (performance.now() - t0) / 1000; svFrame(x, Math.min(t, T), s); if (t >= T) { svStop(); $('sv-play') && ($('sv-play').textContent = '▶️'); return; } svRaf = requestAnimationFrame(f); }; f();
+}
+function svCuts() { const c = []; let a = 0; skv.scenes.forEach(s => { c.push(a + 0.15); a += s.dur; }); c.push(a - 0.2); return c; }
+async function svMake() {
+  svStop(); const out = $('sv-out'), D = skv.scenes[0].doc, s = Math.min(1, 1280 / Math.max(D.w, D.h)), cv = document.createElement('canvas'); cv.width = Math.round(D.w * s / 2) * 2; cv.height = Math.round(D.h * s / 2) * 2;
+  out.innerHTML = '<div class="svprog"><i id="sv-bar"></i></div><p class="mt" id="sv-msg">🎬 Fabrication de la vidéo… gardez l’écran allumé.</p>'; await svPrep();
+  const V = { total: svTotal(), draw: (ctx, t) => svFrame(ctx, t, s), slides: { length: skv.scenes.length }, T: SV_ST[skv.st], cuts: svCuts() }, prog = p => { const b = $('sv-bar'); if (b) b.style.width = Math.round(p * 100) + '%'; };
+  let blob = null; try { blob = await stuEncode(V, cv, skv.mus, prog); if (!blob) blob = await stuRecord(V, cv, skv.mus, prog); } catch (e) { out.innerHTML = `<p class="mt">⚠️ ${esc(e.message || 'Erreur')}</p>`; return; }
+  const ext = /webm/.test(blob.type) ? 'webm' : 'mp4', name = (sk.doc.name || 'video').replace(/[^\w-]+/g, '-').slice(0, 40) + '.' + ext, f = new File([blob], name, { type: blob.type || 'video/mp4' }); window.svFile = f;
+  out.innerHTML = `<video src="${URL.createObjectURL(blob)}" controls playsinline style="width:100%;max-height:50vh;border-radius:12px;background:#000"></video><div class="grid2" style="margin-top:8px"><button class="pill" style="background:#25D366" onclick="spShare([window.svFile],'Ma vidéo','Vidéo')">📤 Partager</button><button class="soft" onclick="spSave([window.svFile])">⬇️ Enregistrer</button></div><p class="mt" style="font-size:12px">${(f.size / 1048576).toFixed(1)} Mo · ${V.total.toFixed(0)} secondes</p>`;
+}
 
 // Photo carrée recadrée au centre (pour CV et carte)
 function pickPhoto(cb, square = true) {
