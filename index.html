@@ -681,6 +681,20 @@ video.pm{background:#000}
 #kmx{z-index:430}.kmwrap{background:#111;border-radius:14px;overflow:hidden;display:flex;justify-content:center}.kmwrap canvas{max-width:100%;max-height:58vh;cursor:grab;display:block}
 .skmet{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}.skmet button{border:2px solid #E5E7EB;border-radius:10px;padding:6px 10px;font-weight:700;font-size:12px;background:#fff;color:#111}.skmet button.on{border-color:#7C3AED;box-shadow:0 0 0 2px #DDD6FE}
 @media(min-width:900px){.kcgrid{grid-template-columns:repeat(5,1fr)}}
+.phpro{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.phpro button{background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:22px;cursor:pointer}.phpro b{font-size:12px;color:#111827}.phpro small{font-size:11px;color:#6B7280}
+.phcli{display:block;font-weight:700;font-size:13px;margin:8px 0}.phcli small{font-weight:400;color:#6B7280}.phcli input,.phcli select,.phcli textarea,.phsearch{display:block;width:100%;margin-top:4px;padding:10px 12px;border:1.5px solid #D1D5DB;border-radius:10px;font:inherit;font-weight:400;background:#fff;box-sizing:border-box}
+.phgrp{font-weight:800;font-size:13px;margin:12px 0 6px;color:#374151}
+.phlist{display:flex;flex-direction:column;gap:8px;margin:10px 0}.phli{display:flex;gap:10px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:8px}.phli img{width:56px;height:72px;object-fit:cover;border-radius:6px;border:1px solid #E5E7EB;flex:none}.phli>div{flex:1;min-width:0}.phli b{display:block;font-size:14px}.phli small{display:block;font-size:11.5px;color:#6B7280}
+.phlact{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.phlact button,.phqty button{border:1px solid #D1D5DB;background:#F9FAFB;border-radius:8px;padding:5px 8px;font-size:12px;cursor:pointer}.phqty{display:flex;align-items:center;gap:8px;margin-top:6px}.phqty b{min-width:22px;text-align:center}
+.phset{background:#F9FAFB;border-radius:12px;padding:10px;margin-top:10px}.pha4box{background:#F0FDF4;border:1.5px solid #BBF7D0;border-radius:14px;padding:12px;margin-top:12px}.pha4box b{display:block}.pha4box small{display:block;color:#4B5563;margin:2px 0 6px}
+.pha4pv{width:100%;max-width:420px;display:block;margin:10px auto;box-shadow:0 4px 16px rgba(0,0,0,.18);border-radius:4px}
+.phcus{margin-top:10px;font-size:13px}.phcus summary{cursor:pointer;font-weight:700;color:#15803D}.phcusr{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0}.phcusr label{font-size:11px}.phcusr input{width:100%;padding:8px;border:1.5px solid #D1D5DB;border-radius:8px;box-sizing:border-box}
+.phbanner{background:#EEF2FF;border:1.5px solid #C7D2FE;border-radius:12px;padding:10px;margin-bottom:8px}.phbanner b{display:block}.phbanner span{display:block;font-size:16px;font-weight:800;margin:4px 0}.phbanner input{width:100%;padding:8px;border:1.5px solid #C7D2FE;border-radius:8px;margin:6px 0;box-sizing:border-box}
+.phtrombi{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;margin:12px 0}.phtrombi div{text-align:center;cursor:pointer}.phtrombi img{width:100%;border-radius:6px;border:1px solid #E5E7EB}.phtrombi small{display:block;font-size:10.5px;line-height:1.2}
+.pcx{position:fixed;inset:0;z-index:460;background:#000;color:#fff;touch-action:none}.pcx canvas{position:absolute;inset:0;width:100%;height:100%}.pcx video{position:absolute;width:2px;height:2px;opacity:0;pointer-events:none}
+.pctop{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:8px;padding:10px;padding-top:max(10px,env(safe-area-inset-top))}.pctop b{flex:1;text-align:center;font-size:14px;text-shadow:0 1px 3px #000;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.pctop button{width:42px;height:42px;border-radius:50%;border:none;background:rgba(0,0,0,.5);color:#fff;font-size:18px;cursor:pointer}
+.pcbot{position:absolute;bottom:0;left:0;right:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:16px;padding-bottom:max(18px,env(safe-area-inset-bottom));background:linear-gradient(transparent,rgba(0,0,0,.6))}.pcauto{font-size:12px;display:flex;gap:4px;align-items:center}.pcbot small{font-size:11px;text-align:right;opacity:.85}
+.pcshot{width:74px;height:74px;border-radius:50%;border:5px solid #fff;background:#22C55E;cursor:pointer;box-shadow:0 0 0 3px rgba(0,0,0,.3)}.pcshot:active{transform:scale(.92)}.pcx.flash::after{content:'';position:absolute;inset:0;background:#fff;animation:pcfl .3s}@keyframes pcfl{from{opacity:1}to{opacity:0}}
 .phhero{background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:4px}.phhero b{font-size:18px}.phhero span{font-size:13px;opacity:.95}
 .phfmts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 .phfmts button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:#fff;border:2px solid #E5E7EB;border-radius:14px;padding:10px;cursor:pointer}
@@ -3660,18 +3674,8 @@ function phOpen() {
   document.body.insertAdjacentHTML('beforeend', `<div id="phx" class="bizx"><div class="bizh"><button type="button" class="bizb" onclick="phBack()" aria-label="Retour">←</button><b>📸 Photo d’identité &amp; visa</b><button type="button" class="bizb" onclick="phShareApp()" aria-label="Partager">↗️</button></div><div class="bizc" id="phc"></div></div>`);
   document.body.classList.add('noscroll'); phStep1();
 }
-function phBack() { if (ph?.step === 2) return phStep1(); if (ph?.step === 3) return phStep2(); $('phx')?.remove(); document.body.classList.remove('noscroll'); ph = null; }
+function phBack() { if ($('pcx')) return pcClose(); if (ph?.step >= 4) return phStep1(); if (ph?.step === 2) return phStep1(); if (ph?.step === 3) return phStep2(); $('phx')?.remove(); document.body.classList.remove('noscroll'); ph = null; }
 function phShareApp() { const u = location.origin + '/#/photo', t = `📸 Photos d’identité et de visa GRATUITES, prêtes à imprimer (États-Unis, Canada, Schengen, Royaume-Uni, Chine…) sur SocialPages 👉 ${u}`; if (navigator.share) navigator.share({ text: t }).catch(() => {}); else window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank'); }
-function phStep1() {
-  ph.step = 1; const el = $('phc'); el.scrollTop = 0;
-  el.innerHTML = `<div class="phhero"><b>Vos photos d’identité en 1 minute, gratuitement</b><span>Fond blanc automatique, bonne taille de tête, planche prête à imprimer en 10 × 15 cm chez n’importe quel photographe.</span></div>
-    <h3 style="margin:14px 0 8px">1. Pour quel document ?</h3>
-    <div class="phfmts">${Object.entries(PH_FMT).map(([k, F]) => `<button type="button" class="${k === ph.fmt ? 'on' : ''}" onclick="ph.fmt='${k}';vset('phfmt','${k}');phStep1()"><b>${F.n}</b><small>${F.d}</small><i>${(F.w / 10).toString().replace('.', ',')} × ${(F.h / 10).toString().replace('.', ',')} cm</i></button>`).join('')}</div>
-    <h3 style="margin:16px 0 8px">2. Votre photo</h3>
-    <div class="phtips"><span>💡 Face à une fenêtre, bonne lumière</span><span>🧍 Devant un mur clair et uni</span><span>😐 Regard droit, bouche fermée</span><span>👓 Sans lunettes ni chapeau</span><span>📏 Prise à 1–1,5 m, pas trop près</span></div>
-    <div class="grid2" style="margin-top:12px"><button class="pill" onclick="phPick(true)">📷 Prendre la photo</button><button class="soft" onclick="phPick(false)">🖼️ Choisir une photo</button></div>
-    <p class="mt" style="font-size:12px;margin-top:12px">🔒 Votre photo reste dans votre téléphone. Les dimensions suivent les règles connues de chaque pays, mais c’est l’administration qui accepte la photo : vérifiez toujours ses exigences officielles.${PH_FMT[ph.fmt].chk ? ' Pour ce format, confirmez la taille demandée auprès du service concerné.' : ''}</p>`;
-}
 function phPick(cam) {
   const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; if (cam) i.capture = 'user';
   i.onchange = async () => { const f = i.files[0]; if (!f) return; const im = new Image(); im.src = URL.createObjectURL(f); try { await im.decode(); } catch (e) { return toast('Photo illisible.'); } phLoad(im); };
@@ -3681,7 +3685,7 @@ async function phLoad(im) {
   const M = 1600, sc = Math.min(1, M / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * sc); c.height = Math.round(im.height * sc);
   c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
   ph.raw = c; ph.lit = phLight(c); ph.light = vget('phlight', '1') !== '0'; ph.cuts = {};
-  Object.assign(ph, { src: ph.light ? ph.lit : c, cut: null, face: null, bg: PH_FMT[ph.fmt].bg, rm: true, br: 100, ct: 100, rot: 0, ai: '', busy: true });
+  Object.assign(ph, { hid: null, one: null, src: ph.light ? ph.lit : c, cut: null, face: null, bg: PH_FMT[ph.fmt].bg, rm: true, br: 100, ct: 100, rot: 0, ai: '', busy: true });
   phAutoFit(); phStep2(); phMsg('🔍 Analyse du visage…');
   await phDetect(); phAutoFit(); phSync(); phDraw(); phMsg('✂️ Retrait du fond…');
   await phCutBg(); ph.busy = false; phMsg(''); phDraw(); phChecks();
@@ -3753,7 +3757,7 @@ function phStep2() {
       <div class="phchk" id="phchk"></div>
       <button class="pill" style="width:100%;margin-top:8px" onclick="phStep3()">✅ Valider la photo</button>
       <button class="pbtn gray" onclick="phStep1()">↩️ Changer de photo ou de format</button></div></div>`;
-  ph.guides ??= true; ph.z0 = ph.k; phSize(); phBind(); phDraw(); phChecks();
+  ph.guides ??= true; phBanner(); ph.z0 = ph.k; phSize(); phBind(); phDraw(); phChecks();
 }
 function phSync() { ph.z0 = ph.k; const z = $('ph-z'); if (z) z.value = 100; }
 function phZoom(v) { const k0 = ph.k, F = PH_FMT[ph.fmt]; ph.k = (ph.z0 || ph.k) * v / 100; const r = ph.k / k0; ph.cx = F.w / 2 + (ph.cx - F.w / 2) * r; ph.cy = F.h * 0.45 + (ph.cy - F.h * 0.45) * r; phDraw(); phChecks(); }
@@ -3794,32 +3798,6 @@ function phChecks() {
     (ph.ai ? `<small class="mt">${ph.ai === 'ia' ? '✂️ Fond retiré par intelligence artificielle, bords affinés (dans votre téléphone)' : '✂️ Fond retiré (mode simple : mur uni)'}</small>` : '');
 }
 // ---------- Résultats : planche 10×15 et photo numérique ----------
-async function phStep3() {
-  ph.step = 3; const F = PH_FMT[ph.fmt], el = $('phc'); el.innerHTML = '<div class="spin"></div>';
-  const one = document.createElement('canvas'); one.width = mmPx(F.w); one.height = mmPx(F.h); phRender(one.getContext('2d'), F, one.width / F.w, false);
-  // planche 10 × 15 cm à 300 dpi
-  // meilleure disposition sur 10 × 15 cm (portrait ou paysage, marges réduites si besoin) : le plus de photos possible
-  let best = null; for (const land of [1, 0]) for (const [m, g] of [[4, 2], [2, 1], [0.6, 0.4], [0, 0]]) { const sw = land ? 152.4 : 101.6, sh = land ? 101.6 : 152.4, cols = Math.floor((sw - 2 * m + g) / (F.w + g) + 1e-6), rows = Math.floor((sh - 2 * m + g) / (F.h + g) + 1e-6), n = cols * rows;
-    if (n && (!best || n > best.n || (n === best.n && m > best.m))) best = { land, m, g, cols, rows, n, sw, sh }; }
-  const B = best, SW = mmPx(B.sw), SH = mmPx(B.sh), sheet = document.createElement('canvas'); sheet.width = SW; sheet.height = SH; const s = sheet.getContext('2d'); s.fillStyle = '#fff'; s.fillRect(0, 0, SW, SH);
-  const gw = B.cols * F.w + (B.cols - 1) * B.g, gh = B.rows * F.h + (B.rows - 1) * B.g, ox = mmPx((B.sw - gw) / 2), oy = mmPx(Math.max(B.m, (B.sh - gh) / 2 - (B.sh - gh > 8 ? 2 : 0)));
-  s.strokeStyle = '#B0B0B0'; s.lineWidth = 1; const cols = B.cols, rows = B.rows;
-  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) { const x = ox + mmPx(c * (F.w + B.g)), y = oy + mmPx(r * (F.h + B.g)); s.drawImage(one, x, y, mmPx(F.w), mmPx(F.h)); s.strokeRect(x + 0.5, y + 0.5, mmPx(F.w) - 1, mmPx(F.h) - 1); }
-  const free = B.sh - gh - (oy / mmPx(1)); if (free > 4) { s.fillStyle = '#6B7280'; s.font = `${mmPx(2)}px Arial`; s.textAlign = 'center'; s.fillText(`${F.n.replace(/^\S+\s/, '')} · ${F.d} · ${F.w}×${F.h} mm · ${cols * rows} photos · tirage 10×15 cm à 100 % · SocialPages`, SW / 2, SH - mmPx(Math.min(2.5, free / 2))); }
-  // photo numérique
-  let dig = one, q = 0.93, blob; if (F.dig) { dig = document.createElement('canvas'); dig.width = F.dig.w; dig.height = F.dig.h; phRender(dig.getContext('2d'), F, F.dig.w / F.w, false); }
-  for (;;) { blob = await new Promise(r => dig.toBlob(r, 'image/jpeg', q)); if (!F.dig || blob.size <= F.dig.kb * 1024 || q < 0.4) break; q -= 0.07; }
-  const sb2 = await new Promise(r => sheet.toBlob(r, 'image/jpeg', 0.95)), nm = `photo-${ph.fmt}-${F.w}x${F.h}mm`;
-  ph.files = { sheet: new File([sb2], nm + '-planche-10x15.jpg', { type: 'image/jpeg' }), dig: new File([blob], nm + (F.dig ? `-${F.dig.w}x${F.dig.h}` : '') + '.jpg', { type: 'image/jpeg' }) };
-  const u1 = URL.createObjectURL(ph.files.sheet), u2 = URL.createObjectURL(ph.files.dig);
-  el.innerHTML = `<div class="phhero ok"><b>🎉 Vos photos sont prêtes !</b><span>${cols * rows} photos ${F.w}×${F.h} mm sur une planche 10×15 cm.</span></div>
-    <div class="phres"><div><b>🖨️ Planche à imprimer (10 × 15 cm)</b><img src="${u1}" alt="Planche"><p class="mt" style="font-size:12px">Chez le photographe : demandez un tirage <b>10 × 15 cm</b>, « taille réelle / 100 % », sans recadrage.</p>
-      <div class="grid2"><button class="pill" onclick="phOut('sheet',1)">📤 Partager</button><button class="soft" onclick="phOut('sheet')">⬇️ Télécharger</button></div></div>
-    <div><b>📱 Photo numérique${F.dig ? ` (${F.dig.w}×${F.dig.h} px, ${Math.round(blob.size / 1024)} Ko)` : ` (${one.width}×${one.height} px)`}</b><img src="${u2}" alt="Photo" style="max-width:220px;margin:8px auto;display:block;border:1px solid #E5E7EB">${F.dig ? '<p class="mt" style="font-size:12px">Pour les demandes en ligne (ex. formulaire de visa américain DS-160 : 600×600 px, 240 Ko maximum).</p>' : ''}
-      <div class="grid2"><button class="pill" onclick="phOut('dig',1)">📤 Partager</button><button class="soft" onclick="phOut('dig')">⬇️ Télécharger</button></div></div></div>
-    <button class="soft" style="width:100%;margin-top:12px" onclick="phStep2()">✏️ Ajuster encore</button><button class="soft" style="width:100%;margin-top:8px" onclick="phStep1()">📸 Nouvelle photo / autre format</button>
-    <div class="phpromo" onclick="phShareApp()">💚 Ce service est gratuit. Partagez-le à vos amis qui préparent un visa !</div>`;
-}
 async function phOut(k, share) { const f = ph.files?.[k]; if (!f) return; if (share) spShare([f], 'Photo d’identité – SocialPages'); else spSave([f]); }
 
 // ===================== 📄 STUDIO CV, LETTRE DE MOTIVATION et 🪪 CARTES DE VISITE (gratuits, ouverts à tous) =====================
@@ -6447,6 +6425,229 @@ async function kmVideo() { const [W0, H0] = kmSize(), k = Math.min(1, 1080 / Mat
   const V = { total: 8, draw: (x, t) => { const e = t / 8, yaw = y0 + Math.sin(e * Math.PI * 2) * 0.9 + (e < 0.5 ? 0 : 0), pitch = p0 + Math.sin(e * Math.PI * 4) * 0.05; kmRender(x, cv.width, cv.height, yaw, pitch, 10); } }, prog = p => { out.innerHTML = `<p class="mt">🎬 Création de la vidéo… ${Math.round(p * 100)} %</p>`; };
   let blob = null; try { blob = await stuEncode(V, cv, false, prog); if (!blob) blob = await stuRecord(V, cv, false, prog); } catch (e) { out.innerHTML = `<p class="mt">⚠️ ${esc(e.message || 'Erreur')}</p>`; return; }
   const ext = /mp4/.test(blob.type) ? 'mp4' : 'webm', f = new File([blob], 'livre-3d.' + ext, { type: blob.type }); out.innerHTML = `<div class="grid2" style="margin-top:8px"><button class="pill" onclick="spSave([window.kmFile])">⬇️ Télécharger la vidéo</button><button class="soft" onclick="spShare([window.kmFile],'Mon livre')">📤 Partager</button></div>`; window.kmFile = f; }
+
+// ===================== 📸 PHOTO D'IDENTITÉ PRO : caméra guidée, planche A4 multi-clients, école/entreprise, historique =====================
+Object.assign(PH_FMT, {
+  rw: { n: '🇷🇼 Rwanda', d: 'Passeport et documents', w: 35, h: 45, head: [32, 36], bg: '#FFFFFF', chk: 1 },
+  ug: { n: '🇺🇬 Ouganda', d: 'Passeport et visa', w: 35, h: 45, head: [32, 36], bg: '#FFFFFF', chk: 1 },
+  ke: { n: '🇰🇪 Kenya', d: 'Visa / ETA (fichier numérique)', w: 50.8, h: 50.8, head: [31, 36], bg: '#FFFFFF', dig: { w: 500, h: 500, kb: 200 }, chk: 1 },
+  tz: { n: '🇹🇿 Tanzanie', d: 'Passeport et visa', w: 40, h: 45, head: [32, 36], bg: '#FFFFFF', dig: { kb: 300 }, chk: 1 },
+  bi: { n: '🇧🇮 Burundi', d: 'Passeport et visa', w: 50, h: 50, head: [25, 35], bg: '#FFFFFF', chk: 1 },
+  ao: { n: '🇦🇴 Angola', d: 'Visa', w: 30, h: 40, head: [27, 31], bg: '#FFFFFF', chk: 1 }
+});
+const PH_GRP = [['af', '🌍 Afrique', ['cd', 'rw', 'ug', 'ke', 'tz', 'bi', 'ao', 'za']], ['eu', '🇪🇺 Europe', ['eu', 'uk']], ['am', '🌎 Amériques', ['us', 'ca', 'cav']], ['as', '🌏 Asie et Océanie', ['cn', 'in', 'inv', 'jp', 'au']], ['gen', '📄 Formats généraux', ['icao', 'f44']]];
+const phCm = v => (v / 10).toString().replace('.', ',');
+function phStep1() {
+  ph.step = 1; ph.batch = null; const el = $('phc'); el.scrollTop = 0; const nC = phCart().reduce((a, b) => a + b.n, 0), B = phBatchGet();
+  const seen = new Set(PH_GRP.flatMap(g => g[2])), extra = Object.keys(PH_FMT).filter(k => !seen.has(k));
+  el.innerHTML = `<div class="phhero"><b>Vos photos d’identité en 1 minute, gratuitement</b><span>Caméra guidée, fond blanc automatique, bonne taille de tête, planche prête à imprimer.</span></div>
+    <div class="phpro"><button type="button" onclick="phClients()">🗂️<b>Clients</b><small>Historique</small></button><button type="button" onclick="phA4()">🧾<b>Planche A4</b><small>${nC ? nC + ' photo' + (nC > 1 ? 's' : '') : 'Plusieurs clients'}</small></button><button type="button" onclick="phBatchSetup()">🏫<b>École / entreprise</b><small>${B ? `${B.done.filter(Boolean).length} faite(s)` : 'Toute une classe'}</small></button></div>
+    <label class="phcli">👤 Nom du client <small>(facultatif, pour l’historique)</small><input id="ph-client" value="${esc(ph.client || '')}" placeholder="Ex. : KAHINDO Grace" oninput="ph.client=this.value"></label>
+    <h3 style="margin:14px 0 8px">1. Pour quel document ?</h3>
+    ${PH_GRP.map(([g, n, ks]) => `<p class="phgrp">${n}</p><div class="phfmts">${ks.concat(g === 'gen' ? extra : []).filter(k => PH_FMT[k]).map(k => { const F = PH_FMT[k]; return `<button type="button" class="${k === ph.fmt ? 'on' : ''}" onclick="ph.fmt='${k}';vset('phfmt','${k}');phStep1()"><b>${F.n}</b><small>${F.d}</small><i>${phCm(F.w)} × ${phCm(F.h)} cm${F.dig ? ' · 📱' : ''}</i></button>`; }).join('')}</div>`).join('')}
+    <h3 style="margin:16px 0 8px">2. La photo</h3>
+    <div class="phtips"><span>💡 Face à une fenêtre, bonne lumière</span><span>🧍 Devant un mur clair et uni</span><span>😐 Regard droit, bouche fermée</span><span>👓 Sans lunettes ni chapeau</span></div>
+    <button class="pill" style="width:100%;margin-top:12px;padding:14px" onclick="pcOpen()">🎥 Caméra guidée (en direct)</button>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="phPick(true)">📷 Appareil photo</button><button class="soft" onclick="phPick(false)">🖼️ Choisir une photo</button></div>
+    <p class="mt" style="font-size:12px;margin-top:12px">🔒 Les photos restent dans cet appareil (rien n’est envoyé sur Internet). Les dimensions suivent les règles connues de chaque pays, mais c’est l’administration qui accepte la photo : vérifiez toujours ses exigences officielles.${PH_FMT[ph.fmt].chk ? ' <b>Pour ce format, confirmez la taille demandée auprès du service concerné.</b>' : ''}</p>`;
+}
+// ---------- 🎥 CAMÉRA GUIDÉE ----------
+let pc = null;
+async function pcOpen(title) {
+  pcClose(true); const F = PH_FMT[ph.fmt]; pc = { facing: vget('pccam', 'user'), auto: vget('pcauto', '1') === '1', det: null, last: 0, st: null, okT: 0, cd: 0, msg: '', light: null, title: title || (ph.batch ? phBatchTitle() : `${F.n} · ${phCm(F.w)}×${phCm(F.h)} cm`) };
+  document.body.insertAdjacentHTML('beforeend', `<div id="pcx" class="pcx"><canvas id="pc-cv"></canvas><video id="pc-v" playsinline muted autoplay></video>
+    <div class="pctop"><button type="button" onclick="pcClose()" aria-label="Fermer">✕</button><b>${esc(pc.title)}</b><button type="button" onclick="pcFlip()" aria-label="Changer de caméra">🔄</button></div>
+    <div class="pcbot"><label class="pcauto"><input type="checkbox" ${pc.auto ? 'checked' : ''} onchange="pc.auto=this.checked;vset('pcauto',this.checked?'1':'0')"> ⏱️ Photo automatique</label><button type="button" class="pcshot" onclick="pcShot()" aria-label="Prendre la photo"></button><small id="pc-cam">${pc.facing === 'user' ? 'Caméra avant (selfie)' : 'Caméra arrière (opérateur)'}</small></div></div>`);
+  document.body.classList.add('noscroll'); window.addEventListener('resize', pcSize); pcSize();
+  if (!navigator.mediaDevices?.getUserMedia) { pcClose(); toast('Caméra en direct non disponible ici : utilisez « Appareil photo ».', 4000); return phPick(true); }
+  await pcStart(); pcDetector(); pcLoop();
+}
+async function pcStart() { const v = $('pc-v'); pc.stream?.getTracks().forEach(t => t.stop());
+  try { pc.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: pc.facing, width: { ideal: 1920 }, height: { ideal: 1920 } }, audio: false }); v.srcObject = pc.stream; await v.play().catch(() => {}); pc.err = null; }
+  catch (e) { pc.err = e.name === 'NotAllowedError' ? 'Autorisez la caméra pour SocialPages (réglages du navigateur), ou utilisez « Appareil photo ».' : 'Caméra introuvable. Utilisez « Appareil photo » ou « Choisir une photo ».'; } }
+function pcFlip() { pc.facing = pc.facing === 'user' ? 'environment' : 'user'; vset('pccam', pc.facing); $('pc-cam').textContent = pc.facing === 'user' ? 'Caméra avant (selfie)' : 'Caméra arrière (opérateur)'; pcStart(); }
+function pcSize() { const c = $('pc-cv'); if (!c) return; const d = Math.min(2, window.devicePixelRatio || 1); c.width = Math.round(innerWidth * d); c.height = Math.round(innerHeight * d); }
+function pcClose(silent) { if (!pc) return; cancelAnimationFrame(pc.raf); pc.stream?.getTracks().forEach(t => t.stop()); window.removeEventListener('resize', pcSize); $('pcx')?.remove(); pc = null; if (!$('phx')) document.body.classList.remove('noscroll'); }
+async function pcDetector() { try { const V = await Promise.race([phVision(), new Promise(r => setTimeout(() => r(null), 15000))]); if (!V || !pc) return;
+    ph.fdv ||= await V.m.FaceDetector.createFromOptions(V.fs, { baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite', delegate: 'CPU' }, runningMode: 'VIDEO', minDetectionConfidence: 0.5 }); if (pc) pc.det = ph.fdv; } catch (e) { console.warn('pc det', e); } }
+// géométrie : cadre au format du document et ovale de la tête (comme sur la photo finale)
+function pcGeo(cw, ch) { const F = PH_FMT[ph.fmt], a = F.w / F.h; let fh = ch * 0.7, fw = fh * a; if (fw > cw * 0.9) { fw = cw * 0.9; fh = fw / a; } const fx = (cw - fw) / 2, fy = (ch - fh) / 2 - ch * 0.03, hT = (F.head[0] + F.head[1]) / 2, top = (F.h - hT) * 0.42, oh = hT / F.h * fh;
+  return { fx, fy, fw, fh, ocx: cw / 2, ocy: fy + (top + hT / 2) / F.h * fh, oh, ow: oh * 0.74 }; }
+// lumière sur le visage : moyenne et différence gauche / droite
+function pcLight(v, bx) { const c = pc.lc ||= document.createElement('canvas'); c.width = 32; c.height = 32; const x = c.getContext('2d', { willReadFrequently: true }); try { x.drawImage(v, bx.x, bx.y, bx.w, bx.h, 0, 0, 32, 32); } catch (e) { return null; } const d = x.getImageData(0, 0, 32, 32).data; let L = 0, R = 0;
+  for (let i = 0; i < 1024; i++) { const l = 0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2]; (i % 32 < 16 ? (L += l) : (R += l)); } L /= 512; R /= 512; return { m: (L + R) / 2, diff: Math.abs(L - R) }; }
+function pcEval(v, G, s, ox, oy, cw) { const now = performance.now(), vw = v.videoWidth, vh = v.videoHeight;
+  if (pc.det && now - pc.last > 110) { pc.last = now; try { const r = pc.det.detectForVideo(v, now), D = (r.detections || []).sort((a, b) => b.boundingBox.width * b.boundingBox.height - a.boundingBox.width * a.boundingBox.height); pc.n = D.length; pc.f = null;
+      if (D[0]) { const bb = D[0].boundingBox, kp = D[0].keypoints || [], re = kp[0], le = kp[1], ey = re && le ? (re.y + le.y) / 2 * vh : bb.originY + bb.height * 0.38, chin = bb.originY + bb.height * 1.02, crown = ey - (chin - ey) * 1.02;
+        pc.f = { cx: bb.originX + bb.width / 2, crown, chin, ang: re && le ? Math.atan2((le.y - re.y) * vh, (le.x - re.x) * vw) * 180 / Math.PI : 0 }; if (pc.f.ang > 90) pc.f.ang -= 180; if (pc.f.ang < -90) pc.f.ang += 180; pc.light = pcLight(v, { x: bb.originX, y: bb.originY, w: bb.width, h: bb.height }); } } catch (e) { pc.det = null; } }
+  if (!pc.det) { if (now - pc.last > 400) { pc.last = now; const sz = Math.min(vw, vh) * 0.35; pc.light = pcLight(v, { x: vw / 2 - sz / 2, y: vh * 0.3, w: sz, h: sz }); } const L = pc.light; return { ok: false, msg: !L ? 'Placez le visage dans l’ovale, puis appuyez sur le bouton' : L.m < 80 ? '💡 Plus de lumière : tournez-vous vers une fenêtre' : 'Placez le visage dans l’ovale, puis appuyez sur le bouton', manual: 1 }; }
+  const f = pc.f; if (!f) return { ok: false, msg: '🙂 Placez le visage dans l’ovale' }; if (pc.n > 1) return { ok: false, msg: '👤 Une seule personne dans l’image' };
+  const mx = X => { const p = ox + X * s; return pc.facing === 'user' ? cw - p : p; }, hc = (f.chin - f.crown) * s, cx = mx(f.cx), cy = oy + (f.crown + f.chin) / 2 * s, r = hc / G.oh, dx = (cx - G.ocx) / G.ow, dy = (cy - G.ocy) / G.oh; pc.fc = { cx, cy, h: hc };
+  if (r < 0.8) return { ok: false, msg: '👣 Approchez-vous un peu', r }; if (r > 1.2) return { ok: false, msg: '👣 Reculez un peu', r };
+  if (Math.abs(dx) > 0.2) return { ok: false, msg: `Centrez le visage ${dx > 0 ? '⬅️' : '➡️'}` }; if (Math.abs(dy) > 0.14) return { ok: false, msg: `Centrez le visage ${dy > 0 ? '⬆️' : '⬇️'}` };
+  if (Math.abs(f.ang) > 5) return { ok: false, msg: '↔️ Tenez la tête bien droite' }; const L = pc.light;
+  if (L && L.m < 80) return { ok: false, msg: '💡 Plus de lumière : tournez-vous vers une fenêtre' }; if (L && L.m > 228) return { ok: false, msg: '☀️ Trop de lumière sur le visage' }; if (L && L.diff > 38) return { ok: false, msg: '🌗 Lumière d’un seul côté : mettez-vous face à la lumière' };
+  return { ok: true, msg: '✅ Parfait ! Ne bougez plus…' }; }
+function pcLoop() { if (!pc) return; pc.raf = requestAnimationFrame(pcLoop); const c = $('pc-cv'), v = $('pc-v'); if (!c) return; const x = c.getContext('2d'), cw = c.width, ch = c.height, d = cw / innerWidth; x.fillStyle = '#000'; x.fillRect(0, 0, cw, ch);
+  const G = pcGeo(cw, ch); if (pc.err) { pcText(x, cw / 2, ch * 0.45, pc.err, d, '#FCA5A5'); return; }
+  const vw = v.videoWidth, vh = v.videoHeight; if (!vw) { pcText(x, cw / 2, ch * 0.45, 'Démarrage de la caméra…', d, '#fff'); return; }
+  const s = Math.max(cw / vw, ch / vh), ox = (cw - vw * s) / 2, oy = (ch - vh * s) / 2; x.save(); if (pc.facing === 'user') { x.translate(cw, 0); x.scale(-1, 1); } x.drawImage(v, ox, oy, vw * s, vh * s); x.restore();
+  const E = pcEval(v, G, s, ox, oy, cw), now = performance.now(); pc.E = E;
+  if (E.ok) { pc.okT ||= now; if (pc.auto && !pc.cd && now - pc.okT > 700) pc.cd = now; } else { pc.okT = 0; pc.cd = 0; }
+  const col = E.ok ? '#22C55E' : E.manual ? '#FFFFFF' : '#F59E0B';
+  // voile autour du cadre, cadre du document, ovale de la tête
+  x.save(); x.fillStyle = 'rgba(0,0,0,.5)'; x.beginPath(); x.rect(0, 0, cw, ch); x.ellipse(G.ocx, G.ocy, G.ow / 2 * 1.08, G.oh / 2 * 1.12, 0, 0, 7); x.fill('evenodd'); x.restore();
+  x.strokeStyle = 'rgba(255,255,255,.55)'; x.lineWidth = 1.5 * d; x.setLineDash([8 * d, 6 * d]); x.strokeRect(G.fx, G.fy, G.fw, G.fh); x.setLineDash([]);
+  x.strokeStyle = col; x.lineWidth = 4 * d; x.beginPath(); x.ellipse(G.ocx, G.ocy, G.ow / 2, G.oh / 2, 0, 0, 7); x.stroke();
+  if (pc.f && !E.ok && pc.fc && !E.manual) { x.fillStyle = 'rgba(245,158,11,.9)'; x.beginPath(); x.arc(pc.fc.cx, pc.fc.cy, 6 * d, 0, 7); x.fill(); }
+  pcText(x, cw / 2, Math.max(G.fy - 18 * d, 90 * d), E.msg, d, E.ok ? '#BBF7D0' : '#fff', 1);
+  if (pc.cd) { const left = 3 - Math.floor((now - pc.cd) / 1000); if (left <= 0) { pc.cd = 0; pc.okT = 0; return pcShot(); } x.fillStyle = 'rgba(34,197,94,.85)'; x.font = `900 ${90 * d}px Arial`; x.textAlign = 'center'; x.fillText(left, G.ocx, G.ocy + 30 * d); }
+  if (!pc.det && !E.manual) {} }
+function pcText(x, cx, cy, t, d, col, pill) { x.font = `700 ${17 * d}px Arial, sans-serif`; x.textAlign = 'center'; const w = Math.min(x.measureText(t).width + 30 * d, innerWidth * d * 0.94); if (pill) { x.fillStyle = 'rgba(0,0,0,.65)'; vidRR(x, cx - w / 2, cy - 22 * d, w, 36 * d, 18 * d); x.fill(); } x.fillStyle = col; x.fillText(t, cx, cy + 2 * d, w - 20 * d); }
+async function pcShot() { const v = $('pc-v'); if (!pc || !v?.videoWidth) return; const c = document.createElement('canvas'); c.width = v.videoWidth; c.height = v.videoHeight; c.getContext('2d').drawImage(v, 0, 0);
+  $('pcx')?.classList.add('flash'); try { navigator.vibrate?.(60); } catch (e) {} await new Promise(r => setTimeout(r, 180)); pcClose(true); if (!$('phx')) phOpen(); phLoad(c); }
+// ---------- 💾 HISTORIQUE DES CLIENTS (dans l'appareil) ----------
+let phDBp = null;
+function phDB() { return phDBp ||= new Promise((res, rej) => { const r = indexedDB.open('sp_ph', 1); r.onupgradeneeded = () => r.result.createObjectStore('h', { keyPath: 'id' }); r.onsuccess = () => res(r.result); r.onerror = () => { phDBp = null; rej(r.error); }; }); }
+async function phDo(mode, fn) { const db = await phDB(); return new Promise((res, rej) => { const tx = db.transaction('h', mode), r = fn(tx.objectStore('h')); tx.oncomplete = () => res(r?.result); tx.onerror = () => rej(tx.error); }); }
+async function phAll() { let L = []; try { L = await phDo('readonly', s => s.getAll()) || []; } catch (e) {} const keep = +vget('phkeep', '90'); if (keep) { const lim = Date.now() - keep * 864e5, old = L.filter(r => r.date < lim); if (old.length) { await phDo('readwrite', s => old.forEach(r => s.delete(r.id))).catch(() => {}); L = L.filter(r => r.date >= lim); } } return L.sort((a, b) => b.date - a.date); }
+const phGet = id => phDo('readonly', s => s.get(id)).catch(() => null);
+async function phImg(r) { const im = new Image(); im.src = URL.createObjectURL(r.img); await im.decode(); return im; }
+async function phHistSave(one, extra = {}) { if (vget('phhist', '1') !== '1') return null; try { const b = await new Promise(r => one.toBlob(r, 'image/jpeg', 0.95)), t = document.createElement('canvas'), k = 140 / one.height; t.width = Math.round(one.width * k); t.height = 140; t.getContext('2d').drawImage(one, 0, 0, t.width, t.height);
+    const old = ph.hid ? await phGet(ph.hid) : null, rec = { ...(old || {}), id: old?.id || 'h' + Date.now().toString(36) + skId().slice(0, 4), name: (ph.client || '').trim(), fmt: ph.fmt, date: Date.now(), img: b, th: t.toDataURL('image/jpeg', 0.8), ...extra };
+    await phDo('readwrite', s => s.put(rec)); ph.hid = rec.id; return rec.id; } catch (e) { console.warn('hist', e); return null; } }
+async function phRename(id, name) { const r = await phGet(id); if (!r) return; r.name = name.trim(); await phDo('readwrite', s => s.put(r)); }
+const phDate = t => { const d = new Date(t); return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' }) + ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }); };
+async function phClients(q = '') { ph.step = 4; const el = $('phc'), L = await phAll(), qq = noAcc(q).toLowerCase(), R = L.filter(r => !qq || noAcc(r.name + ' ' + (PH_FMT[r.fmt]?.n || '') + ' ' + (r.grpN || '')).toLowerCase().includes(qq)), keep = vget('phkeep', '90'), on = vget('phhist', '1') === '1';
+  el.innerHTML = `<div class="phhero"><b>🗂️ Clients (${L.length})</b><span>Retrouvez une photo pour la réimprimer, la renvoyer ou l’ajouter à une planche A4. Tout reste dans cet appareil, même sans Internet.</span></div>
+    <input class="phsearch" id="ph-q" placeholder="🔍 Chercher un nom, un pays, une classe…" value="${esc(q)}" oninput="clearTimeout(window.phQT);window.phQT=setTimeout(()=>phClients(this.value).then(()=>{const i=$('ph-q');i.focus();i.setSelectionRange(i.value.length,i.value.length)}),250)">
+    <div class="phlist">${R.map(r => { const F = PH_FMT[r.fmt] || PH_FMT.icao; return `<div class="phli"><img src="${r.th}" alt=""><div><b>${esc(r.name || 'Sans nom')}</b><small>${F.n} · ${phCm(F.w)}×${phCm(F.h)} cm${r.grpN ? ` · 🏫 ${esc(r.grpN)}` : ''}</small><small>${phDate(r.date)}</small>
+      <div class="phlact"><button type="button" onclick="phHistOut('${r.id}','sheet')">🖨️ 10×15</button><button type="button" onclick="phHistOut('${r.id}','dig')">📱 Numérique</button><button type="button" onclick="phCartAsk('${r.id}')">➕ A4</button><button type="button" onclick="phRenameAsk('${r.id}')">✏️</button><button type="button" onclick="phDelAsk('${r.id}')">🗑️</button></div></div></div>`; }).join('') || `<p class="mt" style="text-align:center;padding:20px">${L.length ? 'Aucun résultat.' : 'Aucune photo pour l’instant. Chaque photo validée est enregistrée ici.'}</p>`}</div>
+    <div class="phset"><label class="stu-mus"><input type="checkbox" ${on ? 'checked' : ''} onchange="vset('phhist',this.checked?'1':'0');toast(this.checked?'Historique activé':'Historique désactivé : les nouvelles photos ne seront plus gardées')"> 💾 Garder les photos validées dans l’historique</label>
+      <label class="phrng" style="display:flex;gap:8px;align-items:center">🕒 Effacer automatiquement après <select onchange="vset('phkeep',this.value);phClients($('ph-q').value)">${[['7', '7 jours'], ['30', '30 jours'], ['90', '90 jours'], ['365', '1 an'], ['0', 'jamais']].map(([v, n]) => `<option value="${v}" ${keep === v ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+      <button class="pbtn gray" onclick="phDelAll()">🗑️ Tout effacer</button><small class="mt">🔒 Respectez la vie privée de vos clients : effacez les photos dont vous n’avez plus besoin.</small></div>
+    <button class="soft" style="width:100%;margin-top:10px" onclick="phStep1()">↩️ Retour</button>`; }
+async function phRenameAsk(id) { const r = await phGet(id); openM(`<h3>✏️ Nom du client</h3><input id="ph-rn" class="phsearch" value="${esc(r?.name || '')}"><div class="grid2" style="margin-top:10px"><button class="pill" onclick="phRename('${id}',$('ph-rn').value).then(()=>{closeM();phClients($('ph-q')?.value||'')})">✅ Enregistrer</button><button class="soft" onclick="closeM()">Annuler</button></div>`); setTimeout(() => $('ph-rn')?.focus(), 50); }
+function phDelAsk(id) { openM(`<h3>🗑️ Supprimer cette photo ?</h3><p class="mt">Elle sera effacée de cet appareil.</p><div class="grid2"><button class="pill" style="background:#DC2626" onclick="phDo('readwrite',s=>s.delete('${id}')).then(()=>{phCartDel('${id}');closeM();phClients($('ph-q')?.value||'')})">Supprimer</button><button class="soft" onclick="closeM()">Annuler</button></div>`); }
+function phDelAll() { openM(`<h3>🗑️ Tout effacer ?</h3><p class="mt">Toutes les photos de l’historique seront effacées de cet appareil. La planche A4 en attente sera vidée.</p><div class="grid2"><button class="pill" style="background:#DC2626" onclick="phDo('readwrite',s=>s.clear()).then(()=>{vset('phcart','[]');closeM();phClients()})">Tout effacer</button><button class="soft" onclick="closeM()">Annuler</button></div>`); }
+// ---------- fabrication des fichiers ----------
+function phOne(F) { const one = document.createElement('canvas'); one.width = mmPx(F.w); one.height = mmPx(F.h); phRender(one.getContext('2d'), F, one.width / F.w, false); return one; }
+function phSheet(one, F) {
+  let best = null; for (const land of [1, 0]) for (const [m, g] of [[4, 2], [2, 1], [0.6, 0.4], [0, 0]]) { const sw = land ? 152.4 : 101.6, sh = land ? 101.6 : 152.4, cols = Math.floor((sw - 2 * m + g) / (F.w + g) + 1e-6), rows = Math.floor((sh - 2 * m + g) / (F.h + g) + 1e-6), n = cols * rows;
+    if (n && (!best || n > best.n || (n === best.n && m > best.m))) best = { land, m, g, cols, rows, n, sw, sh }; }
+  const B = best, SW = mmPx(B.sw), SH = mmPx(B.sh), sheet = document.createElement('canvas'); sheet.width = SW; sheet.height = SH; const s = sheet.getContext('2d'); s.fillStyle = '#fff'; s.fillRect(0, 0, SW, SH);
+  const gw = B.cols * F.w + (B.cols - 1) * B.g, gh = B.rows * F.h + (B.rows - 1) * B.g, ox = mmPx((B.sw - gw) / 2), oy = mmPx(Math.max(B.m, (B.sh - gh) / 2 - (B.sh - gh > 8 ? 2 : 0)));
+  s.strokeStyle = '#B0B0B0'; s.lineWidth = 1;
+  for (let r = 0; r < B.rows; r++) for (let c = 0; c < B.cols; c++) { const x = ox + mmPx(c * (F.w + B.g)), y = oy + mmPx(r * (F.h + B.g)); s.drawImage(one, x, y, mmPx(F.w), mmPx(F.h)); s.strokeRect(x + 0.5, y + 0.5, mmPx(F.w) - 1, mmPx(F.h) - 1); }
+  const free = B.sh - gh - (oy / mmPx(1)); if (free > 4) { s.fillStyle = '#6B7280'; s.font = `${mmPx(2)}px Arial`; s.textAlign = 'center'; s.fillText(`${F.n.replace(/^\S+\s/, '')} · ${F.d} · ${F.w}×${F.h} mm · ${B.n} photos · tirage 10×15 cm à 100 % · SocialPages`, SW / 2, SH - mmPx(Math.min(2.5, free / 2))); }
+  return { c: sheet, n: B.n };
+}
+// photo numérique : taille en pixels et poids maximum (Ko)
+async function phDigBlob(one, w, h, kb) { let c = one; if (w && h && (w !== one.width || h !== one.height)) { c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; const s = Math.max(w / one.width, h / one.height); x.drawImage(one, (w - one.width * s) / 2, (h - one.height * s) / 2, one.width * s, one.height * s); }
+  let q = 0.93, b; for (;;) { b = await new Promise(r => c.toBlob(r, 'image/jpeg', q)); if (!kb || b.size <= kb * 1024 || q < 0.35) break; q -= 0.06; }
+  if (kb && b.size > kb * 1024) { const k = Math.sqrt(kb * 1024 / b.size) * 0.95, c2 = document.createElement('canvas'); c2.width = Math.round(c.width * k); c2.height = Math.round(c.height * k); c2.getContext('2d').drawImage(c, 0, 0, c2.width, c2.height); b = await new Promise(r => c2.toBlob(r, 'image/jpeg', 0.8)); c = c2; }
+  return { b, w: c.width, h: c.height }; }
+const phBase = (F, name) => `photo-${noAcc(name || '').trim().replace(/[^\w-]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'id'}-${F.w}x${F.h}mm`;
+// ---------- Résultats ----------
+async function phStep3() {
+  ph.step = 3; const F = PH_FMT[ph.fmt], el = $('phc'); el.innerHTML = '<div class="spin"></div>'; const one = phOne(F);
+  if (ph.batch) return phBatchSave(one);
+  const S = phSheet(one, F), D = await phDigBlob(one, F.dig?.w, F.dig?.h, F.dig?.kb), sb2 = await new Promise(r => S.c.toBlob(r, 'image/jpeg', 0.95)), nm = phBase(F, ph.client);
+  ph.one = one; ph.files = { sheet: new File([sb2], nm + '-planche-10x15.jpg', { type: 'image/jpeg' }), dig: new File([D.b], nm + `-${D.w}x${D.h}px.jpg`, { type: 'image/jpeg' }) };
+  await phHistSave(one); const u1 = URL.createObjectURL(ph.files.sheet), u2 = URL.createObjectURL(ph.files.dig), nC = phCart().reduce((a, b) => a + b.n, 0);
+  el.innerHTML = `<div class="phhero ok"><b>🎉 Les photos sont prêtes !</b><span>${S.n} photos ${F.w}×${F.h} mm sur une planche 10×15 cm.${ph.hid ? ' Enregistrées dans 🗂️ Clients.' : ''}</span></div>
+    <label class="phcli">👤 Nom du client<input value="${esc(ph.client || '')}" placeholder="Ex. : KAHINDO Grace" oninput="ph.client=this.value" onchange="ph.hid&&phRename(ph.hid,this.value)"></label>
+    <div class="phres"><div><b>🖨️ Planche à imprimer (10 × 15 cm)</b><img src="${u1}" alt="Planche"><p class="mt" style="font-size:12px">Chez le photographe : demandez un tirage <b>10 × 15 cm</b>, « taille réelle / 100 % », sans recadrage.</p>
+      <div class="grid2"><button class="pill" onclick="phOut('sheet',1)">📤 Partager</button><button class="soft" onclick="phOut('sheet')">⬇️ Télécharger</button></div></div>
+    <div><b>📱 Photo numérique (${D.w}×${D.h} px, ${Math.round(D.b.size / 1024)} Ko)</b><img src="${u2}" alt="Photo" style="max-width:200px;margin:8px auto;display:block;border:1px solid #E5E7EB">${F.dig ? `<p class="mt" style="font-size:12px">Pour les demandes en ligne${F.dig.kb ? ` (${F.dig.kb} Ko maximum)` : ''}${ph.fmt === 'us' ? ' — ex. formulaire DS-160 : 600×600 px, 240 Ko maximum' : ''}.</p>` : ''}
+      <div class="grid2"><button class="pill" onclick="phOut('dig',1)">📤 Partager</button><button class="soft" onclick="phOut('dig')">⬇️ Télécharger</button></div>
+      <details class="phcus"><summary>📐 Fichier numérique sur mesure (site officiel)</summary><p class="mt" style="font-size:12px">Si le site demande une taille précise (ex. 413 × 531 px, 100 Ko maximum).</p>
+        <div class="phcusr"><label>Largeur (px)<input id="ph-dw" type="number" value="${F.dig?.w || Math.round(F.w / 25.4 * 300)}" oninput="$('ph-dh').value=Math.round(this.value*${F.h / F.w})"></label><label>Hauteur (px)<input id="ph-dh" type="number" value="${F.dig?.h || Math.round(F.h / 25.4 * 300)}"></label><label>Max (Ko)<input id="ph-dk" type="number" value="${F.dig?.kb || ''}" placeholder="aucun"></label></div>
+        <button class="soft" style="width:100%" onclick="phCustom()">⚙️ Créer ce fichier</button><div id="ph-cus"></div></details></div></div>
+    <div class="pha4box"><b>🧾 Planche A4 multi-clients</b><small>Mettez plusieurs clients sur une seule feuille A4 (moins de papier, une seule impression).</small>
+      <div class="afchips">${[2, 4, 6, 8].map(n => `<button type="button" onclick="phCartAdd(ph.hid,${n}).then(()=>phStep3Cart())">+ ${n} photos</button>`).join('')}</div><div id="ph-cartst">${nC ? `<small>📄 ${nC} photo(s) déjà en attente.</small>` : ''}</div><button class="soft" style="width:100%;margin-top:6px" onclick="phA4()">🧾 Ouvrir la planche A4</button></div>
+    <button class="soft" style="width:100%;margin-top:12px" onclick="phStep2()">✏️ Ajuster encore</button><div class="grid2" style="margin-top:8px"><button class="pill" onclick="ph.client='';ph.hid=null;pcOpen()">🎥 Client suivant</button><button class="soft" onclick="ph.client='';ph.hid=null;phStep1()">📸 Autre format</button></div>
+    <div class="phpromo" onclick="phShareApp()">💚 Ce service est gratuit. Partagez-le à vos amis qui préparent un visa !</div>`;
+}
+function phStep3Cart() { const n = phCart().reduce((a, b) => a + b.n, 0), el = $('ph-cartst'); if (el) el.innerHTML = `<small style="color:#15803D;font-weight:700">✅ Ajouté. ${n} photo(s) en attente sur la planche A4.</small>`; }
+async function phCustom() { const w = Math.max(50, Math.min(4000, +$('ph-dw').value || 0)), h = Math.max(50, Math.min(4000, +$('ph-dh').value || 0)), kb = +$('ph-dk').value || 0, D = await phDigBlob(ph.one, w, h, kb), f = new File([D.b], phBase(PH_FMT[ph.fmt], ph.client) + `-${D.w}x${D.h}px.jpg`, { type: 'image/jpeg' }); ph.files.cus = f;
+  $('ph-cus').innerHTML = `<p class="mt" style="font-size:12px;margin-top:6px">✅ ${D.w}×${D.h} px · ${Math.round(D.b.size / 1024)} Ko${kb && D.w !== w ? ' (taille réduite pour respecter le poids maximum)' : ''}</p><div class="grid2"><button class="pill" onclick="phOut('cus',1)">📤 Partager</button><button class="soft" onclick="phOut('cus')">⬇️ Télécharger</button></div>`; }
+async function phHistOut(id, k) { const r = await phGet(id); if (!r) return; const F = PH_FMT[r.fmt] || PH_FMT.icao, im = await phImg(r), one = document.createElement('canvas'); one.width = mmPx(F.w); one.height = mmPx(F.h); one.getContext('2d').drawImage(im, 0, 0, one.width, one.height); let f;
+  if (k === 'sheet') { const S = phSheet(one, F), b = await new Promise(rr => S.c.toBlob(rr, 'image/jpeg', 0.95)); f = new File([b], phBase(F, r.name) + '-planche-10x15.jpg', { type: 'image/jpeg' }); }
+  else { const D = await phDigBlob(one, F.dig?.w, F.dig?.h, F.dig?.kb); f = new File([D.b], phBase(F, r.name) + `-${D.w}x${D.h}px.jpg`, { type: 'image/jpeg' }); }
+  window.phHF = f; openM(`<h3>${k === 'sheet' ? '🖨️ Planche 10 × 15 cm' : '📱 Photo numérique'}</h3><p class="mt">${esc(r.name || 'Sans nom')} · ${F.n}</p><img src="${URL.createObjectURL(f)}" alt="" style="max-width:100%;max-height:50vh;display:block;margin:8px auto;border:1px solid #E5E7EB"><div class="grid2"><button class="pill" onclick="spShare([window.phHF],'Photo d’identité')">📤 Partager</button><button class="soft" onclick="spSave([window.phHF])">⬇️ Télécharger</button></div><button class="pbtn gray" onclick="closeM()">Fermer</button>`); }
+// ---------- 🧾 PLANCHE A4 MULTI-CLIENTS ----------
+function phCart() { try { return JSON.parse(vget('phcart', '[]')) || []; } catch (e) { return []; } }
+function phCartSet(C) { vset('phcart', JSON.stringify(C)); }
+async function phCartAdd(id, n) { if (!id) { const F = PH_FMT[ph.fmt]; id = await phHistSave(ph.one || phOne(F), {}); if (!id) { toast('Activez l’historique (🗂️ Clients) pour utiliser la planche A4.', 4000); return; } } const C = phCart(), it = C.find(c => c.id === id); if (it) it.n += n; else C.push({ id, n }); phCartSet(C); toast(`➕ ${n} photo(s) ajoutée(s) à la planche A4`); }
+function phCartDel(id) { phCartSet(phCart().filter(c => c.id !== id)); }
+function phCartAsk(id) { openM(`<h3>➕ Planche A4</h3><p class="mt">Combien de photos de ce client ?</p><div class="afchips">${[1, 2, 4, 6, 8, 10].map(n => `<button type="button" onclick="phCartAdd('${id}',${n});closeM()">${n}</button>`).join('')}</div><button class="pbtn gray" onclick="closeM()">Annuler</button>`); }
+const PH_PAPER = { a4: { n: 'A4', w: 210, h: 297, pt: [595.28, 841.89] }, letter: { n: 'Lettre US', w: 215.9, h: 279.4, pt: [612, 792] } };
+// placement : lignes de gauche à droite, plusieurs pages si besoin (mm)
+function phPack(items, o) { const P = PH_PAPER[o.paper] || PH_PAPER.a4, M = 7, G = o.cut ? 3.2 : 2, lab = o.names ? (o.trombi ? 6 : 3.4) : 0, top0 = M + (o.title ? 12 : 0), bot = P.h - M - 5, pages = [[]]; let x = M, y = top0, rowH = 0;
+  for (const it of items) for (let k = 0; k < it.n; k++) { const w = it.F.w, h = it.F.h + lab;
+    if (x + w > P.w - M + 0.01) { x = M; y += rowH + G; rowH = 0; } if (y + h > bot) { pages.push([]); x = M; y = top0; rowH = 0; }
+    pages[pages.length - 1].push({ x, y, w, h: it.F.h, it }); x += w + G; rowH = Math.max(rowH, h); }
+  return { P, pages: pages.filter(p => p.length), lab }; }
+function phA4Draw(L, o) { const { P } = L, k = 300 / 25.4, W = Math.round(P.w * k), H = Math.round(P.h * k);
+  return L.pages.map((pg, pi) => { const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.textBaseline = 'alphabetic';
+    if (o.title) { x.fillStyle = '#111827'; x.font = `700 ${6 * k}px Arial, sans-serif`; x.textAlign = 'left'; x.fillText(o.title, 7 * k, 13 * k, (P.w - 14) * k); }
+    pg.forEach(p => { const X = p.x * k, Y = p.y * k, w = p.w * k, h = p.h * k; x.drawImage(p.it.im, X, Y, w, h); x.strokeStyle = '#C8C8C8'; x.lineWidth = 1; x.strokeRect(X + 0.5, Y + 0.5, w - 1, h - 1);
+      if (o.cut) { x.strokeStyle = '#000'; x.lineWidth = 0.18 * k; const a = 0.4 * k, b = 1.6 * k; x.beginPath(); [[X, Y, -1, -1], [X + w, Y, 1, -1], [X, Y + h, -1, 1], [X + w, Y + h, 1, 1]].forEach(([cx, cy, sx, sy]) => { x.moveTo(cx + sx * a, cy); x.lineTo(cx + sx * b, cy); x.moveTo(cx, cy + sy * a); x.lineTo(cx, cy + sy * b); }); x.stroke(); }
+      if (o.names && p.it.name) { const fs = (o.trombi ? 2.9 : 2.1) * k; x.font = `${o.trombi ? 700 : 400} ${fs}px Arial, sans-serif`; x.fillStyle = '#111827'; x.textAlign = 'center'; let t = p.it.name; while (t.length > 3 && x.measureText(t).width > w) t = t.slice(0, -2) + '…'; x.fillText(t, X + w / 2, Y + h + fs * (o.cut ? 1.35 : 1.15)); } });
+    x.fillStyle = '#6B7280'; x.font = `${2 * k}px Arial, sans-serif`; x.textAlign = 'center'; x.fillText(`Page ${pi + 1}/${L.pages.length} · ${P.n} · imprimez à 100 % (taille réelle), sans « ajuster à la page » · SocialPages`, W / 2, H - 4 * k); return c; }); }
+async function phItems(list) { const out = []; for (const c of list) { const r = await phGet(c.id); if (!r) continue; const F = PH_FMT[r.fmt] || PH_FMT.icao; out.push({ id: r.id, name: r.name, F, n: c.n, im: await phImg(r), th: r.th }); } return out; }
+async function phA4() { ph.step = 5; const el = $('phc'), C = phCart(), I = await phItems(C), o = { paper: vget('phpaper', 'a4'), cut: vget('phcut', '1') === '1', names: vget('phnames', '1') === '1' }, L = phPack(I, o), N = I.reduce((a, b) => a + b.n, 0);
+  if (I.length !== C.length) phCartSet(C.filter(c => I.some(i => i.id === c.id)));
+  el.innerHTML = `<div class="phhero"><b>🧾 Planche A4 multi-clients</b><span>Plusieurs clients et plusieurs formats sur la même feuille, avec traits de coupe et nom sous chaque photo.</span></div>
+    <div class="phlist">${I.map(it => `<div class="phli"><img src="${it.th}" alt=""><div><b>${esc(it.name || 'Sans nom')}</b><small>${it.F.n} · ${phCm(it.F.w)}×${phCm(it.F.h)} cm</small><div class="phqty"><button type="button" onclick="phQty('${it.id}',-1)">−</button><b>${it.n}</b><button type="button" onclick="phQty('${it.id}',1)">+</button><button type="button" onclick="phCartDel('${it.id}');phA4()">🗑️</button></div></div></div>`).join('') || '<p class="mt" style="text-align:center;padding:16px">La planche est vide. Après une photo, touchez « + 4 photos » (ou ajoutez depuis 🗂️ Clients).</p>'}</div>
+    ${I.length ? `<div class="phset"><div class="afchips">${Object.entries(PH_PAPER).map(([k, p]) => `<button type="button" class="${o.paper === k ? 'on' : ''}" onclick="vset('phpaper','${k}');phA4()">📄 ${p.n}</button>`).join('')}</div>
+      <label class="stu-mus"><input type="checkbox" ${o.cut ? 'checked' : ''} onchange="vset('phcut',this.checked?'1':'0');phA4()"> ✂️ Traits de coupe</label><label class="stu-mus"><input type="checkbox" ${o.names ? 'checked' : ''} onchange="vset('phnames',this.checked?'1':'0');phA4()"> 🏷️ Nom sous chaque photo</label>
+      <p style="font-weight:700;margin:6px 0">${I.length} client(s) · ${N} photos · ${L.pages.length} page(s) ${o.paper === 'letter' ? 'Lettre' : 'A4'}</p></div>
+      <canvas id="ph-a4pv" class="pha4pv"></canvas>
+      <div class="grid2" style="margin-top:8px"><button class="pill" onclick="phA4Out('pdf')">🖨️ PDF à imprimer</button><button class="soft" onclick="phA4Out('jpg')">🖼️ Images JPG</button></div>
+      <button class="pbtn gray" onclick="phCartSet([]);phA4()">🗑️ Vider la planche (après impression)</button>` : ''}
+    <button class="soft" style="width:100%;margin-top:10px" onclick="phStep1()">↩️ Retour</button>`;
+  if (I.length) { const pg = phA4Draw({ ...L, pages: L.pages.slice(0, 1) }, o)[0], cv = $('ph-a4pv'); cv.width = 600; cv.height = Math.round(600 * pg.height / pg.width); cv.getContext('2d').drawImage(pg, 0, 0, cv.width, cv.height); } }
+function phQty(id, d) { const C = phCart(), it = C.find(c => c.id === id); if (!it) return; it.n = Math.max(1, Math.min(60, it.n + d)); phCartSet(C); phA4(); }
+async function phA4Out(kind, list, opt) { const I = await phItems(list || phCart()); if (!I.length) return; const o = opt || { paper: vget('phpaper', 'a4'), cut: vget('phcut', '1') === '1', names: vget('phnames', '1') === '1' }, L = phPack(I, o), P = phA4Draw(L, o);
+  const f = await pagesFiles(P, (o.base || 'planche-' + (o.paper === 'letter' ? 'lettre' : 'A4')) + '-' + new Date().toISOString().slice(0, 10), kind, { w: L.P.pt[0], h: L.P.pt[1] }); spSave(f); }
+// ---------- 🏫 MODE ÉCOLE / ENTREPRISE ----------
+function phBatchGet() { try { return JSON.parse(vget('phbatch', 'null')); } catch (e) { return null; } }
+function phBatchPut(B) { vset('phbatch', B ? JSON.stringify(B) : 'null'); }
+function phBatchTitle() { const B = ph.batch, i = B.i, n = B.names.length; return `🏫 ${B.name} — ${n ? `${i + 1}/${n} : ` : ''}${ph.client || ''}`; }
+function phBatchSetup() { ph.step = 6; const el = $('phc'), B = phBatchGet();
+  el.innerHTML = `<div class="phhero"><b>🏫 Mode école / entreprise</b><span>Photographiez toute une classe ou tout le personnel à la suite : chaque photo est nommée et rangée automatiquement.</span></div>
+    ${B ? `<div class="pha4box"><b>En cours : ${esc(B.name)}</b><small>${B.done.filter(Boolean).length} photo(s) faite(s)${B.names.length ? ' sur ' + B.names.length : ''} · ${PH_FMT[B.fmt]?.n || ''}</small><div class="grid2" style="margin-top:6px"><button class="pill" onclick="phBatchGo()">▶️ Continuer</button><button class="soft" onclick="phBatchRes()">📋 Résultats</button></div></div><p class="phgrp">Ou commencer un nouveau groupe</p>` : ''}
+    <label class="phcli">Nom du groupe<input id="pb-name" placeholder="Ex. : Institut Bakanja – 5e A ou Personnel ACME"></label>
+    <label class="phcli">Format des photos<select id="pb-fmt">${Object.entries(PH_FMT).map(([k, F]) => `<option value="${k}" ${k === (ph.fmt === 'us' ? 'f44' : ph.fmt) ? 'selected' : ''}>${F.n} – ${F.d} (${phCm(F.w)}×${phCm(F.h)} cm)</option>`).join('')}</select></label>
+    <label class="phcli">Liste des noms <small>(un par ligne, dans l’ordre de passage — ou laissez vide et tapez le nom à chaque photo)</small><textarea id="pb-names" rows="7" placeholder="KAHINDO Grace\nMUHINDO Daniel\nNEEMA Esther"></textarea></label>
+    <button class="pill" style="width:100%" onclick="phBatchNew()">▶️ Commencer les photos</button>
+    <p class="mt" style="font-size:12px;margin-top:10px">💡 Installez la personne devant un mur clair, face à la lumière, à la même place pour tout le monde. L’opérateur utilise la caméra arrière (🔄).</p>
+    <button class="soft" style="width:100%;margin-top:10px" onclick="phStep1()">↩️ Retour</button>`; }
+function phBatchNew() { const name = $('pb-name').value.trim() || 'Groupe ' + new Date().toLocaleDateString('fr-FR'), names = $('pb-names').value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 500), B = { id: 'g' + Date.now().toString(36), name, fmt: $('pb-fmt').value, names, done: [], i: 0 }; phBatchPut(B); phBatchGo(); }
+async function phBatchGo(i) { const B = phBatchGet(); if (!B) return phBatchSetup(); if (i === undefined) { i = B.names.length ? B.names.findIndex((_, k) => !B.done[k]) : B.done.length; if (B.names.length && i < 0) return phBatchRes(); } B.i = i; phBatchPut(B); ph.batch = B; ph.fmt = B.fmt; ph.client = B.names[i] || ''; ph.hid = B.done[i] || null; if (!B.names.length && ph.hid) { const r = await phGet(ph.hid); if (r) ph.client = r.name; } pcOpen(); }
+function phBanner() { if (!ph.batch) return; const B = ph.batch, side = document.querySelector('.phside'); if (!side) return; side.insertAdjacentHTML('afterbegin', `<div class="phbanner"><b>🏫 ${esc(B.name)}${B.names.length ? ` · ${B.i + 1}/${B.names.length}` : ''}</b>${B.names.length ? `<span>${esc(ph.client)}</span>` : `<input placeholder="Nom de la personne" value="${esc(ph.client || '')}" oninput="ph.client=this.value">`}<div class="grid2"><button type="button" class="soft" onclick="pcOpen()">🔁 Reprendre</button><button type="button" class="soft" onclick="phBatchSkip()">⏭️ Passer</button></div></div>`); }
+function phBatchSkip() { const B = ph.batch; if (!B) return; ph.batch = null; if (B.names.length && B.i < B.names.length - 1) { const j = B.names.findIndex((_, k) => k > B.i && !B.done[k]); if (j >= 0) return phBatchGo(j); } phBatchRes(); }
+async function phBatchSave(one) { const B = ph.batch; ph.hid = B.done[B.i] || null; if (!ph.client && !B.names.length) ph.client = `Personne ${B.i + 1}`; const id = await phHistSave(one, { grp: B.id, grpN: B.name, no: B.i + 1 }); if (!id) { toast('Activez l’historique (🗂️ Clients) pour le mode école.', 4000); return phStep2(); }
+  B.done[B.i] = id; phBatchPut(B); const n = B.done.filter(Boolean).length, nxt = B.names.length ? B.names.findIndex((_, k) => !B.done[k]) : B.done.length, el = $('phc'), th = URL.createObjectURL(await new Promise(r => one.toBlob(r, 'image/jpeg', 0.85)));
+  el.innerHTML = `<div class="phhero ok"><b>✅ ${esc(ph.client)} : enregistré</b><span>${n} photo(s) faite(s)${B.names.length ? ' sur ' + B.names.length : ''} · ${esc(B.name)}</span></div><img src="${th}" alt="" style="display:block;margin:10px auto;max-height:240px;border:1px solid #E5E7EB">
+    ${nxt >= 0 && (!B.names.length || nxt < B.names.length) ? `<button class="pill" style="width:100%;padding:14px" onclick="phBatchGo(${nxt})">📷 Suivant${B.names[nxt] ? ' : ' + esc(B.names[nxt]) : ''}</button>` : '<div class="pha4box"><b>🎉 Tout le groupe est photographié !</b></div>'}
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="phBatchGo(${B.i})">🔁 Refaire cette photo</button><button class="soft" onclick="phBatchRes()">📋 Résultats et impression</button></div>`; ph.batch = null; }
+async function phBatchRes() { ph.step = 7; ph.batch = null; const B = phBatchGet(), el = $('phc'); if (!B) return phBatchSetup(); const L = (await phAll()).filter(r => r.grp === B.id).sort((a, b) => (a.no || 0) - (b.no || 0)), miss = B.names.filter((_, k) => !B.done[k]);
+  el.innerHTML = `<div class="phhero"><b>📋 ${esc(B.name)}</b><span>${L.length} photo(s)${B.names.length ? ' sur ' + B.names.length : ''} · ${PH_FMT[B.fmt]?.n || ''} ${PH_FMT[B.fmt]?.d || ''}</span></div>
+    ${miss.length ? `<div class="pha4box"><b>⏳ Pas encore photographié(s) : ${miss.length}</b><small>${miss.slice(0, 12).map(esc).join(', ')}${miss.length > 12 ? '…' : ''}</small><button class="pill" style="width:100%;margin-top:6px" onclick="phBatchGo()">▶️ Continuer les photos</button></div>` : `<button class="soft" style="width:100%" onclick="phBatchGo(${B.names.length || B.done.length})" ${B.names.length ? 'hidden' : ''}>➕ Ajouter une personne</button>`}
+    <div class="phtrombi">${L.map(r => `<div onclick="phBatchGo(${(r.no || 1) - 1})"><img src="${r.th}" alt=""><small>${esc(r.name)}</small></div>`).join('')}</div>
+    ${L.length ? `<p class="phgrp">Exporter</p><div class="grid2"><button class="pill" onclick="phBatchZip()">📦 Photos numériques (ZIP)</button><button class="soft" onclick="phBatchTrombi()">📋 Trombinoscope (PDF)</button></div>
+      <label class="phcli" style="margin-top:8px">Photos par personne sur les planches A4<select id="pb-cp">${[1, 2, 4, 6].map(n => `<option>${n}</option>`).join('')}</select></label><button class="soft" style="width:100%" onclick="phBatchA4()">🖨️ Planches A4 à découper (PDF)</button>` : ''}
+    <div class="grid2" style="margin-top:12px"><button class="soft" onclick="phStep1()">↩️ Retour</button><button class="soft" onclick="phBatchEnd()">✅ Terminer le groupe</button></div><small class="mt">Les photos restent aussi dans 🗂️ Clients.</small>`; }
+async function phBatchList() { const B = phBatchGet(); return (await phAll()).filter(r => r.grp === B.id).sort((a, b) => (a.no || 0) - (b.no || 0)); }
+async function phBatchZip() { const B = phBatchGet(), L = await phBatchList(), F = PH_FMT[B.fmt], files = [], csv = ['No;Nom;Fichier'];
+  for (const r of L) { const im = await phImg(r), one = document.createElement('canvas'); one.width = mmPx(F.w); one.height = mmPx(F.h); one.getContext('2d').drawImage(im, 0, 0, one.width, one.height); const D = await phDigBlob(one, F.dig?.w, F.dig?.h, F.dig?.kb), nm = `${String(r.no || 0).padStart(3, '0')}-${noAcc(r.name).replace(/[^\w-]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'photo'}.jpg`; files.push({ name: nm, data: new Uint8Array(await D.b.arrayBuffer()) }); csv.push(`${r.no || ''};${(r.name || '').replace(/;/g, ',')};${nm}`); }
+  files.push({ name: 'liste.csv', data: '﻿' + csv.join('\r\n') }); const z = zipMake(files), base = noAcc(B.name).replace(/[^\w-]+/g, '-').slice(0, 40); spSave([new File([z], `photos-${base}.zip`, { type: 'application/zip' })]); }
+async function phBatchTrombi() { const B = phBatchGet(), L = await phBatchList(); phA4Out('pdf', L.map(r => ({ id: r.id, n: 1 })), { paper: vget('phpaper', 'a4'), names: true, cut: false, trombi: true, title: `${B.name} — ${L.length} photo(s)`, base: 'trombinoscope-' + noAcc(B.name).replace(/[^\w-]+/g, '-').slice(0, 30) }); }
+async function phBatchA4() { const B = phBatchGet(), L = await phBatchList(), n = +($('pb-cp')?.value || 1); phA4Out('pdf', L.map(r => ({ id: r.id, n })), { paper: vget('phpaper', 'a4'), names: true, cut: true, base: 'planches-' + noAcc(B.name).replace(/[^\w-]+/g, '-').slice(0, 30) }); }
+function phBatchEnd() { openM(`<h3>✅ Terminer « ${esc(phBatchGet()?.name || '')} » ?</h3><p class="mt">Le groupe sera fermé. Les photos restent dans 🗂️ Clients.</p><div class="grid2"><button class="pill" onclick="phBatchPut(null);closeM();phStep1()">Terminer</button><button class="soft" onclick="closeM()">Annuler</button></div>`); }
 
 // Photo carrée recadrée au centre (pour CV et carte)
 function pickPhoto(cb, square = true) {
