@@ -16,33 +16,26 @@ const STY = {
 };
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 
-const ADMIN_EMAILS = ["peternondo912@gmail.com"]; // secours si la lecture du profil échoue
+// Le rôle administrateur est vérifié comme dans l'app : fonction Supabase « is_admin » (RPC),
+// appelée avec le jeton de connexion de la personne. Secours : colonne profiles.is_admin.
 async function isAdmin(request, env) {
   const tok = (request.headers.get("authorization") || "").replace(/^Bearer\s+/i, "").trim();
   if (!tok) return { ok: false, why: "jeton de connexion absent : reconnectez-vous" };
   const H = { apikey: env.SUPABASE_KEY || SB_KEY, authorization: "Bearer " + tok };
-  let user;
+  let why = "";
+  try {
+    const r = await fetch(SB + "/rest/v1/rpc/is_admin", { method: "POST", headers: { ...H, "content-type": "application/json" }, body: "{}" });
+    if (r.ok) { const d = await r.json(); if (d === true) return { ok: true }; why = "la fonction is_admin répond « " + JSON.stringify(d) + " »"; }
+    else why = "fonction is_admin : HTTP " + r.status;
+  } catch (e) { why = "Supabase injoignable"; }
   try {
     const u = await fetch(SB + "/auth/v1/user", { headers: H });
-    if (!u.ok) return { ok: false, why: "connexion refusée par Supabase (HTTP " + u.status + ") : déconnectez-vous puis reconnectez-vous" };
-    user = await u.json();
-  } catch (e) { return { ok: false, why: "Supabase injoignable : " + String(e?.message || e).slice(0, 80) }; }
-  if (!user?.id) return { ok: false, why: "compte introuvable" };
-  const mail = String(user.email || "").toLowerCase(), extra = String(env.ADMIN_EMAILS || "").toLowerCase().split(/[\s,;]+/).filter(Boolean);
-  try {
+    if (!u.ok) return { ok: false, why: why + " ; connexion refusée (HTTP " + u.status + ") : déconnectez-vous puis reconnectez-vous" };
+    const user = await u.json();
     const p = await fetch(`${SB}/rest/v1/profiles?id=eq.${encodeURIComponent(user.id)}&select=*`, { headers: H });
-    if (p.ok) {
-      const rows = await p.json();
-      if (rows?.[0]?.is_admin === true) return { ok: true };
-      if (ADMIN_EMAILS.includes(mail) || extra.includes(mail)) return { ok: true };
-      return { ok: false, why: rows?.length ? "ce compte (" + (mail || user.id) + ") n'a pas is_admin = true" : "profil introuvable pour " + (mail || user.id) };
-    }
-    if (ADMIN_EMAILS.includes(mail) || extra.includes(mail)) return { ok: true };
-    return { ok: false, why: "lecture du profil refusée (HTTP " + p.status + ") pour " + (mail || user.id) };
-  } catch (e) {
-    if (ADMIN_EMAILS.includes(mail) || extra.includes(mail)) return { ok: true };
-    return { ok: false, why: "lecture du profil impossible" };
-  }
+    if (p.ok) { const rows = await p.json(); if (rows?.[0]?.is_admin === true) return { ok: true }; }
+    return { ok: false, why: why + " ; compte " + (user.email || user.id) };
+  } catch (e) { return { ok: false, why: why || "vérification impossible" }; }
 }
 
 async function toEn(env, s, lang) {
