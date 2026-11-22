@@ -4503,13 +4503,13 @@ function svClose() { skv && (skv.play = false); $('skv')?.remove(); }
 function svForm() {
   const el = $('skv'); if (!el) return; const S = skv; svStop();
   el.innerHTML = `<div class="skph"><b>🎬 Vidéo animée</b><button type="button" onclick="svClose()">✕</button></div>
-  <div class="svpv"><canvas id="sv-cv"></canvas><button type="button" class="svplay" id="sv-play" onclick="svPlay()">▶️</button></div>${svScrubHtml()}${typeof svQuick === 'function' ? svQuick() : ''}${svTlHtml()}
+  <div class="svpv"><canvas id="sv-cv"></canvas><button type="button" class="svplay" id="sv-play" onclick="svPlay()">▶️</button></div>${svScrubHtml()}${typeof svQuick === 'function' ? svQuick() : ''}${typeof svFxBox === 'function' ? svFxBox() : ''}${svTlHtml()}
   <div class="box" style="margin-top:10px"><h3 class="cvh">Format de la vidéo</h3><div class="afchips">${Object.entries(SV_F).map(([k, f]) => `<button type="button" class="${S.fmt === k ? 'on' : ''}" onclick="skv.fmt='${k}';svForm()"><i style="aspect-ratio:${f.w}/${f.h}"></i>${f.n}</button>`).join('')}</div><small class="mt">Si une scène n’a pas la même forme, elle est centrée sur son propre fond.</small></div>
   <p class="mt" style="font-weight:700">Scènes (${S.scenes.length}) · ${svTotal().toFixed(1)} s</p><div class="svsc">${S.scenes.map((s, i) => `<div>${s.clip ? '<em class="svclip">🎞️</em>' : ''}<canvas id="svt${i}"></canvas>${s.clip ? `<button type="button" class="soft" onclick="svClipEdit(${i})">✂️ ${s.dur} s</button>` : `<label class="svdur"><input type="number" min="1" max="60" step="0.5" value="${s.dur}" onchange="skv.scenes[${i}].dur=Math.max(1,Math.min(60,+this.value||4));svEnv();svForm()"> s</label>`}<span>${i ? `<button type="button" onclick="svMove(${i},-1)">◀</button>` : ''}<button type="button" onclick="skv.scenes.splice(${i},1);skv.scenes.length?svForm():svClose()">✕</button></span></div>`).join('')}
     ${S.scenes.length < 8 ? `<button type="button" class="gadd" onclick="svAdd()">➕<br>Scène</button>` : ''}</div>
   ${svCapcut()}${svTtsBox()}${svSubsBox()}
   <div class="box"><h3 class="cvh">Style d’animation</h3><div class="afchips">${Object.entries(SV_ST).map(([k, v]) => `<button type="button" class="${S.st === k ? 'on' : ''}" onclick="skv.st='${k}';svForm()">${v.n}</button>`).join('')}</div>
-    <p class="mt" style="font-weight:700;margin-top:10px">Passage entre les scènes</p><div class="afchips">${[['fade', 'Fondu'], ['slide', 'Glisser'], ['zoom', 'Zoom']].map(([k, n]) => `<button type="button" class="${S.tr === k ? 'on' : ''}" onclick="skv.tr='${k}';svForm()">${n}</button>`).join('')}</div>
+    <p class="mt" style="font-weight:700;margin-top:10px">Passage entre les scènes</p><div class="afchips">${[['fade', 'Fondu'], ['slide', 'Glisser'], ['zoom', 'Zoom'], ['wipe', 'Balayage'], ['curtain', 'Rideau'], ['flash', '⚡ Flash blanc']].map(([k, n]) => `<button type="button" class="${S.tr === k ? 'on' : ''}" onclick="skv.tr='${k}';svForm()">${n}</button>`).join('')}</div><small class="mt">Une scène peut avoir son propre passage : « 🎛️ Mes produits dans la vidéo ».</small>
     <label class="afchk" style="margin-top:10px"><input type="checkbox" ${S.mus ? 'checked' : ''} onchange="skv.mus=this.checked"> 🎵 Musique rythmée</label>
     <small class="mt">Astuce : dans le studio, chaque élément a son réglage « 🎬 Animation ».</small></div>
   <button class="pill" style="width:100%;padding:16px;font-size:17px;background:linear-gradient(135deg,#DC2626,#7C3AED)" onclick="svMake()">🎬 Créer la vidéo MP4</button><div style="height:24px"></div>`;
@@ -4547,7 +4547,7 @@ function svAnim(o, t, rank, D, dur) {
     else if (a === 'type' && o.bg) r.op = (o.op ?? 1) * svEase(p);
     else if (a === 'type') { const plain = String(o.text || '').replace(/\*/g, ''), n = Math.floor(plain.length * p); let c = 0, out = ''; for (const ch of String(o.text || '')) { if (ch === '*') { out += ch; continue; } if (c >= n) break; out += ch; c++; } if ((out.match(/\*/g) || []).length % 2) out += '*'; r.text = out || ' '; r._keepW = 1; }
   }
-  if (p >= 1 || a === 'none') { if (o.t === 'img') k = 1 + 0.05 * Math.max(0, t - del - ed) / Math.max(1, dur); if (o.t === 'shape' && o.k === 'burst') k = 1 + 0.05 * Math.sin((t - del) * 6); }
+  if (p >= 1 || a === 'none') { if (o.t === 'img' && !o.mv) k = 1 + 0.05 * Math.max(0, t - del - ed) / Math.max(1, dur); if (o.t === 'shape' && o.k === 'burst') k = 1 + 0.05 * Math.sin((t - del) * 6); }
   r._k = k; return r;
 }
 function svScene(x, sc, t, s) {
@@ -4556,7 +4556,7 @@ function svScene(x, sc, t, s) {
   if (sc.clip) { const f = svVF(svVids[sc.clip.id]); x.fillStyle = '#000'; x.fillRect(0, 0, D.w, D.h); if (f) x.drawImage(f, 0, 0, D.w, D.h); }
   else if (D.bg.t === 'img') { const kb = 1 + 0.06 * t / sc.dur; x.save(); x.translate(D.w / 2, D.h / 2); x.scale(kb, kb); x.translate(-D.w / 2, -D.h / 2); skBgDraw(x, D); x.restore(); } else skBgDraw(x, D);
   const order = D.objs.map((o, i) => ({ o, i, y: o.y - (o.h || 0) / 2 })).sort((a, b) => a.y - b.y); const rank = {}; order.forEach((e, j) => rank[e.o.id] = j);
-  D.objs.forEach(o => { const r = svAnim(o, t, rank[o.id], D, sc.dur); if (r._keepW) { skMeasure(o); skMeasure(r); if (o.al === 'left') r.x = o.x - (o.w - r.w) / 2; else if (o.al === 'right') r.x = o.x + (o.w - r.w) / 2; } svSafeObj(x, r, D, sc); });
+  D.objs.forEach(o => { const r = svAnim(o, t, rank[o.id], D, sc.dur); if (r._keepW) { skMeasure(o); skMeasure(r); if (o.al === 'left') r.x = o.x - (o.w - r.w) / 2; else if (o.al === 'right') r.x = o.x + (o.w - r.w) / 2; } svObjDraw(x, r, o, t, D, sc); });
   x.restore();
 }
 function skObjK(x, r) { if (!r._k || r._k === 1) return skObj(x, r); x.save(); x.translate(r.x, r.y); x.scale(r._k, r._k); x.translate(-r.x, -r.y); skObj(x, r); x.restore(); }
@@ -4565,7 +4565,7 @@ function svFrame(x, t, s) {
   for (; i < S.length - 1 && t >= acc + S[i].dur; i++) acc += S[i].dur;
   const lt = t - acc, sc = S[i], draw = (scn, tt) => { const d = scn.doc, fc = Math.max(W / (d.w * s), H / (d.h * s)), f = Math.min(W / (d.w * s), H / (d.h * s)); if (Math.abs(fc - f) > 0.01) { x.save(); x.translate((W - d.w * s * fc) / 2, (H - d.h * s * fc) / 2); x.scale(s * fc, s * fc); skBgDraw(x, d); x.restore(); x.fillStyle = 'rgba(0,0,0,.35)'; x.fillRect(0, 0, W, H); } x.save(); x.translate((W - d.w * s * f) / 2, (H - d.h * s * f) / 2); svScene(x, scn, tt, s * f); x.restore(); };
   const next = S[i + 1], tin = sc.dur - lt; draw(sc, lt + (i ? SV_TR : 0));
-  if (next && tin < SV_TR) { const p = svEase(1 - tin / SV_TR); x.save(); if (skv.tr === 'fade') x.globalAlpha = p; else if (skv.tr === 'slide') x.translate(W * (1 - p), 0); else { x.globalAlpha = p; x.translate(W / 2, H / 2); x.scale(0.7 + 0.3 * p, 0.7 + 0.3 * p); x.translate(-W / 2, -H / 2); } draw(next, SV_TR - tin); x.restore(); }
+  if (next && tin < SV_TR) { const p = svEase(1 - tin / SV_TR); svTrDraw(x, sc.tr || skv.tr, p, W, H, () => draw(next, SV_TR - tin)); }
   svDrawPres(x, t, W, H); svDrawMasc(x, t, W, H); svDrawOv(x, t, W, H); svDrawSubs(x, t, W, H); const u = Math.min(W, H) / 100; x.font = `600 ${Math.max(9, 1.9 * u)}px Arial`; x.textAlign = 'center'; x.fillStyle = 'rgba(255,255,255,.7)'; x.fillText('Créé avec SocialPages', W / 2, H - u); x.textAlign = 'left';
 }
 let svRaf = 0; function svStop() { cancelAnimationFrame(svRaf); svPauseAll?.(); if (skv) skv.play = false; svAud?.stop?.(); svAud = null; }
@@ -7281,7 +7281,7 @@ function svSubsBox() { const S = skv.subs, ch = (n, on, f) => `<button type="but
   return `<div class="box"><h3 class="cvh">💬 Sous-titres automatiques</h3>${S?.segs?.length ? `<label class="afchk"><input type="checkbox" ${S.on ? 'checked' : ''} onchange="skv.subs.on=this.checked;svPvDraw()"> Afficher les sous-titres (${S.segs.length})</label>
       <p class="mt" style="font-weight:700">Style</p><div class="afchips">${Object.entries(SUB_ST).map(([k, n]) => ch(n, (S.st || 'karaoke') === k, `skv.subs.st='${k}';svForm()`)).join('')}</div>
       <p class="mt" style="font-weight:700">Position</p><div class="afchips">${[['bottom', '⬇️ Bas'], ['mid', '⏺ Milieu'], ['top', '⬆️ Haut']].map(([k, n]) => ch(n, (S.pos || 'bottom') === k, `skv.subs.pos='${k}';svForm()`)).join('')}${['#FACC15', '#22D3EE', '#4ADE80', '#F472B6'].map(c => `<button type="button" class="${(S.col || '#FACC15') === c ? 'on' : ''}" style="background:${c};width:34px" onclick="skv.subs.col='${c}';svForm()" aria-label="Couleur"></button>`).join('')}</div>
-      <label class="phrng">Taille <input type="range" min="0.6" max="1.6" step="0.05" value="${S.size || 1}" oninput="skv.subs.size=+this.value;svPvDraw()"></label><label class="afchk"><input type="checkbox" ${skv.safe !== false ? 'checked' : ''} onchange="skv.safe=this.checked;svPvDraw()"> 🛟 Zone sûre : les sous-titres ne cachent jamais le produit ni les textes (le design se réduit un peu si besoin)</label>
+      <label class="phrng">Taille <input type="range" min="0.6" max="1.6" step="0.05" value="${S.size || 1}" oninput="skv.subs.size=+this.value;svPvDraw()"></label><label class="afchk"><input type="checkbox" ${skv.safe !== false ? 'checked' : ''} onchange="skv.safe=this.checked;svPvDraw()"> 🛟 Zone sûre : les sous-titres ne cachent jamais le produit ni les textes (sinon une bande sombre derrière eux) — votre design n’est jamais réduit</label>
       <div class="grid2"><button class="soft" onclick="svSubsEdit()">✏️ Corriger</button><button class="soft" onclick="svSrt()">📄 Fichier .SRT</button></div><button class="soft" style="width:100%;margin-top:6px" onclick="skv.subs=null;svForm()">🗑️ Supprimer les sous-titres</button>`
     : `<p class="mt">Langue parlée</p><div class="afchips">${Object.entries(SUB_LANG).map(([k, v]) => ch(v[1], L === k, `vset('sublang','${k}');svForm()`)).join('')}</div>
       <div class="grid2" style="margin-top:6px"><button class="soft" onclick="svSubsAuto()">🎧 Écouter la voix (IA)</button><button class="soft" onclick="svSubsText()">✍️ Depuis mon texte</button></div><small class="mt">90 % des vidéos sont regardées sans le son : les sous-titres gardent l’attention.</small>`}</div>`; }
@@ -10486,9 +10486,9 @@ function svSafeInfo(sc) { const S = skv.subs || {}, D = sc.doc, key = [D.w, D.h,
   const u = Math.min(D.w, D.h), sz = S.size || 1, bh = S.st === 'tiktok' ? u * 0.085 * sz * 1.45 : u * 0.058 * sz * 1.25 * 2 + u * 0.035, y0 = D.h * (D.w > D.h ? 0.84 : 0.78);
   const R = D.objs.filter(o => !svIsBg(o, D) && o.op !== 0).map(svObjRect).filter(r => r.w > 0 && r.x < D.w * 0.95 && r.x + r.w > D.w * 0.05);
   let best = null; for (let y = D.h * 0.95 - bh / 2; y >= D.h * 0.1 + bh / 2; y -= D.h * 0.01) { let ov = 0; R.forEach(r => { ov += Math.max(0, Math.min(y + bh / 2, r.y + r.h) - Math.max(y - bh / 2, r.y)) * r.k; }); const s2 = ov / bh + Math.abs(y - y0) / D.h * 0.6; if (!best || s2 < best.s) best = { y, ov, s: s2 }; }
-  I = { key, free: best.ov < 1, yRel: best.y / D.h, bh }; I.shrink = !I.free && skv.safe !== false; if (I.shrink) I.yRel = 0.915; I.band = !I.free && !I.shrink; svSafeC.set(sc, I); return I; }
+  I = { key, free: best.ov < 1, yRel: best.y / D.h, bh }; I.shrink = false; I.band = !I.free; svSafeC.set(sc, I); return I; }
 function svSceneAt(t) { const S = skv.scenes; let acc = 0, i = 0; for (; i < S.length - 1 && t >= acc + S[i].dur; i++) acc += S[i].dur; return S[i]; }
-function svSafeSub(t, W, H) { if (!svSubsOn()) return null; const sc = svSceneAt(t); if (!sc || sc.clip) return null; const I = svSafeInfo(sc), d = sc.doc, f = Math.min(W / d.w, H / d.h), oy = (H - d.h * f) / 2; return { y: oy + I.yRel * d.h * f, band: I.band, bh: I.bh * f }; }
+function svSafeSub(t, W, H) { if (!svSubsOn() || skv.safe === false) return null; const sc = svSceneAt(t); if (!sc || sc.clip) return null; const I = svSafeInfo(sc), d = sc.doc, f = Math.min(W / d.w, H / d.h), oy = (H - d.h * f) / 2; return { y: oy + I.yRel * d.h * f, band: I.band, bh: I.bh * f }; }
 // dessin d'un objet : si la scène manque de place, le design (sauf le fond) est réduit de 16 % vers le haut → bande libre en bas
 function svSafeObj(x, r, D, sc) { if (svSubsOn() && !sc.clip && svSafeInfo(sc).shrink && !svIsBg(r, D)) { x.save(); x.translate(D.w / 2, D.h * 0.03); x.scale(0.84, 0.84); x.translate(-D.w / 2, -D.h * 0.03); skObjK(x, r); x.restore(); return; } skObjK(x, r); }
 // 3) durée calée sur la fin de la voix
@@ -10513,6 +10513,74 @@ const skReflC = new WeakMap();
 function skRefl(x, im, C, w, h, o) { const rh = h * 0.42, key = [Math.round(w), Math.round(h), C.sx | 0, C.sy | 0, C.sw | 0, C.sh | 0].join(','); let E = skReflC.get(im), c = E?.key === key ? E.c : null;
   if (!c) { c = document.createElement('canvas'); const cw = Math.max(1, Math.round(Math.min(w, 900))), k = cw / w; c.width = cw; c.height = Math.max(1, Math.round(rh * k)); const g = c.getContext('2d'); g.save(); g.translate(0, c.height); g.scale(1, -1); g.drawImage(im, C.sx, C.sy + C.sh * 0.58, C.sw, C.sh * 0.42, 0, 0, cw, c.height); g.restore(); g.globalCompositeOperation = 'destination-in'; const gr = g.createLinearGradient(0, 0, 0, c.height); gr.addColorStop(0, 'rgba(0,0,0,.42)'); gr.addColorStop(0.7, 'rgba(0,0,0,.06)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, cw, c.height); skReflC.set(im, { key, c }); }
   x.save(); x.fillStyle = 'rgba(0,0,0,.16)'; x.beginPath(); x.ellipse(0, h / 2, w * 0.42, Math.max(2, h * 0.025), 0, 0, 7); x.fill(); x.drawImage(c, -w / 2, h / 2 + h * 0.005, w, rh); x.restore(); }
+
+// ===================== 🎛️ Éditeur vidéo : chaque vendeur décide (22/11 nuit) =====================
+// taille du produit, mouvement lent, effets, transition par scène, une scène par produit
+const SV_MV = { none: 'Immobile', zin: '🔍 Zoom avant lent', zout: '🔎 Zoom arrière lent', right: '➡️ Glisser →', left: '⬅️ Glisser ←', float: '🎈 Flotter', sway: '🍃 Balancer' };
+const SV_SPD = { 0.6: 'Douce', 1: 'Normale', 1.6: 'Vive' };
+const SV_FX = { '': 'Aucun', shine: '✨ Brillance', breathe: '🌑 Ombre qui respire', stars: '⭐ Étoiles' };
+const SV_TRS = { '': 'Comme partout', fade: 'Fondu', slide: 'Glisser', zoom: 'Zoom', wipe: 'Balayage', curtain: 'Rideau', flash: '⚡ Flash blanc' };
+const svEio = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+function svObjBox(r) { if (r.t === 'text' && !r.h) { try { skMeasure(r); } catch (e) {} } const k = r._k || 1; return { w: (r.w || 0) * k, h: (r.h || (r.s || 40) * 1.3) * k }; }
+// mouvement lent pendant toute la scène (ne sort jamais du cadre)
+function svMot(r, o, t, dur, D) { const m = o.mv; if (!m || m === 'none') return; const v = +o.mvs || 1, q = Math.max(0, Math.min(1, t / Math.max(0.5, dur))), B = svObjBox(r);
+  if (m === 'zin') r._k = (r._k || 1) * (1 + 0.1 * v * svEio(q));
+  else if (m === 'zout') r._k = (r._k || 1) * (1 + 0.1 * v * (1 - svEio(q)));
+  else if (m === 'right' || m === 'left') { const room = Math.max(D.w * 0.015, Math.min(r.x - B.w / 2, D.w - r.x - B.w / 2)), a = Math.min(room, D.w * 0.05 * v); r.x += (m === 'right' ? 1 : -1) * a * (svEio(q) * 2 - 1); }
+  else if (m === 'float') { const room = Math.max(D.h * 0.008, Math.min(r.y - B.h / 2, D.h - r.y - B.h / 2)), a = Math.min(room, D.h * 0.014 * v), dy = Math.sin(t * Math.PI * 2 / (3.4 / v)) * a; r.y += dy; r._dy = dy / Math.max(1, a); }
+  else if (m === 'sway') r.rot = (r.rot || 0) + Math.sin(t * Math.PI * 2 / (3.2 / v)) * 0.035 * Math.min(1.4, v); }
+// effets autour d'un élément
+const svShC = document.createElement('canvas');
+function svFxPre(x, r, o, t) { if (o.vfx !== 'breathe') return; const B = svObjBox(r), b = Math.sin(t * Math.PI * 2 / 2.6), up = r._dy || 0, s = 1 + 0.07 * b - 0.12 * up; x.save(); x.globalAlpha = (r.op ?? 1) * (0.42 - 0.08 * b); x.translate(0, r.y - (r._dy || 0) * 0 + B.h * 0.5); x.scale(1, Math.max(0.04, B.h * 0.045 / (B.w * 0.42 * s))); x.beginPath(); x.arc(r.x, 0, B.w * 0.42 * s, 0, 7); const rg = x.createRadialGradient(r.x, 0, 0, r.x, 0, B.w * 0.42 * s); rg.addColorStop(0, 'rgba(0,0,0,.9)'); rg.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = rg; x.fill(); x.restore(); }
+function svFxPost(x, r, o, t, D) { if (!o.vfx || (r.op ?? 1) < 0.05) return; const B = svObjBox(r);
+  if (o.vfx === 'shine') { const per = 2.8, ph = ((t + 0.6) % per) / 1.0; if (ph > 1) return; const pad = 0.2, bw = B.w * (1 + pad), bh = B.h * (1 + pad), f = Math.min(1, 640 / Math.max(bw, bh)); svShC.width = Math.max(1, Math.round(bw * f)); svShC.height = Math.max(1, Math.round(bh * f)); const g = svShC.getContext('2d'); g.clearRect(0, 0, svShC.width, svShC.height); g.save(); g.scale(f, f); g.translate(-(r.x - bw / 2), -(r.y - bh / 2)); skObjK(g, { ...r, shd: 0, refl: 0 }); g.restore(); g.globalCompositeOperation = 'source-in'; const cx = (-0.3 + 1.6 * svEio(ph)) * svShC.width, gr = g.createLinearGradient(cx - svShC.width * 0.22, 0, cx + svShC.width * 0.22, svShC.height * 0.35); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(0.5, 'rgba(255,255,255,.75)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, svShC.width, svShC.height); g.globalCompositeOperation = 'source-over'; x.save(); x.globalCompositeOperation = 'lighter'; x.globalAlpha = 0.55; x.drawImage(svShC, r.x - bw / 2, r.y - bh / 2, bw, bh); x.restore(); }
+  else if (o.vfx === 'stars') { const u = Math.min(D.w, D.h) / 100; x.save(); for (let i = 0; i < 6; i++) { const a = i * 2.4 + 0.7, ph = (t * 0.55 + i * 0.37) % 1, al = Math.sin(ph * Math.PI); if (al < 0.05) continue; const sx = r.x + Math.cos(a) * B.w * (0.42 + 0.08 * (i % 2)), sy = r.y + Math.sin(a) * B.h * (0.4 + 0.08 * ((i + 1) % 2)), s = u * (1.4 + 1.2 * al) * (i % 3 === 0 ? 1.3 : 1); x.globalAlpha = al * (r.op ?? 1); x.fillStyle = '#FFFDF0'; x.shadowColor = '#FDE047'; x.shadowBlur = s * 1.6; x.beginPath(); for (let j = 0; j < 8; j++) { const rr = j % 2 ? s * 0.22 : s, aa = j * Math.PI / 4 + t * 0.6; x.lineTo(sx + Math.cos(aa) * rr, sy + Math.sin(aa) * rr); } x.closePath(); x.fill(); } x.restore(); } }
+function svObjDraw(x, r, o, t, D, sc) { svMot(r, o, t, sc.dur, D); svFxPre(x, r, o, t); if (typeof svSafeObj === 'function') svSafeObj(x, r, D, sc); else skObjK(x, r); svFxPost(x, r, o, t, D); }
+// transitions (par scène, sinon celle de toute la vidéo)
+function svTrDraw(x, k, p, W, H, drawNext) { x.save();
+  if (k === 'slide') { x.translate(W * (1 - p), 0); drawNext(); }
+  else if (k === 'zoom') { x.globalAlpha = p; x.translate(W / 2, H / 2); x.scale(0.7 + 0.3 * p, 0.7 + 0.3 * p); x.translate(-W / 2, -H / 2); drawNext(); }
+  else if (k === 'wipe') { const e = (W + H * 0.4) * p; x.beginPath(); x.moveTo(0, 0); x.lineTo(e, 0); x.lineTo(e - H * 0.4, H); x.lineTo(0, H); x.closePath(); x.clip(); drawNext(); }
+  else if (k === 'curtain') { const w = W * p; x.beginPath(); x.rect((W - w) / 2, 0, w, H); x.clip(); drawNext(); }
+  else if (k === 'flash') { x.globalAlpha = Math.min(1, p * 1.6); drawNext(); x.globalAlpha = 0.92 * Math.max(0, 1 - Math.abs(p * 2 - 1)); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); }
+  else { x.globalAlpha = p; drawNext(); }
+  x.restore(); }
+// ---- panneau « 🎛️ Mes produits dans la vidéo »
+function svEdSc() { const S = skv.scenes; let i = skv.edSc; if (!(i >= 0 && i < S.length)) { let a = 0; i = 0; const t = skv.pvT || 0; for (; i < S.length - 1 && t >= a + S[i].dur; i++) a += S[i].dur; skv.edSc = i; } return i; }
+function svIsBgO(o, D) { return typeof svIsBg === 'function' ? svIsBg(o, D) : false; }
+function svMainImg(D) { const L = D.objs.filter(o => o.t === 'img' && !svIsBgO(o, D)); return L.sort((a, b) => b.w * (b.h || 1) - a.w * (a.h || 1))[0] || null; }
+function svEdObj() { const sc = skv.scenes[svEdSc()]; if (!sc || sc.clip) return null; const D = sc.doc; let o = D.objs.find(q => q.id === skv.edO); if (!o) { o = svMainImg(D) || [...D.objs].filter(q => !svIsBgO(q, D)).sort((a, b) => b.w * (b.h || 1) - a.w * (a.h || 1))[0]; skv.edO = o?.id; } return o; }
+function svOName(o, i) { return o.t === 'img' ? '📷 Photo' : o.t === 'text' ? '🔤 ' + esc(String(o.text || '').replace(/\*/g, '').slice(0, 14)) : o.t === 'qr' ? '▦ QR' : '⬟ Forme'; }
+function svFxBox() { if (typeof skv === 'undefined' || !skv?.scenes?.length) return ''; const S = skv.scenes, i = svEdSc(), sc = S[i], o = svEdObj(); if (!sc) return '';
+  const ch = (cur, M, fn) => Object.entries(M).map(([k, n]) => `<button type="button" class="${String(cur ?? '') === k ? 'on' : ''}" onclick="${fn}('${k}')">${n}</button>`).join('');
+  const D = sc.doc, list = sc.clip ? [] : D.objs.filter(q => !svIsBgO(q, D)), f = o ? Math.round((o.w0 ? o.w / o.w0 : 1) * 100) : 100;
+  return `<div class="box" id="svfx" style="margin-top:10px"><h3 class="cvh">🎛️ Mes produits dans la vidéo</h3>
+  ${S.length > 1 ? `<div class="afchips">${S.map((s, j) => `<button type="button" class="${j === i ? 'on' : ''}" onclick="svEdGo(${j})">Scène ${j + 1}${s.clip ? ' 🎞️' : ''}</button>`).join('')}</div>` : ''}
+  ${sc.clip ? '<p class="mt">Cette scène est un clip vidéo : réglez-la avec ✂️.</p>' : `<p class="mt" style="font-weight:700;margin:8px 0 4px">Élément à régler</p><div class="afchips">${list.map((q, j) => `<button type="button" class="${o && q.id === o.id ? 'on' : ''}" onclick="skv.edO='${q.id}';svFxRe()">${svOName(q, j)}</button>`).join('')}</div>
+  ${o ? `<p class="mt" style="font-weight:700;margin:10px 0 4px">🔍 Taille : <span id="svfx-sz">${f} %</span></p><div style="display:flex;gap:6px;align-items:center"><button type="button" class="soft" style="margin:0;padding:6px 14px" onclick="svFxSize(${f - 10})">−</button><input type="range" min="50" max="150" step="5" value="${f}" style="flex:1" oninput="svFxSize(+this.value,1)" onchange="svFxRe()"><button type="button" class="soft" style="margin:0;padding:6px 14px" onclick="svFxSize(${f + 10})">+</button><button type="button" class="soft" style="margin:0;padding:6px 8px;font-size:12px" onclick="svFxSize(100)">↺ 100 %</button></div>
+  ${o.t === 'text' ? `<label class="mt" style="display:block;font-weight:700;margin-top:10px">✏️ Texte de cette scène <input value="${esc(o.text || '')}" style="width:100%;box-sizing:border-box;padding:8px;border-radius:8px;border:1.5px solid #D1D5DB;font:inherit;font-weight:400" oninput="svFxSet('text',this.value,1)"></label>` : ''}
+  <p class="mt" style="font-weight:700;margin:10px 0 4px">🌊 Mouvement pendant la scène</p><div class="afchips">${ch(o.mv || 'none', SV_MV, "svFxSet('mv',")}</div>
+  ${o.mv && o.mv !== 'none' ? `<div class="afchips" style="margin-top:4px">${ch(String(o.mvs || 1), SV_SPD, "svFxSet('mvs',")}</div>` : ''}
+  <p class="mt" style="font-weight:700;margin:10px 0 4px">✨ Effet</p><div class="afchips">${ch(o.vfx || '', SV_FX, "svFxSet('vfx',")}${o.t === 'img' ? `<button type="button" class="${o.refl ? 'on' : ''}" onclick="svFxSet('refl',${o.refl ? 0 : 1})">🪞 Reflet</button>` : ''}</div>
+  <button type="button" class="soft" style="margin-top:8px;padding:6px 10px;font-size:13px" onclick="svFxAll()">📋 Même mouvement et effet pour cet élément dans toutes les scènes</button>` : '<p class="mt">Cette scène est vide.</p>'}`}
+  ${i < S.length - 1 ? `<p class="mt" style="font-weight:700;margin:10px 0 4px">🎞️ Passage vers la scène ${i + 2}</p><div class="afchips">${ch(sc.tr || '', SV_TRS, "svFxTr(")}</div>` : ''}
+  ${sc.clip ? '' : `<button type="button" class="pill" style="width:100%;margin-top:12px;background:linear-gradient(135deg,#7C3AED,#DB2777)" onclick="svMulti()">🛍️ Une scène par produit (jusqu’à 6 photos)</button><small class="mt" style="display:block;margin-top:4px">Vos photos prennent la place du produit de la scène ${i + 1} : une scène par produit, même design. Changez ensuite le prix ou le nom de chaque scène ici (✏️).</small>`}</div>`; }
+function svFxRe() { const el = $('svfx'); if (!el) return svForm(); el.outerHTML = svFxBox(); svPvDraw(); }
+function svEdGo(j) { skv.edSc = j; skv.edO = null; let a = 0; for (let k = 0; k < j; k++) a += skv.scenes[k].dur; skv.pvT = a + skv.scenes[j].dur * 0.6; svFxRe(); try { svTlDraw(); } catch (e) {} }
+function svFxSize(p, live) { const o = svEdObj(); if (!o) return; p = Math.max(50, Math.min(150, Math.round(p))); o.w0 ??= o.w; if (o.h) o.h0 ??= o.h; if (o.t === 'text') o.s0 ??= o.s; const k = p / 100; o.w = o.w0 * k; if (o.h0) o.h = o.h0 * k; if (o.t === 'text') { o.s = o.s0 * k; delete o.h; } const s = $('svfx-sz'); if (s) s.textContent = p + ' %'; svPvDraw(); if (!live) svFxRe(); }
+function svFxSet(k, v, live) { const o = svEdObj(); if (!o) return; if (k === 'mvs') v = +v; if (k === 'refl') v = !!+v; if (v === '' || v === 'none') delete o[k]; else o[k] = v; if (k === 'text') delete o.h; if (live) return svPvDraw(); svFxRe(); }
+function svFxTr(k) { const sc = skv.scenes[svEdSc()]; if (k) sc.tr = k; else delete sc.tr; svFxRe(); }
+function svFxAll() { const o = svEdObj(); if (!o) return; let n = 0; skv.scenes.forEach(sc => { if (sc.clip) return; const D = sc.doc, q = o.t === 'img' ? (D.objs.find(z => z.id === o.id) || svMainImg(D)) : D.objs.find(z => z.id === o.id); if (!q) return; ['mv', 'mvs', 'vfx', 'refl'].forEach(k => { if (o[k] === undefined) delete q[k]; else q[k] = o[k]; }); n++; }); toast(`✅ Appliqué à ${n} scène${n > 1 ? 's' : ''}`); svPvDraw(); }
+// 🛍️ une scène par produit
+function svMulti() { const i = svEdSc(), sc = skv.scenes[i]; if (!sc || sc.clip) return; if (!svMainImg(sc.doc)) return toast('Cette scène n’a pas de photo de produit : ajoutez-en une dans le design.'); const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*'; inp.multiple = true; inp.onchange = () => svMultiGo([...inp.files].slice(0, 6), i); inp.click(); }
+async function svMultiGo(files, i, opts = {}) { if (!files.length) return; const sc = skv.scenes[i], P = svMainImg(sc.doc), cut = opts.cut ?? !!(P.cutout || /^data:image\/png/.test(sc.doc.assets?.[P.aid] || '')), out = [];
+  for (let j = 0; j < files.length; j++) { toast(`🛍️ Produit ${j + 1}/${files.length}${cut ? ' : détourage…' : ''}`); let im = files[j] instanceof HTMLCanvasElement || files[j] instanceof HTMLImageElement ? files[j] : await loadImg(URL.createObjectURL(files[j])); if (!im) continue;
+    let c = typeof aiCopy === 'function' ? aiCopy(im, 1400) : im; if (cut && typeof pvSmartCut === 'function') { try { const r = await pvSmartCut(c, 'obj'); if (r?.c) c = r.c; } catch (e) {} }
+    const src = c.toDataURL ? (cut || !(files[j] instanceof Blob) || /png|webp|gif/.test(files[j].type) ? c.toDataURL('image/png') : c.toDataURL('image/jpeg', 0.9)) : im.src, aid = 'a' + skId(), im2 = await loadImg(src); skImgs[aid] = { src0: src, im: im2 };
+    const D = JSON.parse(JSON.stringify(sc.doc)), Q = D.objs.find(o => o.id === P.id), bw = P.w0 || P.w, bh = P.h0 || P.h || P.w, ar = im2.width / im2.height, kk = (P.w0 ? P.w / P.w0 : 1); let w = bw, h = bw / ar; if (h > bh) { h = bh; w = bh * ar; }
+    Object.assign(Q, { aid, w: w * kk, h: h * kk, w0: w, h0: h, cutout: cut || Q.cutout }); ['crop', 'fit', 'z', 'fx', 'fy'].forEach(k => delete Q[k]); D.assets = { ...(D.assets || {}) }; delete D.assets[P.aid]; D.assets[aid] = src; Object.keys(D.assets).forEach(a => { if (a !== aid && !D.objs.some(o => o.aid === a) && D.bg.aid !== a) delete D.assets[a]; }); D.objs.forEach(o => { if (o.aid && !D.assets[o.aid]) D.assets[o.aid] = sc.doc.assets?.[o.aid] || skImgs[o.aid]?.src0; });
+    out.push({ ...JSON.parse(JSON.stringify({ ...sc, doc: undefined })), doc: D }); }
+  if (!out.length) return toast('Aucune photo n’a pu être lue.'); skv.scenes.splice(i, 1, ...out); skv.edSc = i; skv.edO = P.id; svEnv?.(); svForm(); toast(`✅ ${out.length} scène${out.length > 1 ? 's' : ''} produit créée${out.length > 1 ? 's' : ''}`); }
 
 // Photo carrée recadrée au centre (pour CV et carte)
 function pickPhoto(cb, square = true) {
