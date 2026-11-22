@@ -16,20 +16,33 @@ const STY = {
 };
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 
+const ADMIN_EMAILS = ["peternondo912@gmail.com"]; // secours si la lecture du profil échoue
 async function isAdmin(request, env) {
   const tok = (request.headers.get("authorization") || "").replace(/^Bearer\s+/i, "").trim();
-  if (!tok) return false;
+  if (!tok) return { ok: false, why: "jeton de connexion absent : reconnectez-vous" };
   const H = { apikey: env.SUPABASE_KEY || SB_KEY, authorization: "Bearer " + tok };
+  let user;
   try {
     const u = await fetch(SB + "/auth/v1/user", { headers: H });
-    if (!u.ok) return false;
-    const user = await u.json();
-    if (!user?.id) return false;
-    const p = await fetch(`${SB}/rest/v1/profiles?id=eq.${encodeURIComponent(user.id)}&select=is_admin`, { headers: H });
-    if (!p.ok) return false;
-    const rows = await p.json();
-    return rows?.[0]?.is_admin === true;
-  } catch (e) { return false; }
+    if (!u.ok) return { ok: false, why: "connexion refusée par Supabase (HTTP " + u.status + ") : déconnectez-vous puis reconnectez-vous" };
+    user = await u.json();
+  } catch (e) { return { ok: false, why: "Supabase injoignable : " + String(e?.message || e).slice(0, 80) }; }
+  if (!user?.id) return { ok: false, why: "compte introuvable" };
+  const mail = String(user.email || "").toLowerCase(), extra = String(env.ADMIN_EMAILS || "").toLowerCase().split(/[\s,;]+/).filter(Boolean);
+  try {
+    const p = await fetch(`${SB}/rest/v1/profiles?id=eq.${encodeURIComponent(user.id)}&select=*`, { headers: H });
+    if (p.ok) {
+      const rows = await p.json();
+      if (rows?.[0]?.is_admin === true) return { ok: true };
+      if (ADMIN_EMAILS.includes(mail) || extra.includes(mail)) return { ok: true };
+      return { ok: false, why: rows?.length ? "ce compte (" + (mail || user.id) + ") n'a pas is_admin = true" : "profil introuvable pour " + (mail || user.id) };
+    }
+    if (ADMIN_EMAILS.includes(mail) || extra.includes(mail)) return { ok: true };
+    return { ok: false, why: "lecture du profil refusée (HTTP " + p.status + ") pour " + (mail || user.id) };
+  } catch (e) {
+    if (ADMIN_EMAILS.includes(mail) || extra.includes(mail)) return { ok: true };
+    return { ok: false, why: "lecture du profil impossible" };
+  }
 }
 
 async function toEn(env, s, lang) {
@@ -49,7 +62,8 @@ function fail(e) {
 
 export async function onRequestPost({ request, env }) {
   if (!env.AI) return json({ error: "La liaison « AI » n'est pas encore ajoutée dans Cloudflare.", code: "noai" }, 500);
-  if (!(await isAdmin(request, env))) return json({ error: "Outil réservé à l'administrateur.", code: "admin" }, 403);
+  const A = await isAdmin(request, env);
+  if (!A.ok) { console.log("image: accès refusé —", A.why); return json({ error: "Outil réservé à l'administrateur (" + A.why + ").", code: "admin" }, 403); }
   let b;
   try { b = await request.json(); } catch (e) { return json({ error: "Demande invalide." }, 400); }
   const lang = ["fr", "en", "es", "pt", "sw"].includes(b.lang) ? b.lang : "fr";
