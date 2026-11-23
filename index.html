@@ -10552,7 +10552,7 @@ function svMainImg(D) { const L = D.objs.filter(o => o.t === 'img' && !svIsBgO(o
 function svEdObj() { const sc = skv.scenes[svEdSc()]; if (!sc || sc.clip) return null; const D = sc.doc; let o = D.objs.find(q => q.id === skv.edO); if (!o) { o = svMainImg(D) || [...D.objs].filter(q => !svIsBgO(q, D)).sort((a, b) => b.w * (b.h || 1) - a.w * (a.h || 1))[0]; skv.edO = o?.id; } return o; }
 function svOName(o, i) { return o.t === 'img' ? '📷 Photo' : o.t === 'text' ? '🔤 ' + esc(String(o.text || '').replace(/\*/g, '').slice(0, 14)) : o.t === 'qr' ? '▦ QR' : '⬟ Forme'; }
 function svFxBox() { if (typeof skv === 'undefined' || !skv?.scenes?.length) return ''; const S = skv.scenes, i = svEdSc(), sc = S[i], o = svEdObj(); if (!sc) return '';
-  const ch = (cur, M, fn) => Object.entries(M).map(([k, n]) => `<button type="button" class="${String(cur ?? '') === k ? 'on' : ''}" onclick="${fn}('${k}')">${n}</button>`).join('');
+  const ch = (cur, M, fn) => Object.entries(M).map(([k, n]) => `<button type="button" class="${String(cur ?? '') === k ? 'on' : ''}" onclick="${fn}'${k}')">${n}</button>`).join('');
   const D = sc.doc, list = sc.clip ? [] : D.objs.filter(q => !svIsBgO(q, D)), f = o ? Math.round((o.w0 ? o.w / o.w0 : 1) * 100) : 100;
   return `<div class="box" id="svfx" style="margin-top:10px"><h3 class="cvh">🎛️ Mes produits dans la vidéo</h3>
   ${S.length > 1 ? `<div class="afchips">${S.map((s, j) => `<button type="button" class="${j === i ? 'on' : ''}" onclick="svEdGo(${j})">Scène ${j + 1}${s.clip ? ' 🎞️' : ''}</button>`).join('')}</div>` : ''}
