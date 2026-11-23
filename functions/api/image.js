@@ -65,10 +65,24 @@ export async function onRequestPost({ request, env }) {
   const [sEn, cEn] = await Promise.all([toEn(env, scene, lang), toEn(env, String(b.char || "").slice(0, 300), lang)]);
   const prompt = [
     STY[b.style] || STY.cartoon,
-    cEn ? "Main character (always the same): " + cEn : "",
+    cEn ? "Characters (always exactly the same appearance, same clothes): " + cEn : "",
     "Scene: " + sEn,
-    "original characters, no text, no letters, no words, no watermark, no logo, whole scene visible, centered composition",
+    "original characters, no text, no letters, no words, no watermark, no logo, whole scene visible, sharp details",
   ].filter(Boolean).join(". ").slice(0, 2000);
+  const W = Math.max(256, Math.min(1920, Math.round((+b.w || 1024) / 16) * 16)), Hh = Math.max(256, Math.min(1920, Math.round((+b.h || 1024) / 16) * 16));
+  const refs = (Array.isArray(b.refs) ? b.refs : []).slice(0, 4).filter(r => /^data:image\/(jpeg|png|webp);base64,/.test(r));
+  // 1) FLUX.2 [klein] : format au choix + images de référence (personnage, lieu)
+  try {
+    const form = new FormData();
+    form.append("prompt", refs.length ? prompt + ". Keep the characters exactly like in the reference images." : prompt);
+    form.append("width", String(W)); form.append("height", String(Hh));
+    refs.forEach((r, i) => { const bin = Uint8Array.from(atob(r.split(",")[1]), c => c.charCodeAt(0)); form.append("input_image_" + i, new Blob([bin], { type: r.slice(5, r.indexOf(";")) }), "ref" + i + ".jpg"); });
+    const fr = new Response(form);
+    const r = await env.AI.run("@cf/black-forest-labs/flux-2-klein-4b", { multipart: { body: fr.body, contentType: fr.headers.get("content-type") } });
+    const img = r?.image || r?.images?.[0];
+    if (img) return json({ img: String(img).startsWith("data:") || String(img).startsWith("http") ? img : "data:image/jpeg;base64," + img, prompt, model: "klein", refs: refs.length });
+  } catch (e) { if (/neuron|quota|429|exceed/i.test(String(e?.message || e))) return fail(e); console.log("klein a échoué, repli schnell :", String(e?.message || e).slice(0, 200)); }
+  // 2) repli : FLUX.1 schnell (carré, sans référence)
   const input = { prompt, steps: 4 };
   const seed = Number.isFinite(+b.seed) ? Math.abs(Math.floor(+b.seed)) % 2147483647 : null;
   let r;
@@ -78,7 +92,7 @@ export async function onRequestPost({ request, env }) {
     try { r = await env.AI.run(MODEL, input); } catch (e2) { return fail(e2); }
   }
   if (!r?.image) return json({ error: "Aucune image reçue.", code: "ai" }, 502);
-  return json({ img: "data:image/jpeg;base64," + r.image, prompt });
+  return json({ img: "data:image/jpeg;base64," + r.image, prompt, model: "schnell" });
 }
 
 export async function onRequestGet() {
