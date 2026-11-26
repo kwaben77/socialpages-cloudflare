@@ -5427,7 +5427,7 @@ function svPresImport() { svPick('video/*', async f => { const url = URL.createO
 async function svSegmenter() { if (window.svSeg) return window.svSeg; const V = await Promise.race([phVision(), new Promise(r => setTimeout(() => r(null), 25000))]); if (!V) throw new Error('Le détourage n’a pas pu se charger (connexion Internet ?).');
   for (const url of ['https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite', 'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite']) { try { window.svSeg = await V.m.ImageSegmenter.createFromOptions(V.fs, { baseOptions: { modelAssetPath: url, delegate: 'GPU' }, runningMode: 'IMAGE', outputCategoryMask: false, outputConfidenceMasks: true }); return window.svSeg; } catch (e) { try { window.svSeg = await V.m.ImageSegmenter.createFromOptions(V.fs, { baseOptions: { modelAssetPath: url, delegate: 'CPU' }, runningMode: 'IMAGE', outputCategoryMask: false, outputConfidenceMasks: true }); return window.svSeg; } catch (e2) {} } } throw new Error('Détourage indisponible.'); }
 async function svPresCut() {
-  const P = skv.pres, v = svVids[P.id], FPS = 12, n = Math.max(1, Math.ceil((P.out - P.in) * FPS)); openM(`<h3>✂️ Détourage de la vidéo</h3><div class="svprog"><i id="pr-bar"></i></div><p class="mt" id="pr-msg">Préparation…</p>`);
+  const P = skv.pres, v = svVids[P.id], FPS = 24, n = Math.max(1, Math.ceil((P.out - P.in) * FPS)); openM(`<h3>✂️ Détourage de la vidéo</h3><div class="svprog"><i id="pr-bar"></i></div><p class="mt" id="pr-msg">Préparation…</p>`);
   try { const seg = await (window.svSegFn ? Promise.resolve(null) : svSegmenter()), M = []; let inv = null, mw = 0, mh = 0; const fr = document.createElement('canvas'), fx = fr.getContext('2d'), sc = Math.min(1, 480 / Math.max(v.videoWidth, v.videoHeight)); fr.width = Math.round(v.videoWidth * sc); fr.height = Math.round(v.videoHeight * sc);
     for (let k = 0; k < n; k++) { await svSeek(v, P.in + k / FPS); fx.drawImage(v, 0, 0, fr.width, fr.height); let a, w, h;
       if (window.svSegFn) ({ a, w, h } = window.svSegFn(fr)); else { const r = seg.segment(fr), cm = r.confidenceMasks?.[0]; w = cm.width; h = cm.height; a = Float32Array.from(cm.getAsFloat32Array()); r.close?.(); }
@@ -9520,6 +9520,8 @@ function pvBoardParse() { const raw = String(pv.story || '').replace(/\r/g, ''),
     else if (l.startsWith('//')) items.push({ k: 'say', text: l.slice(2).trim(), say: l.slice(2).trim() });
     else if (l.startsWith('#')) items.push({ k: 'title', text: l.replace(/^#+\s*/, ''), say: l.replace(/^#+\s*/, '') });
     else if (l.startsWith('=') || /^\{\s*\S/.test(l)) { const sys = l.startsWith('{'), t0 = l.slice(1).trim().replace(/\*\*|==|\[\[|\]\]/g, ''), [t, note] = t0.split(/\s+\|\s+/); items.push({ k: 'math', text: t, sys, note: (note || '').trim(), say: pvSayMath(t, pv.lang) + (note ? '. ' + pvSay(note.trim(), pv.lang) : '') }); }
+    else if ((m = l.match(/^(?:exercice|à vous|a vous|\?\?)\s*(?:\((\d+)\s*s?\))?\s*:?\s*(?:\((\d+)\s*s?\)\s*)?(.+)$/i))) { const sc = Math.max(3, Math.min(60, +(m[1] || m[2] || 10))), t = m[3].trim(), en = pv.lang === 'en'; items.push({ k: 'ask', text: (en ? '✏️ Your turn: ' : '✏️ À vous de jouer : ') + t, say: (en ? 'Your turn! ' : 'À vous de jouer ! ') + t + (en ? `. You have ${sc} seconds.` : `. Vous avez ${sc} secondes.`) }); items.push({ k: 'wait', secs: sc }); }
+    else if ((m = l.match(/^(?:correction|solution)\s*:\s*(.+)$/i))) { const en = pv.lang === 'en'; items.push({ k: 'text', text: (en ? '**✔ Correction:** ' : '**✔ Correction :** ') + m[1].trim(), say: (en ? 'Correction: ' : 'Correction : ') + m[1].trim() }); }
     else if (/^(->|→)\s*/.test(l)) { const t = l.replace(/^(->|→)\s*/, ''); items.push({ k: 'arrow', text: t, say: t }); }
     else if (l.startsWith('>')) { const t = l.slice(1).trim(); items.push({ k: 'box', text: t, say: t }); }
     else if (l.startsWith('!')) { const t = l.slice(1).trim(); items.push({ k: 'warn', text: t, say: t }); }
@@ -9533,7 +9535,7 @@ const PV_PACE = { normal: { n: '🐇 Normal', x: 0 }, pose: { n: '🙂 Posé', x
 const pvPace = () => (PV_PACE[pv.pace] || PV_PACE.pose).x;
 function pvBoardTime(items) { let t = 0.8; const X = pvPace(); const B = pv.boardT && pv.boardT.n === items.length ? pv.boardT.t : null;
   items.forEach((it, i) => { if (B && B[i]) { it.s = B[i][0]; it.e = B[i][1]; t = it.e; return; }
-    const len = (it.say || '').length, d = it.k === 'erase' ? 1.2 : it.k === 'pause' ? 5 : it.k === 'fig' ? 3.2 + X : it.k === 'title' ? Math.max(2.6, len * 0.07) : it.k === 'math' ? Math.max(2.8, len * 0.075) : Math.max(2.4, len * 0.068 + 0.6); if (it.k === 'erase') t += X; it.s = t; it.e = t + d + (it.k === 'erase' || it.k === 'pause' ? 0 : X * 0.5); t = it.e + 0.25 + (it.k === 'erase' ? 0 : X * 0.6); });
+    const len = (it.say || '').length, d = it.k === 'erase' ? 1.2 : it.k === 'pause' ? 5 : it.k === 'wait' ? it.secs : it.k === 'fig' ? 3.2 + X : it.k === 'title' ? Math.max(2.6, len * 0.07) : it.k === 'math' ? Math.max(2.8, len * 0.075) : Math.max(2.4, len * 0.068 + 0.6); if (it.k === 'erase') t += X; it.s = t; it.e = t + d + (it.k === 'erase' || it.k === 'pause' || it.k === 'wait' ? 0 : X * 0.5); t = it.e + 0.25 + (it.k === 'erase' ? 0 : X * 0.6); });
   let T = t + 0.4; const v = pv.voice; if (v && !B) { const vd = PV_VA + v.a.length / v.sr + 0.5; if (vd > 3) { const k = (vd - 0.8) / Math.max(1, T - 0.8); items.forEach(it => { it.s = 0.8 + (it.s - 0.8) * k; it.e = 0.8 + (it.e - 0.8) * k; }); T = vd; } } return T; }
 let pvBoC = null;
 function pvBoardPlan() { const key = [pv.story, pv.board, pv.fmt, pv.lang, pv.voice?.a?.length || 0, pv.boardT?.n || 0, pv.pace || ''].join('|'); if (pvBoC?.key === key) return pvBoC.P;
@@ -9563,7 +9565,7 @@ function pvBoardLayout(x, P, FW, FH) { const key = [P.items.length, FW, FH, pv.b
   let pageIdx = 0; const textW = () => (hasFig[pageIdx] && !vert ? R.w * 0.56 : R.w) - pad * 2, figBox = () => vert ? { x: R.x + pad, y: R.y + R.h * 0.56, w: R.w - pad * 2, h: R.h * 0.4 } : { x: figL[pageIdx] ? R.x + pad : R.x + R.w * 0.58, y: R.y + pad, w: R.w * 0.4 - pad, h: R.h - pad * 2 }, textX = () => R.x + pad + (hasFig[pageIdx] && figL[pageIdx] ? R.w * 0.42 : 0), bottom = () => hasFig[pageIdx] && vert ? R.y + R.h * 0.54 : R.y + R.h - pad * 0.6;
   P.items.forEach((it, idx) => { it.idx = idx;
     if (it.k === 'erase') { it.page = pages.length - 1; newPage(); pageIdx++; return; }
-    if (it.k === 'pause' || it.k === 'say') { it.page = pages.length - 1; return; }
+    if (it.k === 'pause' || it.k === 'say' || it.k === 'wait') { it.page = pages.length - 1; return; }
     if (it.k === 'fig') { cur.fig = it; it.page = pages.length - 1; it.box = figBox(); return; }
     let fs = it.k === 'title' ? base * 1.25 : base, lines, h; x.textBaseline = 'alphabetic';
     if (it.k === 'math') { const nodes = it.nodes = pvMathParse(pvMathPre(it.text).replace(/\b(m|km|cm|mm)\/(s|h|min)\b/g, '$1∕$2')); for (let k = 0; k < 10; k++) { it.mb = pvMathBox(x, nodes, fs, hand(700)); x.font = PV_HAND(400, fs * 0.72); const extra = (it.note ? x.measureText('⟵ ' + it.note).width + fs * 0.9 : 0) + (it.sys ? fs * 0.9 : 0); if (it.mb.w + extra <= textW()) break; fs *= 0.9; } h = it.mb.a + it.mb.d + fs * 0.35; it.fs = fs; }
@@ -9636,6 +9638,7 @@ function pvBoardDraw(x, t) { pvBoardFonts(); const FF = pvFF2(), FW = FF.W, FH =
   x.setTransform(bsx, 0, 0, bsy, 0, 0); // fin du gros plan : pause, sous-titres et présentateur restent fixes
   if (Cm && Cm.z > 1.001) { const hb = Math.max(1, Math.round((R.y - Math.min(FW, FH) * 0.014) * bsy)); x.setTransform(1, 0, 0, 1, 0, 0); x.drawImage(pvBoardBg(cv, FW, FH, B), 0, 0, cv.width, hb, 0, 0, cv.width, hb); x.setTransform(bsx, 0, 0, bsy, 0, 0); hdr(); }
   // pause exercice
+  const wz = P.items.find(it => it.k === 'wait' && t >= it.s && t < it.e); if (wz) pvTryCount(x, wz, t, FW, FH, u, B);
   const pz = P.items.find(it => it.k === 'pause' && t >= it.s && t < it.e); if (pz) { const lt = t - pz.s, d = pz.e - pz.s, a = pvO(lt / 0.4) * (1 - pvO((lt - d + 0.4) / 0.4)); x.save(); x.globalAlpha = a; x.fillStyle = 'rgba(0,0,0,.55)'; x.fillRect(0, 0, FW, FH); const bw = u * 0.7, bh = u * 0.4; x.fillStyle = '#FFFFFF'; vidRR(x, FW / 2 - bw / 2, FH / 2 - bh / 2, bw, bh, u * 0.04); x.fill(); x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = '#DC2626'; x.font = `900 ${u * 0.1}px Montserrat, Arial, sans-serif`; x.fillText('⏸', FW / 2, FH / 2 - bh * 0.25);
     x.fillStyle = '#111827'; const msg = pv.lang === 'en' ? 'Pause and try it yourself!' : 'Mettez en pause et cherchez !'; x.font = pvFont('800 {s}px Montserrat, Arial, sans-serif', pvFitS(x, msg, bw * 0.9, u * 0.045, '800 {s}px Montserrat, Arial, sans-serif', 10)); x.fillText(msg, FW / 2, FH / 2 + bh * 0.05); x.font = `900 ${u * 0.07}px Montserrat, Arial, sans-serif`; x.fillStyle = '#1D4ED8'; x.fillText(String(Math.max(1, Math.ceil(d - lt))), FW / 2, FH / 2 + bh * 0.3); x.restore(); }
   // sous-titres des phrases dites (//) + présentateur
@@ -9658,7 +9661,7 @@ function pvBoardEnd(x, FW, FH, R, B, P, t, lt) { const u = Math.min(FW, FH), en 
 async function pvBoardTts() { const { items } = pvBoardParse(), L = TTS_M[pv.lang] ? pv.lang : 'fr', said = items.map((it, i) => [it, i]).filter(([it]) => it.say); if (!said.length) return toast('Écrivez d’abord votre cours (étape 2).');
   openM(`<h3>🗣️ Création de la voix du cours…</h3><div class="svprog"><i id="pv-bar" style="width:3%"></i></div><p class="mt" id="pv-msg">La 1re fois, l’IA de voix se télécharge (environ 30 Mo).</p>`);
   try { const parts = [], tt = []; let sr = 16000, t = 0.8; const T = new Array(items.length).fill(null), X = pvPace();
-    for (let k = 0; k < items.length; k++) { const it = items[k]; if (!it.say) { const h = it.k === 'erase' ? X : 0, d = h + (it.k === 'erase' ? 1.2 : it.k === 'pause' ? 5 : it.k === 'fig' ? 3 + X : 1); T[k] = [t + h, t + d]; parts.push(new Float32Array(Math.round(sr * d))); t += d; continue; }
+    for (let k = 0; k < items.length; k++) { const it = items[k]; if (!it.say) { const h = it.k === 'erase' ? X : 0, d = h + (it.k === 'erase' ? 1.2 : it.k === 'pause' ? 5 : it.k === 'wait' ? it.secs : it.k === 'fig' ? 3 + X : 1); T[k] = [t + h, t + d]; parts.push(new Float32Array(Math.round(sr * d))); t += d; continue; }
       const m = $('pv-msg'); if (m) m.textContent = `Ligne ${said.findIndex(q => q[1] === k) + 1} / ${said.length}…`; const r = await pvTtsSafe(it.say, L, () => {}); if (!r?.a?.length) throw new Error('La voix n’a pas pu être créée.'); sr = r.sr; const a = pvTrim(Float32Array.from(r.a), sr), d = a.length / sr; const gap = (it.k === 'math' ? 0.85 : it.k === 'title' ? 0.7 : 0.45) + (it.k === 'say' ? X * 0.6 : X); T[k] = [t, t + d + (it.k === 'math' ? 0.6 : 0.2) + (it.k === 'say' ? 0 : X * 0.55)]; parts.push(a); parts.push(new Float32Array(Math.round(sr * gap))); t += d + gap; const b = $('pv-bar'); if (b) b.style.width = Math.round((k + 1) / items.length * 100) + '%'; }
     // le silence initial de 0,8 s est créé par PV_VA (0,6) + 0,2
     const lead = new Float32Array(Math.round(sr * 0.2)), all = new Float32Array(lead.length + parts.reduce((p, a) => p + a.length, 0)); let o = lead.length; parts.forEach(a => { all.set(a, o); o += a.length; }); pv.voice = { a: all, sr, from: 'tts', env: pvEnvOf(all, sr) }; pv.segs = null; pv.boardT = { n: items.length, t: T }; pv.script = pv.story; pvBoC = null; closeM(); pvForm(); toast(`🗣️ Voix du cours créée : ${Math.round(t)} s.`); }
@@ -9698,10 +9701,11 @@ function pvBoardForm(ch) { const P = (pv.story || '').trim() ? pvBoardPlan() : n
     <div class="grid2" style="margin-top:8px"><button type="button" class="soft" style="background:#FEF3C7;font-weight:800" onclick="pvBoardPrepOpen()">✨ Préparer pour le tableau<small style="display:block;font-weight:500;font-size:11px">cours collé → tableau + parties</small></button><button type="button" class="soft" style="background:#EDE9FE;font-weight:800" onclick="pvAudOpen()">🎙️ De l’audio au tableau<small style="display:block;font-weight:500;font-size:11px">votre voix → le tableau suit</small></button></div>
     ${pv.storyBak != null ? `<button type="button" class="soft" style="width:100%;margin-top:6px" onclick="pvPrepUndo()">↩️ Revenir à mon texte d’avant</button>` : ''}
     ${pv.boardT?.aud && pv.voice ? `<p class="mt" style="font-size:12px;margin:6px 0 0;padding:8px;border-radius:10px;background:#F5F3FF">🎙️ Le tableau suit votre vraie voix. Vous pouvez corriger un mot ci-dessus ; pour ajouter ou retirer une ligne, rouvrez « 🎙️ De l’audio au tableau » (vos choix sont gardés).</p>` : ''}
+    <button type="button" class="soft" style="width:100%;margin-top:6px" onclick="pvImpCourse()">📥 Importer un cours<small style="display:block;font-weight:500;font-size:11px">PDF · Word (.docx) · texte · photo du cahier (lue automatiquement)</small></button>
     <details style="margin-top:8px"><summary style="font-weight:700;cursor:pointer">📖 Comment écrire au tableau (aide)</summary><div class="mt" style="font-size:13px;line-height:1.6">
       <b># Titre</b> → titre souligné<br><b>= 2x + 3 = 11</b> → ligne de calcul (les « = » s’alignent)<br><b>&gt; À retenir</b> → encadré · <b>! Attention</b> → en rouge · <b>? Énoncé</b> → question<br>
       <b>// phrase</b> → dite par le professeur, pas écrite (sous-titre)<br><b>pause</b> → « Mettez en pause et cherchez » (5 s) · <b>---</b> → on efface le tableau<br><b>suite: …</b> → « Partie suivante » à la fin<br>
-      ✍️ Gestes du prof : <b>**mot**</b> ou <b>==mot==</b> → surligné · <b>[[mot]]</b> → entouré en rouge · <b>-&gt; conclusion</b> → flèche<br>Calcul pas à pas : <b>= 3x + 5 = 20 | −5 des deux côtés</b> → note à droite (lue par la voix)<br>Système : <b>{ x + y = 10</b> puis <b>{ x − y = 2</b> → accolade<br>Maths : <b>x^2</b> (carré), <b>v_0</b> (indice), <b>3/4</b> (fraction), <b>sqrt(25)</b> (racine), <b>*</b> (×), <b>&lt;=</b> (≤), <b>pi</b> (π)<br>
+      ✍️ Gestes du prof : <b>**mot**</b> ou <b>==mot==</b> → surligné · <b>[[mot]]</b> → entouré en rouge · <b>-&gt; conclusion</b> → flèche<br>Exercice : <b>exercice (15 s): Résous 2x + 4 = 10</b> → « ✏️ À vous de jouer » + compte à rebours, puis <b>correction: 2x = 6, donc x = 3</b><br>Calcul pas à pas : <b>= 3x + 5 = 20 | −5 des deux côtés</b> → note à droite (lue par la voix)<br>Système : <b>{ x + y = 10</b> puis <b>{ x − y = 2</b> → accolade<br>Maths : <b>x^2</b> (carré), <b>v_0</b> (indice), <b>3/4</b> (fraction), <b>sqrt(25)</b> (racine), <b>*</b> (×), <b>&lt;=</b> (≤), <b>pi</b> (π)<br>
       🎨 Dessins : <b>fig: planetes</b> · <b>fig: volcan</b> · <b>fig: elephant</b>… (bouton « 🎨 Dessins ») — les parties apparaissent quand la voix les nomme · options : <b>gauche</b>, <b>petit</b><br>
       🖼️ Images : <b>fig: image 2</b> (en couleur, montrée en grand puis accrochée) · <b>fig: image 2 craie</b> (transformée en dessin à la craie) · <b>fig: image 1 grand</b> (montrée plus longtemps)<br>
       Figures : <b>fig: repere y=2x+1</b> · <b>fig: triangle 3 4 5</b> · <b>fig: cercle 3</b> · <b>fig: force 10 N</b> · <b>fig: tableau x:0,1,2 | y:1,3,5</b> · <b>fig: pose 245 + 378</b> · <b>fig: image</b> (votre photo)</div></details>
@@ -9724,6 +9728,13 @@ function pvMarkDraw(x, it, B, f, padX, lh) { x.save(); const font = PV_HAND(it.k
     break; } }); x.restore(); }
 function pvHandArrow(x, X, Y, L, fs, col, f) { if (f <= 0) return; x.save(); x.strokeStyle = col; x.lineWidth = Math.max(2, fs * 0.07); x.lineCap = 'round'; x.lineJoin = 'round'; const e = X + L * Math.min(1, f * 1.3); x.beginPath(); x.moveTo(X, Y); x.quadraticCurveTo((X + e) / 2, Y - fs * 0.08, e, Y); x.stroke(); if (f > 0.75) { x.beginPath(); x.moveTo(e - fs * 0.28, Y - fs * 0.22); x.lineTo(e, Y); x.lineTo(e - fs * 0.28, Y + fs * 0.22); x.stroke(); } x.restore(); }
 function pvBrace(x, X, Y, H, fs, col, f) { if (f <= 0) return; x.save(); x.strokeStyle = col; x.lineWidth = Math.max(2, fs * 0.07); x.lineCap = 'round'; const w = fs * 0.35, m = Y + H / 2; x.beginPath(); x.rect(X - fs, Y - fs * 0.2, fs * 2, (H + fs * 0.4) * f); x.clip(); x.beginPath(); x.moveTo(X + w, Y); x.quadraticCurveTo(X, Y, X, Y + H * 0.2); x.lineTo(X, m - H * 0.08); x.quadraticCurveTo(X, m, X - w * 0.8, m); x.quadraticCurveTo(X, m, X, m + H * 0.08); x.lineTo(X, Y + H * 0.8); x.quadraticCurveTo(X, Y + H, X + w, Y + H); x.stroke(); x.restore(); }
+
+// ---------- ✏️ « À vous de jouer ! » : compte à rebours
+function pvTryCount(x, it, t, FW, FH, u, B) { const lt = t - it.s, d = it.e - it.s, left = Math.max(0, Math.ceil(d - lt)), a = pvO(lt / 0.3) * (1 - pvO((lt - d + 0.3) / 0.3)), r = u * 0.085, en = pv.lang === 'en'; x.save(); x.font = `800 ${u * 0.032}px Montserrat, Arial, sans-serif`; const lw0 = x.measureText(en ? '✏️ Your turn!' : '✏️ À vous de jouer !').width + u * 0.04; x.restore(); const cx = FW - Math.max(r * 1.6, lw0 / 2 + u * 0.03), cy = FH - r * 1.75;
+  x.save(); x.globalAlpha = a; x.shadowColor = 'rgba(0,0,0,.35)'; x.shadowBlur = u * 0.02; x.fillStyle = '#FFFFFF'; x.beginPath(); x.arc(cx, cy, r * 1.18, 0, 7); x.fill(); x.shadowColor = 'transparent';
+  x.lineWidth = r * 0.2; x.strokeStyle = '#E5E7EB'; x.beginPath(); x.arc(cx, cy, r * 0.92, 0, 7); x.stroke(); x.strokeStyle = left <= 3 ? '#DC2626' : '#16A34A'; x.lineCap = 'round'; x.beginPath(); x.arc(cx, cy, r * 0.92, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.max(0, 1 - lt / d)); x.stroke();
+  x.fillStyle = '#111827'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = `900 ${r * 0.95}px Montserrat, Arial, sans-serif`; x.fillText(String(left), cx, cy + r * 0.04);
+  x.font = `800 ${u * 0.032}px Montserrat, Arial, sans-serif`; const lab = en ? '✏️ Your turn!' : '✏️ À vous de jouer !', lw = x.measureText(lab).width + u * 0.04; x.fillStyle = '#FACC15'; vidRR(x, cx - lw / 2, cy - r * 1.18 - u * 0.065, lw, u * 0.05, u * 0.02); x.fill(); x.fillStyle = '#111827'; x.fillText(lab, cx, cy - r * 1.18 - u * 0.04); x.restore(); }
 
 // ===================== ✨ Préparer pour le tableau  +  🎙️ De l'audio au tableau =====================
 // ---------- 1) un cours collé tel quel (Word, WhatsApp, IA…) → syntaxe du tableau
@@ -10772,7 +10783,7 @@ function svMaskRefine(a, w, h, inv, prev) {
   // adoucir les bords (flou 3×3) pour un contour propre, sans escalier
   const o = new Uint8ClampedArray(n);
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { let s = 0, c = 0; for (let dy = -1; dy <= 1; dy++) { const yy = y + dy; if (yy < 0 || yy >= h) continue; for (let dx = -1; dx <= 1; dx++) { const xx = x + dx; if (xx < 0 || xx >= w) continue; s += e[yy * w + xx]; c++; } } let v = s / c * 255;
-    const pv = prev && prev.length === n ? prev[y * w + x] : -1; if (pv >= 0 && Math.abs(pv - v) < 110) v = v * 0.55 + pv * 0.45; // lissage dans le temps (sauf grand mouvement)
+    const pv = prev && prev.length === n ? prev[y * w + x] : -1; if (pv >= 0 && Math.abs(pv - v) < 40) v = v * 0.7 + pv * 0.3; // seulement le petit scintillement, jamais le mouvement (sinon « fantôme ») // lissage dans le temps (sauf grand mouvement)
     o[y * w + x] = v; }
   return o;
 }
@@ -10803,7 +10814,7 @@ function svPresMask(P, ft, pw, ph) {
   const mw = P.mw, mh = P.mh, a = P.masks[i0], b = P.masks[i1];
   svPMs ||= document.createElement('canvas'); if (svPMs.width !== mw || svPMs.height !== mh) { svPMs.width = mw; svPMs.height = mh; }
   const sx = svPMs.getContext('2d'), id = sx.createImageData(mw, mh), D0 = id.data;
-  for (let i = 0; i < a.length; i++) { D0[i * 4] = D0[i * 4 + 1] = D0[i * 4 + 2] = 255; D0[i * 4 + 3] = a[i] * (1 - w) + b[i] * w; }
+  for (let i = 0; i < a.length; i++) { D0[i * 4] = D0[i * 4 + 1] = D0[i * 4 + 2] = 255; const p = a[i], q = b[i]; D0[i * 4 + 3] = Math.abs(p - q) > 70 ? Math.min(p, q) : p * (1 - w) + q * w; } // en mouvement : pas de mélange (pas de bande de l'ancien fond)
   sx.putImageData(id, 0, 0);
   svPMc ||= document.createElement('canvas'); if (svPMc.width !== pw || svPMc.height !== ph) { svPMc.width = pw; svPMc.height = ph; }
   const x = svPMc.getContext('2d'); x.clearRect(0, 0, pw, ph); x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; x.drawImage(svPMs, 0, 0, pw, ph);
@@ -10811,6 +10822,33 @@ function svPresMask(P, ft, pw, ph) {
   for (let i = 3; i < D.length; i += 4) { const s2 = (D[i] / 255 - lo) * k; D[i] = s2 <= 0 ? 0 : s2 >= 1 ? 255 : 255 * s2 * s2 * (3 - 2 * s2); }
   x.putImageData(d, 0, 0); svPMk = key; return svPMc;
 }
+
+// ===================== 📥 Importer un cours : PDF, Word (.docx), texte, photo du cahier (lecture automatique) =====================
+const PV_IMP_LIB = { pdf: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', pdfw: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js', zip: 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js', ocr: 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js' };
+function pvImpLoad(url, glob) { return window[glob] ? Promise.resolve(window[glob]) : new Promise((ok, ko) => { const sc = document.createElement('script'); sc.src = url; sc.async = true; sc.onload = () => window[glob] ? ok(window[glob]) : ko(new Error('Outil de lecture indisponible.')); sc.onerror = () => ko(new Error('Pas de connexion : l’outil de lecture n’a pas pu se charger.')); document.head.appendChild(sc); }); }
+function pvImpMsg(t, pc) { const m = $('pv-impmsg'); if (m) m.textContent = t; const b = $('pv-impbar'); if (b && pc != null) b.style.width = Math.max(3, Math.min(100, Math.round(pc))) + '%'; }
+async function pvImpPdf(f) { const L = await pvImpLoad(PV_IMP_LIB.pdf, 'pdfjsLib'); L.GlobalWorkerOptions.workerSrc = PV_IMP_LIB.pdfw; const doc = await L.getDocument({ data: new Uint8Array(await f.arrayBuffer()) }).promise, out = [];
+  for (let n = 1; n <= Math.min(doc.numPages, 60); n++) { pvImpMsg(`Lecture de la page ${n} / ${doc.numPages}…`, n / doc.numPages * 100); const tc = await (await doc.getPage(n)).getTextContent(); let y = null, line = '';
+    tc.items.forEach(it => { const yy = Math.round(it.transform[5]); if (y !== null && Math.abs(yy - y) > 3) { out.push(line.trim()); line = ''; } line += (line && !line.endsWith(' ') && !String(it.str).startsWith(' ') ? ' ' : '') + it.str; y = yy; if (it.hasEOL) { out.push(line.trim()); line = ''; y = null; } });
+    if (line.trim()) out.push(line.trim()); out.push(''); }
+  const txt = out.join('\n').replace(/\n{3,}/g, '\n\n').trim(); if (txt.length < 20) throw new Error('Ce PDF ne contient pas de texte (c’est une photo scannée) : prenez plutôt une photo de la page.'); return txt; }
+async function pvImpDocx(f) { const Z = await pvImpLoad(PV_IMP_LIB.zip, 'JSZip'), zip = await Z.loadAsync(await f.arrayBuffer()), xml = await zip.file('word/document.xml')?.async('string'); if (!xml) throw new Error('Fichier Word illisible.');
+  const ps = xml.split(/<\/w:p>/).map(p => { if (/<w:pStyle w:val="(Heading|Titre|Title)/i.test(p)) p = '#' + p; return (p.startsWith('#') ? '# ' : '') + [...p.matchAll(/<w:t(?:\s[^>]*)?>([^<]*)<\/w:t>|<w:tab\/>/g)].map(m => m[1] ?? ' ').join(''); });
+  return ps.map(t => t.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").trim()).filter((t, i, A) => t || (A[i - 1] && A[i - 1].trim())).join('\n').replace(/^# $/gm, '').trim(); }
+async function pvImpOcr(f) { const T = await pvImpLoad(PV_IMP_LIB.ocr, 'Tesseract'), lang = pv.lang === 'en' ? 'eng' : 'fra';
+  pvImpMsg('La 1re fois, l’outil de lecture des photos se télécharge (quelques Mo)…', 5);
+  const r = await T.recognize(f, lang, { logger: m => { if (m.status === 'recognizing text') pvImpMsg(`Lecture de la photo… ${Math.round(m.progress * 100)} %`, 10 + m.progress * 90); } });
+  const txt = String(r?.data?.text || '').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim(); if (txt.length < 10) throw new Error('Je n’arrive pas à lire cette photo : prenez-la de face, bien éclairée, sans ombre.'); return txt; }
+function pvImpCourse() { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.pdf,.docx,.txt,.md,image/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain'; inp.onchange = () => inp.files[0] && pvImpRun(inp.files[0]); inp.click(); }
+async function pvImpRun(f) { const name = f.name || '', ty = f.type || '', kind = /pdf/i.test(ty) || /\.pdf$/i.test(name) ? 'pdf' : /wordprocessingml|msword/i.test(ty) || /\.docx$/i.test(name) ? 'docx' : /^image\//i.test(ty) ? 'ocr' : 'txt';
+  if (/\.doc$/i.test(name)) return toast('Ancien format Word (.doc) : enregistrez-le en .docx ou en PDF, puis réessayez.', 5000);
+  openM(`<h3>📥 Importation du cours…</h3><div class="svprog"><i id="pv-impbar" style="width:3%"></i></div><p class="mt" id="pv-impmsg">Ouverture de « ${esc(name.slice(0, 40))} »…</p>`);
+  try { const txt = window.pvImpStub ? await window.pvImpStub(f, kind) : kind === 'pdf' ? await pvImpPdf(f) : kind === 'docx' ? await pvImpDocx(f) : kind === 'ocr' ? await pvImpOcr(f) : String(await f.text()).trim();
+    if (!txt) throw new Error('Aucun texte trouvé dans ce fichier.');
+    pv.storyBak = pv.story || ''; pv.story = txt; pv.script = txt; pv.voice = null; pv.segs = null; pv.boardT = null; if (typeof pvBoC !== 'undefined') pvBoC = null; pvSave(); closeM(); pvForm();
+    toast(kind === 'ocr' ? '📷 Photo lue : vérifiez le texte (surtout les calculs), puis « ✨ Préparer ».' : '📥 Cours importé : vérifiez-le, puis touchez « ✨ Préparer ».', 6000);
+    setTimeout(() => { try { pvBoardPrepOpen(); } catch (e) {} }, 300); }
+  catch (e) { closeM(); toast('⚠️ ' + (e.message || e), 6000); } }
 
 // Photo carrée recadrée au centre (pour CV et carte)
 function pickPhoto(cb, square = true) {
