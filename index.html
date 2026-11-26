@@ -4137,7 +4137,7 @@ function skDrawNow() {
   const cv = $('sk-cv'); if (!cv || !sk?.v) return; const x = cv.getContext('2d'), { k, ox, oy, dpr } = sk.v, D = sk.doc; x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, cv.width, cv.height); x.setTransform(dpr, 0, 0, dpr, 0, 0);
   x.save(); x.shadowColor = 'rgba(0,0,0,.25)'; x.shadowBlur = 18; x.fillStyle = '#fff'; x.fillRect(ox, oy, D.w * k, D.h * k); x.restore();
   if (D.bg.t === 'none') { x.save(); x.beginPath(); x.rect(ox, oy, D.w * k, D.h * k); x.clip(); for (let i = 0; i * 12 < D.w * k; i++) for (let j = 0; j * 12 < D.h * k; j++) if ((i + j) % 2) { x.fillStyle = '#E5E7EB'; x.fillRect(ox + i * 12, oy + j * 12, 12, 12); } x.restore(); }
-  x.save(); x.beginPath(); x.rect(ox, oy, D.w * k, D.h * k); x.clip(); x.translate(ox, oy); x.scale(k, k); skPaint(x, D, false); x.restore();
+  x.save(); x.beginPath(); x.rect(ox, oy, D.w * k, D.h * k); x.clip(); x.translate(ox, oy); x.scale(k, k); skPaint(x, D, false); if (typeof sdFoldDraw === 'function') sdFoldDraw(x, D, k); x.restore();
   const G = D.guide; if (G) { x.save(); x.beginPath(); x.rect(ox, oy, D.w * k, D.h * k); x.clip(); x.translate(ox, oy); x.scale(k, k); x.lineWidth = 2 / k; x.setLineDash([8 / k, 6 / k]); const d = G.safe - G.bleed;
     x.fillStyle = 'rgba(250,204,21,.45)'; x.fillRect(...G.barcode); x.strokeStyle = '#DC2626'; x.strokeRect(G.bleed, G.bleed, D.w - 2 * G.bleed, D.h - 2 * G.bleed); x.strokeStyle = '#16A34A'; x.strokeRect(G.safe, G.safe, G.spine[0] - G.safe - d, D.h - 2 * G.safe); x.strokeRect(G.spine[1] + d, G.safe, D.w - G.safe - G.spine[1] - d, D.h - 2 * G.safe);
     x.strokeStyle = '#2563EB'; x.setLineDash([]); G.spine.forEach(v => { x.beginPath(); x.moveTo(v, 0); x.lineTo(v, D.h); x.stroke(); }); x.restore(); }
@@ -4229,7 +4229,7 @@ function skSheet(k) {
     ${D.bg.t === 'img' ? `<label class="skrng">Assombrir la photo <input type="range" min="0" max="0.8" step="0.05" value="${D.bg.dim || 0}" oninput="sk.doc.bg.dim=+this.value;skDraw()" onchange="skCommit()"></label>` : ''}`;
   if (k === 'fmt') P.innerHTML = head('Format') + `<div class="skgrid">${Object.entries({ ...AF_F, kdp6: { n: 'Couverture ebook (Kindle)', w: 1600, h: 2560 }, logo: { n: 'Logo', w: 1000, h: 1000 }, banniere: { n: 'Bannière web', w: 1500, h: 500 } }).map(([f, v]) => `<button type="button" class="${D.w === v.w && D.h === v.h ? 'on' : ''}" onclick="skFormat(${v.w},${v.h})"><i style="aspect-ratio:${v.w}/${v.h}"></i>${v.n}<small>${v.w}×${v.h}</small></button>`).join('')}</div>
     <p class="mt">Sur mesure (pixels)</p><div class="grid2"><input id="sk-fw" type="number" value="${D.w}" min="100" max="5000"><input id="sk-fh" type="number" value="${D.h}" min="100" max="5000"></div><button class="soft" style="width:100%;margin-top:6px" onclick="skFormat(+$('sk-fw').value,+$('sk-fh').value)">Appliquer</button><button class="pill" style="width:100%;margin-top:10px" onclick="skMagicSheet()">✨ Redimensionnement magique (plusieurs formats d’un coup)</button>`;
-  if (k === 'tpl') P.innerHTML = head('Modèles') + `<p class="mt">Partez d’un modèle d’affiche : tout reste déplaçable.</p><div class="skgrid">${Object.entries(AF_K).map(([kk, v]) => `<button type="button" onclick="skFromTpl('${kk}')">${v.n}</button>`).join('')}</div>
+  if (k === 'tpl') P.innerHTML = head('Modèles') + `<p class="mt">Partez d’un modèle d’affiche : tout reste déplaçable.</p><div class="skgrid">${Object.entries(AF_K).map(([kk, v]) => `<button type="button" onclick="skFromTpl('${kk}')">${v.n}</button>`).join('')}</div>${typeof sdBox === 'function' ? sdBox() : ''}
     <div class="grid2" style="margin-top:10px"><button class="soft" onclick="skNewBlank()">➕ Page vierge</button><button class="soft" onclick="skProjects()">📁 Mes projets</button></div><button class="soft" style="width:100%;margin-top:6px" onclick="insOpen()">📸 S’inspirer d’une affiche photographiée</button>`;
 }
 function skPanelClose() { $('sk-pn')?.classList.remove('open'); sk.sel = null; sk.ms = []; sk.layers = 0; skDraw(); skPanel(); }
@@ -4241,7 +4241,7 @@ function skNewBlank() { if (!confirm('Commencer une nouvelle page vierge ? (le d
 async function skFromTpl(k) { skSave(); const A = afNew(k); if (sk.doc.w && AF_F.post) { } const d = await afToDoc(A); sk.doc = d; sk.sel = null; sk.hist = []; skHist(true); $('sk-name').value = d.name; await skPreload(d); await skBgPrep(d); skFit(); skPanel(); toast('✋ Touchez un élément pour le déplacer, l’agrandir ou le modifier', 4000); }
 // ---------- panneau des propriétés du calque sélectionné
 function skPanel() {
-  const P = $('sk-pn'); if (!P) return; const o = skSel(); if (sk.layers) return skLayers();
+  if (typeof sdBar === 'function') sdBar(); const P = $('sk-pn'); if (!P) return; const o = skSel(); if (sk.layers) return skLayers();
   if (skMs().length > 1) { P.classList.add('open'); P.innerHTML = `<div class="skph"><b>Sélection multiple</b><button type="button" onclick="skPanelClose()">✕</button></div><small class="mt">Glissez pour tout déplacer ensemble. Maj + clic (ordinateur) ou la liste 🗂️ Calques pour ajouter ou retirer un élément.</small>` + skMultiTools(); return; }
   if (!o) { P.classList.remove('open'); P.innerHTML = `<div class="skhint">✋ Touchez un élément pour le <b>déplacer</b>, tirez les <b>coins</b> pour l’agrandir, le rond rose pour le <b>tourner</b>. Avec deux doigts : agrandir et tourner. Touchez deux fois un texte pour l’écrire. 🗂️ <b>Calques</b> : tout voir, cacher, bloquer, grouper.<br><small>💻 Sur ordinateur : appuyez sur <b>?</b> pour les raccourcis clavier.</small></div>`; return; }
   P.classList.add('open'); const cols = (key, cur, extra = '') => `<div class="skcols">${extra}${skPal().map(c => `<button type="button" class="${cur === c ? 'on' : ''}" style="background:${c}" onclick="skSet('${key}','${c}')"></button>`).join('')}<label class="skcp">🎨<input type="color" value="${/^#[0-9a-f]{6}$/i.test(cur || '') ? cur : '#ffffff'}" oninput="skSet('${key}',this.value,1)" onchange="skCommit()"></label></div>`;
@@ -4310,7 +4310,7 @@ async function skDelP(id) { if (!confirm('Supprimer ce projet ?')) return; await
 async function skExport() {
   openM(`<h3>📤 Exporter</h3><p class="mt">${sk.doc.w} × ${sk.doc.h} px</p>
     <div class="grid2"><button class="pill" style="background:#25D366" onclick="skOut('jpg',1)">📤 Partager (image)</button><button class="soft" onclick="skOut('jpg')">⬇️ Image JPG</button></div>
-    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="skOut('png')">⬇️ PNG ${sk.doc.bg.t === 'none' ? '(transparent)' : 'haute qualité'}</button><button class="soft" onclick="skOut('pdf')">🖨️ PDF (imprimeur)</button></div>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="skOut('png')">⬇️ PNG ${sk.doc.bg.t === 'none' ? '(transparent)' : 'haute qualité'}</button><button class="soft" onclick="skOut('pdf')">🖨️ PDF (imprimeur)</button></div>${sk.doc.set ? `<button class="pill" style="width:100%;margin-top:8px" onclick="sdPdf()">🖨️ PDF de toutes les pages (${sk.doc.set.n})</button>` : ''}
     ${sk.doc.kspec ? `<p class="mt" style="margin-top:10px;font-weight:700">📚 Couverture de livre</p><div class="grid2"><button class="soft" onclick="kcChoose(kcSpecLoad(sk.doc))">🎨 Styles Pro</button><button class="soft" onclick="kmOpen()">📸 Mockup 3D</button></div>` : ''}
     <button class="pill" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#F97316,#DB2777)" onclick="spkOpen()">📦 Pack de vente (Etsy, Gumroad…)</button>${me?.is_admin ? `<button class="pill" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#7C3AED,#DB2777)" onclick="closeM();pvOpen('studio')">🎬 Vidéo promo de ce design</button>` : ''}<button class="soft" style="width:100%;margin-top:8px" onclick="nuOpen()">🖨️ Plusieurs copies par feuille (traits de coupe)</button><button class="soft" style="width:100%;margin-top:8px" onclick="closeM();skPsdOut()">📂 Photoshop PSD (un calque par élément)</button>
     <button class="pbtn gray" onclick="closeM()">Fermer</button>`);
@@ -10849,6 +10849,91 @@ async function pvImpRun(f) { const name = f.name || '', ty = f.type || '', kind 
     toast(kind === 'ocr' ? '📷 Photo lue : vérifiez le texte (surtout les calculs), puis « ✨ Préparer ».' : '📥 Cours importé : vérifiez-le, puis touchez « ✨ Préparer ».', 6000);
     setTimeout(() => { try { pvBoardPrepOpen(); } catch (e) {} }, 300); }
   catch (e) { closeM(); toast('⚠️ ' + (e.message || e), 6000); } }
+
+// ===================== 📰 Brochure 3 volets · Menu pliable · Catalogue PDF (documents de plusieurs pages, 27/11) =====================
+// Chaque page est un design normal du Studio (modifiable), reliée aux autres par D.set = { id, i, n, kind }.
+// Lignes de pliage (D.fold) visibles seulement dans l'éditeur, jamais à l'impression.
+const SD_A4L = { w: 2339, h: 1654, pt: { w: 841.89, h: 595.28 } }, SD_A4P = { w: 1654, h: 2339, pt: { w: 595.28, h: 841.89 } };
+const SD_KINDS = { tri: '📰 Brochure 3 volets (A4 recto-verso)', menu: '🍽️ Menu pliable (A4 plié en 2)', cat: '📒 Catalogue produits (A4, 4 pages)' };
+let sdMx = null;
+function sdWrap(text, ff, fw, s, maxW) { sdMx ||= document.createElement('canvas').getContext('2d'); const o = { t: 'text', text: '', ff, fw, s }; sdMx.font = skFont(o); return String(text).split('\n').map(par => { const ws = par.split(/\s+/), L = []; let c = ''; ws.forEach(w => { const t = c ? c + ' ' + w : w; if (sdMx.measureText(t.replace(/\*/g, '')).width <= maxW || !c) c = t; else { L.push(c); c = w; } }); if (c) L.push(c); return L.join('\n'); }).join('\n'); }
+function sdB() { const B = typeof skBrand === 'function' ? skBrand() : {}, C = B.cols || ['#16A34A', '#0F172A', '#FACC15']; return { a: C[0] || '#16A34A', d: C[1] || '#0F172A', y: C[2] || '#FACC15', ft: B.ft || 'Anton', fb: B.fb || 'Montserrat', name: B.name || me?.name || 'Votre entreprise', phone: B.phone || (typeof fmtPhone === 'function' ? fmtPhone(me?.phone || '') : me?.phone) || '+243 …', city: B.city || me?.city || 'Goma' }; }
+// petites briques
+const sdT = (text, x, y, s, o = {}) => ({ t: 'text', text, x, y, s, ff: o.ff || 'Montserrat', fw: o.fw ?? 600, c: o.c || '#111827', hc: o.hc || '#FACC15', al: o.al || 'center', lh: o.lh || 1.2, sw: o.sw || 0, sc: o.sc || '#000', bg: o.bg, rot: 0 });
+const sdR = (x, y, w, h, c, r = 0) => ({ t: 'shape', k: 'rect', x, y, w, h, c, r, bw: 0, bc: '#000', rot: 0 });
+const sdP = (x, y, w, h, mask = 'round') => ({ t: 'img', aid: null, ph: 1, fit: 'cover', x, y, w, h, mask, bw: 0, bc: '#ffffff', rot: 0 });
+function sdTW(text, x, y, s, maxW, o = {}) { const t = sdT(sdWrap(text, o.ff || 'Montserrat', o.fw ?? 600, s, maxW), x, y, s, o); if (o.al === 'left') { try { skMeasure(t); t.x = x - maxW / 2 + t.w / 2; } catch (e) {} } return t; }
+function sdDoc(name, F, bg, objs, extra) { const D = skNewDoc(F.w, F.h); D.name = name; D.bg = bg; D.pt = F.pt; objs.forEach(o => { o.id = skId(); D.objs.push(o); }); return Object.assign(D, extra || {}); }
+// ---------- modèles
+function sdTri(B) { const F = SD_A4L, W = F.w, H = F.h, P = W / 3, c = i => P * i + P / 2, u = H / 100, mw = P * 0.82, set = { id: skId(), n: 2, kind: 'tri' };
+  const out = sdDoc('Brochure – extérieur', F, { t: 'color', a: '#FFFFFF' }, [
+    // rabat intérieur (gauche)
+    sdR(c(0), H / 2, P, H, '#F3F4F6'), sdT('Pourquoi *nous* ?', c(0), 10 * u, 4.4 * u, { ff: B.ft, fw: 400, c: B.d, hc: B.a }),
+    sdTW('✔ Qualité garantie\n✔ Prix justes\n✔ Livraison rapide\n✔ Service après-vente', c(0), 30 * u, 3.2 * u, mw, { al: 'left', lh: 1.6, c: B.d }),
+    sdP(c(0), 62 * u, mw, 30 * u), sdTW('« Un client satisfait est notre meilleure publicité. »', c(0), 86 * u, 2.6 * u, mw, { fw: 500, c: '#4B5563' }),
+    // dos (milieu)
+    sdR(c(1), H / 2, P, H, B.d), sdT('Nous *contacter*', c(1), 12 * u, 4.4 * u, { ff: B.ft, fw: 400, c: '#FFFFFF', hc: B.y }),
+    sdTW(`📞 ${B.phone}\n💬 WhatsApp : ${B.phone}\n📍 ${B.city}\n🕘 Lun–Sam : 8 h – 18 h`, c(1), 34 * u, 3.1 * u, mw, { c: '#FFFFFF', lh: 1.7 }),
+    { t: 'qr', x: c(1), y: 66 * u, w: 22 * u, url: me?.username ? location.origin + '/v/' + me.username : location.origin, rot: 0 }, sdT('Scannez pour nous écrire', c(1), 80 * u, 2.3 * u, { c: '#E5E7EB', fw: 500 }),
+    // couverture (droite)
+    sdR(c(2), H / 2, P, H, B.a), sdP(c(2), 36 * u, mw, 42 * u), sdTW(B.name.toUpperCase(), c(2), 66 * u, 5.6 * u, mw, { ff: B.ft, fw: 400, c: '#FFFFFF' }),
+    sdTW('Votre *slogan* en une phrase', c(2), 77 * u, 3 * u, mw, { c: '#FFFFFF', hc: B.y }), sdT(B.city, c(2), 88 * u, 2.4 * u, { c: '#FFFFFF', fw: 500 }) ],
+    { set: { ...set, i: 1 }, fold: [1 / 3, 2 / 3], foldLab: ['Rabat intérieur', 'Dos', 'Couverture'] });
+  const inn = sdDoc('Brochure – intérieur', F, { t: 'color', a: '#FFFFFF' }, [
+    sdR(W / 2, 3 * u, W, 6 * u, B.a), sdR(W / 2, H - 3 * u, W, 6 * u, B.a),
+    ...[0, 1, 2].flatMap(i => [sdT(['Qui *sommes-nous* ?', 'Nos *services*', 'Nos *offres*'][i], c(i), 13 * u, 4 * u, { ff: B.ft, fw: 400, c: B.d, hc: B.a }), sdP(c(i), 37 * u, mw, 28 * u),
+      sdTW(['Présentez votre entreprise : votre histoire, votre expérience, ce qui vous rend différent.', '• Service 1 : décrivez-le\n• Service 2 : décrivez-le\n• Service 3 : décrivez-le\n• Service 4 : décrivez-le', 'Offre spéciale : -20 % pour les nouveaux clients.\nPack famille, livraison offerte, etc.'][i], c(i), 68 * u, 2.9 * u, mw, { fw: 500, c: '#374151', al: i === 1 ? 'left' : 'center', lh: 1.45 }),
+      ...(i === 2 ? [sdR(c(i), 88 * u, mw * 0.8, 8 * u, B.y, 30), sdT('📞 Appelez-nous !', c(i), 88 * u, 3 * u, { c: B.d, fw: 800 })] : [])]) ],
+    { set: { ...set, i: 2 }, fold: [1 / 3, 2 / 3], foldLab: ['Volet 1', 'Volet 2', 'Volet 3'] });
+  return [out, inn]; }
+function sdMenu(B) { const F = SD_A4L, W = F.w, H = F.h, P = W / 2, c = i => P * i + P / 2, u = H / 100, mw = P * 0.8, set = { id: skId(), n: 2, kind: 'menu' };
+  const dish = (n, p, d) => `${n} ……… *${p}*\n${d}`;
+  const out = sdDoc('Menu – extérieur', F, { t: 'color', a: B.d }, [
+    sdTW(`📞 ${B.phone}\n📍 ${B.city}\n🛵 Livraison à domicile`, c(0), 40 * u, 3.4 * u, mw, { c: '#FFFFFF', lh: 1.7 }),
+    { t: 'qr', x: c(0), y: 72 * u, w: 20 * u, url: me?.username ? location.origin + '/v/' + me.username : location.origin, rot: 0 }, sdT('Commandez sur WhatsApp', c(0), 86 * u, 2.6 * u, { c: '#E5E7EB', fw: 600 }),
+    sdP(c(1), 38 * u, mw, 44 * u), sdTW(B.name.toUpperCase(), c(1), 70 * u, 6 * u, mw, { ff: B.ft, fw: 400, c: '#FFFFFF' }), sdT('*MENU*', c(1), 83 * u, 7 * u, { ff: B.ft, fw: 400, c: '#FFFFFF', hc: B.y }) ],
+    { set: { ...set, i: 1 }, fold: [1 / 2], foldLab: ['Dos', 'Couverture'] });
+  const inn = sdDoc('Menu – intérieur', F, { t: 'color', a: '#FFFBF0' }, [
+    sdT('*Plats*', c(0), 9 * u, 6 * u, { ff: B.ft, fw: 400, c: B.d, hc: B.a }), sdT('*Boissons* & desserts', c(1), 9 * u, 4.8 * u, { ff: B.ft, fw: 400, c: B.d, hc: B.a }),
+    ...[['Poulet braisé & frites', '8 $', 'Salade, sauce maison'], ['Poisson tilapia grillé', '10 $', 'Bananes plantains, pili-pili'], ['Brochettes de chèvre', '6 $', 'Oignons, frites'], ['Riz, haricots & viande', '5 $', 'Plat du jour'], ['Fufu & sombe', '4 $', 'Recette de grand-mère']].map((d, k) => sdTW(dish(...d), c(0), (24 + k * 15) * u, 3 * u, mw, { al: 'left', fw: 600, c: '#1F2937', hc: B.a, lh: 1.35 })),
+    ...[['Jus naturel (ananas, passion)', '1,5 $', 'Frais, sans sucre ajouté'], ['Soda / eau', '1 $', ''], ['Café du Kivu', '1 $', 'Arabica local'], ['Gâteau du jour', '2 $', ''], ['Salade de fruits', '2 $', 'Fruits de saison']].map((d, k) => sdTW(dish(...d).trim(), c(1), (24 + k * 15) * u, 3 * u, mw, { al: 'left', fw: 600, c: '#1F2937', hc: B.a, lh: 1.35 })) ],
+    { set: { ...set, i: 2 }, fold: [1 / 2], foldLab: ['Gauche', 'Droite'] });
+  return [out, inn]; }
+function sdCatPage(B, set, i, n) { const F = SD_A4P, W = F.w, H = F.h, u = W / 100, cw = W * 0.42, ch = H * 0.36, cols = [W * 0.27, W * 0.73], rows = [H * 0.31, H * 0.71];
+  return sdDoc(`Catalogue – page ${i}`, F, { t: 'color', a: '#FFFFFF' }, [ sdR(W / 2, 4 * u, W, 8 * u, B.a), sdT('Nos *produits*', W / 2, 4 * u, 4.6 * u, { ff: B.ft, fw: 400, c: '#FFFFFF', hc: B.y }),
+    ...rows.flatMap(y => cols.flatMap(x => [sdR(x, y, cw, ch, '#F9FAFB', 6), sdP(x, y - ch * 0.17, cw * 0.86, ch * 0.56), sdT('Nom du produit', x, y + ch * 0.2, 3.6 * u, { fw: 800, c: B.d }), sdT('Petite description', x, y + ch * 0.29, 2.6 * u, { fw: 500, c: '#6B7280' }), sdR(x, y + ch * 0.4, cw * 0.4, 6 * u, B.y, 40), sdT('00 $', x, y + ch * 0.4, 3.6 * u, { fw: 900, c: B.d })])),
+    sdT(`${B.name} · 📞 ${B.phone}`, W / 2, H - 3 * u, 2.4 * u, { fw: 600, c: '#6B7280' }) ], { set: { ...set, i } }); }
+function sdCat(B) { const F = SD_A4P, W = F.w, H = F.h, u = W / 100, set = { id: skId(), n: 4, kind: 'cat' };
+  const cover = sdDoc('Catalogue – couverture', F, { t: 'grad', a: B.a, b: B.d }, [ sdP(W / 2, H * 0.42, W * 0.8, H * 0.46), sdTW(B.name.toUpperCase(), W / 2, H * 0.74, 8 * u, W * 0.86, { ff: B.ft, fw: 400, c: '#FFFFFF' }), sdT('*Catalogue* 2026', W / 2, H * 0.83, 6 * u, { ff: B.ft, fw: 400, c: '#FFFFFF', hc: B.y }), sdT(B.city, W / 2, H * 0.9, 3 * u, { c: '#FFFFFF', fw: 500 }) ], { set: { ...set, i: 1 } });
+  const back = sdDoc('Catalogue – contact', F, { t: 'color', a: B.d }, [ sdT('Commandez *maintenant*', W / 2, H * 0.2, 7 * u, { ff: B.ft, fw: 400, c: '#FFFFFF', hc: B.y }), sdTW(`📞 ${B.phone}\n💬 WhatsApp : ${B.phone}\n📍 ${B.city}\n🚚 Livraison possible`, W / 2, H * 0.42, 4 * u, W * 0.8, { c: '#FFFFFF', lh: 1.8 }), { t: 'qr', x: W / 2, y: H * 0.68, w: 30 * u, url: me?.username ? location.origin + '/v/' + me.username : location.origin, rot: 0 }, sdT('Scannez pour commander', W / 2, H * 0.8, 3 * u, { c: '#E5E7EB', fw: 600 }) ], { set: { ...set, i: 4 } });
+  return [cover, sdCatPage(B, set, 2, 4), sdCatPage(B, set, 3, 4), back]; }
+// ---------- création, pages, PDF
+async function sdSaveDoc(D) { const c = document.createElement('canvas'), s = 240 / Math.max(D.w, D.h); c.width = Math.round(D.w * s); c.height = Math.round(D.h * s); const x = c.getContext('2d'); x.scale(s, s); try { skPaint(x, D, false); } catch (e) {} await skDBdo('readwrite', st => st.put({ id: D.id, name: D.name, updated: Date.now(), thumb: c.toDataURL('image/jpeg', 0.7), doc: JSON.parse(JSON.stringify(D)) })); }
+async function sdNew(kind) { closeM(); toast('⏳ Préparation des pages…', 1500); try { await skFontsLoad(); } catch (e) {} const B = sdB(), docs = kind === 'tri' ? sdTri(B) : kind === 'menu' ? sdMenu(B) : sdCat(B);
+  if (sk?.doc) { try { await skSave(); } catch (e) {} } for (const D of docs) await sdSaveDoc(D); await skLoad(docs[0].id); sdBar();
+  toast(kind === 'cat' ? '📒 Catalogue de 4 pages créé : touchez les cadres 📷 pour mettre vos photos. « 📄 Pages » en haut pour changer de page.' : '📰 Recto et verso créés : les lignes pointillées = pliage (invisibles à l’impression). « 📄 Pages » en haut pour passer à l’autre face.', 7000); }
+async function sdSetDocs(setId) { let L = []; try { L = await skDBdo('readonly', st => st.getAll()) || []; } catch (e) {} return L.filter(p => p.doc?.set?.id === setId).sort((a, b) => a.doc.set.i - b.doc.set.i); }
+async function sdGo(d) { const D = sk?.doc; if (!D?.set) return; await skSave(); const L = await sdSetDocs(D.set.id), j = L.findIndex(p => p.id === D.id), k = Math.max(0, Math.min(L.length - 1, j + d)); if (k !== j) { await skLoad(L[k].id); sdBar(); } }
+async function sdAddPage() { const D = sk?.doc; if (D?.set?.kind !== 'cat') return; await skSave(); const L = await sdSetDocs(D.set.id), B = sdB(), at = L.length; // avant la dernière page (contact)
+  const nd = sdCatPage(B, { id: D.set.id, kind: 'cat' }, at, L.length + 1); L.forEach(p => { if (p.doc.set.i >= at) p.doc.set.i++; p.doc.set.n = L.length + 1; }); nd.set.n = L.length + 1;
+  for (const p of L) await skDBdo('readwrite', st => st.put({ ...p, doc: p.doc })); await sdSaveDoc(nd); await skLoad(nd.id); sdBar(); toast(`➕ Page ${at} ajoutée`); }
+async function sdPdf(share) { const D = sk?.doc; if (!D?.set) return skOut('pdf', share); closeM(); toast('⏳ PDF de toutes les pages…', 2500); await skSave(); const L = await sdSetDocs(D.set.id), cv = [];
+  for (const p of L) { const d = p.doc; await skPreload(d); await skBgPrep(d); const c = document.createElement('canvas'); c.width = d.w; c.height = d.h; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); skPaint(x, d, false); cv.push(c); }
+  const base = ({ tri: 'brochure', menu: 'menu', cat: 'catalogue' }[D.set.kind] || 'document') + '-' + (sdB().name || '').replace(/[^\w-]+/g, '-').slice(0, 24); const f = await pagesFiles(cv, base, 'pdf', D.pt); share ? spShare(f, base) : spSave(f); }
+async function sdPages() { const D = sk?.doc; if (!D?.set) return; await skSave(); const L = await sdSetDocs(D.set.id);
+  openM(`<h3>📄 Pages du document</h3><div class="skproj">${L.map(p => `<div><img src="${p.thumb}" alt="" onclick="closeM();skLoad('${p.id}').then(sdBar)" style="${p.id === D.id ? 'outline:3px solid #7C3AED' : ''}"><b>${p.doc.set.i}. ${esc(p.name)}</b></div>`).join('')}</div>
+    ${D.set.kind === 'cat' ? '<button class="soft" style="width:100%" onclick="closeM();sdAddPage()">➕ Ajouter une page de produits</button>' : ''}
+    <button class="pill" style="width:100%;margin-top:8px" onclick="sdPdf()">🖨️ PDF de toutes les pages (imprimeur)</button><button class="soft" style="width:100%;margin-top:6px;background:#25D366;color:#fff" onclick="sdPdf(1)">📤 Envoyer le PDF (WhatsApp…)</button>
+    <small class="mt" style="display:block;margin-top:6px">${D.set.kind === 'tri' ? 'Impression : A4 paysage, recto-verso, « retourner sur le bord court », puis pliez aux lignes.' : D.set.kind === 'menu' ? 'Impression : A4 paysage, recto-verso, « retourner sur le bord court », puis pliez au milieu.' : 'Le PDF s’envoie aussi sur WhatsApp comme catalogue.'}</small><button class="pbtn gray" onclick="closeM()">Fermer</button>`); }
+// barre « Page x/n » en haut du Studio
+function sdBar() { const X = $('skx'); if (!X) return; let el = $('sk-setbar'); const D = sk?.doc; if (!D?.set) { el?.remove(); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'sk-setbar'; el.style.cssText = 'position:absolute;top:68px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:6px;align-items:center;background:rgba(17,24,39,.88);color:#fff;border-radius:999px;padding:5px 8px;font:700 13px Montserrat,Arial,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25)'; X.appendChild(el); }
+  const b = (t, f) => `<button type="button" onclick="${f}" style="background:#374151;color:#fff;border:0;border-radius:999px;padding:5px 10px;font:inherit">${t}</button>`;
+  el.innerHTML = `${b('◀', 'sdGo(-1)')}<span style="padding:0 4px">📄 ${D.set.i}/${D.set.n}</span>${b('▶', 'sdGo(1)')}${b('Pages', 'sdPages()')}`; }
+// lignes de pliage dans l'éditeur
+function sdFoldDraw(x, D, k) { if (!D.fold) return; x.save(); x.lineWidth = 2 / k; x.setLineDash([10 / k, 8 / k]); x.strokeStyle = 'rgba(37,99,235,.85)'; D.fold.forEach(f => { x.beginPath(); x.moveTo(D.w * f, 0); x.lineTo(D.w * f, D.h); x.stroke(); });
+  x.setLineDash([]); x.font = `700 ${14 / k}px Montserrat, Arial, sans-serif`; x.textAlign = 'center'; (D.foldLab || []).forEach((l, i, A) => { const cx = D.w * (i + 0.5) / A.length, tw = x.measureText(l).width + 14 / k; x.fillStyle = 'rgba(37,99,235,.85)'; vidRR(x, cx - tw / 2, 6 / k, tw, 22 / k, 11 / k); x.fill(); x.fillStyle = '#fff'; x.fillText(l, cx, 22 / k); }); x.restore(); }
+function sdBox() { return `<p class="mt" style="font-weight:800;margin:12px 0 6px">📰 Brochures, menus, catalogues (impression)</p><div class="afchips">${Object.entries(SD_KINDS).map(([k, n]) => `<button type="button" onclick="sdNew('${k}')">${n}</button>`).join('')}</div><small class="mt">Créés avec les couleurs de « 🏷️ Ma marque », votre nom et votre numéro. Tout reste modifiable.</small>`; }
 
 // Photo carrée recadrée au centre (pour CV et carte)
 function pickPhoto(cb, square = true) {
