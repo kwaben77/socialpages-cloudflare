@@ -1349,7 +1349,7 @@ async function boot() {
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => { updBadges(); if (cur === 'chat' || cur === 'messages') refresh(); })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.id}` }, ev => onNotif(ev.new))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ev => { handleRealtimePost(ev.new); }).subscribe();
-  sigListen(); liveDirListen(); setTimeout(() => { registerNative(); checkNativePending(); }, 300); checkAdmin(); crLoad(); presStart(); setTimeout(checkInvites, 1200);
+  sigListen(); liveDirListen(); setTimeout(() => { registerNative(); checkNativePending(); }, 300); checkAdmin(); crLoad(); cmBoot(); presStart(); setTimeout(checkInvites, 1200);
   go(route() ? 'product' : 'accueil'); liveHash(); tvHash(); phHash(); toolHash();
   setTimeout(welcome, 1500);
 }
@@ -2985,23 +2985,24 @@ async function spSave(files) {
 }
 // ===================== 🧰 MON COMMERCE : factures, carnet de crédit, stock, caisse =====================
 // Tout est gardé sur l'appareil du vendeur (gratuit, privé). Le cachet et la signature ne quittent jamais le téléphone.
-let biz = null, bizTab = 'caisse';
+let biz = null, bizTab = 'jour';
 const BIZ_K = () => 'sp_biz_' + (me?.id || 'x');
 const bid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 function bizLoad() {
-  let d = null; try { d = JSON.parse(localStorage.getItem(BIZ_K()) || 'null'); } catch (e) {}
+  let d = null; if (CM.ready && CM.uid === me?.id) d = CM.biz; else try { d = JSON.parse(localStorage.getItem(BIZ_K()) || 'null'); } catch (e) {}
   d ||= {}; d.pro ||= {}; d.seq ||= {}; d.docs ||= []; d.cli ||= []; d.cash ||= []; d.tix ||= [];
   const P = d.pro; P.name ??= me?.name || ''; P.phone ??= fmtPhone(me?.phone || ''); P.addr ??= me?.city || '';
   P.cur ||= 'USD'; P.rate ??= 2800; P.tva ??= 16; P.color ||= '#16A34A'; P.tpl ||= 'moderne'; P.city ??= me?.city || '';
+  if (CM.ready && CM.uid === me?.id) CM.biz = d;
   return biz = d;
 }
-function bizSave() { try { localStorage.setItem(BIZ_K(), JSON.stringify(biz)); return true; } catch (e) { toast('⚠️ Mémoire du téléphone pleine : exportez une sauvegarde puis supprimez d’anciens documents.', 6000); return false; } }
+function bizSave() { if (CM.ready && CM.uid === me?.id) { CM.biz = biz; cmSaveBiz(); return true; } try { localStorage.setItem(BIZ_K(), JSON.stringify(biz)); return true; } catch (e) { toast('⚠️ Mémoire du téléphone pleine : exportez une sauvegarde puis supprimez d’anciens documents.', 6000); return false; } }
 const CUR = { USD: { s: '$', n: 'Dollar (USD)' }, CDF: { s: 'FC', n: 'Franc congolais (CDF)' } };
 const r2 = v => Math.round((+v || 0) * 100) / 100;
 function fmtM(v, cur = 'USD') { v = r2(v); const neg = v < 0; v = Math.abs(v); const dec = cur === 'CDF' ? 0 : (v % 1 ? 2 : 0);
   const s = v.toFixed(dec).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return (neg ? '-' : '') + s + ' ' + CUR[cur].s; }
 function conv(v, from, to) { if (from === to) return +v || 0; const R = +biz?.pro?.rate || 0; if (!R) return 0; return from === 'USD' ? v * R : v / R; }
-const today = () => new Date().toISOString().slice(0, 10);
+const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 const fdate = d => { try { return new Date(d + (String(d).length === 10 ? 'T12:00' : '')).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }); } catch (e) { return d; } };
 // Montant en lettres (français)
 function nWords(n) {
@@ -3027,10 +3028,10 @@ function docCalc(d) {
 }
 // ---------- Ouverture ----------
 async function bizOpen(tab) {
-  if (!me) return needAuth(); bizLoad(); if (tab) bizTab = tab;
+  if (!me) return needAuth(); await cmBoot(); bizLoad(); if (tab) bizTab = tab;
   $('bizx')?.remove();
   document.body.insertAdjacentHTML('beforeend', `<div id="bizx" class="bizx"><div class="bizh"><button type="button" class="bizb" onclick="bizClose()" aria-label="Retour">←</button><b>🧰 Mon commerce</b><button type="button" class="bizb" onclick="bizTab='pro';bizRender()" aria-label="Mon entreprise">⚙️</button></div>
-    <div class="biztabs">${[['caisse', '📊 Caisse'], ['recu', '⚡ Reçu rapide'], ['docs', '🧾 Factures'], ['loyer', '🏠 Loyers'], ['carnet', '📒 Carnet'], ['stock', '📦 Stock'], ['pro', '🏢 Entreprise']].map(([k, n]) => `<button type="button" data-k="${k}" onclick="bizTab='${k}';bizRender()">${n}</button>`).join('')}</div>
+    <div class="biztabs">${[['jour', '🏠 Aujourd’hui'], ['vendre', '🛒 Vendre'], ['art', '📦 Articles'], ['caisse', '💵 Caisse'], ['carnet', '📒 Carnet'], ['docs', '🧾 Factures'], ['recu', '⚡ Reçus'], ['loyer', '🔑 Loyers'], ['pro', '🏢 Entreprise']].map(([k, n]) => `<button type="button" data-k="${k}" onclick="bizTab='${k}';bizRender()">${n}</button>`).join('')}</div>
     <div class="bizc" id="bizc"></div></div>`);
   document.body.classList.add('noscroll'); bizRender();
 }
@@ -3038,15 +3039,15 @@ function bizClose() { $('bizx')?.remove(); document.body.classList.remove('noscr
 function bizRender() {
   document.querySelectorAll('.biztabs button').forEach(b => { b.classList.toggle('on', b.dataset.k === bizTab); if (b.dataset.k === bizTab) b.scrollIntoView?.({ inline: 'center', block: 'nearest' }); });
   const el = $('bizc'); if (!el) return; el.scrollTop = 0;
-  ({ caisse: bizCaisse, recu: bizRecu, loyer: bizLoyer, docs: bizDocs, carnet: bizCarnet, stock: bizStock, pro: bizPro })[bizTab]?.(el);
+  ({ jour: cmJour, vendre: cmVendre, art: cmArt, stock: cmArt, caisse: bizCaisse, recu: bizRecu, loyer: bizLoyer, docs: bizDocs, carnet: bizCarnet, stock: bizStock, pro: bizPro })[bizTab]?.(el);
 }
 // ---------- 📊 Caisse ----------
-function cashSum(from, to) { const C = biz.pro.cur; let i = 0, o = 0; biz.cash.forEach(x => { const d = x.date.slice(0, 10); if (d < from || d > to) return; const v = conv(x.amt, x.cur, C); if (x.type === 'in') i += v; else o += v; }); return { i: r2(i), o: r2(o), b: r2(i - o) }; }
+function cashSum(from, to) { const C = biz.pro.cur; let i = 0, o = 0; biz.cash.forEach(x => { const d = cmDay(x.date); if (d < from || d > to) return; const v = conv(x.amt, x.cur, C); if (x.type === 'in') i += v; else o += v; }); return { i: r2(i), o: r2(o), b: r2(i - o) }; }
 function bizCaisse(el) {
   const C = biz.pro.cur, t = today(), m0 = t.slice(0, 8) + '01', D = cashSum(t, t), M = cashSum(m0, t);
   const days = [...Array(7)].map((_, k) => { const d = new Date(Date.now() - (6 - k) * 864e5).toISOString().slice(0, 10); return { d, v: cashSum(d, d).i }; }), mx = Math.max(1, ...days.map(x => x.v));
   const owed = biz.cli.reduce((a, c) => a + Math.max(0, cliBal(c)), 0);
-  el.innerHTML = `<div class="bizcards"><div class="bizcard g"><small>Ventes aujourd’hui</small><b>${fmtM(D.i, C)}</b></div><div class="bizcard r"><small>Dépenses aujourd’hui</small><b>${fmtM(D.o, C)}</b></div>
+  el.innerHTML = `<button type="button" class="cmban" style="background:#EFF6FF;color:#1D4ED8" onclick="cmBilan(cmToday())">📄 Bilan du jour : voir, imprimer, envoyer sur WhatsApp →</button><div class="bizcards"><div class="bizcard g"><small>Ventes aujourd’hui</small><b>${fmtM(D.i, C)}</b></div><div class="bizcard r"><small>Dépenses aujourd’hui</small><b>${fmtM(D.o, C)}</b></div>
     <div class="bizcard ${D.b >= 0 ? 'g' : 'r'} wide"><small>Bénéfice du jour</small><b>${fmtM(D.b, C)}</b></div></div>
     <div class="box"><div class="row"><b>Ce mois-ci</b><small class="mt">${new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</small></div>
       <div class="bizm"><span>Ventes <b>${fmtM(M.i, C)}</b></span><span>Dépenses <b>${fmtM(M.o, C)}</b></span><span>Bénéfice <b class="${M.b >= 0 ? 'ok' : 'ko'}">${fmtM(M.b, C)}</b></span></div>
@@ -3212,15 +3213,282 @@ function signPad(cb) { window._sgCb = typeof cb === 'function' ? cb : null;
   cv.onpointerup = cv.onpointercancel = () => dn = false;
 }
 function signSave() { const c = $('sg-cv'), im = new Image(); im.onload = () => { const d = imgToData(im, 600, true), cb = window._sgCb; window._sgCb = null; if (cb) { closeM(); cb(d); toast('✅ Signature enregistrée'); return; } biz.pro.sign = d; bizSave(); closeM(); bizRender(); toast('✅ Signature enregistrée'); }; im.src = c.toDataURL('image/png'); }
-function bizExport() {
+function bizExportOld() {
   const b = new Blob([JSON.stringify({ v: 1, app: 'SocialPages', date: new Date().toISOString(), data: biz })], { type: 'application/json' }), f = new File([b], `socialpages-commerce-${today()}.json`, { type: 'application/json' });
   openM(`<h3>💾 Sauvegarde</h3><p class="mt">Gardez ce fichier en lieu sûr (WhatsApp « Message à moi-même », Google Drive…).</p><button class="pill" style="width:100%" onclick="spShare([window.bizBak],'Sauvegarde SocialPages')">📤 Envoyer (WhatsApp, Drive…)</button><button class="soft" style="width:100%;margin-top:8px" onclick="spSave([window.bizBak])">⬇️ Enregistrer sur l’appareil</button><button class="pbtn gray" onclick="closeM()">Fermer</button>`); window.bizBak = f; void b;
 }
-function bizImport() {
+function bizImportOld() {
   const i = document.createElement('input'); i.type = 'file'; i.accept = '.json,application/json';
   i.onchange = async () => { try { const j = JSON.parse(await i.files[0].text()); if (j.app !== 'SocialPages' || !j.data) throw 0; if (!confirm('Remplacer les données de cet appareil par cette sauvegarde ?')) return; localStorage.setItem(BIZ_K(), JSON.stringify(j.data)); bizLoad(); bizRender(); toast('✅ Sauvegarde restaurée'); } catch (e) { toast('Fichier de sauvegarde invalide.'); } };
   i.click();
 }
+// ===================== 🧰 MON COMMERCE v2 : articles illimités (dans le téléphone), vendre en un geste, sauvegarde, bilan du jour =====================
+const CM = { db: null, uid: null, ready: false, biz: null, art: [], mv: [], cart: null, q: '', aq: '', af: 'all', more: 0, prodsAt: 0, saveT: null, sync: null };
+const cmPad = n => String(n).padStart(2, '0');
+const cmDay = s => { if (!s) return ''; if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; const d = new Date(s); if (isNaN(d)) return String(s).slice(0, 10); return d.getFullYear() + '-' + cmPad(d.getMonth() + 1) + '-' + cmPad(d.getDate()); };
+const cmToday = () => cmDay(new Date().toISOString());
+const cmNorm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+const cmDayTxt = d => { try { return new Date(d + 'T12:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return d; } };
+const cmHM = s => { try { return new Date(s).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } };
+const PAY_ALL = ['Cash', 'M-Pesa', 'Orange Money', 'Airtel Money', 'Crédit'];
+
+// ---------- base de données du téléphone (grande, sans la limite de 5 Mo)
+function cmOpen() { if (CM.db && CM.uid === (me?.id || 'x')) return Promise.resolve(CM.db); CM.db = null;
+  return new Promise((res, rej) => { const r = indexedDB.open('sp_cm_' + (me?.id || 'x'), 1);
+    r.onupgradeneeded = () => { const d = r.result; if (!d.objectStoreNames.contains('kv')) d.createObjectStore('kv'); if (!d.objectStoreNames.contains('art')) d.createObjectStore('art', { keyPath: 'id' }); if (!d.objectStoreNames.contains('mv')) d.createObjectStore('mv', { keyPath: 'id' }).createIndex('day', 'day'); };
+    r.onsuccess = () => { CM.db = r.result; CM.uid = me?.id || 'x'; res(CM.db); }; r.onerror = () => rej(r.error); r.onblocked = () => rej(new Error('base bloquée')); }); }
+const cmTx = (st, mode, fn) => cmOpen().then(db => new Promise((res, rej) => { const t = db.transaction(st, mode), s = t.objectStore(st); let out; const q = fn(s); if (q) q.onsuccess = () => { out = q.result; }; t.oncomplete = () => res(out); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error || new Error('abort')); }));
+async function cmBoot() { if (!me) return; if (CM.ready && CM.uid === me.id) return; CM.ready = false;
+  try { await cmOpen(); let b = await cmTx('kv', 'readonly', s => s.get('biz'));
+    if (!b) { let ls = null; try { ls = JSON.parse(localStorage.getItem(BIZ_K()) || 'null'); } catch (e) {} if (ls) await cmTx('kv', 'readwrite', s => { s.put(ls, 'biz'); }); b = ls; }
+    CM.biz = b; CM.art = (await cmTx('art', 'readonly', s => s.getAll())) || [];
+    const from = cmDay(new Date(Date.now() - 62 * 864e5).toISOString()); CM.mv = (await cmTx('mv', 'readonly', s => s.index('day').getAll(IDBKeyRange.lowerBound(from)))) || [];
+    CM.ready = true; } catch (e) { console.warn('commerce', e); CM.ready = false; } }
+function cmSaveBiz() { if (!CM.ready) return; clearTimeout(CM.saveT); CM.saveT = setTimeout(cmFlush, 250); }
+function cmFlush() { clearTimeout(CM.saveT); CM.saveT = null; if (!CM.ready || !biz) return; cmTx('kv', 'readwrite', s => { s.put(biz, 'biz'); }).catch(e => toast('⚠️ Enregistrement impossible : ' + (e?.message || e), 6000)); }
+addEventListener('pagehide', () => { if (CM.saveT) cmFlush(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && CM.saveT) cmFlush(); });
+const cmArtPut = a => { a.updated = Date.now(); const i = CM.art.findIndex(x => x.id === a.id); if (i < 0) CM.art.push(a); else CM.art[i] = a; return cmTx('art', 'readwrite', s => { s.put(a); }); };
+const cmMvPut = m => { m.day ||= cmDay(m.date); CM.mv.push(m); return cmTx('mv', 'readwrite', s => { s.put(m); }); };
+async function cmMvDay(day) { if (day >= cmDay(new Date(Date.now() - 60 * 864e5).toISOString())) return CM.mv.filter(m => m.day === day); return (await cmTx('mv', 'readonly', s => s.index('day').getAll(day))) || []; }
+
+// ---------- articles : ceux de la boutique en ligne sont repris tout seuls
+const cmCur = a => (a?.cur === 'CDF' ? 'CDF' : 'USD');
+const cmLow = a => a.qty != null && a.qty <= (a.alert ?? 2);
+const cmArtFind = s => { const n = cmNorm(s); return CM.art.find(a => cmNorm(a.name) === n); };
+async function cmSyncProds(force) { if (!me || (!force && Date.now() - CM.prodsAt < 60e3)) return; CM.prodsAt = Date.now();
+  try { const { data, error } = await sb.from('products').select('id,name,price,status,description,images,image_url').eq('user_id', me.id).order('created_at', { ascending: false }).limit(500); if (error || !Array.isArray(data)) return; bizProds = data;
+    const seen = new Set(); let ch = 0;
+    for (const p of data) { seen.add(p.id); let a = CM.art.find(x => x.pid === p.id); const s = getMeta(p.description).s, im = p.images?.[0] || p.image_url || '';
+      if (!a) { a = cmArtFind(p.name); if (a && a.pid) a = null; }
+      if (!a) { a = { id: bid(), name: p.name, price: +p.price || 0, cur: 'USD', buy: null, qty: s ?? null, alert: 2, photo: '', pid: p.id, sold: 0, created: Date.now() }; }
+      const o = JSON.stringify(a); a.pid = p.id; a.name = p.name || a.name; a.price = +p.price || a.price || 0; a.cur = 'USD'; a.url = im;
+      if (a.dirty && a.qty != null) { if (await stockSet(p.id, a.qty, true)) delete a.dirty; } else if (s !== undefined && s !== null) a.qty = s;
+      if (JSON.stringify(a) !== o || !CM.art.includes(a)) { await cmArtPut(a); ch++; } }
+    for (const a of CM.art) if (a.pid && !seen.has(a.pid)) { a.pid = null; a.url = a.photo ? '' : a.url; await cmArtPut(a); ch++; }
+    if (ch && $('bizc') && ['art', 'vendre', 'jour'].includes(bizTab)) bizRender(); } catch (e) {} }
+async function cmImg(f, M = 360) { const b = await createImageBitmap(f), k = Math.min(1, M / Math.max(b.width, b.height)), c = document.createElement('canvas'); c.width = Math.round(b.width * k); c.height = Math.round(b.height * k); const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(b, 0, 0, c.width, c.height); b.close?.(); return c.toDataURL('image/jpeg', 0.78); }
+const cmPic = a => a?.photo || a?.url || '';
+const cmThumb = (a, sz = 44) => { const p = cmPic(a); return p ? `<img src="${esc(p)}" alt="" style="width:${sz}px;height:${sz}px;border-radius:10px;object-fit:cover;flex:none;background:#F3F4F6" onerror="this.style.visibility='hidden'">` : `<span style="width:${sz}px;height:${sz}px;border-radius:10px;flex:none;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-weight:800;color:#6B7280;font-size:${Math.round(sz * 0.4)}px">${esc((a?.name || '?').trim().charAt(0).toUpperCase())}</span>`; };
+const cmQtyTag = a => a.qty == null ? '' : a.qty <= 0 ? '<span class="cmtag r">Épuisé</span>' : cmLow(a) ? `<span class="cmtag o">${a.qty} restant${a.qty > 1 ? 's' : ''}</span>` : `<span class="cmtag g">${a.qty} en stock</span>`;
+
+// ---------- 🏠 Aujourd'hui
+function cmSalesOf(list) { const R = { n: 0, by: {}, mode: {}, prof: {}, miss: 0, cred: {} }; list.filter(m => m.t === 'sale').forEach(m => { R.n++; R.by[m.cur] = (R.by[m.cur] || 0) + m.total; R.mode[m.mode] ||= {}; R.mode[m.mode][m.cur] = (R.mode[m.mode][m.cur] || 0) + m.total; if (m.profit != null) R.prof[m.cur] = (R.prof[m.cur] || 0) + m.profit; if (m.miss) R.miss++; }); return R; }
+const cmMoney = (o, emptyTxt = '0') => { const k = Object.keys(o || {}).filter(c => Math.abs(o[c]) > 0.004); return k.length ? k.sort().reverse().map(c => fmtM(o[c], c)).join(' + ') : emptyTxt; };
+function cmJour(el) { cmSyncProds(); const d = cmToday(), M = CM.mv.filter(m => m.day === d), S = cmSalesOf(M), low = CM.art.filter(cmLow).sort((a, b) => a.qty - b.qty), last = M.filter(m => m.t === 'sale').slice(-5).reverse();
+  const yest = cmPendingBilan(), bak = cmBakDue();
+  el.innerHTML = `<p class="mt" style="margin:0 0 10px;font-size:13px;text-transform:capitalize">${cmDayTxt(d)}</p>
+    ${yest ? `<button type="button" class="cmban" style="background:#EFF6FF;color:#1D4ED8" onclick="cmBilan('${yest}')">📄 Le bilan du ${fdate(yest)} est prêt : voir, imprimer, envoyer →</button>` : ''}
+    ${bak ? `<button type="button" class="cmban" style="background:#FEF3C7;color:#92400E" onclick="cmBackup()">💾 ${bak}</button>` : ''}
+    <div class="bizcards"><div class="bizcard g"><small>Ventes du jour (${S.n})</small><b>${cmMoney(S.by)}</b></div><div class="bizcard ${Object.values(S.prof).some(v => v < 0) ? 'r' : 'g'}"><small>Bénéfice du jour</small><b>${cmMoney(S.prof)}</b>${S.miss ? `<small style="font-size:11px">${S.miss} vente${S.miss > 1 ? 's' : ''} sans prix d’achat</small>` : ''}</div></div>
+    <button type="button" class="cmbig" onclick="bizTab='vendre';bizRender()">🛒 Vendre</button>
+    <div class="grid2" style="margin-top:8px"><button type="button" class="cmmid" onclick="cmBuy()">📥 J’ai acheté</button><button type="button" class="cmmid" onclick="bizTab='art';bizRender()">📦 Mes articles</button></div>
+    <button type="button" class="cmmid" style="width:100%;margin-top:8px" onclick="bizTab='caisse';bizRender()">💵 Ma caisse</button>
+    ${low.length ? `<div class="cmwarn" onclick="CM.af='low';bizTab='art';bizRender()">⚠️ <b>${low.length} article${low.length > 1 ? 's' : ''} presque fini${low.length > 1 ? 's' : ''} :</b> ${low.slice(0, 5).map(a => esc(a.name) + (a.qty <= 0 ? ' (épuisé)' : ` (${a.qty})`)).join(', ')}${low.length > 5 ? '…' : ''}</div>` : ''}
+    ${last.length ? `<h3 style="margin:16px 0 4px;font-size:16px">Dernières ventes</h3>${last.map(m => `<div class="bizrow" onclick="${m.tixId ? `tixView('${m.tixId}')` : ''}"><span class="bizav">🛒</span><div><b>${esc(m.num)}</b><small>${cmHM(m.date)} · ${esc(m.mode)}${m.client ? ' · ' + esc(m.client) : ''} · ${m.items.reduce((p, i) => p + i.qty, 0)} article(s)</small></div><b>${fmtM(m.total, m.cur)}</b></div>`).join('')}` : ''}
+    <button type="button" class="pill" style="width:100%;margin-top:16px;background:#111827" onclick="cmClose()">🔒 Fermer la journée et voir le bilan</button>
+    <div class="grid2" style="margin-top:8px"><button type="button" class="soft" onclick="cmBilans()">📚 Bilans précédents</button><button type="button" class="soft" onclick="cmBackup()">💾 Sauvegarde</button></div>`; }
+
+// ---------- 🛒 Vendre
+const cmNewCart = () => ({ items: [], cur: biz?.pro?.cur || 'USD', mode: 'Cash', client: '', phone: '' });
+const cmRound = (v, cur) => cur === 'CDF' ? Math.round(v) : Math.round(v * 100) / 100;
+const cmCartTot = (C = CM.cart) => r2(C.items.reduce((p, i) => p + (+i.qty || 0) * (+i.price || 0), 0));
+const cmCartN = (C = CM.cart) => C.items.reduce((p, i) => p + (+i.qty || 0), 0);
+function cmSorted(q) { const n = cmNorm(q); let L = CM.art.filter(a => !a.off); if (n) L = L.filter(a => cmNorm(a.name).includes(n)); return L.sort((a, b) => (b.sold || 0) - (a.sold || 0) || a.name.localeCompare(b.name)); }
+function cmVendre(el) { cmSyncProds(); CM.cart ||= cmNewCart();
+  el.innerHTML = `<div class="cmsearch"><input id="cm-q" placeholder="🔍 Chercher un article" value="${esc(CM.q)}" oninput="CM.q=this.value;cmGrid()" autocomplete="off"></div>
+    <div id="cm-grid" class="cmgrid"></div>
+    <button type="button" class="soft" style="width:100%;margin-top:10px" onclick="cmFree()">➕ Article qui n’est pas dans la liste</button>
+    <div style="height:84px"></div><div id="cm-bar" class="cmbar"></div>`; cmGrid(); cmBarUp(); }
+function cmGrid() { const g = $('cm-grid'); if (!g) return; const L = cmSorted(CM.q), sh = L.slice(0, 60);
+  if (!CM.art.length) { g.innerHTML = `<div style="grid-column:1/-1">${empty('📦', 'Ajoutez vos articles', 'Une seule fois : ensuite, vendre = toucher l’article.')}<button class="pill" style="width:100%" onclick="cmEdit()">➕ Ajouter un article</button></div>`; return; }
+  g.innerHTML = sh.map(a => { const inC = CM.cart.items.filter(i => i.aid === a.id).reduce((p, i) => p + i.qty, 0); return `<button type="button" class="cmtile${a.qty != null && a.qty <= 0 ? ' out' : ''}" onclick="cmAdd('${a.id}')">${inC ? `<span class="cmin">${inC}</span>` : ''}${cmThumb(a, 64)}<span class="cmtn">${esc(a.name)}</span><b>${+a.price > 0 ? fmtM(a.price, cmCur(a)) : '<span style="color:#D97706">prix ?</span>'}</b>${a.qty != null ? `<small class="${a.qty <= 0 ? 'ko' : cmLow(a) ? 'lo' : ''}">${a.qty <= 0 ? 'épuisé' : 'stock ' + a.qty}</small>` : ''}</button>`; }).join('') + (L.length > sh.length ? `<p class="mt" style="grid-column:1/-1;font-size:12px;text-align:center">${L.length - sh.length} autres : tapez le nom pour les trouver.</p>` : '') + (!L.length ? `<p class="mt" style="grid-column:1/-1;text-align:center">Aucun article « ${esc(CM.q)} ». <a href="#" onclick="event.preventDefault();cmEdit(null,CM.q)">L’ajouter</a></p>` : ''); }
+function cmBarUp() { const b = $('cm-bar'); if (!b) return; const n = cmCartN(); b.innerHTML = n ? `<button type="button" class="cmpay" onclick="cmCheck()"><span>🛒 ${n} article${n > 1 ? 's' : ''}</span><b>${fmtM(cmCartTot(), CM.cart.cur)} · Encaisser →</b></button>` : `<p class="mt" style="margin:0;text-align:center;font-size:13px">Touchez un article pour l’ajouter à la vente.</p>`; }
+function cmAdd(id) { const a = CM.art.find(x => x.id === id); if (!a) return; if (!(+a.price > 0)) { toast('Fixez d’abord le prix de vente de cet article.'); return cmEdit(a.id); } const C = CM.cart; if (!C.items.length) C.cur = cmCur(a);
+  const it = C.items.find(i => i.aid === id); if (it) it.qty++; else C.items.push({ aid: id, name: a.name, qty: 1, price: cmRound(conv(a.price, cmCur(a), C.cur) || a.price, C.cur) });
+  if (a.qty != null && C.items.filter(i => i.aid === id).reduce((p, i) => p + i.qty, 0) > a.qty) toast(`⚠️ Il ne reste que ${Math.max(0, a.qty)} « ${a.name} » en stock.`, 3000);
+  navigator.vibrate?.(15); cmGrid(); cmBarUp(); }
+function cmFree() { openM(`<h3>➕ Article hors liste</h3><input id="cm-fn" placeholder="Nom (ex : Réparation)" class="crin"><div class="grid2"><input id="cm-fp" type="number" inputmode="decimal" placeholder="Prix" class="crin"><input id="cm-fq" type="number" inputmode="decimal" value="1" class="crin"></div>
+  <label class="pvchk" style="margin-top:8px"><input type="checkbox" id="cm-fs"> Ajouter aussi à mes articles</label><button class="pill" style="width:100%;margin-top:10px" onclick="cmFreeGo()">Ajouter à la vente</button><button class="pbtn gray" onclick="closeM()">Annuler</button>`); setTimeout(() => $('cm-fn')?.focus(), 80); }
+async function cmFreeGo() { const n = $('cm-fn').value.trim(), p = +$('cm-fp').value || 0, q = +$('cm-fq').value || 1; if (!n || !(p > 0)) return toast('Entrez le nom et le prix.'); let aid = null;
+  if ($('cm-fs').checked) { const a = cmArtFind(n) || { id: bid(), name: n, price: p, cur: CM.cart.items.length ? CM.cart.cur : (biz.pro.cur || 'USD'), buy: null, qty: null, alert: 2, photo: '', pid: null, sold: 0, created: Date.now() }; await cmArtPut(a); aid = a.id; }
+  if (!CM.cart.items.length) CM.cart.cur = biz.pro.cur || 'USD'; CM.cart.items.push({ aid, name: n, qty: q, price: p }); closeM(); cmGrid(); cmBarUp(); }
+function cmCheck(err) { const C = CM.cart; if (!C.items.length) return; const cl = (biz.cli || []).map(c => c.name);
+  openM(`<h3>🛒 Encaisser</h3><div id="cm-lines">${C.items.map((i, k) => { const a = CM.art.find(x => x.id === i.aid), w = a && a.qty != null && C.items.filter(j => j.aid === i.aid).reduce((p, j) => p + j.qty, 0) > a.qty;
+      return `<div class="cmline"><div style="flex:1;min-width:0"><b>${esc(i.name)}</b>${w ? `<small style="color:#DC2626;display:block">⚠️ stock : ${Math.max(0, a.qty)}</small>` : ''}</div><div class="bizqty"><button type="button" onclick="cmQ(${k},-1)">−</button><input type="number" min="0" step="any" inputmode="decimal" value="${i.qty}" onchange="cmQ(${k},0,this.value)"><button type="button" onclick="cmQ(${k},1)">+</button></div><input class="cmprice" type="number" min="0" step="any" inputmode="decimal" value="${i.price}" title="Prix unitaire" onchange="CM.cart.items[${k}].price=+this.value||0;cmCheck()"></div>`; }).join('')}</div>
+    <div class="tixtot" style="margin-top:10px"><span>TOTAL</span><b>${fmtM(cmCartTot(), C.cur)}</b><select onchange="cmCurSet(this.value)">${Object.keys(CUR).map(k => `<option ${k === C.cur ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
+    <label class="mt" style="font-size:13px;font-weight:700">Payé par</label><div class="vchips cmmodes" style="margin:6px 0 10px">${PAY_ALL.map(m => `<button type="button" class="${C.mode === m ? 'on' : ''}" onclick="CM.cart.mode='${m}';cmCheck()">${m === 'Crédit' ? '📒 Crédit' : m}</button>`).join('')}</div>
+    ${C.mode === 'Crédit' ? '<p class="mt" style="font-size:12px;margin:-4px 0 6px">Le montant ira dans le Carnet de ce client.</p>' : ''}
+    <datalist id="cm-cl">${cl.map(n => `<option value="${esc(n)}">`).join('')}</datalist>
+    <div class="grid2"><input class="crin" placeholder="Client${C.mode === 'Crédit' ? ' (obligatoire)' : ' (facultatif)'}" list="cm-cl" value="${esc(C.client)}" oninput="CM.cart.client=this.value;$('cm-err').textContent=''"><input class="crin" placeholder="WhatsApp (facultatif)" inputmode="tel" value="${esc(C.phone)}" oninput="CM.cart.phone=this.value"></div>
+    <p id="cm-err" style="color:#DC2626;font-size:13px;margin:6px 0 0">${esc(err || '')}</p>
+    <button class="pill" style="width:100%;padding:15px;font-size:17px;margin-top:6px" onclick="cmSell()">✅ Valider la vente</button>
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="closeM()">← Continuer</button><button class="soft" style="color:#B91C1C" onclick="CM.cart=cmNewCart();closeM();bizRender()">🗑️ Vider</button></div>`); }
+function cmQ(k, d, v) { const i = CM.cart.items[k]; if (!i) return; i.qty = d ? Math.max(0, r2(i.qty + d)) : Math.max(0, r2(+v || 0)); if (!i.qty) CM.cart.items.splice(k, 1); if (!CM.cart.items.length) { closeM(); bizRender(); return; } cmCheck(); cmGrid(); cmBarUp(); }
+function cmCurSet(c) { const C = CM.cart; if (c === C.cur) return; if (!(+biz.pro.rate > 0)) { toast('Réglez d’abord le taux $ → FC dans « Entreprise ».'); return cmCheck(); } C.items.forEach(i => i.price = cmRound(conv(i.price, C.cur, c), c)); C.cur = c; cmCheck(); cmBarUp(); }
+async function cmSell() { const C = CM.cart; C.items = C.items.filter(i => i.qty > 0 && i.price > 0); if (!C.items.length) return cmCheck('Chaque article doit avoir un prix.');
+  if (C.mode === 'Crédit' && !C.client.trim()) return cmCheck('Pour un crédit, écrivez le nom du client.');
+  const now = new Date().toISOString(), y = new Date().getFullYear(), k = 'T' + y; biz.seq[k] = (biz.seq[k] || 0) + 1; const num = `R-${y}-${String(biz.seq[k]).padStart(4, '0')}`, tot = cmCartTot(C);
+  const T = { id: bid(), num, date: now, items: C.items.map(i => ({ name: i.name, qty: i.qty, price: i.price })), client: C.client.trim(), phone: C.phone.trim(), cur: C.cur, mode: C.mode, note: '' };
+  biz.tix ||= []; biz.tix.push(T); if (biz.tix.length > 300) biz.tix.splice(0, biz.tix.length - 300);
+  biz.tixItems ||= {}; T.items.forEach(it => biz.tixItems[it.name.toLowerCase()] = { price: it.price });
+  if (C.mode === 'Crédit') { const cl = cliGet(T.client, T.phone); cl.ops.push({ id: bid(), date: now, amt: tot, cur: C.cur, note: `Achat ${num}`, doc: num }); }
+  else biz.cash.push({ id: bid(), type: 'in', amt: tot, cur: C.cur, note: `Vente ${num}${T.client ? ' – ' + T.client : ''} (${C.mode})`, doc: num, date: now });
+  let prof = 0, miss = 0; const items = [];
+  for (const i of C.items) { const a = i.aid && CM.art.find(x => x.id === i.aid); let buy = null;
+    if (a) { if (a.buy != null && a.buy !== '') buy = cmRound(conv(+a.buy, cmCur(a), C.cur) || +a.buy, C.cur); a.sold = r2((a.sold || 0) + i.qty);
+      if (a.qty != null) { a.qty = Math.max(0, r2(a.qty - i.qty)); if (a.pid) { a.dirty = 1; stockSet(a.pid, a.qty, true).then(ok => { if (ok) { delete a.dirty; cmArtPut(a); } }, () => {}); } }
+      await cmArtPut(a); }
+    if (buy == null) miss = 1; else prof += (i.price - buy) * i.qty; items.push({ aid: i.aid || null, name: i.name, qty: i.qty, price: i.price, buy }); }
+  await cmMvPut({ id: bid(), t: 'sale', date: now, num, items, cur: C.cur, total: tot, mode: C.mode, client: T.client, profit: items.some(i => i.buy != null) ? r2(prof) : null, miss, tixId: T.id });
+  bizSave(); CM.cart = cmNewCart(); CM.q = ''; closeM(); bizRender(); toast(`✅ Vente ${num} : ${fmtM(tot, C.cur)}${C.mode === 'Crédit' ? ' (dans le Carnet)' : ' (dans la caisse)'}`, 3500); tixView(T.id); }
+
+// ---------- 📦 Mes articles
+function cmArt(el) { cmSyncProds(); const L0 = CM.art.filter(a => !a.off), n = cmNorm(CM.aq), F = { all: () => true, low: cmLow, web: a => !!a.pid, tel: a => !a.pid };
+  const L = L0.filter(F[CM.af] || F.all).filter(a => !n || cmNorm(a.name).includes(n)).sort((a, b) => CM.af === 'low' ? (a.qty - b.qty) : a.name.localeCompare(b.name)), lim = 100 + CM.more * 100, val = {};
+  L0.forEach(a => { if (a.qty > 0 && a.buy > 0) val[cmCur(a)] = (val[cmCur(a)] || 0) + a.qty * a.buy; });
+  el.innerHTML = `<div class="bizcards"><div class="bizcard"><small>Articles</small><b>${L0.length}</b></div><div class="bizcard o" onclick="CM.af='low';bizRender()" style="cursor:pointer"><small>Presque finis</small><b>${L0.filter(cmLow).length}</b></div><div class="bizcard wide"><small>Valeur du stock (prix d’achat)</small><b>${cmMoney(val, '—')}</b></div></div>
+    <div class="grid2"><button class="pill" onclick="cmEdit()">➕ Ajouter un article</button><button class="soft" onclick="cmBuy()">📥 J’ai acheté</button></div>
+    <div class="cmsearch" style="margin-top:10px"><input placeholder="🔍 Chercher" value="${esc(CM.aq)}" oninput="CM.aq=this.value;clearTimeout(CM.aT);CM.aT=setTimeout(()=>{bizRender();const i=document.querySelector('#bizc .cmsearch input');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},250)"></div>
+    <div class="cmchips">${[['all', 'Tous'], ['low', '⚠️ Presque finis'], ['web', '🌐 En ligne'], ['tel', '📱 Téléphone']].map(([k, t]) => `<button type="button" class="${CM.af === k ? 'on' : ''}" onclick="CM.af='${k}';CM.more=0;bizRender()">${t}</button>`).join('')}</div>
+    ${L.slice(0, lim).map(a => `<div class="bizrow" style="cursor:default">${cmThumb(a)}<div style="flex:1;min-width:0" onclick="cmEdit('${a.id}')"><b style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(a.name)}</b><small>vente ${fmtM(a.price, cmCur(a))}${a.buy != null && a.buy !== '' ? ' · achat ' + fmtM(a.buy, cmCur(a)) : ''} · ${a.pid ? '🌐' : '📱'}</small><div>${cmQtyTag(a)}</div></div>
+      ${a.qty == null ? `<button type="button" class="soft" style="margin:0;padding:6px 8px;font-size:12px" onclick="cmEdit('${a.id}')">Compter</button>` : `<div class="bizqty"><button type="button" onclick="cmStep('${a.id}',-1)">−</button><button type="button" onclick="cmStep('${a.id}',1)">+</button></div>`}</div>`).join('') || empty('📦', CM.aq || CM.af !== 'all' ? 'Aucun article ici' : 'Aucun article', 'Ajoutez vos articles une seule fois : ensuite, vendre = toucher l’article.')}
+    ${L.length > lim ? `<button class="soft" style="width:100%;margin-top:8px" onclick="CM.more++;bizRender()">Afficher plus (${L.length - lim})</button>` : ''}
+    <p class="mt" style="font-size:12px;margin-top:12px">📱 = gardé seulement dans ce téléphone (sans limite) · 🌐 = aussi sur votre boutique en ligne (le stock s’y met à jour tout seul). Pensez à la 💾 sauvegarde.</p>`; }
+async function cmStep(id, d) { const a = CM.art.find(x => x.id === id); if (!a || a.qty == null) return; const from = a.qty; a.qty = Math.max(0, r2(a.qty + d)); if (a.pid) { a.dirty = 1; stockSet(a.pid, a.qty, true).then(ok => { if (ok) { delete a.dirty; cmArtPut(a); } }, () => {}); }
+  await cmArtPut(a); await cmMvPut({ id: bid(), t: 'adj', date: new Date().toISOString(), aid: a.id, name: a.name, from, to: a.qty }); bizRender(); }
+function cmEdit(id, name) { const a = CM.art.find(x => x.id === id) || { id: '', name: name || '', price: '', cur: biz.pro.cur || 'USD', buy: '', qty: '', alert: 2, photo: '', pid: null }; CM.ed = { ...a, photo: a.photo || '' };
+  const E = CM.ed, web = !!a.pid;
+  openM(`<h3>${id ? '✏️ Modifier l’article' : '➕ Nouvel article'}</h3>
+    <div style="display:flex;gap:12px;align-items:center"><div id="cm-ph" onclick="${web && !E.photo ? '' : 'cmPhoto()'}" style="cursor:pointer">${cmThumb({ ...E, url: a.url }, 72)}</div><div class="mt" style="font-size:13px">${web ? '🌐 Photo de votre boutique en ligne.' : '📷 Touchez pour ajouter une photo (facultatif).'}${E.photo ? `<br><a href="#" onclick="event.preventDefault();CM.ed.photo='';$('cm-ph').innerHTML=cmThumb(CM.ed,72)">Retirer la photo</a>` : ''}</div></div>
+    <label class="pvl" style="margin-top:10px">Nom<input id="cm-n" value="${esc(E.name)}" placeholder="ex : Riz 25 kg" ${web ? 'disabled' : ''}></label>
+    <div class="grid2"><label class="pvl">Prix de vente<input id="cm-p" type="number" min="0" step="any" inputmode="decimal" value="${esc(String(E.price ?? ''))}" ${web ? 'disabled' : ''}></label><label class="pvl">Monnaie<select id="cm-c" ${web ? 'disabled' : ''}>${Object.keys(CUR).map(k => `<option value="${k}" ${k === cmCur(E) ? 'selected' : ''}>${CUR[k].n}</option>`).join('')}</select></label></div>
+    <div class="grid2"><label class="pvl">Prix d’achat<input id="cm-b" type="number" min="0" step="any" inputmode="decimal" value="${esc(String(E.buy ?? ''))}" placeholder="pour le vrai bénéfice"></label><label class="pvl">Quantité en stock<input id="cm-q2" type="number" min="0" step="any" inputmode="decimal" value="${esc(String(E.qty ?? ''))}" placeholder="vide = je ne compte pas"></label></div>
+    <label class="pvl">Me prévenir quand il en reste<input id="cm-al" type="number" min="0" step="1" inputmode="numeric" value="${esc(String(E.alert ?? 2))}"></label>
+    ${web ? '<p class="mt" style="font-size:12px">🌐 Cet article est sur votre boutique en ligne : changez le nom, le prix ou la photo dans la Boutique. Le stock, lui, se règle ici.</p>' : '<p class="mt" style="font-size:12px">📱 Gardé seulement dans ce téléphone. Pour le vendre aussi en ligne : Boutique › « + Ajouter » ; il sera relié ici tout seul.</p>'}
+    <p id="cm-ee" style="color:#DC2626;font-size:13px;margin:4px 0 0"></p>
+    <button class="pill" style="width:100%;margin-top:8px" onclick="cmEditSave()">💾 Enregistrer</button>
+    ${id && !web ? `<button class="soft" style="width:100%;margin-top:8px;color:#B91C1C" onclick="cmArtDel('${id}')">🗑️ Supprimer l’article</button>` : ''}<button class="pbtn gray" onclick="closeM()">Annuler</button>`);
+  if (!id) setTimeout(() => $('cm-n')?.focus(), 80); }
+function cmPhoto() { svPick('image/*', async f => { try { CM.ed.photo = await cmImg(f); $('cm-ph') && ($('cm-ph').innerHTML = cmThumb(CM.ed, 72)); } catch (e) { toast('Photo illisible.'); } }); }
+async function cmEditSave() { const E = CM.ed, web = !!E.pid, n = web ? E.name : $('cm-n').value.trim(), p = web ? E.price : +$('cm-p').value, q = $('cm-q2').value.trim(), b = $('cm-b').value.trim();
+  if (!n) return $('cm-ee').textContent = 'Écrivez le nom de l’article.'; if (!(p > 0)) return $('cm-ee').textContent = 'Écrivez le prix de vente.';
+  const dup = cmArtFind(n); if (dup && dup.id !== E.id) return $('cm-ee').textContent = 'Un article porte déjà ce nom.';
+  const old = CM.art.find(x => x.id === E.id), a = old || { id: bid(), sold: 0, created: Date.now(), pid: null }, from = old ? old.qty : null;
+  Object.assign(a, { name: n, price: p, cur: web ? 'USD' : $('cm-c').value, buy: b === '' ? null : Math.max(0, +b), qty: q === '' ? null : Math.max(0, +q), alert: Math.max(0, +$('cm-al').value || 0), photo: E.photo || '' });
+  await cmArtPut(a); if (a.qty !== from && a.qty != null) { await cmMvPut({ id: bid(), t: 'adj', date: new Date().toISOString(), aid: a.id, name: a.name, from, to: a.qty }); if (a.pid) { a.dirty = 1; if (await stockSet(a.pid, a.qty, true)) { delete a.dirty; await cmArtPut(a); } } }
+  closeM(); bizRender(); toast(old ? '✅ Article modifié' : '✅ Article ajouté'); }
+async function cmArtDel(id) { const a = CM.art.find(x => x.id === id); if (!a || !confirm(`Supprimer « ${a.name} » de vos articles ?`)) return; CM.art = CM.art.filter(x => x.id !== id); await cmTx('art', 'readwrite', s => { s.delete(id); }); closeM(); bizRender(); toast('Article supprimé.'); }
+
+// ---------- 📥 J'ai acheté (entrée de stock)
+function cmBuy(id) { const a = id ? CM.art.find(x => x.id === id) : null;
+  openM(`<h3>📥 J’ai acheté</h3><p class="mt" style="font-size:13px;margin-top:-4px">Le stock monte, et la dépense est notée dans la caisse.</p>
+    <datalist id="cm-an">${CM.art.map(x => `<option value="${esc(x.name)}">`).join('')}</datalist>
+    <label class="pvl">Article<input id="cm-bn" list="cm-an" value="${esc(a?.name || '')}" placeholder="ex : Riz 25 kg" oninput="cmBuyFill()"></label>
+    <div class="grid2"><label class="pvl">Quantité achetée<input id="cm-bq" type="number" min="0" step="any" inputmode="decimal" placeholder="ex : 10"></label><label class="pvl">Prix d’achat (1 pièce)<input id="cm-bp" type="number" min="0" step="any" inputmode="decimal" value="${esc(String(a?.buy ?? ''))}"></label></div>
+    <div class="grid2"><label class="pvl">Monnaie<select id="cm-bc">${Object.keys(CUR).map(k => `<option value="${k}" ${k === (a ? cmCur(a) : biz.pro.cur) ? 'selected' : ''}>${CUR[k].n}</option>`).join('')}</select></label><label class="pvl">Fournisseur (facultatif)<input id="cm-bs" placeholder="ex : Dépôt Kivu"></label></div>
+    <p id="cm-bnew" class="mt" style="font-size:12px;margin:4px 0 0"></p>
+    <label class="pvchk" style="margin-top:6px"><input type="checkbox" id="cm-bpay" checked> Payé avec l’argent de la caisse</label>
+    <p id="cm-be" style="color:#DC2626;font-size:13px;margin:4px 0 0"></p>
+    <button class="pill" style="width:100%;margin-top:8px" onclick="cmBuyGo()">✅ Ajouter au stock</button><button class="pbtn gray" onclick="closeM()">Annuler</button>`); setTimeout(() => (a ? $('cm-bq') : $('cm-bn'))?.focus(), 80); }
+function cmBuyFill() { const a = cmArtFind($('cm-bn').value); if (a) { if (a.buy != null && !$('cm-bp').value) $('cm-bp').value = a.buy; $('cm-bc').value = cmCur(a); } $('cm-bnew').textContent = a || !$('cm-bn').value.trim() ? '' : '➕ Nouvel article : il sera créé (ajoutez son prix de vente ensuite dans « Mes articles »).'; }
+async function cmBuyGo() { const n = $('cm-bn').value.trim(), q = +$('cm-bq').value, p = +$('cm-bp').value || 0, cur = $('cm-bc').value, sup = $('cm-bs').value.trim(), pay = $('cm-bpay').checked;
+  if (!n) return $('cm-be').textContent = 'Écrivez ou choisissez l’article.'; if (!(q > 0)) return $('cm-be').textContent = 'Écrivez la quantité achetée.';
+  let a = cmArtFind(n); const isNew = !a; if (!a) a = { id: bid(), name: n, price: 0, cur, buy: null, qty: 0, alert: 2, photo: '', pid: null, sold: 0, created: Date.now() };
+  const from = a.qty; a.qty = r2((a.qty || 0) + q); if (p > 0) a.buy = cmCur(a) === cur ? p : cmRound(conv(p, cur, cmCur(a)) || p, cmCur(a)); if (isNew) a.cur = cur;
+  if (a.pid) { a.dirty = 1; stockSet(a.pid, a.qty, true).then(ok => { if (ok) { delete a.dirty; cmArtPut(a); } }, () => {}); }
+  await cmArtPut(a); const now = new Date().toISOString(), tot = r2(q * p);
+  await cmMvPut({ id: bid(), t: 'in', date: now, aid: a.id, name: a.name, qty: q, price: p, cur, total: tot, paid: pay && tot > 0, sup, from });
+  if (pay && tot > 0) { biz.cash.push({ id: bid(), type: 'out', amt: tot, cur, note: `Achat stock : ${q} × ${a.name}${sup ? ' (' + sup + ')' : ''}`, stk: 1, date: now }); bizSave(); }
+  closeM(); toast(`✅ ${q} × ${a.name} ajouté${q > 1 ? 's' : ''} au stock (${a.qty})`); if (isNew) cmEdit(a.id); else bizRender(); }
+
+// ---------- factures : le stock des articles du téléphone baisse aussi
+async function cmDocStock(d) { try { for (const it of d.items || []) { if (it.pid) continue; const a = cmArtFind(it.name); if (!a || a.qty == null) continue; const from = a.qty; a.qty = Math.max(0, r2(a.qty - (+it.qty || 0))); a.sold = r2((a.sold || 0) + (+it.qty || 0)); await cmArtPut(a); await cmMvPut({ id: bid(), t: 'adj', date: new Date().toISOString(), aid: a.id, name: a.name, from, to: a.qty, why: 'Facture ' + d.num }); } } catch (e) {} }
+
+// ---------- 💾 sauvegarde (fichier, sans rien mettre sur Internet)
+function cmBakDue() { const has = CM.art.length || (biz?.cash || []).length; if (!has) return ''; const t = +biz.lastBak || 0, d = Math.floor((Date.now() - t) / 864e5); if (t && d < 7) return ''; return t ? `Dernière sauvegarde il y a ${d} jours : sauvegardez votre commerce →` : 'Pas encore de sauvegarde : si ce téléphone est perdu, tout est perdu. Sauvegarder →'; }
+async function cmBakFile() { if (CM.saveT) cmFlush(); const mv = (await cmTx('mv', 'readonly', s => s.getAll())) || [], j = { app: 'SocialPages', kind: 'commerce', v: 2, date: new Date().toISOString(), user: me?.username || '', data: biz, art: CM.art, mv };
+  return new File([JSON.stringify(j)], `socialpages-commerce-${cmToday()}.json`, { type: 'application/json' }); }
+function cmBackup() { const t = +biz.lastBak || 0;
+  openM(`<h3>💾 Sauvegarde de mon commerce</h3><p class="mt" style="font-size:13px">Articles, ventes, caisse, carnet, factures : tout est dans ce téléphone. Ce fichier permet de tout récupérer sur un autre téléphone (Entreprise › 📥 Restaurer).</p>
+    <p class="mt" style="font-size:13px"><b>${CM.art.length}</b> articles · dernière sauvegarde : <b>${t ? fdate(cmDay(new Date(t).toISOString())) : 'jamais'}</b></p>
+    <button class="pill" style="width:100%;background:#25D366" onclick="cmBakOut(0)">📤 M’envoyer la sauvegarde (WhatsApp, Drive…)</button><button class="soft" style="width:100%;margin-top:8px" onclick="cmBakOut(1)">⬇️ Enregistrer le fichier</button>
+    <p class="mt" style="font-size:12px;margin-top:8px">💡 Sur WhatsApp : envoyez-le à « Moi (vous) » ou à un proche de confiance.</p><button class="pbtn gray" onclick="closeM()">Fermer</button>`); }
+async function cmBakOut(save) { try { const f = await cmBakFile(), ok = save ? await spSave([f]) : await spShare([f], 'Sauvegarde SocialPages – ' + (biz.pro.name || ''), 'Sauvegarde'); if (ok) { biz.lastBak = Date.now(); bizSave(); closeM(); toast('✅ Sauvegarde prête. Gardez bien ce fichier.', 4000); if ($('bizc') && bizTab === 'jour') bizRender(); } } catch (e) { toast('⚠️ ' + (e.message || e), 5000); } }
+function cmRestore() { svPick('.json,application/json', async f => { try { const j = JSON.parse(await f.text()); if (j.app !== 'SocialPages' || !j.data) throw 0; const na = (j.art || []).length;
+    if (!confirm(`Remplacer les données de ce téléphone par cette sauvegarde du ${fdate(cmDay(j.date))} ?\n(${na} articles)`)) return;
+    await cmTx('kv', 'readwrite', s => { s.put(j.data, 'biz'); }); await cmTx('art', 'readwrite', s => { s.clear(); (j.art || []).forEach(a => s.put(a)); }); await cmTx('mv', 'readwrite', s => { s.clear(); (j.mv || []).forEach(m => s.put(m)); });
+    CM.ready = false; await cmBoot(); bizLoad(); biz.lastBak = Date.now(); bizSave(); bizRender(); toast(`✅ Sauvegarde restaurée (${na} articles)`, 4000); } catch (e) { toast('Fichier de sauvegarde invalide.'); } }); }
+function bizExport() { cmBackup(); }
+function bizImport() { cmRestore(); }
+
+// ---------- 📄 bilan du jour (image WhatsApp + PDF A4)
+function cmPendingBilan() { const t = cmToday(), days = [...new Set(CM.mv.map(m => m.day).concat((biz.cash || []).map(x => cmDay(x.date))))].filter(d => d && d < t).sort(); const d = days[days.length - 1]; if (!d) return ''; if ((biz.closed || {})[d] || (biz.bilanSeen || {})[d]) return ''; return d; }
+function cmClose() { const d = cmToday(); biz.closed ||= {}; biz.closed[d] = Date.now(); bizSave(); cmBilan(d); }
+async function cmBilanData(day) { const M = await cmMvDay(day), S = cmSalesOf(M), add = (o, c, v) => { o[c] = r2((o[c] || 0) + v); };
+  const ins = M.filter(m => m.t === 'in'), inT = {}; ins.forEach(m => add(inT, m.cur, m.total || 0));
+  const cash = (biz.cash || []).filter(x => cmDay(x.date) === day), cin = {}, cout = {}, dep = {}; cash.forEach(x => { add(x.type === 'in' ? cin : cout, x.cur, x.amt); if (x.type !== 'in' && !x.stk) add(dep, x.cur, x.amt); });
+  const cred = {}, paid = {}; (biz.cli || []).forEach(c => (c.ops || []).forEach(o => { if (cmDay(o.date) !== day) return; add(o.amt > 0 ? cred : paid, o.cur, Math.abs(o.amt)); }));
+  const top = {}; M.filter(m => m.t === 'sale').forEach(m => m.items.forEach(i => { const k = i.name; top[k] ||= { n: k, q: 0 }; top[k].q += i.qty; }));
+  const fac = (biz.docs || []).filter(d => d.type === 'FAC' && cmDay(d.date) === day), facT = {}; fac.forEach(d => add(facT, d.cur, docCalc(d).total));
+  const bal = {}; Object.keys({ ...cin, ...cout }).forEach(c => bal[c] = r2((cin[c] || 0) - (cout[c] || 0)));
+  return { day, S, sales: M.filter(m => m.t === 'sale'), ins, inT, cin, cout, dep, bal, cred, paid, top: Object.values(top).sort((a, b) => b.q - a.q).slice(0, 5), fac, facT, low: CM.art.filter(cmLow).sort((a, b) => a.qty - b.qty), adj: M.filter(m => m.t === 'adj') }; }
+function cmBilanRows(B) { const R = [], kv = (a, b, col, sub) => R.push({ k: 'kv', a, b, col, sub }), sec = t => R.push({ k: 'sec', t }), note = t => R.push({ k: 'note', t });
+  R.push({ k: 'head' });
+  sec('💰 Ventes'); kv(`Ventes (${B.S.n})`, cmMoney(B.S.by), '#16A34A');
+  PAY_ALL.forEach(m => { if (B.S.mode[m]) kv('   ' + m, cmMoney(B.S.mode[m]), null, 1); });
+  kv('Bénéfice réel', cmMoney(B.S.prof), Object.values(B.S.prof).some(v => v < 0) ? '#DC2626' : '#16A34A'); if (B.S.miss) note(`${B.S.miss} vente(s) contiennent des articles sans prix d’achat : leur bénéfice n’est pas compté.`);
+  if (B.fac.length) kv(`Factures émises (${B.fac.length})`, cmMoney(B.facT));
+  sec('📦 Stock'); kv(`Achats de stock (${B.ins.length})`, cmMoney(B.inT)); B.ins.slice(0, 12).forEach(m => kv('   ' + m.qty + ' × ' + m.name, fmtM(m.total, m.cur), null, 1));
+  if (B.top.length) { kv('Les plus vendus', ''); B.top.forEach(t => kv('   ' + t.n, '× ' + t.q, null, 1)); }
+  kv('À racheter', B.low.length ? String(B.low.length) : 'rien', B.low.length ? '#D97706' : null); B.low.slice(0, 10).forEach(a => kv('   ' + a.name, a.qty <= 0 ? 'épuisé' : 'reste ' + a.qty, '#D97706', 1));
+  sec('💵 Caisse'); kv('Entrées', cmMoney(B.cin)); kv('Sorties', cmMoney(B.cout)); kv('   dont dépenses', cmMoney(B.dep), null, 1); kv('Solde du jour (entrées − sorties)', cmMoney(B.bal), Object.values(B.bal).some(v => v < 0) ? '#DC2626' : '#111827');
+  sec('📒 Carnet de crédit'); kv('Nouveaux crédits', cmMoney(B.cred)); kv('Paiements reçus', cmMoney(B.paid));
+  if (B.sales.length) { sec(`🧾 Détail des ventes (${B.sales.length})`); B.sales.forEach(m => kv(`${cmHM(m.date)}  ${m.num}  ${m.mode}${m.client ? ' · ' + m.client : ''}`, fmtM(m.total, m.cur), null, 1)); }
+  R.push({ k: 'foot' }); return R; }
+const CM_H = { head: 190, sec: 74, kv: 50, note: 64, foot: 70 };
+function cmBilanDraw(B, rows, W, H, page, pages) { const c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d'), F = 'Poppins, system-ui, sans-serif', P = biz.pro, col = P.color || '#16A34A', X = 60;
+  g.fillStyle = '#fff'; g.fillRect(0, 0, W, H); let y = 0;
+  const txt = (t, x, yy, sz, w = 500, cl = '#111827', al = 'left') => { g.font = `${w} ${sz}px ${F}`; g.fillStyle = cl; g.textAlign = al; g.textBaseline = 'middle'; let s = String(t); const mx = al === 'left' ? W - x - 300 : 560; while (s.length > 3 && g.measureText(s).width > mx) s = s.slice(0, -2); if (s !== String(t)) s = s.trim() + '…'; g.fillText(s, x, yy); };
+  for (const r of rows) { const h = CM_H[r.k];
+    if (r.k === 'head') { g.fillStyle = col; g.fillRect(0, 0, W, 16); txt(page > 1 ? `Bilan du ${fdate(B.day)} (suite)` : 'BILAN DU JOUR', X, 66, page > 1 ? 30 : 40, 800, col); txt(P.name || me?.name || '', X, 116, 30, 700); txt(cmDayTxt(B.day), X, 156, 24, 500, '#6B7280'); if (pages > 1) txt(`page ${page}/${pages}`, W - X, 66, 22, 500, '#6B7280', 'right'); }
+    else if (r.k === 'sec') { g.fillStyle = '#F3F4F6'; g.fillRect(X - 20, y + 14, W - 2 * X + 40, h - 20); txt(r.t, X, y + 14 + (h - 20) / 2, 28, 800); }
+    else if (r.k === 'kv') { txt(r.a, r.sub ? X + 20 : X, y + h / 2, r.sub ? 23 : 26, r.sub ? 500 : 600, r.sub ? '#4B5563' : '#111827'); txt(r.b, W - X, y + h / 2, r.sub ? 23 : 27, r.sub ? 600 : 800, r.col || (r.sub ? '#4B5563' : '#111827'), 'right'); g.fillStyle = '#F3F4F6'; g.fillRect(X, y + h - 1, W - 2 * X, 1); }
+    else if (r.k === 'note') { g.font = `500 21px ${F}`; g.fillStyle = '#6B7280'; g.textAlign = 'left'; const words = r.t.split(' '); let l = '', yy = y + 20; for (const w of words) { if (g.measureText(l + w).width > W - 2 * X) { g.fillText(l, X, yy); l = ''; yy += 26; } l += w + ' '; } g.fillText(l, X, yy); }
+    else if (r.k === 'foot') { txt(`Bilan créé avec SocialPages · ${new Date().toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`, W / 2, y + 40, 20, 500, '#9CA3AF', 'center'); }
+    y += h; }
+  return c; }
+async function cmBilanMake(day) { const B = await cmBilanData(day), rows = cmBilanRows(B), W = 1080, Hs = rows.reduce((p, r) => p + CM_H[r.k], 0) + 20, img = cmBilanDraw(B, rows, W, Hs, 1, 1);
+  const PH = Math.round(W * 841.89 / 595.28), pages = []; let cur = [], h = 0; for (const r of rows) { if (r.k === 'head') continue; if (h + CM_H[r.k] > PH - CM_H.head - 40) { pages.push(cur); cur = []; h = 0; } cur.push(r); h += CM_H[r.k]; } if (cur.length) pages.push(cur);
+  const J = []; for (let i = 0; i < pages.length; i++) { const c = cmBilanDraw(B, [{ k: 'head' }, ...pages[i]], W, PH, i + 1, pages.length), b = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.9)); J.push({ w: W, h: PH, d: new Uint8Array(await b.arrayBuffer()) }); }
+  return { B, img, pdf: new File([pdfMake(J, 595.28, 841.89)], `bilan-${day}.pdf`, { type: 'application/pdf' }) }; }
+async function cmBilan(day) { openM(`<h3>📄 Bilan du ${fdate(day)}</h3><div class="docprev" id="cm-bp" style="text-align:center"><div class="spin"></div></div>`);
+  try { const R = await cmBilanMake(day); CM.bil = R; biz.bilanSeen ||= {}; biz.bilanSeen[day] = 1; bizSave(); if (!$('cm-bp')) return;
+    $('cm-bp').innerHTML = `<img src="${R.img.toDataURL('image/jpeg', 0.85)}" alt="Bilan" style="max-width:420px;width:100%;margin:auto;border:1px solid #E5E7EB;border-radius:10px">`;
+    $('cm-bp').insertAdjacentHTML('afterend', `<div class="grid2" style="margin-top:10px"><button class="pill" style="background:#25D366" onclick="cmBilanOut('img')">📤 WhatsApp (image)</button><button class="soft" onclick="cmBilanOut('pdf')">🖨️ PDF à imprimer</button></div>
+      <button class="soft" style="width:100%;margin-top:8px" onclick="cmBilans()">📚 Autres jours</button><button class="pbtn gray" onclick="closeM();bizRender()">Fermer</button>`); }
+  catch (e) { $('cm-bp') && ($('cm-bp').innerHTML = `<p class="mt">⚠️ ${esc(e.message || String(e))}</p>`); } }
+async function cmBilanOut(k) { const R = CM.bil; if (!R) return; const f = k === 'pdf' ? R.pdf : await new Promise(r => R.img.toBlob(b => r(new File([b], `bilan-${R.B.day}.jpg`, { type: 'image/jpeg' })), 'image/jpeg', 0.92));
+  k === 'pdf' ? spSave([f]) : spShare([f], `Bilan du ${fdate(R.B.day)} – ${biz.pro.name || ''} : ventes ${cmMoney(R.B.S.by)}`, 'Bilan'); }
+async function cmBilans() { const keys = new Set(); try { ((await cmTx('mv', 'readonly', s => s.getAll())) || []).forEach(m => keys.add(m.day)); } catch (e) {} (biz.cash || []).forEach(x => keys.add(cmDay(x.date)));
+  const L = [...keys].filter(Boolean).sort().reverse().slice(0, 120);
+  openM(`<h3>📚 Bilans des jours passés</h3>${L.length ? `<div style="max-height:60vh;overflow:auto">${L.map(d => { const S = cmSalesOf(CM.mv.filter(m => m.day === d)); return `<div class="bizrow" onclick="cmBilan('${d}')"><span class="bizav">📄</span><div><b style="text-transform:capitalize">${cmDayTxt(d)}</b><small>${S.n ? S.n + ' vente(s) · ' + cmMoney(S.by) : 'voir le bilan'}</small></div><span>›</span></div>`; }).join('')}</div>` : '<p class="mt">Pas encore d’activité.</p>'}<button class="pbtn gray" onclick="closeM()">Fermer</button>`); }
+(() => { const s = document.createElement('style'); s.textContent = `.cmbig{width:100%;border:0;border-radius:16px;padding:20px;font-size:21px;font-weight:800;background:#16A34A;color:#fff;cursor:pointer;margin-top:4px}
+.cmmid{border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 8px;font-size:15px;font-weight:800;background:#fff;color:#111827;cursor:pointer}
+.cmban{display:block;width:100%;text-align:left;border:0;border-radius:12px;padding:11px 12px;font-weight:700;font-size:13px;margin-bottom:10px;cursor:pointer}
+.cmwarn{margin-top:12px;padding:11px 12px;border-radius:12px;background:#FFFBEB;color:#92400E;font-size:13px;cursor:pointer}
+.cmsearch input{width:100%;box-sizing:border-box;padding:12px;border-radius:12px;border:1.5px solid #D1D5DB;font-size:16px;background:#fff}
+.cmgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin-top:10px}
+.cmtile{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border:1.5px solid #E5E7EB;border-radius:14px;background:#fff;cursor:pointer;font:inherit;color:#111827;min-height:150px}
+.cmtile:active{transform:scale(.97)}.cmtile.out{opacity:.55}.cmtn{font-size:12.5px;font-weight:700;line-height:1.2;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cmtile b{font-size:13px}.cmtile small{font-size:11px;color:#6B7280}.cmtile small.lo{color:#D97706;font-weight:700}.cmtile small.ko{color:#DC2626;font-weight:700}
+.cmin{position:absolute;top:6px;right:6px;background:#16A34A;color:#fff;border-radius:999px;min-width:22px;height:22px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.cmbar{position:sticky;bottom:0;margin:0 -4px;padding:10px 4px;background:var(--bg,#F3F4F6)}.cmpay{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;border:0;border-radius:16px;padding:16px;background:#111827;color:#fff;font:inherit;font-size:15px;cursor:pointer}
+.cmline{display:flex;align-items:center;gap:8px;border-bottom:1px solid #F3F4F6;padding:8px 0}.cmline .bizqty input{width:48px;text-align:center;border:1.5px solid #E5E7EB;border-radius:8px;padding:6px 2px;font-size:15px}
+.cmprice{width:78px;border:1.5px solid #E5E7EB;border-radius:8px;padding:7px 4px;font-size:15px;text-align:right}
+.cmmodes button{min-width:0;flex:1 1 30%;padding:10px 6px}.cmchips{display:flex;gap:6px;overflow-x:auto;margin:10px 0 2px}.cmchips button{flex:none;border:1.5px solid #E5E7EB;background:#fff;border-radius:999px;padding:7px 12px;font-weight:700;font-size:13px;cursor:pointer}.cmchips button.on{background:#111827;color:#fff;border-color:#111827}
+.cmtag{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 7px;margin-top:3px}.cmtag.g{background:#DCFCE7;color:#166534}.cmtag.o{background:#FEF3C7;color:#92400E}.cmtag.r{background:#FEE2E2;color:#991B1B}`; document.head.appendChild(s); })();
+
 // ===================== ⚡ REÇU RAPIDE (petit commerçant) =====================
 const TIX_ST = { ticket: 'Ticket de caisse', carte: 'Carte couleur', luxe: 'Luxe noir', wax: 'Wax africain' };
 const TIX_COL = ['#16A34A', '#2563EB', '#DC2626', '#7C3AED', '#EA580C', '#0F172A', '#B45309', '#DB2777', '#0891B2', '#CA8A04'];
@@ -3556,7 +3824,7 @@ async function docSave() {
   if (isNew && d.type !== 'PRO') {
     if (c.paid > 0) { biz.cash.push({ id: bid(), type: 'in', amt: c.paid, cur: d.cur, note: `${DOCT[d.type].n} – ${d.client.name}`, doc: d.num, date: d.date + 'T' + new Date().toTimeString().slice(0, 8) }); fx.push('caisse'); }
     if (d.type === 'FAC' && c.rest > 0) { const cl = cliGet(d.client.name, d.client.phone); cl.ops.push({ id: bid(), date: new Date().toISOString(), amt: c.rest, cur: d.cur, note: 'Reste à payer', doc: d.num }); fx.push('carnet'); }
-    d.stockDone = 1;
+    d.stockDone = 1; cmDocStock(d);
   }
   bizSave();
   if (isNew && d.type !== 'PRO') { let n = 0; for (const it of d.items) { if (!it.pid) continue; const p = bizProds.find(x => x.id === it.pid) || prods.find(x => x.id === it.pid); const s = p && getMeta(p.description).s; if (s === undefined || s === null) continue; if (await stockSet(it.pid, Math.max(0, s - Math.ceil(it.qty)), true)) n++; } if (n) fx.push('stock'); }
@@ -13418,7 +13686,7 @@ const CR_FN = {
   affiche: ['afOut', 'skOut', 'skMagicZip', 'pvPosterOut', 'kmPng', 'ivImg', 'ivPoster', 'cdOut', 'apExport', 'apBatchRes', 'apBatchZip', 'pvYtSave'],
   psd: ['psdExport', 'skPsdOut'], video: ['pvMake', 'svMake', 'svMakeDl', 'kmVideo'],
   livre: ['cbMake', 'ebEpub', 'ebPrint', 'mlRun', 'etAll', 'etSave', 'etShow'], document: ['sdPdf', 'nuOut', 'cvOut', 'lmOut'],
-  free: ['bailMake', 'quitOut', 'docPdf', 'docShare', 'bizExport', 'tixShare', 'phOut', 'phA4Out', 'phBatchZip', 'phHistOut', 'cpQr', 'cpVcf', 'svSrt', 'ivCsv', 'ivIcs', 'ivListPdf', 'stuPosters', 'stuShareP', 'vidMake', 'vidShare'] };
+  free: ['bizOpen', 'cmBakOut', 'cmBilanOut', 'bailMake', 'quitOut', 'docPdf', 'docShare', 'bizExport', 'tixShare', 'phOut', 'phA4Out', 'phBatchZip', 'phHistOut', 'cpQr', 'cpVcf', 'svSrt', 'ivCsv', 'ivIcs', 'ivListPdf', 'stuPosters', 'stuShareP', 'vidMake', 'vidShare'] };
 const CR = { bal: null, pro: null, st: CR_DEF, admin: false, ctx: null, wm: false, pass: new WeakSet(), memo: new Map(), last: {}, tm: null };
 const crSt = () => ({ ...CR_DEF, ...(CR.st || {}), prices: { ...CR_DEF.prices, ...(CR.st?.prices || {}) }, nums: { ...CR_DEF.nums, ...(CR.st?.nums || {}) } });
 const crIsPro = () => !!(CR.pro && new Date(CR.pro) > new Date());
