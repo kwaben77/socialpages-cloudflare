@@ -9512,7 +9512,7 @@ function pvSayMath(s, lang) { const en = lang === 'en'; let t = pvMathPre(s);
   return pvSay(t.replace(/\s+/g, ' ').trim(), lang); }
 // ---------- lecture du texte du cours
 function pvBoardParse() { const raw = String(pv.story || '').replace(/\r/g, ''), L = raw.split('\n'), items = []; let suite = '';
-  L.forEach(l0 => { const l = l0.replace(/__/g, '').replace(/^#{2,6}\s/, '# ').trim(); if (!l) return; let m;
+  L.forEach(l0 => { if (/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$/.test(l0)) return; const l = pvMdLine(l0.replace(/__/g, '').replace(/^#{2,6}\s/, '# ')).trim(); if (!l) return; let m;
     if (/^-{3,}$/.test(l) || /^={3,}$/.test(l)) items.push({ k: 'erase' });
     else if (/^pause$/i.test(l)) items.push({ k: 'pause' });
     else if ((m = l.match(/^suite\s*:\s*(.+)$/i))) suite = m[1].trim();
@@ -9533,7 +9533,7 @@ function pvBoardParse() { const raw = String(pv.story || '').replace(/\r/g, ''),
 // minutage : voix scène par scène (TTS), voix enregistrée (étirée), ou vitesse de lecture
 const PV_PACE = { normal: { n: '🐇 Normal', x: 0 }, pose: { n: '🙂 Posé', x: 0.8 }, lent: { n: '🐢 Lent', x: 1.6 } };
 const pvPace = () => (PV_PACE[pv.pace] || PV_PACE.pose).x;
-function pvBoardTime(items) { let t = 0.8; const X = pvPace(); const B = pv.boardT && pv.boardT.n === items.length ? pv.boardT.t : null;
+function pvBoardTime(items) { let t = 0.8; const X = pvPace(); const B = pv.boardT && pv.boardT.n === items.length && pv.voice && (!pv.boardT.sig || pv.boardT.sig === pvSig(pv.story)) ? pv.boardT.t : null;
   items.forEach((it, i) => { if (B && B[i]) { it.s = B[i][0]; it.e = B[i][1]; t = it.e; return; }
     const len = (it.say || '').length, d = it.k === 'erase' ? 1.2 : it.k === 'pause' ? 5 : it.k === 'wait' ? it.secs : it.k === 'fig' ? 3.2 + X : it.k === 'title' ? Math.max(2.6, len * 0.07) : it.k === 'math' ? Math.max(2.8, len * 0.075) : Math.max(2.4, len * 0.068 + 0.6); if (it.k === 'erase') t += X; it.s = t; it.e = t + d + (it.k === 'erase' || it.k === 'pause' || it.k === 'wait' ? 0 : X * 0.5); t = it.e + 0.25 + (it.k === 'erase' ? 0 : X * 0.6); });
   let T = t + 0.4; const v = pv.voice; if (v && !B) { const vd = PV_VA + v.a.length / v.sr + 0.5; if (vd > 3) { const k = (vd - 0.8) / Math.max(1, T - 0.8); items.forEach(it => { it.s = 0.8 + (it.s - 0.8) * k; it.e = 0.8 + (it.e - 0.8) * k; }); T = vd; } } return T; }
@@ -9664,7 +9664,7 @@ async function pvBoardTts() { const { items } = pvBoardParse(), L = TTS_M[pv.lan
     for (let k = 0; k < items.length; k++) { const it = items[k]; if (!it.say) { const h = it.k === 'erase' ? X : 0, d = h + (it.k === 'erase' ? 1.2 : it.k === 'pause' ? 5 : it.k === 'wait' ? it.secs : it.k === 'fig' ? 3 + X : 1); T[k] = [t + h, t + d]; parts.push(new Float32Array(Math.round(sr * d))); t += d; continue; }
       const m = $('pv-msg'); if (m) m.textContent = `Ligne ${said.findIndex(q => q[1] === k) + 1} / ${said.length}…`; const r = await pvTtsSafe(it.say, L, () => {}); if (!r?.a?.length) throw new Error('La voix n’a pas pu être créée.'); sr = r.sr; const a = pvTrim(Float32Array.from(r.a), sr), d = a.length / sr; const gap = (it.k === 'math' ? 0.85 : it.k === 'title' ? 0.7 : 0.45) + (it.k === 'say' ? X * 0.6 : X); T[k] = [t, t + d + (it.k === 'math' ? 0.6 : 0.2) + (it.k === 'say' ? 0 : X * 0.55)]; parts.push(a); parts.push(new Float32Array(Math.round(sr * gap))); t += d + gap; const b = $('pv-bar'); if (b) b.style.width = Math.round((k + 1) / items.length * 100) + '%'; }
     // le silence initial de 0,8 s est créé par PV_VA (0,6) + 0,2
-    const lead = new Float32Array(Math.round(sr * 0.2)), all = new Float32Array(lead.length + parts.reduce((p, a) => p + a.length, 0)); let o = lead.length; parts.forEach(a => { all.set(a, o); o += a.length; }); pv.voice = { a: all, sr, from: 'tts', env: pvEnvOf(all, sr) }; pv.segs = null; pv.boardT = { n: items.length, t: T }; pv.script = pv.story; pvBoC = null; closeM(); pvForm(); toast(`🗣️ Voix du cours créée : ${Math.round(t)} s.`); }
+    const lead = new Float32Array(Math.round(sr * 0.2)), all = new Float32Array(lead.length + parts.reduce((p, a) => p + a.length, 0)); let o = lead.length; parts.forEach(a => { all.set(a, o); o += a.length; }); pv.voice = { a: all, sr, from: 'tts', env: pvEnvOf(all, sr) }; pv.segs = null; pv.boardT = { n: items.length, t: T, sig: pvSig(pv.story) }; pv.script = pv.story; pvBoC = null; closeM(); pvForm(); toast(`🗣️ Voix du cours créée : ${Math.round(t)} s.`); }
   catch (e) { closeM(); toast('⚠️ ' + (e.message || e), 6000); } }
 // ---------- modèles de leçon et exemples
 const PV_LESSON = {
@@ -9738,6 +9738,11 @@ function pvTryCount(x, it, t, FW, FH, u, B) { const lt = t - it.s, d = it.e - it
   x.lineWidth = r * 0.2; x.strokeStyle = '#E5E7EB'; x.beginPath(); x.arc(cx, cy, r * 0.92, 0, 7); x.stroke(); x.strokeStyle = left <= 3 ? '#DC2626' : '#16A34A'; x.lineCap = 'round'; x.beginPath(); x.arc(cx, cy, r * 0.92, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.max(0, 1 - lt / d)); x.stroke();
   x.fillStyle = '#111827'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = `900 ${r * 0.95}px Montserrat, Arial, sans-serif`; x.fillText(String(left), cx, cy + r * 0.04);
   x.font = `800 ${u * 0.032}px Montserrat, Arial, sans-serif`; const lab = en ? '✏️ Your turn!' : '✏️ À vous de jouer !', lw = x.measureText(lab).width + u * 0.04; x.fillStyle = '#FACC15'; vidRR(x, cx - lw / 2, cy - r * 1.18 - u * 0.065, lw, u * 0.05, u * 0.02); x.fill(); x.fillStyle = '#111827'; x.fillText(lab, cx, cy - r * 1.18 - u * 0.04); x.restore(); }
+
+function pvSig(t) { let h = 0; t = String(t || ''); for (let i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) | 0; return t.length + ':' + h; }
+// ligne collée depuis ChatGPT / Word : $LaTeX$, tableaux « | a | b | », puces « - »
+function pvMdLine(l) { return l.replace(/\$([^$]+)\$/g, (m, a) => a.replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '$1/$2').replace(/\\sqrt\{([^}]*)\}/g, 'sqrt($1)').replace(/\\times/g, '×').replace(/\\cdot/g, '·').replace(/\\div/g, '÷').replace(/\\(left|right)/g, '').replace(/\\/g, ''))
+  .replace(/^\s*\|(.+)\|\s*$/, (m, a) => a.split('|').map(q => q.trim()).filter(Boolean).join('   ·   ')).replace(/^\s*[-*]\s+(?=\S)/, '• '); }
 
 // ===================== ✨ Préparer pour le tableau  +  🎙️ De l'audio au tableau =====================
 // ---------- 1) un cours collé tel quel (Word, WhatsApp, IA…) → syntaxe du tableau
@@ -9921,7 +9926,7 @@ function pvAudApply() { pvAudStopPlay(); const A = pvAud, [i0, i1] = A.parts[A.c
   if (N > 1 && A.cur < N - 1) { lines.push('suite: ' + (pv.lang === 'en' ? 'Part ' : 'Partie ') + (A.cur + 2)); }
   pv.story = pv.script = lines.join('\n'); const a = A.a.slice(Math.floor(t0 * A.sr), Math.ceil(tEnd * A.sr)); pvSetVoice(a, A.sr, 'aud', false);
   const { items } = pvBoardParse(); if (items.length !== T.length) console.warn('pvAud: lignes', items.length, T.length);
-  pv.boardT = { n: items.length, t: T, aud: 1 }; pv.boardW = { n: items.length, w: W }; if (N > 1) pv.part = `Partie ${A.cur + 1}/${N}`; pv.segs = null; pv.storyBak = null; const tr = rows.find(r => r.tag === 'title'); if (!(pv.title || '').trim() && tr) pv.title = (tr.txt || tr.said).trim(); pvBoC = null; pvSave(); closeM(); pvForm(); toast('🎙️ Tableau créé sur votre voix ! Regardez l’aperçu, puis fabriquez la vidéo.', 5500); }
+  pv.boardT = { n: items.length, t: T, aud: 1, sig: pvSig(pv.story) }; pv.boardW = { n: items.length, w: W }; if (N > 1) pv.part = `Partie ${A.cur + 1}/${N}`; pv.segs = null; pv.storyBak = null; const tr = rows.find(r => r.tag === 'title'); if (!(pv.title || '').trim() && tr) pv.title = (tr.txt || tr.said).trim(); pvBoC = null; pvSave(); closeM(); pvForm(); toast('🎙️ Tableau créé sur votre voix ! Regardez l’aperçu, puis fabriquez la vidéo.', 5500); }
 
 // ===================== 🎨 Dessins au tableau : bibliothèque tracée à la craie, image → craie, image accrochée =====================
 const pvNrm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
@@ -10121,9 +10126,11 @@ async function pvTtsLoad(L) { AI.tts ||= {}; if (AI.tts[L]) return AI.tts[L]; pv
   let last = Date.now(); const files = {}; const prog = p => { last = Date.now(); if (p.status === 'progress' && p.file) { files[p.file] = [p.loaded || 0, p.total || 0]; const tot = Object.values(files).reduce((a, f) => a + f[1], 0), got = Object.values(files).reduce((a, f) => a + f[0], 0); if (tot > 2e6) pvTtsUi(`⬇️ Téléchargement de la voix (1re fois seulement) : ${pvMo(got)} / ${pvMo(tot)} Mo`, got / tot * 100); } else if (p.status === 'done' || p.status === 'ready') pvTtsUi('✅ Voix téléchargée. Préparation…'); };
   AI.ttsP ||= {}; AI.ttsP[L] ||= T.pipeline('text-to-speech', TTS_M[L][0], { progress_callback: prog });
   try { AI.tts[L] = await pvRace(AI.ttsP[L], () => Date.now() - last > (window.pvTtsStallMs || 90000), 'stall'); } catch (e) { delete AI.ttsP[L]; throw e; } return AI.tts[L]; }
-async function pvTtsSafe(text, L, cb) { text = pvSpellLetters(typeof pvPron === 'function' ? pvPron(text, L) : text, L); if (window.ttsStub) return window.ttsStub(text, L); pvTtsUi(null); if (window.pvTtsStop) throw pvTtsErr('stop');
+async function pvTtsSafe(text, L, cb) { text = pvSpellLetters(typeof pvPron === 'function' ? pvPron(text, L) : text, L); if (!/[\p{L}\p{N}]/u.test(text)) return { a: new Float32Array(4800), sr: 16000 };
+  if (text.length > 220) { const parts = text.match(/[^.!?;:]+[.!?;:]*\s*/g)?.reduce((A, q) => { if (A.length && (A[A.length - 1] + q).length <= 200) A[A.length - 1] += q; else A.push(q); return A; }, []) || [text]; if (parts.length > 1) { const R = []; let sr = 16000; for (const q of parts) { const r = await pvTtsSafe(q.trim(), L, cb); sr = r.sr; R.push(r.a, new Float32Array(Math.round(sr * 0.25))); } const n = R.reduce((p, a) => p + a.length, 0), o = new Float32Array(n); let k = 0; R.forEach(a => { o.set(a, k); k += a.length; }); return { a: o, sr }; } }
+  if (window.ttsStub) return window.ttsStub(text, L); pvTtsUi(null); if (window.pvTtsStop) throw pvTtsErr('stop');
   try { const P = await pvTtsLoad(L), first = !AI.ttsOk?.[L]; const r = await pvRace(P(text), first ? 180000 : 90000, 'slow'); (AI.ttsOk ||= {})[L] = 1; if (!r?.audio?.length) throw new Error('empty'); return { a: r.audio, sr: r.sampling_rate }; }
-  catch (e) { console.warn('tts', e); throw pvTtsErr(e.message); } }
+  catch (e) { console.warn('tts', e); throw pvTtsErr(e?.message || (typeof e === 'string' && e ? e : 'erreur interne de l’IA de voix (' + String(e?.name || e || '?').slice(0, 40) + ')')); } }
 function pvTtsErr(k) { const M = { stop: 'Création de la voix annulée.', lib: 'L’IA de voix ne se charge pas : connexion Internet trop faible ou coupée.', stall: 'Le téléchargement de la voix est bloqué (rien reçu depuis 1 min 30) : connexion trop lente ou site bloqué.', slow: 'Cet appareil met trop de temps à fabriquer la voix.', empty: 'La voix n’a pas pu être créée pour cette phrase.' }, e = new Error(M[k] || ('Voix non disponible : ' + k)); if (k !== 'stop') setTimeout(() => pvTtsHelp(e.message), 80); return e; }
 function pvTtsHelp(msg) { setTimeout(() => document.querySelectorAll('.toast').forEach(d => d.remove()), 30); openM(`<h3>🗣️ La voix de synthèse n’a pas pu être créée</h3><p class="mt" style="font-weight:700">${esc(msg)}</p>
   <p class="mt" style="font-size:13px">La 1re fois, l’app télécharge l’IA de voix (environ 30 Mo, depuis le site huggingface.co). Ensuite elle reste dans le navigateur et marche même sans Internet.</p>
@@ -10527,7 +10534,7 @@ function svVoiceEnd() { try { const s = svSegs().filter(g => g.talk); return s.l
 // 4) dictionnaire de prononciation (voix de synthèse)
 const PV_PRON = { fr: [['design', 'dizaïne'], ['designs', 'dizaïnes'], ['designer', 'dizaïneur'], ['whatsapp', 'ouatsape'], ['facebook', 'fèïsse-bouc'], ['tiktok', 'tik-tok'], ['youtube', 'you-tioube'], ['instagram', 'instagrame'], ['socialpages', 'sochiale-pédjes'], ['stock', 'stoque'], ['stocks', 'stoques'], ['sneakers', 'snikeurs'], ['sneaker', 'snikeur'], ['shopping', 'chopingue'], ['online', 'onne-laïne'], ['e-mail', 'i-mèle'], ['email', 'i-mèle'], ['ok', 'o-ké'], ['qr', 'ku-ère'], ['wifi', 'oui-fi'], ['wi-fi', 'oui-fi'], ['pdf', 'pé-dé-èfe'], ['live', 'laïve'], ['look', 'louque'], ['fashion', 'fachione'], ['flash', 'flache'], ['week-end', 'ouik-ènde'], ['weekend', 'ouik-ènde'], ['made in', 'méïde ine'], ['premium', 'prémiome'], ['smartphone', 'smarte-faune'], ['airtel', 'èrtèle'], ['vodacom', 'vodacome'], ['m-pesa', 'èm-péssa'], ['mpesa', 'èm-péssa'], ['orange money', 'orange monè']], en: [] };
 function pvPronUser() { try { return String(localStorage.getItem('pvpron') || '').split('\n').map(l => l.split('=').map(q => q.trim())).filter(p => p.length === 2 && p[0] && p[1]); } catch (e) { return []; } }
-function pvPron(text, lang) { let s = String(text || ''); const en = lang === 'en';
+function pvPron(text, lang) { const en = lang === 'en'; let s = pvTtsClean(text, lang);
   if (!en) s = s.replace(/(^|[\s(])-\s?(\d)/g, '$1moins $2').replace(/(\d)\s*%/g, '$1 pour cent').replace(/%/g, ' pour cent').replace(/(\d)\s*\$/g, '$1 dollars').replace(/\$\s*(\d[\d\s.,]*)/g, '$1 dollars').replace(/€/g, ' euros').replace(/\s&\s/g, ' et ').replace(/\+\s?243/g, 'plus deux cent quarante-trois');
   else s = s.replace(/(\d)\s*%/g, '$1 percent').replace(/\s&\s/g, ' and ');
   const M = new Map(); (PV_PRON[en ? 'en' : 'fr'] || []).forEach(([a, b]) => M.set(a.toLowerCase(), b)); pvPronUser().forEach(([a, b]) => M.set(a.toLowerCase(), b));
@@ -10544,6 +10551,14 @@ const skReflC = new WeakMap();
 function skRefl(x, im, C, w, h, o) { const rh = h * 0.42, key = [Math.round(w), Math.round(h), C.sx | 0, C.sy | 0, C.sw | 0, C.sh | 0].join(','); let E = skReflC.get(im), c = E?.key === key ? E.c : null;
   if (!c) { c = document.createElement('canvas'); const cw = Math.max(1, Math.round(Math.min(w, 900))), k = cw / w; c.width = cw; c.height = Math.max(1, Math.round(rh * k)); const g = c.getContext('2d'); g.save(); g.translate(0, c.height); g.scale(1, -1); g.drawImage(im, C.sx, C.sy + C.sh * 0.58, C.sw, C.sh * 0.42, 0, 0, cw, c.height); g.restore(); g.globalCompositeOperation = 'destination-in'; const gr = g.createLinearGradient(0, 0, 0, c.height); gr.addColorStop(0, 'rgba(0,0,0,.42)'); gr.addColorStop(0.7, 'rgba(0,0,0,.06)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, cw, c.height); skReflC.set(im, { key, c }); }
   x.save(); x.fillStyle = 'rgba(0,0,0,.16)'; x.beginPath(); x.ellipse(0, h / 2, w * 0.42, Math.max(2, h * 0.025), 0, 0, 7); x.fill(); x.drawImage(c, -w / 2, h / 2 + h * 0.005, w, rh); x.restore(); }
+
+// texte « lisible » pour la voix : sans emojis ni caractères invisibles, LaTeX, tableaux, symboles
+function pvTtsClean(t, lang) { const en = lang === 'en'; return String(t || '')
+  .replace(/(\d)\s*\$/g, '$1 dollars').replace(/\$\s*(\d[\d\s.,]*)/g, '$1 dollars ').replace(/\$+/g, ' ').replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, en ? '$1 over $2' : '$1 sur $2').replace(/\\sqrt\{([^}]*)\}/g, en ? 'square root of $1' : 'racine de $1').replace(/\\times/g, en ? ' times ' : ' fois ').replace(/\\[a-zA-Z]+/g, ' ')
+  .replace(/²/g, en ? ' squared' : ' au carré').replace(/³/g, en ? ' cubed' : ' au cube')
+  .replace(/[→➡⇒⟶⟵←·•]/g, ', ').replace(/\s*=\s*/g, en ? ' equals ' : ' égale ').replace(/(\p{L})\s*\/\s*(\p{L})/gu, en ? '$1 over $2' : '$1 sur $2').replace(/\|/g, ', ').replace(/-{3,}/g, ' ').replace(/^\s*[-•*·]\s+/, '')
+  .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F1E6}-\u{1F1FF}\u{FE00}-\u{FE0F}\u{200B}-\u{200F}\u{2060}\u{E0020}-\u{E007F}]/gu, ' ')
+  .replace(/[{}\[\]_^~`#<>]/g, ' ').replace(/\s*,\s*(,\s*)+/g, ', ').replace(/^[\s,]+|[\s,]+$/g, '').replace(/\s+/g, ' ').trim(); }
 
 // ===================== 🎛️ Éditeur vidéo : chaque vendeur décide (22/11 nuit) =====================
 // taille du produit, mouvement lent, effets, transition par scène, une scène par produit
