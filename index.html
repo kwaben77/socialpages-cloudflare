@@ -1131,6 +1131,7 @@ body:not(.is-admin) .adm-only{display:none!important}
       <button type="button" data-t="signalements" onclick="admTab('signalements')">Signalements</button>
       <button type="button" data-t="publications" onclick="admTab('publications')">Publications</button>
       <button type="button" data-t="journal" onclick="admTab('journal')">Journal</button>
+      <button type="button" data-t="paiements" onclick="admTab('paiements')">💰 Paiements</button>
     </div>
     <div id="adm-body"></div>
   </div>
@@ -1152,7 +1153,7 @@ body:not(.is-admin) .adm-only{display:none!important}
     <div class="big av" id="big-av" onclick="pickImage('avatar')" title="Changer la photo"></div>
     <div class="pinfo"><div class="title" id="p-name"></div><div class="mt" id="p-user"></div>
       <button class="soft" style="margin-top:12px;background:#EFF6FF" onclick="go('settings')">Modifier ma page</button></div>
-    <div class="grid2"><button class="pill" onclick="postModal()">+ Créer une publication</button><button class="soft" onclick="prodModal()">📦 Ajouter un produit</button><button class="soft" style="grid-column:1/-1;background:#ECFDF5;color:#047857;font-weight:700" onclick="bizOpen()">🧰 Mon commerce : factures, carnet, stock, caisse</button><button class="soft" style="grid-column:1/-1" onclick="shopModal()">🏪 Ma boutique : lien et QR code</button><button class="soft" style="grid-column:1/-1" onclick="inviteModal()">🎁 Inviter des amis</button><button id="adm-entry" class="pill hidden" style="grid-column:1/-1;background:#111827" onclick="go('admin')">🛡️ Administration</button></div>
+    <div class="grid2"><button class="pill" onclick="postModal()">+ Créer une publication</button><button class="soft" onclick="prodModal()">📦 Ajouter un produit</button><button class="soft" style="grid-column:1/-1;background:#FEF3C7;color:#92400E;font-weight:800" onclick="crOpen()">💰 Mes crédits <b class="cr-chip"></b></button><button class="soft" style="grid-column:1/-1;background:#ECFDF5;color:#047857;font-weight:700" onclick="bizOpen()">🧰 Mon commerce : factures, carnet, stock, caisse</button><button class="soft" style="grid-column:1/-1" onclick="shopModal()">🏪 Ma boutique : lien et QR code</button><button class="soft" style="grid-column:1/-1" onclick="inviteModal()">🎁 Inviter des amis</button><button id="adm-entry" class="pill hidden" style="grid-column:1/-1;background:#111827" onclick="go('admin')">🛡️ Administration</button></div>
     <h3 style="margin-bottom:12px">Publications récentes</h3>
     <div id="my-posts"></div>
   </div>
@@ -1348,7 +1349,7 @@ async function boot() {
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, () => { updBadges(); if (cur === 'chat' || cur === 'messages') refresh(); })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.id}` }, ev => onNotif(ev.new))
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ev => { handleRealtimePost(ev.new); }).subscribe();
-  sigListen(); liveDirListen(); setTimeout(() => { registerNative(); checkNativePending(); }, 300); checkAdmin(); presStart(); setTimeout(checkInvites, 1200);
+  sigListen(); liveDirListen(); setTimeout(() => { registerNative(); checkNativePending(); }, 300); checkAdmin(); crLoad(); presStart(); setTimeout(checkInvites, 1200);
   go(route() ? 'product' : 'accueil'); liveHash(); tvHash(); phHash(); toolHash();
   setTimeout(welcome, 1500);
 }
@@ -2823,7 +2824,7 @@ async function stuEncode(V, cv, music, onProg) {
   for (let i = 0; i < N; i++) {
     if (err) throw err;
     if (V.prep) await V.prep(Math.min(i / FPS, V.total));
-    (V.draw ? V.draw(ctx, Math.min(i / FPS, V.total)) : stuFrame(ctx, V, Math.min(i / FPS, V.total)));
+    (V.draw ? V.draw(ctx, Math.min(i / FPS, V.total)) : stuFrame(ctx, V, Math.min(i / FPS, V.total))); if (CR.wm) crWm(ctx);
     const f = new VideoFrame(cv, { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) }); enc.encode(f, { keyFrame: i % 60 === 0 }); f.close();
     while (enc.encodeQueueSize > 4) await new Promise(r => setTimeout(r, 4));
     if (i % 5 === 0) { onProg?.(i / N * (music ? 0.9 : 1)); await new Promise(r => setTimeout(r, 0)); }
@@ -2852,9 +2853,9 @@ async function stuRecord(V, cv, music, onProg) {
   A?.dest?.stream.getAudioTracks().forEach(t => stream.addTrack(t));
   const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 5e6 } : { videoBitsPerSecond: 5e6 }), chunks = [];
   rec.ondataavailable = e => e.data.size && chunks.push(e.data); const stopped = new Promise(r => rec.onstop = r);
-  (V.draw ? V.draw(ctx, 0) : stuFrame(ctx, V, 0)); track.requestFrame?.(); rec.start(250); await new Promise(r => setTimeout(r, 350));
+  (V.draw ? V.draw(ctx, 0) : stuFrame(ctx, V, 0)); if (CR.wm) crWm(ctx); track.requestFrame?.(); rec.start(250); await new Promise(r => setTimeout(r, 350));
   const t0 = performance.now(); if (A) { if (V.audio) V.audio(A.C, A.out, A.C.currentTime + 0.02); else vidMusic(A, V.total, V.slides.length, V.T, false, V.cuts); }
-  await new Promise(done => { const fr = () => { const t = (performance.now() - t0) / 1000; V.prep?.(Math.min(t, V.total), true); (V.draw ? V.draw(ctx, Math.min(t, V.total)) : stuFrame(ctx, V, Math.min(t, V.total))); track.requestFrame?.(); onProg?.(Math.min(1, t / V.total)); if (t >= V.total + 1) return done(); requestAnimationFrame(fr); }; requestAnimationFrame(fr); });
+  await new Promise(done => { const fr = () => { const t = (performance.now() - t0) / 1000; V.prep?.(Math.min(t, V.total), true); (V.draw ? V.draw(ctx, Math.min(t, V.total)) : stuFrame(ctx, V, Math.min(t, V.total))); if (CR.wm) crWm(ctx); track.requestFrame?.(); onProg?.(Math.min(1, t / V.total)); if (t >= V.total + 1) return done(); requestAnimationFrame(fr); }; requestAnimationFrame(fr); });
   rec.requestData?.(); rec.stop(); await stopped; A?.stop(); V.stop?.();
   return new Blob(chunks, { type: (mime || 'video/webm').split(';')[0] });
 }
@@ -2970,12 +2971,14 @@ function spDownload(files) { files.forEach((f, i) => setTimeout(() => { const a 
 function spAppOld() { openM(`<h3>📲 Nouvelle version de l’application</h3><p>Pour partager ou enregistrer des fichiers (factures, photos, vidéos) depuis l’application Android, installez la nouvelle version de SocialPages.</p><p class="mt" style="font-size:13px">En attendant : « 💬 Message WhatsApp » fonctionne, ou faites une capture d’écran de l’aperçu.</p><button class="pbtn gray" onclick="closeM()">OK</button>`); }
 async function spShare(files, text, title) {
   if (!files?.length) return false;
+  if (typeof crGate === 'function' && !CR.pass.has(files)) { files = await crGate(files); if (!files) return false; }
   if (!spIsApp() && navigator.canShare?.({ files })) { try { await navigator.share({ files, text, title }); return true; } catch (e) { if (e?.name === 'AbortError') return false; } }
   if (spIsApp()) { try { await spNative('shareFiles', { files: await spPack(files), text: text || '', title: title || 'Partager' }); return true; } catch (e) { if (/absent|not implemented|not available|unimplemented/i.test(String(e?.message || e))) { spAppOld(); return false; } toast('⚠️ ' + (e?.message || 'Partage impossible'), 4000); return false; } }
   spDownload(files); return true;
 }
 async function spSave(files) {
   if (!files?.length) return false;
+  if (typeof crGate === 'function') { files = await crGate(files); if (!files) return false; CR.pass.add(files); }
   if (spIsApp()) { let ok = 0, err = ''; for (const f of files) { try { await spNative('saveFile', { ...(await spPack([f]))[0] }); ok++; } catch (e) { err = String(e?.message || e); if (/absent|not implemented|not available|unimplemented/i.test(err)) { spAppOld(); return false; } } }
     if (ok) { toast(`✅ Enregistré dans Téléchargements › SocialPages`, 4000); return true; } return spShare(files); }
   spDownload(files); return true;
@@ -13404,13 +13407,224 @@ async function presChat() {
   if (chatWith?.id !== id) return;
   el.textContent = presTxt(P[id]); el.style.color = presOn(P[id]) ? '#16A34A' : 'var(--mu)';
 }
+// ===================== 💰 CRÉDITS : solde, recharge Mobile Money (validée par l'admin), export sans logo =====================
+const CR_NET = { mpesa: ['M-Pesa', '#E11D48'], orange: ['Orange Money', '#EA580C'], airtel: ['Airtel Money', '#DC2626'], afrimoney: ['Afrimoney', '#7C3AED'] };
+const CR_KIND = { affiche: ['🖼️', 'Affiche, image, photo'], psd: ['🧩', 'Fichier à calques (PSD)'], video: ['🎬', 'Vidéo (1 min max)'], video_long: ['🎬', 'Vidéo de plus d’1 min'], livre: ['📚', 'Livre, pack PDF, EPUB'], document: ['📄', 'Document PDF (CV, brochure, menu…)'] };
+const CR_DEF = { gift: 100, grace: 20, prices: { affiche: 10, psd: 20, video: 20, video_long: 40, livre: 50, document: 10 },
+  packs: [{ k: 'p1', label: '100 crédits', credits: 100, usd: 1 }, { k: 'p5', label: '550 crédits', credits: 550, usd: 5 }, { k: 'p10', label: '1 200 crédits', credits: 1200, usd: 10 }, { k: 'pro', label: 'Pro 1 mois', days: 30, usd: 3 }],
+  nums: { mpesa: '', orange: '', airtel: '', afrimoney: '' }, holder: '', hours: '8 h – 21 h', wa: '', rate: 0 };
+// quel outil donne quel type de création (les outils « free » restent toujours gratuits et sans logo)
+const CR_FN = {
+  affiche: ['afOut', 'skOut', 'skMagicZip', 'pvPosterOut', 'kmPng', 'ivImg', 'ivPoster', 'cdOut', 'apExport', 'apBatchRes', 'apBatchZip', 'pvYtSave'],
+  psd: ['psdExport', 'skPsdOut'], video: ['pvMake', 'svMake', 'svMakeDl', 'kmVideo'],
+  livre: ['cbMake', 'ebEpub', 'ebPrint', 'mlRun', 'etAll', 'etSave', 'etShow'], document: ['sdPdf', 'nuOut', 'cvOut', 'lmOut'],
+  free: ['bailMake', 'quitOut', 'docPdf', 'docShare', 'bizExport', 'tixShare', 'phOut', 'phA4Out', 'phBatchZip', 'phHistOut', 'cpQr', 'cpVcf', 'svSrt', 'ivCsv', 'ivIcs', 'ivListPdf', 'stuPosters', 'stuShareP', 'vidMake', 'vidShare'] };
+const CR = { bal: null, pro: null, st: CR_DEF, admin: false, ctx: null, wm: false, pass: new WeakSet(), memo: new Map(), last: {}, tm: null };
+const crSt = () => ({ ...CR_DEF, ...(CR.st || {}), prices: { ...CR_DEF.prices, ...(CR.st?.prices || {}) }, nums: { ...CR_DEF.nums, ...(CR.st?.nums || {}) } });
+const crIsPro = () => !!(CR.pro && new Date(CR.pro) > new Date());
+const crExempt = () => !!(me?.is_admin || CR.admin || crIsPro());
+const crPrice = k => Math.max(0, Math.round(+crSt().prices[k] || 0));
+const crN = n => String(Math.round(+n || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const crUsd = u => { const r = +crSt().rate || 0; return `${String(+u).replace('.', ',')} $${r > 0 ? ` <small style="font-weight:500;color:#6B7280">≈ ${crN(u * r)} FC</small>` : ''}`; };
+const crDate = d => { try { return new Date(d).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } };
+const crProPack = () => crSt().packs.find(p => +p.days > 0);
+
+// ---------- chargement du portefeuille (au démarrage, puis toutes les 3 minutes)
+async function crLoad() {
+  crWrap();
+  if (!me) { try { const { data } = await sb.from('sp_settings').select('data').eq('id', 1).maybeSingle(); if (data?.data) CR.st = data.data; } catch (e) {} return; }
+  try { const { data, error } = await sb.rpc('sp_wallet'); if (error) throw error;
+    CR.bal = +data.balance || 0; CR.pro = data.pro_until || null; CR.st = data.settings || CR.st; CR.admin = !!data.admin;
+    const news = data.news || []; news.forEach(n => toast(n.status === 'ok' ? `✅ Paiement validé : ${n.label}. Merci !` : `❌ Paiement refusé (${n.label})${n.note ? ' : ' + n.note : ''}`, 7000));
+    if (news.length) sb.rpc('sp_seen', { p_ids: news.map(n => n.id) }).then(() => {}, () => {});
+  } catch (e) { console.warn('crédits', e); }
+  crChip(); clearTimeout(CR.tm); CR.tm = setTimeout(() => { if (document.visibilityState === 'visible') crLoad(); else CR.tm = setTimeout(crLoad, 60e3); }, 180e3);
+}
+function crChip() { document.querySelectorAll('.cr-chip').forEach(e => { e.textContent = CR.bal == null ? '' : crIsPro() ? '⭐ Pro' : crN(CR.bal); }); }
+
+// ---------- petite fenêtre par-dessus tout (ne ferme pas l'outil en cours)
+function crSheet(html) { let o = $('crx'); if (!o) { o = document.createElement('div'); o.id = 'crx'; o.className = 'crx'; o.onclick = e => { if (e.target === o) crClose(); }; document.body.appendChild(o); }
+  o.innerHTML = `<div class="crbox">${html}</div>`; o.classList.remove('hidden'); return o; }
+function crClose(v) { $('crx')?.classList.add('hidden'); const r = CR.res; CR.res = null; r?.(v === undefined ? null : v); }
+(() => { const s = document.createElement('style'); s.textContent = `.crx{position:fixed;inset:0;z-index:100000;background:rgba(17,24,39,.55);display:flex;align-items:flex-end;justify-content:center}.crx.hidden{display:none}
+.crbox{background:#fff;color:#111827;width:100%;max-width:440px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px 22px;box-sizing:border-box}
+@media(min-width:600px){.crx{align-items:center}.crbox{border-radius:18px}}
+.crbox h3{margin:0 0 8px;font-size:18px}.crrow{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1.5px solid #E5E7EB;border-radius:12px;padding:11px 12px;margin-top:8px;cursor:pointer;background:#fff;width:100%;font:inherit;color:inherit;text-align:left}
+.crrow.on{border-color:#2563EB;background:#EFF6FF}.crbig{font-size:30px;font-weight:800}.crpay{background:#F9FAFB;border-radius:12px;padding:10px 12px;line-height:1.9;font-size:15px}
+.crpay b{font-weight:800}.crcp{border:0;background:#E5E7EB;border-radius:8px;padding:2px 8px;margin-left:6px;font-size:12px;cursor:pointer}.crnets{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.crnet{border:2px solid #E5E7EB;border-radius:12px;padding:12px 6px;text-align:center;font-weight:800;cursor:pointer;background:#fff}.crh{font-size:13px;border-bottom:1px solid #F3F4F6;padding:7px 0;display:flex;justify-content:space-between;gap:8px}
+.crtag{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px}.crin{width:100%;box-sizing:border-box;padding:11px;border-radius:10px;border:1.5px solid #D1D5DB;font-size:16px;margin-top:6px}`; document.head.appendChild(s); })();
+
+// ---------- 💰 Mes crédits
+async function crOpen(tab) { if (!me) return toast('Connectez-vous d’abord pour avoir vos crédits.');
+  crSheet('<div class="spin"></div>'); await crLoad(); const S = crSt(); let hist = [], wait = [];
+  try { const [h, w] = await Promise.all([sb.from('sp_ledger').select('id,delta,reason,ref,created_at').order('id', { ascending: false }).limit(30), sb.from('sp_payreqs').select('id,label,amount,network,code,status,sent_at').eq('status', 'wait').order('id', { ascending: false }).limit(10)]); hist = h.data || []; wait = w.data || []; } catch (e) {}
+  const pro = crIsPro(), packs = S.packs.filter(p => +p.usd > 0);
+  crSheet(`<div style="display:flex;justify-content:space-between;align-items:center"><h3>💰 Mes crédits</h3><button class="soft" style="margin:0;padding:6px 12px" onclick="crClose()">✕</button></div>
+    <div style="display:flex;align-items:baseline;gap:8px"><span class="crbig">${crN(CR.bal)}</span><span class="mt">crédits</span>${pro ? `<span class="crtag" style="background:#FEF3C7;color:#92400E">⭐ Pro jusqu’au ${crDate(CR.pro).split(' ')[0]}</span>` : ''}</div>
+    <p class="mt" style="font-size:13px;margin:4px 0 0">Créer et télécharger avec un petit logo SocialPages : <b>gratuit</b>. Sans logo : quelques crédits${pro ? ' (illimité avec votre abonnement Pro)' : ''}.</p>
+    ${wait.length ? `<div style="margin-top:10px;padding:10px;border-radius:12px;background:#FFFBEB;font-size:13px">⏳ <b>En vérification :</b> ${wait.map(w => `${esc(w.label)} (${esc(w.code)})`).join(' · ')}<br><span class="mt">Validation en général en moins de 30 min (${esc(S.hours)}).</span></div>` : ''}
+    <p style="font-weight:800;margin:14px 0 0">Recharger</p>
+    ${packs.map(p => `<button type="button" class="crrow" onclick="crBuy('${esc(p.k)}')"><span>${+p.days > 0 ? `⭐ <b>${esc(p.label)}</b><br><small class="mt">sans logo illimité pendant ${+p.days} jours</small>` : `<b>${esc(p.label)}</b>${(() => { const b = packs.find(q => !(+q.days > 0)); const bonus = b && +b.credits && +b.usd ? Math.round((p.credits / p.usd) / (b.credits / b.usd) * 100 - 100) : 0; return bonus > 0 ? ` <span class="crtag" style="background:#DBEAFE;color:#1D4ED8">+${bonus} %</span>` : ''; })()}`}</span><b>${crUsd(p.usd)}</b></button>`).join('')}
+    <details style="margin-top:12px"><summary style="font-weight:800;cursor:pointer">💡 Ce que coûte une création sans logo</summary>${Object.entries(CR_KIND).map(([k, [ic, t]]) => `<div class="crh"><span>${ic} ${t}</span><b>${crPrice(k) ? crPrice(k) + ' crédits' : 'gratuit'}</b></div>`).join('')}
+      <p class="mt" style="font-size:12px">Corriger et retélécharger avec le même outil dans les ${+S.grace || 0} minutes : gratuit. Si une création échoue, les crédits reviennent tout seuls.</p></details>
+    <details style="margin-top:8px"${tab === 'h' ? ' open' : ''}><summary style="font-weight:800;cursor:pointer">🧾 Historique</summary>${hist.length ? hist.map(h => `<div class="crh"><span>${esc(crReason(h.reason))}<br><small class="mt">${crDate(h.created_at)}</small></span><b style="color:${h.delta > 0 ? '#16A34A' : h.delta < 0 ? '#DC2626' : '#6B7280'}">${h.delta > 0 ? '+' : ''}${h.delta || '—'}</b></div>`).join('') : '<p class="mt">Rien pour le moment.</p>'}</details>
+    ${S.wa ? `<a class="soft" style="display:block;text-align:center;margin-top:12px;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/${esc(String(S.wa).replace(/\D/g, ''))}?text=${encodeURIComponent('Bonjour SocialPages, une question sur mes crédits (@' + (me.username || '') + ')')}">💬 Une question ? WhatsApp</a>` : ''}`); }
+const crReason = r => { const k = CR_KIND[r]; return k ? `${k[0]} ${k[1]} sans logo` : r; };
+
+// ---------- acheter : 1) réseau  2) envoyer + identifiant SMS  3) attente
+function crBuy(k) { const S = crSt(), p = S.packs.find(q => q.k === k); if (!p) return; const nets = Object.keys(CR_NET).filter(n => String(S.nums[n] || '').trim());
+  if (!nets.length) return crSheet(`<h3>Recharger</h3><p class="mt">Le paiement Mobile Money n’est pas encore ouvert. ${S.wa ? 'Écrivez-nous sur WhatsApp, nous vous aidons.' : 'Revenez bientôt.'}</p>${S.wa ? `<a class="pill" style="display:block;text-align:center;text-decoration:none;margin-top:10px" target="_blank" rel="noopener" href="https://wa.me/${esc(String(S.wa).replace(/\D/g, ''))}">💬 WhatsApp</a>` : ''}<button class="soft" style="width:100%;margin-top:8px" onclick="crOpen()">← Retour</button>`);
+  crSheet(`<h3>${esc(p.label)} · ${crUsd(p.usd)}</h3><p style="font-weight:800;margin:10px 0 8px">1. Avec quoi payez-vous ?</p>
+    <div class="crnets">${nets.map(n => `<button type="button" class="crnet" style="color:${CR_NET[n][1]}" onclick="crBuyNet('${esc(k)}','${n}')">${CR_NET[n][0]}</button>`).join('')}</div>
+    <button class="soft" style="width:100%;margin-top:12px" onclick="crOpen()">← Retour</button>`); }
+async function crBuyNet(k, n) { crSheet('<div class="spin"></div><p class="mt" style="text-align:center">Préparation…</p>');
+  try { const { data, error } = await sb.rpc('sp_pay_start', { p_pack: k, p_network: n }); if (error) throw error; CR.payReq = { ...data, n }; crPayForm(); }
+  catch (e) { crSheet(`<h3>⚠️ Impossible pour le moment</h3><p class="mt">${esc(e.message || String(e))}</p><button class="soft" style="width:100%" onclick="crOpen()">← Retour</button>`); } }
+function crPayForm(err) { const R = CR.payReq, S = crSt(), num = String(S.nums[R.n] || '');
+  crSheet(`<h3>${esc(R.label)} · ${CR_NET[R.n][0]}</h3><p style="font-weight:800;margin:10px 0 6px">2. Envoyez exactement</p>
+    <div class="crpay">Montant : <b>${crUsd(R.amount)}</b><br>Au numéro : <b>${esc(num)}</b><button class="crcp" onclick="copyTxt('${esc(num.replace(/\s/g, ''))}')">Copier</button>${S.holder ? `<br>Nom affiché : <b>${esc(S.holder)}</b>` : ''}<br>Motif : <b>${esc(R.code)}</b><button class="crcp" onclick="copyTxt('${esc(R.code)}')">Copier</button></div>
+    <p class="mt" style="font-size:12px;margin:6px 0 0">Vérifiez le nom affiché avant de confirmer sur votre téléphone.</p>
+    <p style="font-weight:800;margin:14px 0 0">3. Collez l’identifiant reçu par SMS</p>
+    <input id="cr-tx" class="crin" placeholder="ex. PP251127.1902.A12345" autocomplete="off" oninput="$('cr-err').textContent=''">
+    <p id="cr-err" style="color:#DC2626;font-size:13px;margin:4px 0 0">${esc(err || '')}</p>
+    <button class="pill" style="width:100%;margin-top:8px" onclick="crPaySend()">✅ J’ai payé</button>
+    <button class="soft" style="width:100%;margin-top:8px" onclick="crOpen()">Annuler</button>`); }
+async function crPaySend() { const t = ($('cr-tx')?.value || '').trim(); if (t.replace(/\s/g, '').length < 5) { $('cr-err').textContent = 'Copiez l’identifiant de la transaction depuis le SMS de confirmation.'; return; }
+  const R = CR.payReq; try { const { error } = await sb.rpc('sp_pay_confirm', { p_id: R.id, p_txid: t }); if (error) throw error; }
+  catch (e) { return crPayForm(e.message || String(e)); }
+  const S = crSt(); crSheet(`<div style="text-align:center"><div style="font-size:40px">⏳</div><h3>Paiement en vérification</h3><p class="mt">${esc(R.label)} · ${esc(R.code)}<br>Vous recevrez un message dès la validation, en général en moins de 30 minutes (${esc(S.hours)}).</p>
+    ${S.wa ? `<a class="soft" style="display:block;text-decoration:none;margin-top:8px" target="_blank" rel="noopener" href="https://wa.me/${esc(String(S.wa).replace(/\D/g, ''))}?text=${encodeURIComponent(`Bonjour, j'ai payé ${R.label} (${R.code}). Identifiant : ${t}`)}">💬 Un souci ? WhatsApp</a>` : ''}
+    <button class="pill" style="width:100%;margin-top:10px" onclick="crClose()">OK</button></div>`); clearTimeout(CR.tm); CR.tm = setTimeout(crLoad, 60e3); }
+
+// ---------- quel outil travaille en ce moment (pour savoir quoi faire payer)
+function crWrap() { Object.entries(CR_FN).forEach(([k, L]) => L.forEach(n => { const f = window[n]; if (typeof f !== 'function' || f.__cr) return; const w = function () { CR.ctx = { k, fn: n, t: Date.now() }; return f.apply(this, arguments); }; w.__cr = 1; window[n] = w; }));
+  ['stuEncode', 'stuRecord'].forEach(crEncWrap); }
+const crCtx = () => (CR.ctx && Date.now() - CR.ctx.t < 15 * 60e3 ? CR.ctx : null);
+const crGraceOk = ref => { const t = CR.last[ref]; return t && Date.now() - t < (+crSt().grace || 0) * 60e3; };
+
+// ---------- la question : gratuit avec logo, ou sans logo ?
+function crAsk(k, price, canFree, secs) { return new Promise(res => { CR.res = res; const pro = crProPack(), ok = me && CR.bal != null, enough = ok && CR.bal >= price, [ic, t] = CR_KIND[k] || ['⭐', 'Création'];
+  crSheet(`<h3>${ic} Votre ${k.startsWith('video') ? 'vidéo' : 'création'} est prête à sortir</h3>
+    <p class="mt" style="font-size:13px;margin:0">${t}${secs ? ` · ${Math.round(secs)} s` : ''}${ok ? ` · votre solde : <b>${crN(CR.bal)} crédits</b>` : ''}</p>
+    ${!me ? `<p style="margin:12px 0 0;padding:10px;border-radius:12px;background:#F3F4F6;font-size:13px">🔒 Connectez-vous pour télécharger sans logo.</p>`
+      : !ok ? `<p style="margin:12px 0 0;padding:10px;border-radius:12px;background:#FEF2F2;font-size:13px">📶 Connexion impossible pour lire vos crédits. Réessayez dans un instant.</p>`
+      : enough ? `<button class="pill" style="width:100%;margin-top:12px;background:#111827" onclick="crClose('paid')">⭐ Sans logo — ${price} crédits<small style="display:block;font-weight:500;font-size:11px">qualité HD · il vous restera ${crN(CR.bal - price)} crédits</small></button>`
+      : `<button class="pill" style="width:100%;margin-top:12px;background:#111827" onclick="crClose();crOpen()">💰 Recharger pour enlever le logo<small style="display:block;font-weight:500;font-size:11px">il vous manque ${crN(price - CR.bal)} crédits (${price} nécessaires)</small></button>`}
+    ${canFree ? `<button class="soft" style="width:100%;margin-top:8px" onclick="crClose('free')">Gratuit, avec un petit logo SocialPages<small style="display:block;font-weight:500;font-size:11px">dans un coin, en bas à droite</small></button>` : `<p class="mt" style="font-size:12px;margin:8px 0 0">Ce type de fichier ne peut pas recevoir de logo : il est seulement disponible sans logo.</p>`}
+    ${pro && me ? `<p class="mt" style="font-size:12px;margin:10px 0 0">⭐ <a href="#" onclick="event.preventDefault();crClose();crBuy('${esc(pro.k)}')">${esc(pro.label)} : sans logo illimité pour ${crUsd(pro.usd).replace(/<[^>]+>/g, '')}</a></p>` : ''}
+    <button class="soft" style="width:100%;margin-top:8px;background:transparent" onclick="crClose()">Annuler</button>`); }); }
+async function crSpend(k, ref, secs) { try { const { data, error } = await sb.rpc('sp_spend', { p_kind: k, p_ref: ref, p_secs: secs || 0 }); if (error) throw error;
+    if (!data?.ok) { if (data?.balance != null) CR.bal = data.balance; crChip(); toast(data?.why === 'login' ? 'Connectez-vous d’abord.' : `Crédits insuffisants (${data?.cost || '?'} nécessaires).`, 5000); return null; }
+    if (data.balance != null) CR.bal = data.balance; CR.last[ref] = Date.now(); crChip(); if (data.cost > 0) toast(`⭐ Sans logo : −${data.cost} crédits · reste ${crN(CR.bal)}`, 4000); return data; }
+  catch (e) { toast('📶 Connexion impossible : réessayez. Aucun crédit n’a été retiré.', 6000); return null; } }
+async function crRefund(id) { try { await sb.rpc('sp_refund', { p_id: id }); await crLoad(); toast('↩️ La création a échoué : vos crédits sont revenus.', 5000); } catch (e) {} }
+
+// ---------- les fichiers : lesquels comptent, et comment poser le petit logo
+const crIsProd = f => /^(image\/(png|jpe?g|webp)|application\/pdf|video\/|application\/(zip|x-zip|epub)|image\/vnd\.adobe)/.test(f.type || '') || /\.(png|jpe?g|webp|pdf|mp4|webm|zip|epub|psd)$/i.test(f.name || '');
+const crIsImg = f => /^image\/(png|jpe?g|webp)$/.test(f.type || '') || (!f.type && /\.(png|jpe?g|webp)$/i.test(f.name || ''));
+const crIsPdf = f => f.type === 'application/pdf' || /\.pdf$/i.test(f.name || '');
+function crWm(ctx) { const W = ctx.canvas.width, H = ctx.canvas.height, s = Math.max(11, Math.round(Math.min(W, H) * 0.026)); ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.filter = 'none'; ctx.shadowBlur = 0; ctx.shadowColor = 'transparent';
+  ctx.font = `800 ${s}px Poppins, system-ui, sans-serif`; const t = 'SocialPages', tw = ctx.measureText(t).width, ph = Math.round(s * 1.75), pw = Math.round(tw + s * 2.2), x = W - pw - Math.round(s * 0.9), y = H - ph - Math.round(s * 0.9), r = ph / 2;
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.lineTo(x + pw - r, y); ctx.arc(x + pw - r, y + r, r, -Math.PI / 2, Math.PI / 2); ctx.lineTo(x + r, y + ph); ctx.arc(x + r, y + r, r, Math.PI / 2, Math.PI * 1.5); ctx.closePath(); ctx.fillStyle = 'rgba(17,24,39,.62)'; ctx.fill();
+  ctx.fillStyle = '#FBBF24'; ctx.beginPath(); ctx.arc(x + s * 0.95, y + r, s * 0.3, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.fillText(t, x + s * 1.5, y + r + s * 0.05); ctx.restore(); }
+async function crStampImg(f) { const b = await createImageBitmap(f), c = document.createElement('canvas'); c.width = b.width; c.height = b.height; const g = c.getContext('2d'); g.drawImage(b, 0, 0); b.close?.(); crWm(g);
+  const ty = /png/.test(f.type) || /\.png$/i.test(f.name) ? 'image/png' : /webp/.test(f.type) ? 'image/webp' : 'image/jpeg', bl = await new Promise(r => c.toBlob(r, ty, 0.93)); return new File([bl], f.name, { type: ty }); }
+// PDF fabriqués par SocialPages (pages = images) : on garde exactement la taille des pages et on ajoute le petit logo
+function crPdfPages(u8) { const s = new TextDecoder('latin1').decode(u8), P = [], I = []; let m; const rb = /\/MediaBox \[0 0 ([\d.]+) ([\d.]+)\]/g, ri = /\/Width (\d+) \/Height (\d+) \/ColorSpace \/DeviceRGB \/BitsPerComponent 8 \/Filter \/DCTDecode \/Length (\d+) >>\nstream\n/g;
+  while ((m = rb.exec(s))) P.push([m[1], m[2]]); while ((m = ri.exec(s))) { const at = m.index + m[0].length, L = +m[3]; I.push({ w: +m[1], h: +m[2], d: u8.subarray(at, at + L) }); }
+  if (!P.length || P.length !== I.length || !s.startsWith('%PDF-1.4')) return null; return P.map((p, i) => ({ PW: p[0], PH: p[1], ...I[i] })); }
+async function crCanPdf(f) { try { return !!crPdfPages(new Uint8Array(await f.arrayBuffer())); } catch (e) { return false; } }
+async function crStampPdf(f) { const pages = crPdfPages(new Uint8Array(await f.arrayBuffer())); if (!pages) throw new Error('pdf');
+  const enc = new TextEncoder(), parts = [], offs = []; let len = 0; const add = p => { const u = typeof p === 'string' ? enc.encode(p) : p; parts.push(u); len += u.length; };
+  const obj = (n, body, stream) => { offs[n] = len; add(`${n} 0 obj\n${body}\n`); if (stream) { add('stream\n'); add(stream); add('\nendstream\n'); } add('endobj\n'); }, N = pages.length;
+  add('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n'); obj(1, '<< /Type /Catalog /Pages 2 0 R >>'); obj(2, `<< /Type /Pages /Count ${N} /Kids [${pages.map((_, i) => (5 + i * 3) + ' 0 R').join(' ')}] >>`);
+  obj(3, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>'); obj(4, '<< /Type /ExtGState /ca 0.62 >>');
+  pages.forEach((p, i) => { const b = 5 + i * 3, W = +p.PW, H = +p.PH, s = Math.max(6, Math.min(W, H) * 0.02), tw = s * 5.9, pw = tw + s * 1.5, ph = s * 1.75, m = Math.max(s, 30), x = W - pw - m, y = m, f2 = v => v.toFixed(2);
+    const cs = `q ${p.PW} 0 0 ${p.PH} 0 0 cm /Im0 Do Q q /G1 gs 0.067 0.094 0.153 rg ${f2(x)} ${f2(y)} ${f2(pw)} ${f2(ph)} re f Q q 1 1 1 rg BT /F1 ${f2(s)} Tf ${f2(x + s * 0.75)} ${f2(y + ph / 2 - s * 0.35)} Td (SocialPages) Tj ET Q`;
+    obj(b, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${p.PW} ${p.PH}] /Resources << /XObject << /Im0 ${b + 2} 0 R >> /Font << /F1 3 0 R >> /ExtGState << /G1 4 0 R >> >> /Contents ${b + 1} 0 R >>`);
+    obj(b + 1, `<< /Length ${cs.length} >>`, enc.encode(cs)); obj(b + 2, `<< /Type /XObject /Subtype /Image /Width ${p.w} /Height ${p.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${p.d.length} >>`, p.d); });
+  const xref = len, n = 5 + N * 3; add(`xref\n0 ${n}\n0000000000 65535 f \n` + [...Array(n - 1)].map((_, i) => String(offs[i + 1]).padStart(10, '0') + ' 00000 n \n').join('') + `trailer\n<< /Size ${n} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new File(parts, f.name, { type: 'application/pdf' }); }
+async function crStampAll(files) { const out = []; for (const f of files) out.push(crIsImg(f) ? await crStampImg(f) : crIsPdf(f) ? await crStampPdf(f) : f); return out; }
+
+// ---------- la porte : appelée par spShare / spSave avant de donner les fichiers
+async function crGate(files) { crWrap(); const c = crCtx(); if (!c || c.k === 'free' || !files?.length) return files;
+  const prod = files.filter(crIsProd); if (!prod.length || prod.every(f => /^video\//.test(f.type || ''))) return files; // les vidéos sont réglées pendant la fabrication
+  if (crExempt()) return files; const k = c.k, price = crPrice(k); if (!price) return files;
+  const ref = k + ':' + c.fn, key = c.fn + '|' + files.map(f => f.name + ':' + f.size).join(','), mm = CR.memo.get(key);
+  if (mm && Date.now() - mm.t < 30 * 60e3) return mm.mode === 'paid' ? files : crStampAll(files);
+  let mode; if (crGraceOk(ref)) mode = 'paid';
+  else { if (me && CR.bal == null) await crLoad(); let can = true; for (const f of prod) { if (crIsImg(f)) continue; if (crIsPdf(f) && await crCanPdf(f)) continue; can = false; break; }
+    mode = await crAsk(k, price, can); if (!mode) return null; }
+  if (mode === 'paid' && !(await crSpend(k, ref))) return null;
+  CR.memo.set(key, { mode, t: Date.now() }); if (mode === 'paid') return files;
+  try { const o = await crStampAll(files); toast('Téléchargement gratuit avec le petit logo SocialPages.', 3500); return o; } catch (e) { toast('⚠️ Logo impossible sur ce fichier.'); return null; } }
+
+// ---------- vidéos : la question est posée juste avant la fabrication (le logo est dessiné sur chaque image)
+function crEncWrap(name) { const f = window[name]; if (typeof f !== 'function' || f.__cr) return;
+  const w = async function (V) { const c = crCtx(); if (!c || c.k !== 'video' || crExempt()) return f.apply(this, arguments);
+    const secs = +V?.total || 0, k = secs > 60 ? 'video_long' : 'video', price = crPrice(k), ref = 'video:' + c.fn; if (!price) return f.apply(this, arguments);
+    if (!c.mode) { if (crGraceOk(ref)) c.mode = 'paid'; else { if (me && CR.bal == null) await crLoad(); c.mode = await crAsk(k, price, true, secs); if (!c.mode) throw new Error('Création annulée.'); } }
+    if (c.mode === 'paid' && !c.paid) { const r = await crSpend('video', ref, secs); if (!r) { c.mode = null; throw new Error('Crédits insuffisants : rechargez puis recommencez.'); } c.paid = r.id || -1; }
+    CR.wm = c.mode === 'free';
+    try { const out = await f.apply(this, arguments); if (!out && c.paid > 0) { const id = c.paid; c.paid = null; await crRefund(id); } return out; }
+    catch (e) { if (c.paid > 0) { const id = c.paid; c.paid = null; await crRefund(id); } throw e; }
+    finally { CR.wm = false; } };
+  w.__cr = 1; window[name] = w; }
+
+// ===================== 🛡️ ADMIN : 💰 Paiements · ⚙️ Réglages · 🎁 Cadeaux =====================
+let crAdmS = 'wait';
+async function crAdmPing() { try { const { data } = await sb.rpc('sp_admin_totals'); const n = +data?.wait || 0; const b = document.querySelector('#adm-tabs [data-t="paiements"]'); if (b) b.textContent = '💰 Paiements' + (n ? ` (${n})` : ''); if (n) toast(`💰 ${n} paiement${n > 1 ? 's' : ''} à vérifier (Administration › Paiements)`, 6000); } catch (e) {} }
+async function crAdm(el) { const [{ data: T }, { data: L, error }] = await Promise.all([sb.rpc('sp_admin_totals'), sb.rpc('sp_admin_payreqs', { p_status: crAdmS })]); if (error) throw error; const t = T || {}, rows = L || [];
+  const c = (n, s) => `<div class="admcard"><b>${n}</b><span>${s}</span></div>`;
+  el.innerHTML = `<div class="admgrid">${c(`<span style="color:${+t.wait ? '#DC2626' : 'inherit'}">${+t.wait || 0}</span>`, '⏳ À vérifier')}${c(crN(t.today) + ' $', '💵 Aujourd’hui')}${c(crN(t.month) + ' $', `📅 Ce mois (${+t.n_month || 0} paiements)`)}${c(+t.pro || 0, '⭐ Abonnés Pro')}</div>
+    <div class="grid2" style="margin-top:10px"><button class="soft" onclick="crAdmSet()">⚙️ Prix, packs, numéros</button><button class="soft" onclick="crAdmGift()">🎁 Donner des crédits</button></div>
+    <div class="filters" style="margin-top:10px">${[['wait', '⏳ À vérifier'], ['ok', '✅ Validés'], ['no', '❌ Refusés']].map(([k, l]) => `<button type="button" class="${crAdmS === k ? 'on' : ''}" onclick="crAdmS='${k}';renderAdmin()">${l}</button>`).join('')}</div>
+    ${rows.length ? rows.map(r => `<div class="admcard" style="text-align:left;margin-top:8px;display:block">
+      <div style="display:flex;justify-content:space-between;gap:8px"><b style="font-size:15px">${esc(r.label)} · ${crN(r.amount)} $</b><span class="crtag" style="background:#F3F4F6;color:${CR_NET[r.network]?.[1] || '#111'}">${CR_NET[r.network]?.[0] || esc(r.network)}</span></div>
+      <div style="font-size:13px;line-height:1.7;margin-top:4px">👤 ${esc(r.name || '?')} <span class="mt">@${esc(r.username || '')}</span><br>Motif : <strong>${esc(r.code)}</strong> · SMS : <strong>${esc(r.txid || '')}</strong><button class="crcp" onclick="copyTxt('${esc(r.txid || '')}')">Copier</button><br><span class="mt">${crDate(r.sent_at)}${r.decided_at ? ' → ' + crDate(r.decided_at) : ''}${r.note ? ' · ' + esc(r.note) : ''}</span></div>
+      ${r.status === 'wait' ? `<p class="mt" style="font-size:12px;margin:6px 0">Vérifiez sur votre téléphone : même identifiant, même montant (${crN(r.amount)} $), motif ${esc(r.code)}.</p><div class="grid2"><button class="pill" style="background:#16A34A" onclick="crAdmDo(${r.id},true)">✅ Valider${r.credits ? ` (+${crN(r.credits)})` : ''}</button><button class="soft" style="color:#DC2626" onclick="crAdmNo(${r.id})">❌ Refuser</button></div>` : ''}</div>`).join('') : `<p class="mt" style="margin-top:12px">${crAdmS === 'wait' ? 'Aucun paiement à vérifier. 👍' : 'Rien ici.'}</p>`}`; }
+async function crAdmDo(id, ok, note) { try { const { error } = await sb.rpc('sp_admin_decide', { p_id: id, p_ok: ok, p_note: note || null }); if (error) throw error; toast(ok ? '✅ Validé : les crédits sont partis.' : 'Refusé.'); crClose(); renderAdmin(); crAdmPing(); } catch (e) { toast('⚠️ ' + (e.message || e), 6000); } }
+function crAdmNo(id) { crSheet(`<h3>❌ Refuser ce paiement</h3><p class="mt" style="font-size:13px">Le client verra ce motif.</p><div class="afchips">${['Transaction introuvable', 'Montant incorrect', 'Identifiant déjà utilisé'].map(m => `<button type="button" class="soft" style="margin:4px 4px 0 0" onclick="$('cr-no').value='${m}'">${m}</button>`).join('')}</div>
+  <input id="cr-no" class="crin" placeholder="Motif" value="Transaction introuvable"><button class="pill" style="width:100%;margin-top:10px;background:#DC2626" onclick="crAdmDo(${id},false,$('cr-no').value)">Refuser</button><button class="soft" style="width:100%;margin-top:8px" onclick="crClose()">Annuler</button>`); }
+function crAdmGift() { crSheet(`<h3>🎁 Donner des crédits</h3><input id="cr-gu" class="crin" placeholder="Nom d’utilisateur (ex. neema)"><input id="cr-ga" class="crin" type="number" inputmode="numeric" placeholder="Nombre de crédits (ex. 50 ; -50 pour retirer)"><input id="cr-gn" class="crin" placeholder="Motif (ex. Gagnant du concours)" value="Cadeau de SocialPages">
+  <button class="pill" style="width:100%;margin-top:10px" onclick="crAdmGiftGo()">🎁 Donner</button><button class="soft" style="width:100%;margin-top:8px" onclick="crClose()">Fermer</button>`); }
+async function crAdmGiftGo() { const u = $('cr-gu').value.trim(), a = Math.round(+$('cr-ga').value || 0); if (!u || !a) return toast('Écrivez le nom d’utilisateur et le nombre de crédits.');
+  try { const { data, error } = await sb.rpc('sp_admin_gift', { p_username: u, p_amount: a, p_note: $('cr-gn').value }); if (error) throw error; toast(`✅ Fait : @${u.replace(/^@/, '')} a maintenant ${crN(data.balance)} crédits.`, 5000); crClose(); } catch (e) { toast('⚠️ ' + (e.message || e), 6000); } }
+function crAdmSet() { const S = crSt(); CR.edit = JSON.parse(JSON.stringify(S)); crAdmSetForm(); }
+function crAdmSetForm() { const S = CR.edit, inp = (path, v, ph, num) => `<input class="crin" style="margin-top:4px;padding:8px;font-size:15px" ${num ? 'type="number" inputmode="decimal"' : ''} value="${esc(String(v ?? ''))}" placeholder="${esc(ph || '')}" oninput="crAdmPut('${path}',this.value,${num ? 1 : 0})">`;
+  crSheet(`<div style="display:flex;justify-content:space-between;align-items:center"><h3>⚙️ Réglages des crédits</h3><button class="soft" style="margin:0;padding:6px 12px" onclick="crClose()">✕</button></div>
+    <p style="font-weight:800;margin:10px 0 0">Prix sans logo (en crédits)</p><p class="mt" style="font-size:12px;margin:0">0 = gratuit sans logo pour tout le monde.</p>
+    ${Object.entries(CR_KIND).map(([k, [ic, t]]) => `<label style="display:block;font-size:13px;margin-top:6px">${ic} ${t}${inp('prices.' + k, S.prices[k], '', 1)}</label>`).join('')}
+    <p style="font-weight:800;margin:14px 0 0">Packs à vendre</p><p class="mt" style="font-size:12px;margin:0">Un pack avec « jours » = abonnement Pro (sans logo illimité).</p>
+    ${S.packs.map((p, i) => `<div style="border:1.5px solid #E5E7EB;border-radius:12px;padding:8px;margin-top:8px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <label style="font-size:12px;grid-column:1/-1">Nom affiché${inp(`packs.${i}.label`, p.label, '550 crédits')}</label><label style="font-size:12px">Prix ($)${inp(`packs.${i}.usd`, p.usd, '5', 1)}</label>
+      ${+p.days > 0 ? `<label style="font-size:12px">Jours Pro${inp(`packs.${i}.days`, p.days, '30', 1)}</label>` : `<label style="font-size:12px">Crédits donnés${inp(`packs.${i}.credits`, p.credits, '550', 1)}</label>`}</div>
+      <button class="soft" style="margin-top:6px;padding:4px 10px;font-size:12px;color:#DC2626" onclick="CR.edit.packs.splice(${i},1);crAdmSetForm()">Retirer ce pack</button></div>`).join('')}
+    <div class="grid2" style="margin-top:8px"><button class="soft" onclick="CR.edit.packs.push({k:'p'+Date.now().toString(36),label:'Nouveau pack',credits:100,usd:1});crAdmSetForm()">+ Pack de crédits</button><button class="soft" onclick="CR.edit.packs.push({k:'pro'+Date.now().toString(36),label:'Pro 1 an',days:365,usd:30});crAdmSetForm()">+ Abonnement Pro</button></div>
+    <p style="font-weight:800;margin:14px 0 0">Vos numéros de réception</p><p class="mt" style="font-size:12px;margin:0">Laissez vide un réseau que vous n’utilisez pas : il ne sera pas proposé.</p>
+    ${Object.entries(CR_NET).map(([k, [n]]) => `<label style="display:block;font-size:13px;margin-top:6px">${n}${inp('nums.' + k, S.nums[k], '08X XXX XXXX')}</label>`).join('')}
+    <label style="display:block;font-size:13px;margin-top:6px">Nom affiché par l’opérateur (pour rassurer le client)${inp('holder', S.holder, 'ex. Peter N.')}</label>
+    <p style="font-weight:800;margin:14px 0 0">Autres réglages</p>
+    <label style="display:block;font-size:13px;margin-top:6px">🎁 Crédits offerts à l’inscription${inp('gift', S.gift, '100', 1)}</label>
+    <label style="display:block;font-size:13px;margin-top:6px">⏱️ Minutes pour corriger et retélécharger gratuitement${inp('grace', S.grace, '20', 1)}</label>
+    <label style="display:block;font-size:13px;margin-top:6px">🕗 Heures de validation${inp('hours', S.hours, '8 h – 21 h')}</label>
+    <label style="display:block;font-size:13px;margin-top:6px">💬 WhatsApp du support (avec 243…)${inp('wa', S.wa, '2438XXXXXXXX')}</label>
+    <label style="display:block;font-size:13px;margin-top:6px">💱 Taux : 1 $ = combien de FC ? (0 = ne pas afficher)${inp('rate', S.rate, '0', 1)}</label>
+    <button class="pill" style="width:100%;margin-top:14px" onclick="crAdmSave()">💾 Enregistrer</button>`); }
+function crAdmPut(path, v, num) { const k = path.split('.'); let o = CR.edit; while (k.length > 1) o = o[k.shift()]; o[k[0]] = num ? (v === '' ? 0 : +String(v).replace(',', '.')) : v; }
+async function crAdmSave() { const S = CR.edit; if (S.packs.some(p => !(+p.usd > 0) || !(+p.days > 0 || +p.credits > 0))) return toast('⚠️ Chaque pack doit avoir un prix et des crédits (ou des jours).', 5000);
+  try { const { data, error } = await sb.rpc('sp_admin_settings', { p_data: S }); if (error) throw error; CR.st = data || S; toast('✅ Réglages enregistrés. Les clients voient les nouveaux prix tout de suite.', 5000); crClose(); renderAdmin(); } catch (e) { toast('⚠️ ' + (e.message || e), 6000); } }
+setTimeout(crWrap, 0);
+
 // ---------- Administration (rôle vérifié par le serveur ; les messages privés ne sont jamais lisibles) ----------
 let admT = 'apercu', admRS = 'nouveau';
 async function checkAdmin() {
   if (!me) return;
   let ok = false;
   try { const { data, error } = await sb.rpc('is_admin'); ok = !error && data === true; } catch (e) {}
-  me.is_admin = ok; document.body.classList.toggle('is-admin', ok);
+  me.is_admin = ok; document.body.classList.toggle('is-admin', ok); if (ok) setTimeout(crAdmPing, 1500);
   $('adm-entry')?.classList.toggle('hidden', !ok); $('rp-adm')?.classList.toggle('hidden', !ok);
   if (cur === 'produits' || cur === 'mapage') refresh();
 }
@@ -13419,7 +13633,7 @@ async function renderAdmin() {
   const el = $('adm-body'); if (!el) return;
   if (!me?.is_admin) { el.innerHTML = empty('🔒', 'Accès réservé', "Cette page est réservée à l'administrateur."); return; }
   el.innerHTML = '<div class="spin"></div>';
-  try { await ({ apercu: admStats, signalements: admReports, publications: admPosts, journal: admLog })[admT](el); }
+  try { await ({ apercu: admStats, signalements: admReports, publications: admPosts, journal: admLog, paiements: crAdm })[admT](el); }
   catch (e) { el.innerHTML = empty('⚠️', 'Erreur', esc(e.message || String(e))); }
 }
 const admMo = b => (b / 1048576).toFixed(1).replace('.', ',') + ' Mo';
